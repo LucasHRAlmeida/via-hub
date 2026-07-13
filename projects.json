@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "hub": "VIA Hub",
+    "owner": "Dr. Lucas HR",
+    "affiliation": "FMRP-USP · Turma 64",
+    "updated": "2026-07-13"
+  },
+  "categories": [
+    { "id": "clinica", "label": "Clínica" },
+    { "id": "educacao", "label": "Educação médica" },
+    { "id": "saude-pub", "label": "Saúde pública" }
+  ],
+  "projects": [
+    {
+      "id": "ensino-gamificado",
+      "name": "VIA — Vida Integrada e Autônoma",
+      "area": "Oncologia molecular / ensino",
+      "category": "educacao",
+      "description": "Vias de sinalização oncológica e os 14 Hallmarks do câncer, com quiz interativo.",
+      "url": "https://lucashralmeida.github.io/ensino-gamificado/",
+      "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado",
+      "status": "estavel",
+      "version": "1.0",
+      "clinicalRisk": "nenhum",
+      "disclaimer": "Ferramenta educativa. Não substitui referência clínica.",
+      "tags": ["oncologia", "ensino", "quiz"]
+    },
+    {
+      "id": "mentoria-ia-osce-fmrp",
+      "name": "Mentoria IA — OSCE FMRP",
+      "area": "Educação médica / IA",
+      "category": "educacao",
+      "description": "Simulador de estações OSCE com feedback estruturado e dashboard de progresso.",
+      "url": "https://lucashralmeida.github.io/mentoria-ia-osce-fmrp/",
+      "repo": "https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp",
+      "status": "beta",
+      "version": "0.9",
+      "clinicalRisk": "nenhum",
+      "disclaimer": "Apoio ao treino. Não representa avaliação oficial.",
+      "tags": ["osce", "residencia", "ia"]
+    },
+    {
+      "id": "sarampo-alertas-2026",
+      "name": "Sarampo · Alertas 2026",
+      "area": "Saúde pública / vigilância",
+      "category": "saude-pub",
+      "description": "Web app educativo sobre alertas de sarampo e vacinação.",
+      "url": "https://lucashralmeida.github.io/sarampo-alertas-2026/",
+      "repo": "https://github.com/LucasHRAlmeida/sarampo-alertas-2026",
+      "status": "estavel",
+      "version": "1.0",
+      "clinicalRisk": "baixo",
+      "disclaimer": "Conteúdo informativo. Siga o calendário oficial do PNI/SUS.",
+      "tags": ["sarampo", "vacinacao", "vigilancia"]
+    }
+  ]
+}
