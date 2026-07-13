@@ -1,300 +1,90 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VIA Hub — Dr. Lucas HR | Educação médica com tecnologia</title>
-  <meta name="description" content="Portfólio de Dr. Lucas HR (FMRP-USP): ferramentas de educação médica e saúde pública construídas com tecnologia. Médico que constrói as próprias ferramentas." />
-  <style>
-    :root {
-      --grad-a: #667eea;
-      --grad-b: #764ba2;
-      --primary: #1e3c72;
-      --accent: #2a5298;
-      --ink: #1a2233;
-      --muted: #5b6472;
-      --line: #e4e7ee;
-      --card: #ffffff;
-      --bg: #f5f6fb;
-      --chip: #eef1fb;
-      --chip-ink: #3a4a86;
-      --live: #1e9e5a;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --ink: #eef1f8;
-        --muted: #9aa4b7;
-        --line: #283042;
-        --card: #161c2b;
-        --bg: #0d111c;
-        --chip: #1d2740;
-        --chip-ink: #aeb9e6;
-        --live: #38d07f;
-      }
-    }
-    :root[data-theme="light"] {
-      --ink: #1a2233; --muted: #5b6472; --line: #e4e7ee; --card: #fff; --bg: #f5f6fb; --chip: #eef1fb; --chip-ink: #3a4a86; --live: #1e9e5a;
-    }
-    :root[data-theme="dark"] {
-      --ink: #eef1f8; --muted: #9aa4b7; --line: #283042; --card: #161c2b; --bg: #0d111c; --chip: #1d2740; --chip-ink: #aeb9e6; --live: #38d07f;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 100%);
-      color: #fff;
-      padding: 68px 0 76px;
-      position: relative;
-    }
-    .hero .wrap { position: relative; }
-    .eyebrow {
-      display: inline-block;
-      font-size: .82rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,.16);
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 18px;
-      backdrop-filter: blur(4px);
-    }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin-bottom: 16px; font-weight: 800; }
-    .hero .lede { font-size: clamp(1.05rem, 2.2vw, 1.3rem); max-width: 640px; opacity: .96; }
-    .hero .lede strong { font-weight: 700; }
-    .cta-row { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: .96rem; font-weight: 600;
-      padding: 12px 20px; border-radius: 10px;
-      text-decoration: none; transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      border: 1px solid transparent;
-    }
-    .btn-solid { background: #fff; color: var(--primary); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
-    .btn-ghost { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.4); }
-    .btn:hover { transform: translateY(-2px); }
-
-    /* Stats strip */
-    .stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 40px; }
-    .stat { }
-    .stat .n { font-size: 1.7rem; font-weight: 800; }
-    .stat .l { font-size: .84rem; opacity: .9; }
-
-    /* Sections */
-    section { padding: 60px 0; }
-    .sec-head { margin-bottom: 34px; }
-    .sec-head h2 { font-size: 1.6rem; color: var(--ink); font-weight: 800; margin-bottom: 8px; }
-    .sec-head p { color: var(--muted); max-width: 620px; }
-
-    /* Project cards */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 26px;
-      display: flex; flex-direction: column;
-      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
-    }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(30,60,114,.14); border-color: var(--accent); }
-    .card.feature { grid-column: 1 / -1; border-left: 5px solid var(--accent); }
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
-    .card .emoji { font-size: 2rem; line-height: 1; }
-    .badge {
-      font-size: .72rem; font-weight: 700; letter-spacing: .04em;
-      padding: 4px 10px; border-radius: 999px;
-      display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
-    }
-    .badge.live { background: rgba(30,158,90,.14); color: var(--live); }
-    .badge.dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-    .badge.repo { background: var(--chip); color: var(--chip-ink); }
-    .card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
-    .card .role { font-size: .82rem; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
-    .card p.desc { color: var(--muted); font-size: .96rem; margin-bottom: 16px; flex-grow: 1; }
-    .feature .cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 26px; }
-    .feature ul { list-style: none; display: grid; gap: 8px; }
-    .feature ul li { position: relative; padding-left: 24px; color: var(--muted); font-size: .95rem; }
-    .feature ul li::before { content: "✓"; position: absolute; left: 0; color: var(--live); font-weight: 800; }
-    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
-    .chip { font-size: .76rem; background: var(--chip); color: var(--chip-ink); padding: 4px 11px; border-radius: 999px; font-weight: 600; }
-    .card-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
-    .link {
-      font-size: .9rem; font-weight: 600; text-decoration: none;
-      padding: 9px 15px; border-radius: 9px; border: 1px solid var(--line);
-      color: var(--ink); transition: background .12s ease, border-color .12s ease;
-      display: inline-flex; align-items: center; gap: 7px;
-    }
-    .link:hover { border-color: var(--accent); }
-    .link.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .link.primary:hover { background: var(--accent); border-color: var(--accent); }
-
-    /* About */
-    .about { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .about .inner { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: center; }
-    .about h2 { font-size: 1.5rem; margin-bottom: 14px; }
-    .about p { color: var(--muted); margin-bottom: 14px; }
-    .avatar {
-      width: 100%; max-width: 220px; aspect-ratio: 1; border-radius: 20px;
-      background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 4.5rem; color: #fff; margin: 0 auto;
-      box-shadow: 0 12px 30px rgba(30,60,114,.25);
-    }
-
-    footer { padding: 44px 0; text-align: center; color: var(--muted); font-size: .9rem; }
-    footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
-
-    @media (max-width: 720px) {
-      .feature .cols { grid-template-columns: 1fr; }
-      .about .inner { grid-template-columns: 1fr; text-align: center; }
-      .about .inner .avatar { order: -1; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VIA Hub — Dr. Lucas HR</title>
+<meta name="description" content="Vitrine do ecossistema VIA: ferramentas de educação médica e saúde pública de Dr. Lucas HR." />
+<style>
+:root{--bg:#0d1117;--card:#161b22;--txt:#e6edf3;--muted:#8b949e;--acc:#58a6ff;--line:#30363d}
+html[data-theme="light"]{--bg:#fff;--card:#f6f8fa;--txt:#1f2328;--muted:#57606a;--acc:#0969da;--line:#d0d7de}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;padding:2rem 1rem;transition:.2s}
+header{max-width:960px;margin:0 auto 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+h1{font-size:1.6rem}
+.sub{color:var(--muted);font-size:.9rem}
+.controls{max-width:960px;margin:0 auto 1.5rem;display:flex;gap:.5rem;flex-wrap:wrap}
+.filter{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:20px;padding:.35rem .9rem;cursor:pointer;font-size:.85rem}
+.filter[aria-pressed="true"]{border-color:var(--acc);color:var(--acc)}
+.grid{max-width:960px;margin:0 auto;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem}
+.card h2{font-size:1.05rem}
+.card p{color:var(--muted);font-size:.88rem;flex:1}
+.badges{display:flex;gap:.4rem;flex-wrap:wrap}
+.badge{font-size:.7rem;padding:.15rem .5rem;border-radius:6px;border:1px solid var(--line)}
+.b-estavel{color:#3fb950;border-color:#238636}
+.b-beta{color:#d29922;border-color:#9e6a03}
+.b-prototipo{color:#8b949e}
+.b-risk{color:#f85149;border-color:#da3633}
+.links{display:flex;gap:.8rem;font-size:.85rem}
+.links a{color:var(--acc);text-decoration:none}
+.disc{font-size:.72rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:.5rem}
+#themeBtn{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+.err{max-width:960px;margin:0 auto;color:#f85149}
+</style>
 </head>
 <body>
-
-  <header class="hero">
-    <div class="wrap">
-      <span class="eyebrow">Dr. Lucas HR · FMRP-USP</span>
-      <h1>Medicina que vira ferramenta.</h1>
-      <p class="lede">Sou médico e <strong>construo as próprias ferramentas</strong> de educação médica e saúde pública. Aqui está o ecossistema <strong>VIA</strong> — aplicativos que nascem de problemas reais de ensino e de clínica, e vão parar no ar para qualquer pessoa usar.</p>
-      <div class="cta-row">
-        <a class="btn btn-solid" href="#projetos">Ver os projetos ↓</a>
-        <a class="btn btn-ghost" href="https://github.com/LucasHRAlmeida" target="_blank" rel="noopener">GitHub</a>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="n">14</div><div class="l">Hallmarks do câncer mapeados</div></div>
-        <div class="stat"><div class="n">3</div><div class="l">Ferramentas construídas</div></div>
-        <div class="stat"><div class="n">100%</div><div class="l">Código aberto</div></div>
-      </div>
-    </div>
-  </header>
-
-  <section id="projetos">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>Projetos</h2>
-        <p>Cada projeto resolve um problema concreto de educação médica ou de saúde pública — do banco à sala de aula.</p>
-      </div>
-
-      <div class="grid">
-
-        <!-- FEATURE: VIA -->
-        <article class="card feature">
-          <div class="cols">
-            <div>
-              <div class="card-top">
-                <span class="emoji">🔬</span>
-                <span class="badge live dot">No ar</span>
-              </div>
-              <h3>VIA — Vida Integrada e Autônoma</h3>
-              <div class="role">Aplicativo de ensino · Oncologia molecular</div>
-              <p class="desc">Plataforma interativa para estudar as <strong>vias de sinalização oncológica</strong> e os <strong>14 Hallmarks do câncer</strong>. Concebida para a disciplina de Biologia do Câncer, transforma um conteúdo denso em estudo guiado, avaliação com feedback e relatório de desempenho — tudo em uma página, sem instalação.</p>
-              <div class="chips">
-                <span class="chip">HTML5</span>
-                <span class="chip">JavaScript</span>
-                <span class="chip">GitHub Pages</span>
-                <span class="chip">html2pdf.js</span>
-                <span class="chip">PapaParse</span>
-              </div>
-              <div class="card-actions">
-                <a class="link primary" href="https://lucashralmeida.github.io/ensino-gamificado/" target="_blank" rel="noopener">▶ Abrir aplicativo</a>
-                <a class="link" href="https://github.com/LucasHRAlmeida/ensino-gamificado" target="_blank" rel="noopener">Código-fonte</a>
-              </div>
-            </div>
-            <div>
-              <ul>
-                <li>14 Hallmarks com pathways, genes-alvo e fármacos direcionados</li>
-                <li>Quiz interativo com feedback comentado por questão</li>
-                <li>Casos clínicos integradores para aplicar os conceitos</li>
-                <li>Import de banco próprio via JSON ou CSV</li>
-                <li>Relatório de desempenho exportável em PDF</li>
-                <li>Responsivo e sem dependências pesadas</li>
-              </ul>
-            </div>
-          </div>
-        </article>
-
-        <!-- Mentoria IA OSCE -->
-        <article class="card">
-          <div class="card-top">
-            <span class="emoji">🩺</span>
-            <span class="badge repo">Repositório</span>
-          </div>
-          <h3>Mentoria IA Literacy — OSCE FMRP</h3>
-          <div class="role">Educação médica · Letramento em IA</div>
-          <p class="desc">Simulador de <strong>estações OSCE</strong> (role-play) para a residência da FMRP-USP, com <strong>feedback estruturado por checklist</strong> espelhado na prova e <strong>dashboard de progresso</strong> do aluno — no contexto do letramento em IA na educação médica.</p>
-          <div class="chips">
-            <span class="chip">OSCE</span>
-            <span class="chip">Simulação clínica</span>
-            <span class="chip">HTML/JS</span>
-            <span class="chip">Dashboard</span>
-          </div>
-          <div class="card-actions">
-            <a class="link primary" href="https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp" target="_blank" rel="noopener">Ver projeto</a>
-          </div>
-        </article>
-
-        <!-- Sarampo -->
-        <article class="card">
-          <div class="card-top">
-            <span class="emoji">🦠</span>
-            <span class="badge repo">Repositório</span>
-          </div>
-          <h3>VIA · Saúde na Última Semana</h3>
-          <div class="role">Saúde pública · Comunicação em saúde</div>
-          <p class="desc">Boletim de saúde para o público geral, que traduz evidência recente em ação — do consumo de café ao calor extremo e ao sono. Em destaque, os <strong>alertas de sarampo 2026</strong>: dados epidemiológicos e chamada à vacinação com a tríplice viral no SUS.</p>
-          <div class="chips">
-            <span class="chip">Comunicação em saúde</span>
-            <span class="chip">Sarampo</span>
-            <span class="chip">Prevenção</span>
-          </div>
-          <div class="card-actions">
-            <a class="link primary" href="https://github.com/LucasHRAlmeida/sarampo-alertas-2026" target="_blank" rel="noopener">Ver projeto</a>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="about">
-    <div class="wrap inner">
-      <div>
-        <h2>Sobre</h2>
-        <p><strong>Dr. Lucas HR</strong> é médico formado pela Faculdade de Medicina de Ribeirão Preto (<strong>FMRP-USP</strong>, Turma 64). Trabalha na fronteira entre a <strong>prática clínica</strong> e a <strong>construção de software</strong>: identifica um gargalo de ensino ou de assistência e constrói a solução — do conteúdo científico à interface publicada.</p>
-        <p>O resultado é um portfólio pequeno, mas coerente: cada projeto é uma ferramenta de verdade, aberta e no ar, na interseção entre medicina, educação e tecnologia.</p>
-      </div>
-      <div class="avatar">🧬</div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">
-      Ecossistema VIA · Dr. Lucas HR · FMRP-USP<br />
-      <a href="https://github.com/LucasHRAlmeida" target="_blank" rel="noopener">github.com/LucasHRAlmeida</a>
-    </div>
-  </footer>
-
-  <script>
-    // Respeita a preferência do sistema e permite alternância futura via data-theme.
-    (function () {
-      var saved = null;
-      try { saved = localStorage.getItem("via-theme"); } catch (e) {}
-      if (saved === "light" || saved === "dark") {
-        document.documentElement.setAttribute("data-theme", saved);
-      }
-    })();
-  </script>
-
+<header>
+<div><h1>VIA Hub</h1><div class="sub" id="metaLine"></div></div>
+<button id="themeBtn">☀ / ☾</button>
+</header>
+<div class="controls" id="filters"></div>
+<main class="grid" id="grid"></main>
+<p class="err" id="err" hidden></p>
+<script>
+const RISK_LABEL={nenhum:null,baixo:"risco baixo",moderado:"risco moderado",alto:"risco alto"};
+async function boot(){
+try{
+const res=await fetch("projects.json",{cache:"no-store"});
+if(!res.ok)throw new Error("HTTP "+res.status);
+const data=await res.json();
+render(data);
+}catch(e){
+const el=document.getElementById("err");
+el.hidden=false;
+el.textContent="Não foi possível carregar projects.json — "+e.message;
+}
+}
+function badge(cls,text){return `<span class="badge ${cls}">${text}</span>`;}
+function card(p){
+const risk=RISK_LABEL[p.clinicalRisk];
+return `<article class="card" data-cat="${p.category}">
+<div class="badges">${badge("b-"+p.status,p.status)}${p.version?badge("","v"+p.version):""}${risk?badge("b-risk",risk):""}</div>
+<h2>${p.name}</h2><p>${p.description}</p>
+<div class="links"><a href="${p.url}" target="_blank" rel="noopener">Abrir ↗</a><a href="${p.repo}" target="_blank" rel="noopener">Código</a></div>
+${p.disclaimer?`<div class="disc">${p.disclaimer}</div>`:""}</article>`;
+}
+function render(data){
+document.getElementById("metaLine").textContent=`${data.meta.owner} · ${data.meta.affiliation} · atualizado ${data.meta.updated}`;
+const grid=document.getElementById("grid");
+grid.innerHTML=data.projects.map(card).join("");
+const fb=document.getElementById("filters");
+const cats=[{id:"all",label:"Todos"},...data.categories];
+fb.innerHTML=cats.map((c,i)=>`<button class="filter" data-cat="${c.id}" aria-pressed="${i===0}">${c.label}</button>`).join("");
+fb.addEventListener("click",e=>{
+const btn=e.target.closest(".filter");if(!btn)return;
+fb.querySelectorAll(".filter").forEach(b=>b.setAttribute("aria-pressed",b===btn));
+const cat=btn.dataset.cat;
+grid.querySelectorAll(".card").forEach(el=>{el.style.display=(cat==="all"||el.dataset.cat===cat)?"":"none";});
+});
+}
+const root=document.documentElement;
+document.getElementById("themeBtn").addEventListener("click",()=>{
+const next=root.dataset.theme==="dark"?"light":"dark";
+root.dataset.theme=next;localStorage.setItem("via-theme",next);
+});
+root.dataset.theme=localStorage.getItem("via-theme")||"dark";
+boot();
+</script>
 </body>
 </html>
