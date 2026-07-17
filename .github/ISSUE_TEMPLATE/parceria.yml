@@ -1,0 +1,69 @@
+name: Proposta de parceria
+description: Estruture uma conversa institucional com a Iniciativa VIA.
+title: "[Parceria] "
+labels:
+  - parceria
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Este formulário organiza a primeira conversa. Descreva o problema e o contexto antes da tecnologia desejada. Não inclua dados identificáveis de pacientes.
+  - type: input
+    id: organizacao
+    attributes:
+      label: Organização ou grupo
+      placeholder: Instituição, laboratório, serviço ou empresa
+    validations:
+      required: true
+  - type: input
+    id: contato
+    attributes:
+      label: Pessoa de contato e função
+      placeholder: Nome e papel no projeto
+    validations:
+      required: true
+  - type: dropdown
+    id: frente
+    attributes:
+      label: Frente principal
+      options:
+        - Medicina e educação clínica
+        - Saúde pública
+        - Pesquisa e produção de conhecimento
+        - Tecnologia, IA e dados
+        - Sistemas e gestão do cuidado
+        - Ainda não está claro
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: Gargalo observável
+      description: Quem é afetado, em qual processo, com que frequência e consequência?
+      placeholder: Descreva o problema sem antecipar a solução.
+    validations:
+      required: true
+  - type: textarea
+    id: resultado
+    attributes:
+      label: Resultado que justificaria um piloto
+      description: Qual mudança seria relevante e como poderia ser medida?
+    validations:
+      required: true
+  - type: textarea
+    id: dados
+    attributes:
+      label: Dados, referências ou infraestrutura disponíveis
+      description: Informe apenas classes de dados e recursos; não publique dados sensíveis.
+  - type: textarea
+    id: validacao
+    attributes:
+      label: Campo de validação e governança
+      description: Quem pode testar, supervisionar, interromper e autorizar uma eventual implantação?
+  - type: checkboxes
+    id: escopo
+    attributes:
+      label: Declaração de escopo
+      options:
+        - label: Confirmo que esta proposta não contém dados identificáveis de pacientes.
+          required: true
