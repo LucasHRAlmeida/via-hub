@@ -1,28 +1,40 @@
-# VIA Hub — Portfólio de Dr. Lucas HR
+# Iniciativa VIA — portal institucional
 
-Vitrine do **ecossistema VIA**: ferramentas de educação médica e saúde pública construídas por **Dr. Lucas HR** (FMRP-USP, Turma 64) — um médico que constrói as próprias ferramentas.
+Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site organiza o portfólio de Dr Lucas HR em uma arquitetura institucional voltada a medicina, pesquisa, tecnologia, saúde pública e formação de parcerias.
 
-## 🌐 Acesse
+## Acesso
 
-Publicado via GitHub Pages: **https://lucashralmeida.github.io/via-hub/**
+GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
 
-## 🧭 O que reúne
+## Estrutura
 
-| Projeto | Área | Link |
-|---|---|---|
-| **VIA — Vida Integrada e Autônoma** | Oncologia molecular / ensino | https://github.com/LucasHRAlmeida/ensino-gamificado |
-| **Mentoria IA — OSCE FMRP** | Educação médica / IA | https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp |
-| **Sarampo · Alertas 2026** | Saúde pública / vigilância | https://github.com/LucasHRAlmeida/sarampo-alertas-2026 |
+- `index.html` — conteúdo e semântica da página.
+- `styles.css` — sistema visual responsivo com a paleta institucional VIA.
+- `app.js` — navegação móvel, filtros e renderização segura do portfólio.
+- `projects.json` — fonte versionada das demonstrações e respectivos status.
+- `.github/ISSUE_TEMPLATE/parceria.yml` — formulário para propostas institucionais.
+- `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
 
-## 🛠️ Stack
+## Princípios editoriais
 
-Página única em **HTML5 + CSS3 + JavaScript** (vanilla, sem dependências externas), responsiva e com suporte a tema claro/escuro. Basta abrir o `index.html`.
+1. Separar a fonte científica da ferramenta que a utiliza.
+2. Declarar estágio, escopo e limitações de cada demonstração.
+3. Evitar alegações de capacidade que o protótipo ainda não implementa.
+4. Tratar software como argumento verificável, não como peça cenográfica.
 
-## ⚙️ Publicar
+## Desenvolvimento local
 
-1. Settings → Pages → Branch `main` (ou a branch de deploy) / raiz `/`.
-2. O arquivo `.nojekyll` garante que o GitHub Pages sirva os arquivos como estão.
+Não há etapa de build nem dependências externas:
+
+```bash
+python -m http.server 8000
+```
+
+Depois, abra `http://localhost:8000`.
 
 ---
 
-**Dr. Lucas HR** · [github.com/LucasHRAlmeida](https://github.com/LucasHRAlmeida)
+**Dr Lucas HR - Médico Generalista (FMRP-USP)**  
+CRM-SP: 226836 | CRM-MG: 109752  
+**Iniciativa VIA - Vida Integrada e Autônoma**  
+Ciência e Tecnologia a serviço do Cuidado.
