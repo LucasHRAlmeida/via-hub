@@ -1,90 +1,293 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR" data-theme="light">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>VIA Hub — Dr. Lucas HR</title>
-<meta name="description" content="Vitrine do ecossistema VIA: ferramentas de educação médica e saúde pública de Dr. Lucas HR." />
-<style>
-:root{--bg:#0d1117;--card:#161b22;--txt:#e6edf3;--muted:#8b949e;--acc:#58a6ff;--line:#30363d}
-html[data-theme="light"]{--bg:#fff;--card:#f6f8fa;--txt:#1f2328;--muted:#57606a;--acc:#0969da;--line:#d0d7de}
-*{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;padding:2rem 1rem;transition:.2s}
-header{max-width:960px;margin:0 auto 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
-h1{font-size:1.6rem}
-.sub{color:var(--muted);font-size:.9rem}
-.controls{max-width:960px;margin:0 auto 1.5rem;display:flex;gap:.5rem;flex-wrap:wrap}
-.filter{background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:20px;padding:.35rem .9rem;cursor:pointer;font-size:.85rem}
-.filter[aria-pressed="true"]{border-color:var(--acc);color:var(--acc)}
-.grid{max-width:960px;margin:0 auto;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:.6rem}
-.card h2{font-size:1.05rem}
-.card p{color:var(--muted);font-size:.88rem;flex:1}
-.badges{display:flex;gap:.4rem;flex-wrap:wrap}
-.badge{font-size:.7rem;padding:.15rem .5rem;border-radius:6px;border:1px solid var(--line)}
-.b-estavel{color:#3fb950;border-color:#238636}
-.b-beta{color:#d29922;border-color:#9e6a03}
-.b-prototipo{color:#8b949e}
-.b-risk{color:#f85149;border-color:#da3633}
-.links{display:flex;gap:.8rem;font-size:.85rem}
-.links a{color:var(--acc);text-decoration:none}
-.disc{font-size:.72rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:.5rem}
-#themeBtn{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
-.err{max-width:960px;margin:0 auto;color:#f85149}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciativa VIA — Ciência e Tecnologia a serviço do Cuidado</title>
+  <meta name="description" content="A Iniciativa VIA transforma conhecimento clínico e científico em ferramentas auditáveis para medicina, educação, pesquisa e saúde pública.">
+  <meta name="theme-color" content="#0C3E67">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Iniciativa VIA — Vida Integrada e Autônoma">
+  <meta property="og:description" content="Da evidência à interface: medicina, pesquisa e tecnologia orientadas por problemas reais do cuidado.">
+  <meta property="og:url" content="https://lucashralmeida.github.io/via-hub/">
+  <link rel="canonical" href="https://lucashralmeida.github.io/via-hub/">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
-<header>
-<div><h1>VIA Hub</h1><div class="sub" id="metaLine"></div></div>
-<button id="themeBtn">☀ / ☾</button>
-</header>
-<div class="controls" id="filters"></div>
-<main class="grid" id="grid"></main>
-<p class="err" id="err" hidden></p>
-<script>
-const RISK_LABEL={nenhum:null,baixo:"risco baixo",moderado:"risco moderado",alto:"risco alto"};
-async function boot(){
-try{
-const res=await fetch("projects.json",{cache:"no-store"});
-if(!res.ok)throw new Error("HTTP "+res.status);
-const data=await res.json();
-render(data);
-}catch(e){
-const el=document.getElementById("err");
-el.hidden=false;
-el.textContent="Não foi possível carregar projects.json — "+e.message;
-}
-}
-function badge(cls,text){return `<span class="badge ${cls}">${text}</span>`;}
-function card(p){
-const risk=RISK_LABEL[p.clinicalRisk];
-return `<article class="card" data-cat="${p.category}">
-<div class="badges">${badge("b-"+p.status,p.status)}${p.version?badge("","v"+p.version):""}${risk?badge("b-risk",risk):""}</div>
-<h2>${p.name}</h2><p>${p.description}</p>
-<div class="links"><a href="${p.url}" target="_blank" rel="noopener">Abrir ↗</a><a href="${p.repo}" target="_blank" rel="noopener">Código</a></div>
-${p.disclaimer?`<div class="disc">${p.disclaimer}</div>`:""}</article>`;
-}
-function render(data){
-document.getElementById("metaLine").textContent=`${data.meta.owner} · ${data.meta.affiliation} · atualizado ${data.meta.updated}`;
-const grid=document.getElementById("grid");
-grid.innerHTML=data.projects.map(card).join("");
-const fb=document.getElementById("filters");
-const cats=[{id:"all",label:"Todos"},...data.categories];
-fb.innerHTML=cats.map((c,i)=>`<button class="filter" data-cat="${c.id}" aria-pressed="${i===0}">${c.label}</button>`).join("");
-fb.addEventListener("click",e=>{
-const btn=e.target.closest(".filter");if(!btn)return;
-fb.querySelectorAll(".filter").forEach(b=>b.setAttribute("aria-pressed",b===btn));
-const cat=btn.dataset.cat;
-grid.querySelectorAll(".card").forEach(el=>{el.style.display=(cat==="all"||el.dataset.cat===cat)?"":"none";});
-});
-}
-const root=document.documentElement;
-document.getElementById("themeBtn").addEventListener("click",()=>{
-const next=root.dataset.theme==="dark"?"light":"dark";
-root.dataset.theme=next;localStorage.setItem("via-theme",next);
-});
-root.dataset.theme=localStorage.getItem("via-theme")||"dark";
-boot();
-</script>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header" data-header>
+    <div class="shell header-inner">
+      <a class="brand" href="#inicio" aria-label="Iniciativa VIA — início">
+        <span class="brand-mark" aria-hidden="true"><span>V</span></span>
+        <span class="brand-copy">
+          <strong>VIA</strong>
+          <small>Vida Integrada e Autônoma</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <span class="sr-only">Abrir navegação</span>
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Navegação principal" data-nav>
+        <a href="#tese">Tese</a>
+        <a href="#frentes">Frentes</a>
+        <a href="#demonstracoes">Demonstrações</a>
+        <a href="#metodo">Método</a>
+        <a href="#parcerias">Parcerias</a>
+      </nav>
+
+      <a class="header-cta" href="https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml" target="_blank" rel="noopener noreferrer">
+        Propor parceria
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="shell hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Iniciativa médico-científica independente</p>
+          <h1>Da evidência à interface.<br><em>Do problema real à ferramenta.</em></h1>
+          <p class="hero-lede">A Iniciativa VIA conecta medicina, pesquisa e tecnologia para transformar conhecimento validado em educação, apoio à decisão e soluções de saúde pública — com escopo explícito, rastreabilidade e supervisão humana.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#demonstracoes">Explorar demonstrações <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="#metodo">Conhecer o método</a>
+          </div>
+          <dl class="hero-facts">
+            <div><dt data-project-count>3</dt><dd>demonstrações públicas</dd></div>
+            <div><dt>5</dt><dd>frentes conectadas</dd></div>
+            <div><dt>1</dt><dd>critério: utilidade verificável</dd></div>
+          </dl>
+        </div>
+
+        <aside class="hero-system" aria-labelledby="system-title">
+          <h2 class="sr-only" id="system-title">Arquitetura conceitual da Iniciativa VIA</h2>
+          <div class="system-head">
+            <span>VIA / sistema de trabalho</span>
+            <span class="system-live"><i></i> em construção</span>
+          </div>
+          <div class="system-core">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="core-mark"><span>VIA</span><small>cuidado</small></div>
+            <span class="node node-a">Evidência</span>
+            <span class="node node-b">Clínica</span>
+            <span class="node node-c">Dados</span>
+            <span class="node node-d">Interface</span>
+          </div>
+          <div class="system-foot">
+            <span>Conhecimento</span><b>→</b><span>Estrutura</span><b>→</b><span>Decisão</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="thesis section" id="tese">
+      <div class="shell thesis-layout">
+        <div>
+          <p class="section-kicker">01 · A tese</p>
+          <h2>O gargalo raramente é apenas falta de informação.</h2>
+        </div>
+        <div class="thesis-copy">
+          <p class="lead">É a distância entre a informação e a decisão: conteúdo sem estrutura, sistemas que não conversam e interfaces que escondem seus próprios limites.</p>
+          <p>A VIA nasce para trabalhar nessa distância. O ponto de partida não é “usar IA”, mas definir com precisão o problema clínico, educacional ou sistêmico; só então escolher a tecnologia compatível com o risco e com o contexto de uso.</p>
+          <div class="principle-callout">
+            <span>Princípio operacional</span>
+            <strong>Autonomia com responsabilidade: tecnologia a serviço do cuidado, com validação, transparência e supervisão humana.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fronts section" id="frentes">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">02 · Frentes de atuação</p>
+            <h2>Uma estrutura única. Cinco portas de entrada.</h2>
+          </div>
+          <p>A taxonomia preserva as diferenças entre cuidado, ciência e engenharia sem romper as conexões entre elas.</p>
+        </div>
+
+        <div class="front-grid">
+          <article class="front-card front-primary">
+            <span class="front-index">01</span>
+            <p class="front-label">Atuação-fim</p>
+            <h3>Medicina e educação clínica</h3>
+            <p>Casos, simulações, raciocínio clínico e ferramentas que traduzem conteúdo denso em aprendizagem e decisão.</p>
+            <ul>
+              <li>Educação médica</li>
+              <li>Oncologia molecular</li>
+              <li>Raciocínio clínico e OSCE</li>
+            </ul>
+          </article>
+
+          <article class="front-card">
+            <span class="front-index">02</span>
+            <p class="front-label">Escala populacional</p>
+            <h3>Saúde pública</h3>
+            <p>Vigilância, prevenção e comunicação de risco voltadas a comunidades e sistemas de saúde.</p>
+          </article>
+
+          <article class="front-card">
+            <span class="front-index">03</span>
+            <p class="front-label">Habilidade transversal</p>
+            <h3>Tecnologia e dados</h3>
+            <p>Aplicativos web, IA aplicada, visualização e pipelines que tornam o conhecimento operacional.</p>
+          </article>
+
+          <article class="front-card">
+            <span class="front-index">04</span>
+            <p class="front-label">Fonte</p>
+            <h3>Produção de conhecimento</h3>
+            <p>Referências, sínteses e materiais didáticos versionados antes de abastecer qualquer ferramenta.</p>
+          </article>
+
+          <article class="front-card front-lab">
+            <span class="front-index">05</span>
+            <p class="front-label">Passagem, não morada</p>
+            <h3>Laboratório</h3>
+            <p>Provas de conceito com regra de saída: amadurecer, migrar para a frente correta ou ser descartadas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="portfolio section" id="demonstracoes">
+      <div class="shell">
+        <div class="section-heading portfolio-heading">
+          <div>
+            <p class="section-kicker">03 · Demonstrações</p>
+            <h2>Software como argumento verificável.</h2>
+          </div>
+          <p>Projetos pequenos por desenho, públicos quando maduros e claros quanto ao que fazem — e ao que ainda não fazem.</p>
+        </div>
+
+        <div class="filter-bar" role="group" aria-label="Filtrar demonstrações" data-filters>
+          <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">Todos</button>
+          <button class="filter" type="button" data-filter="medicina" aria-pressed="false">Medicina</button>
+          <button class="filter" type="button" data-filter="educacao" aria-pressed="false">Educação</button>
+          <button class="filter" type="button" data-filter="saude-publica" aria-pressed="false">Saúde pública</button>
+          <button class="filter" type="button" data-filter="sistemas" aria-pressed="false">Sistemas</button>
+        </div>
+
+        <div class="project-grid" data-project-grid aria-live="polite">
+          <p class="loading-state">Carregando portfólio…</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="method section" id="metodo">
+      <div class="shell">
+        <div class="section-heading method-heading">
+          <div>
+            <p class="section-kicker">04 · Método VIA</p>
+            <h2>A tecnologia entra depois da pergunta certa.</h2>
+          </div>
+          <p>O processo separa fonte, modelo, interface e validação. Misturá-los produz demos vistosas e sistemas frágeis.</p>
+        </div>
+
+        <ol class="method-flow">
+          <li>
+            <span>01</span>
+            <div><strong>Problema e contexto</strong><p>Quem decide, sob qual pressão e com qual consequência?</p></div>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong>Conhecimento versionado</strong><p>Fontes, regras, incertezas e limites de validade.</p></div>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong>Representação estruturada</strong><p>Dados e critérios transformados em componentes auditáveis.</p></div>
+          </li>
+          <li>
+            <span>04</span>
+            <div><strong>Interface ou modelo</strong><p>A tecnologia mínima suficiente para o trabalho real.</p></div>
+          </li>
+          <li>
+            <span>05</span>
+            <div><strong>Validação e implantação</strong><p>Teste, registro de erro, governança e escala proporcional ao risco.</p></div>
+          </li>
+        </ol>
+
+        <div class="method-notes">
+          <article>
+            <span>Separação crítica</span>
+            <h3>A fonte não é a ferramenta.</h3>
+            <p>O conhecimento permanece reaproveitável e atualizável; cada interface declara qual versão utiliza.</p>
+          </article>
+          <article>
+            <span>Critério clínico</span>
+            <h3>Erro útil é erro rastreável.</h3>
+            <p>O objetivo não é esconder falhas, mas torná-las legíveis o bastante para orientar calibração e governança.</p>
+          </article>
+          <article>
+            <span>Critério técnico</span>
+            <h3>Complexidade precisa pagar aluguel.</h3>
+            <p>Uma camada nova só entra quando reduz risco, trabalho ou ambiguidade de forma demonstrável.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="partnerships section" id="parcerias">
+      <div class="shell partnership-layout">
+        <div class="partnership-copy">
+          <p class="section-kicker">05 · Parcerias</p>
+          <h2>Problemas difíceis pedem alianças específicas.</h2>
+          <p>A VIA busca instituições de saúde, grupos de pesquisa, universidades, gestores e equipes técnicas com um problema real, acesso legítimo ao contexto e disposição para validar — não apenas para “colocar IA” em uma apresentação.</p>
+          <a class="button button-light" href="https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml" target="_blank" rel="noopener noreferrer">Estruturar uma proposta <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="partner-panel">
+          <p class="panel-title">O que uma boa conversa inicial traz</p>
+          <ul>
+            <li><span>01</span><div><strong>Um gargalo observável</strong><small>processo, público, frequência e impacto</small></div></li>
+            <li><span>02</span><div><strong>Uma hipótese de valor</strong><small>o que deveria melhorar e como medir</small></div></li>
+            <li><span>03</span><div><strong>Um campo de validação</strong><small>quem testa, supervisiona e pode interromper</small></div></li>
+            <li><span>04</span><div><strong>Fronteiras honestas</strong><small>dados disponíveis, riscos e restrições reais</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="founder section" id="fundador">
+      <div class="shell founder-layout">
+        <div class="founder-mark" aria-hidden="true"><span>HR</span></div>
+        <div>
+          <p class="section-kicker">Fundador e direção clínica</p>
+          <h2>Dr Lucas HR</h2>
+          <p class="founder-role">Médico Generalista · FMRP-USP</p>
+          <p>A VIA parte de uma posição deliberadamente híbrida: o problema é lido por dentro da medicina e traduzido até uma forma que pesquisadores, engenheiros, gestores e usuários possam interrogar em conjunto.</p>
+          <div class="founder-links">
+            <a href="https://github.com/LucasHRAlmeida" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="#demonstracoes">Portfólio público <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-layout">
+      <div class="brand footer-brand">
+        <span class="brand-mark" aria-hidden="true"><span>V</span></span>
+        <span class="brand-copy"><strong>VIA</strong><small>Vida Integrada e Autônoma</small></span>
+      </div>
+      <p>Dr Lucas HR - Médico Generalista (FMRP-USP)<br>CRM-SP: 226836 | CRM-MG: 109752</p>
+      <p>Iniciativa VIA - Vida Integrada e Autônoma<br><strong>Ciência e Tecnologia a serviço do Cuidado.</strong></p>
+      <a class="footer-link" href="https://github.com/LucasHRAlmeida/via-hub" target="_blank" rel="noopener noreferrer">Código e versões ↗</a>
+    </div>
+    <div class="shell footer-base">
+      <span>© <span data-year>2026</span> Iniciativa VIA</span>
+      <span>Construído como parte do próprio portfólio.</span>
+    </div>
+  </footer>
 </body>
 </html>
