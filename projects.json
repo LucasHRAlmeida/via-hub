@@ -3,25 +3,45 @@
     "hub": "Iniciativa VIA",
     "owner": "Dr Lucas HR",
     "affiliation": "FMRP-USP",
-    "updated": "2026-07-17"
+    "updated": "2026-07-18"
   },
   "categories": [
-    { "id": "medicina", "label": "Medicina" },
-    { "id": "educacao", "label": "Educação" },
-    { "id": "saude-publica", "label": "Saúde pública" },
-    { "id": "sistemas", "label": "Sistemas" }
+    {
+      "id": "medicina",
+      "label": "Medicina"
+    },
+    {
+      "id": "educacao",
+      "label": "Educação"
+    },
+    {
+      "id": "saude-publica",
+      "label": "Saúde pública"
+    },
+    {
+      "id": "sistemas",
+      "label": "Sistemas"
+    }
   ],
   "projects": [
     {
       "id": "ensino-gamificado",
       "name": "Vias de Sinalização Oncológica",
       "kicker": "Oncologia molecular · ensino",
-      "categories": ["medicina", "educacao"],
+      "categories": [
+        "medicina",
+        "educacao"
+      ],
       "status": "estável",
       "statusKey": "stable",
       "featured": true,
       "description": "Plataforma interativa sobre os 14 Hallmarks do câncer, vias de sinalização, genes-chave e terapias-alvo, com quiz e relatório de desempenho.",
-      "tags": ["14 hallmarks", "quiz comentado", "JSON/CSV", "relatório em PDF"],
+      "tags": [
+        "14 hallmarks",
+        "quiz comentado",
+        "JSON/CSV",
+        "relatório em PDF"
+      ],
       "url": "https://lucashralmeida.github.io/ensino-gamificado/",
       "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado"
     },
@@ -29,12 +49,20 @@
       "id": "mentoria-ia-osce-fmrp",
       "name": "Mentoria IA Literacy — OSCE",
       "kicker": "Educação médica · simulação",
-      "categories": ["medicina", "educacao"],
+      "categories": [
+        "medicina",
+        "educacao"
+      ],
       "status": "beta",
       "statusKey": "beta",
       "featured": false,
       "description": "Simulador de estações clínicas com checklists estruturados e painel de progresso. O protótipo demonstra a interface educacional; não alega avaliação por IA em produção.",
-      "tags": ["OSCE", "checklists", "dashboard", "feedback local"],
+      "tags": [
+        "OSCE",
+        "checklists",
+        "dashboard",
+        "feedback local"
+      ],
       "url": "https://lucashralmeida.github.io/mentoria-ia-osce-fmrp/",
       "repo": "https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp"
     },
@@ -42,25 +70,61 @@
       "id": "sarampo-alertas-2026",
       "name": "Saúde na Última Semana",
       "kicker": "Saúde pública · comunicação",
-      "categories": ["saude-publica"],
+      "categories": [
+        "saude-publica"
+      ],
       "status": "publicado",
       "statusKey": "stable",
       "featured": false,
       "description": "Boletim web que traduz temas de prevenção e vigilância para o público geral, com os alertas de sarampo de 2026 como caso de comunicação de risco.",
-      "tags": ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
+      "tags": [
+        "vigilância",
+        "prevenção",
+        "vacinação",
+        "comunicação de risco"
+      ],
       "url": "https://lucashralmeida.github.io/sarampo-alertas-2026/",
       "repo": "https://github.com/LucasHRAlmeida/sarampo-alertas-2026"
+    },
+    {
+      "id": "via-mente-mbrp",
+      "name": "VIA MENTE — MBRP-8",
+      "kicker": "Saúde mental · prevenção de recaída",
+      "categories": [
+        "medicina",
+        "educacao"
+      ],
+      "status": "beta",
+      "statusKey": "beta",
+      "featured": false,
+      "description": "Roteiro psicoeducacional interativo de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias, ferramentas de campo e registro local de progresso.",
+      "tags": [
+        "MBRP",
+        "mindfulness",
+        "56 dias",
+        "localStorage"
+      ],
+      "url": "https://lucashralmeida.github.io/via-hub/via-mente-mbrp/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp"
     },
     {
       "id": "regulacao-inteligente",
       "name": "Regulação Inteligente do Cuidado",
       "kicker": "Sistemas de saúde · governança",
-      "categories": ["saude-publica", "sistemas"],
+      "categories": [
+        "saude-publica",
+        "sistemas"
+      ],
       "status": "protótipo reservado",
       "statusKey": "reserved",
       "featured": false,
       "description": "Prova de conceito para organizar decisões complexas de regulação por recurso, contexto clínico e interoperabilidade. Conteúdo técnico mantido em desenvolvimento reservado.",
-      "tags": ["SUS", "regulação", "interoperabilidade", "apoio à decisão"],
+      "tags": [
+        "SUS",
+        "regulação",
+        "interoperabilidade",
+        "apoio à decisão"
+      ],
       "url": null,
       "repo": null
     }
