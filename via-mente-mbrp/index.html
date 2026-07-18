@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIA · MENTE — Roteiro MBRP 8 Semanas | Mindfulness e Prevenção de Recaída</title>
+<meta name="description" content="Apostila digital: roteiro diário progressivo de 8 semanas baseado no protocolo MBRP (Bowen, Chawla, Grow & Marlatt, 2021), com camada de internalização por PNL. VIA — Vida Integrada e Autônoma.">
+<style>
+:root{
+  --bg:#0A1523; --bg2:#0E1C30; --panel:#12233A; --panel2:#172A42; --line:#24384F;
+  --ink:#E9F0F7; --mut:#8FA5BB; --dim:#5E7690;
+  --blue:#39A7E8; --teal:#2FC6B7; --amber:#F2B441; --red:#E4584D; --green:#4EC08D;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(47,198,183,.35)}
+a{color:var(--teal)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:3px}
+
+/* ===== FLIGHT-STRIP HEADER ===== */
+header.strip{
+  position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#0C1A2E 0%,#0A1523 100%);
+  border-bottom:1px solid var(--line);
+}
+.strip-top{display:flex;align-items:center;gap:14px;padding:10px 18px;max-width:1080px;margin:0 auto}
+.logo{flex:0 0 auto;width:40px;height:40px;border:1px solid var(--line);border-radius:9px;
+  background:radial-gradient(120% 120% at 30% 20%,#14304b 0%,#0d1f34 60%);display:grid;place-items:center}
+.logo svg{width:26px;height:26px}
+.strip-id{flex:1 1 auto;min-width:0}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--blue);text-transform:uppercase}
+.strip-id h1{font-size:17px;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip-id h1 .accent{color:var(--teal)}
+.strip-meta{flex:0 0 auto;text-align:right;font-family:var(--mono);font-size:10.5px;color:var(--mut);line-height:1.5}
+.strip-meta b{color:var(--amber);font-weight:600}
+.tick{display:block;height:4px;background:
+  repeating-linear-gradient(90deg,var(--line) 0 26px,transparent 26px 32px);opacity:.55}
+
+/* ===== NAV STRIPS ===== */
+nav.strips{background:var(--bg2);border-bottom:1px solid var(--line)}
+.strips-inner{max-width:1080px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;padding:10px 18px;scrollbar-width:thin}
+.tab{flex:0 0 auto;display:flex;flex-direction:column;gap:4px;padding:8px 12px;border:1px solid var(--line);
+  border-left:4px solid var(--dim);border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-align:left;min-width:96px}
+.tab .t-code{color:var(--mut);font-size:10px;letter-spacing:.18em}
+.tab .t-name{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0}
+.tab .t-dots{display:flex;gap:3px}
+.tab .t-dots i{width:8px;height:8px;border:1px solid var(--dim);border-radius:2px;display:block}
+.tab .t-dots i.on{background:var(--green);border-color:var(--green)}
+.tab:hover{border-color:var(--blue)}
+.tab[aria-selected="true"]{border-left-color:var(--teal);background:var(--panel2);box-shadow:inset 0 0 0 1px rgba(47,198,183,.35)}
+.tab.util{border-left-color:var(--blue)}
+
+/* ===== LAYOUT ===== */
+main{max-width:880px;margin:0 auto;padding:26px 18px 80px}
+.panel{display:none}
+.panel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h2.wk-title{font-size:26px;line-height:1.2;letter-spacing:-.01em;margin:6px 0 4px}
+h2.wk-title small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--blue);font-weight:400;margin-bottom:6px;text-transform:uppercase}
+.wk-sub{color:var(--mut);max-width:64ch;margin-bottom:20px}
+h3{font-size:15px;letter-spacing:.12em;text-transform:uppercase;font-family:var(--mono);font-weight:600;color:var(--teal);margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+h3::after{content:"";flex:1;height:1px;background:var(--line)}
+h4{font-size:15.5px;margin:16px 0 6px;color:var(--ink)}
+p{margin:0 0 12px;color:#CBD8E4}
+p.note{color:var(--mut);font-size:14px}
+ul,ol{margin:0 0 14px 20px;color:#CBD8E4}
+li{margin-bottom:7px}
+li::marker{color:var(--teal)}
+strong{color:var(--ink)}
+em{color:#DCE7F0}
+code,.kbd{font-family:var(--mono);font-size:.9em;background:var(--panel);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+
+/* cards */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+.card.teal{border-left:4px solid var(--teal)}
+.card.blue{border-left:4px solid var(--blue)}
+.card.amber{border-left:4px solid var(--amber);background:linear-gradient(180deg,rgba(242,180,65,.07),transparent 60%),var(--panel)}
+.card.red{border-left:4px solid var(--red);background:linear-gradient(180deg,rgba(228,88,77,.08),transparent 60%),var(--panel)}
+.card.green{border-left:4px solid var(--green)}
+.card h4:first-child{margin-top:0}
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin:0 6px 8px 0;color:var(--mut)}
+.tag.ev-a{border-color:var(--green);color:var(--green)}
+.tag.ev-b{border-color:var(--amber);color:var(--amber)}
+.tag.ev-c{border-color:var(--red);color:var(--red)}
+
+/* plano do dia */
+table.dia{width:100%;border-collapse:collapse;margin:10px 0 4px;font-size:14.5px}
+table.dia th,table.dia td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.dia th{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);background:var(--bg2);width:112px;white-space:nowrap}
+table.dia td b.tt{color:var(--ink)}
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;color:var(--amber);border:1px solid rgba(242,180,65,.5);border-radius:6px;padding:1px 7px;margin-left:6px;white-space:nowrap}
+.chip.calm{color:var(--teal);border-color:rgba(47,198,183,.5)}
+
+/* checklist pré-voo (SOBER e afins) */
+.preflight{background:#0D1B2D;border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden;margin:14px 0}
+.pf-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg2);border-bottom:1px solid var(--line);padding:10px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber)}
+.pf-head .pf-r{color:var(--dim);letter-spacing:.1em}
+.pf-row{display:grid;grid-template-columns:44px 1fr;gap:0;border-bottom:1px dashed var(--line)}
+.pf-row:last-child{border-bottom:0}
+.pf-key{display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--teal);border-right:1px dashed var(--line)}
+.pf-body{padding:11px 16px 11px 14px}
+.pf-body b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.pf-body span{color:var(--mut);font-size:14px;line-height:1.5;display:block}
+
+/* rastreio semanal D1–D7 */
+.track{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 6px}
+.dbox{flex:1 1 84px;min-width:84px}
+.dbox label{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;
+  padding:10px 6px;background:var(--panel);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mut)}
+.dbox input{position:absolute;opacity:0;pointer-events:none}
+.dbox .mark{width:22px;height:22px;border:2px solid var(--dim);border-radius:6px;display:grid;place-items:center;font-size:14px;color:transparent}
+.dbox input:checked + .mark{background:var(--green);border-color:var(--green);color:#06261A}
+.dbox input:checked ~ .dlbl{color:var(--green)}
+.dbox input:focus-visible + .mark{outline:2px solid var(--teal);outline-offset:2px}
+.dbox label:hover{border-color:var(--blue)}
+.track-note{font-size:13px;color:var(--dim);font-family:var(--mono)}
+
+/* dupla sinais/erros */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.duo{grid-template-columns:1fr}}
+
+/* progresso */
+.bar{height:10px;background:var(--bg2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));width:0%}
+.progress-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.pg-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--mut)}
+.pg-row .pg-n{text-align:right;color:var(--ink)}
+button.btn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);
+  background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer}
+button.btn:hover{border-color:var(--blue)}
+button.btn.danger{color:var(--red);border-color:rgba(228,88,77,.5)}
+button.btn.danger:hover{background:rgba(228,88,77,.12)}
+
+/* onda da fissura (SVG) */
+.wavebox{background:#0D1B2D;border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.wavebox svg{width:100%;height:auto;display:block}
+.wavebox figcaption{font-size:13px;color:var(--mut);margin-top:8px}
+
+footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 18px;color:var(--dim);font-size:12.5px;font-family:var(--mono);text-align:center}
+footer .persist-warn{color:var(--amber);display:none;margin-top:6px}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media print{
+  header.strip,nav.strips,footer .persist-warn,button.btn{display:none!important}
+  body{background:#fff;color:#111}
+  .panel{display:block!important;page-break-after:always}
+  .card,.preflight,.wavebox{border-color:#bbb;background:#fff}
+  p,li,td{color:#222}
+}
+</style>
+</head>
+<body>
+<header class="strip">
+  <div class="strip-top">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2FC6B7" stroke-width="1.6" stroke-linecap="round">
+        <line x1="12" y1="2.5" x2="12" y2="21.5"/>
+        <path d="M12 5 C8 6.5, 8 9.5, 12 11 C16 12.5, 16 15.5, 12 17 C9 18.2, 8.6 20, 10 21" stroke="#39A7E8"/>
+        <circle cx="12" cy="2.5" r="1.2" fill="#2FC6B7" stroke="none"/>
+      </svg>
+    </div>
+    <div class="strip-id">
+      <div class="eyebrow">VIA · Vida Integrada e Autônoma</div>
+      <h1>VIA <span class="accent">MENTE</span> — Roteiro Diário de 8 Semanas · Mindfulness &amp; Prevenção de Recaída</h1>
+    </div>
+    <div class="strip-meta">
+      MBRP-8 · <b>v0.1</b><br>OFFLINE · PT-BR
+    </div>
+  </div>
+  <span class="tick" aria-hidden="true"></span>
+</header>
+
+<nav class="strips" aria-label="Navegação por semanas">
+  <div class="strips-inner" role="tablist" id="tablist"></div>
+</nav>
+
+<main id="main">
+
+<!-- ============ INÍCIO ============ -->
+<section class="panel" id="p-inicio" role="tabpanel" aria-labelledby="tab-inicio">
+  <h2 class="wk-title"><small>Briefing · Como usar esta apostila</small>Um protocolo de 56 dias para reprogramar a resposta ao impulso</h2>
+  <p class="wk-sub">Derivado do protocolo <strong>MBRP — Mindfulness-Based Relapse Prevention</strong> (Bowen, Chawla, Grow &amp; Marlatt, 2ª ed., Guilford, 2021), reorganizado como roteiro <em>diário</em> progressivo e acrescido de uma camada de internalização com técnicas de PNL. Redação original; não substitui o programa clínico conduzido em grupo nem tratamento médico.</p>
+
+  <div class="card amber">
+    <h4>⚠ Leia antes de começar — segurança primeiro</h4>
+    <ul>
+      <li><strong>Este material é psicoeducacional.</strong> Apoia — não substitui — acompanhamento profissional (médico, psicólogo, CAPS-AD, grupos de apoio).</li>
+      <li><strong>Nunca interrompa abruptamente álcool ou benzodiazepínicos sem supervisão médica.</strong> A abstinência não assistida dessas substâncias pode causar convulsões e delirium, com risco de morte. Desmame é ato médico.</li>
+      <li>Em crise: <strong>SAMU 192</strong> · <strong>CVV 188</strong> (24h, ligação gratuita) · CAPS-AD do seu município.</li>
+      <li>Se uma prática de visualização (Semanas 2 e 4) intensificar demais a fissura ou a angústia, <strong>reduza a intensidade da cena ou pule a prática</strong> e converse com seu terapeuta.</li>
+    </ul>
+  </div>
+
+  <h3>Arquitetura do dia</h3>
+  <p>Todas as semanas seguem a mesma espinha dorsal de três blocos. O conteúdo de cada bloco evolui semana a semana — a estrutura, não.</p>
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Prática formal</b> — o treino de base (15→30 min, progressivo). É aqui que a capacidade atencional é construída.</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Prática informal + ferramenta de campo</b> — transfere a habilidade do "tatame" para a vida real (atividades em atenção plena; a partir da Semana 3, o espaço SOBER).</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro (2 min) + Camada PNL (5 min)</b> — consolidação: marcar o dia no rastreio e executar o protocolo de internalização da semana.</td></tr>
+  </table>
+
+  <h3>Progressão das 8 semanas</h3>
+  <ol>
+    <li><strong>S1 — Piloto automático:</strong> perceber antes de reagir (escaneamento corporal).</li>
+    <li><strong>S2 — Desconforto e fissura:</strong> mapear gatilhos; surfar a onda em vez de afogar nela.</li>
+    <li><strong>S3 — Do reagir ao responder:</strong> o espaço SOBER — a pausa portátil.</li>
+    <li><strong>S4 — Situações desafiadoras:</strong> presença sob pressão; ensaio mental.</li>
+    <li><strong>S5 — Aceitação e ação:</strong> lapso ≠ colapso; plano de contingência.</li>
+    <li><strong>S6 — Pensamentos como pensamentos:</strong> desarmar o pensamento permissivo.</li>
+    <li><strong>S7 — Sustentar o bem-estar:</strong> autocompaixão, balanço de energia, identidade.</li>
+    <li><strong>S8 — Rede e continuidade:</strong> seu protocolo mínimo viável para os próximos meses.</li>
+  </ol>
+  <p class="note">Regra de progressão: só avance de semana com <strong>≥ 5 de 7 dias</strong> praticados. Menos que isso, repita a semana — repetição não é atraso, é dose.</p>
+
+  <h3>Nota epistemológica — o que tem evidência aqui</h3>
+  <div class="card">
+    <p><span class="tag ev-a">Evidência A — núcleo</span> O MBRP foi testado em ensaio clínico randomizado (Bowen et al., <em>JAMA Psychiatry</em>, 2014; n=286): comparado à prevenção de recaída cognitivo-comportamental e ao tratamento usual, associou-se a menos dias de uso de substâncias e menor consumo pesado de álcool em 12 meses. Meta-análises subsequentes (p.ex. Grant et al., 2017) apontam efeitos modestos, porém consistentes, sobre fissura.</p>
+    <p><span class="tag ev-b">Evidência B — análogos validados</span> Várias ferramentas da camada PNL desta apostila foram selecionadas <em>porque</em> coincidem com métodos validados sob outro nome: intenções de implementação "se–então" (Gollwitzer &amp; Sheeran, 2006; meta-análise, efeito médio-grande), ensaio mental de enfrentamento (núcleo da prevenção de recaída de Marlatt), reestruturação cognitiva e descentramento/defusão.</p>
+    <p><span class="tag ev-c">Evidência C — uso instrumental</span> A PNL <em>como sistema</em> não possui suporte empírico robusto (revisão sistemática de Sturt et al., 2012). Aqui ela entra como <strong>camada mnemônica e de internalização</strong> — linguagem e ritual que facilitam a adesão — nunca como substituta do núcleo MBRP. Técnicas de evidência fraca estão marcadas como <em>opcionais</em>.</p>
+  </div>
+</section>
+
+<!-- ============ FUNDAMENTOS ============ -->
+<section class="panel" id="p-fund" role="tabpanel" aria-labelledby="tab-fund">
+  <h2 class="wk-title"><small>Fundamentos · O modelo mental</small>Como a recaída funciona — e onde a atenção plena intercepta</h2>
+  <p class="wk-sub">Três ideias sustentam todo o programa. Entendê-las transforma as práticas de "exercícios de relaxamento" em treino técnico com alvo definido.</p>
+
+  <h3>1 · A cadeia da reação</h3>
+  <p>A recaída raramente é um evento; é o elo final de uma cadeia que começa muito antes: <strong>gatilho → sensação corporal → pensamento → emoção → impulso → comportamento</strong>. No piloto automático, a cadeia inteira roda em segundos, sem testemunha. O treino de atenção plena instala um observador entre os elos — e onde há observação, há ponto de interrupção. Você não escolhe o gatilho; escolhe o que acontece dois elos depois.</p>
+
+  <h3>2 · A fissura é uma onda</h3>
+  <div class="wavebox">
+    <svg viewBox="0 0 640 190" role="img" aria-label="Curva da fissura: intensidade sobe, atinge um pico e desce ao longo de minutos. Marcadores indicam três respostas: usar no pico, suprimir e surfar a onda até ela passar.">
+      <line x1="40" y1="150" x2="620" y2="150" stroke="#24384F" stroke-width="1"/>
+      <line x1="40" y1="150" x2="40" y2="20" stroke="#24384F" stroke-width="1"/>
+      <text x="46" y="30" fill="#8FA5BB" font-size="11" font-family="monospace">INTENSIDADE</text>
+      <text x="560" y="168" fill="#8FA5BB" font-size="11" font-family="monospace">MINUTOS</text>
+      <path d="M40,148 C120,146 170,60 250,42 C300,32 330,40 380,70 C450,112 520,140 615,147" fill="none" stroke="#39A7E8" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="255" cy="41" r="5" fill="#E4584D"/>
+      <text x="265" y="36" fill="#E4584D" font-size="11.5" font-family="monospace">PICO — onde a maioria cede</text>
+      <circle cx="455" cy="113" r="5" fill="#2FC6B7"/>
+      <text x="300" y="128" fill="#2FC6B7" font-size="11.5" font-family="monospace">Surfada, a onda desce sozinha</text>
+    </svg>
+    <figcaption>Fissuras tipicamente sobem, atingem pico e decaem em minutos — <em>mesmo sem usar</em>. Cada onda surfada sem uso enfraquece o condicionamento; cada uso no pico o reforça. Lutar contra a onda (supressão) costuma amplificá-la; observá-la com curiosidade a deixa passar.</figcaption>
+  </div>
+
+  <h3>3 · Lapso não é colapso</h3>
+  <p>Marlatt descreveu o <strong>efeito de violação da abstinência</strong>: após um deslize, o pensamento <em>"já estraguei tudo, então tanto faz"</em> — carregado de culpa e autojulgamento — é o verdadeiro motor que converte um lapso isolado em recaída completa. O antídoto tem duas partes: autocompaixão treinada (Semana 7) e um plano de contingência escrito <em>antes</em> (Semana 5). Um lapso tratado como dado gera aprendizado; tratado como veredito, gera espiral.</p>
+
+  <h3>Sobre a camada PNL</h3>
+  <p>Cada semana traz um protocolo de internalização de ~5 minutos inspirado em técnicas de PNL — ancoragem, submodalidades, ensaio futuro, ressignificação, metamodelo, alinhamento de níveis. O racional é pragmático: são rituais curtos, concretos e repetíveis que aumentam a chance de a prática "colar" no sistema nervoso e na rotina. Cada um vem com etiqueta de evidência (<span class="tag ev-b" style="margin:0">análogo validado</span> ou <span class="tag ev-c" style="margin:0">opcional · evidência fraca</span>) — use o que funcionar para você e descarte o resto sem culpa.</p>
+</section>
+
+<!-- ============ KIT DE BOLSO ============ -->
+<section class="panel" id="p-kit" role="tabpanel" aria-labelledby="tab-kit">
+  <h2 class="wk-title"><small>Kit de bolso · Ferramentas de campo</small>Para o momento em que a teoria acaba</h2>
+  <p class="wk-sub">Três cartões de uso imediato. Memorize o primeiro; imprima esta página e recorte os demais, se útil (Ctrl/Cmd+P imprime a apostila inteira).</p>
+
+  <div class="preflight" role="group" aria-label="Checklist SOBER">
+    <div class="pf-head"><span>CHECKLIST · ESPAÇO SOBER</span><span class="pf-r">EXECUTAR EM ~3 MIN · QUALQUER LUGAR</span></div>
+    <div class="pf-row"><div class="pf-key">S</div><div class="pf-body"><b>Stop — Pare (ou desacelere)</b><span>Interrompa o fluxo. Saia do piloto automático mudando o foco da situação para a sua experiência.</span></div></div>
+    <div class="pf-row"><div class="pf-key">O</div><div class="pf-body"><b>Observe — Observe</b><span>O que há no corpo agora? Quais emoções, humores, pensamentos? Apenas registre, sem editar.</span></div></div>
+    <div class="pf-row"><div class="pf-key">B</div><div class="pf-body"><b>Breath — Respire</b><span>Reúna a atenção e leve-a às sensações da respiração. Algumas respirações completas.</span></div></div>
+    <div class="pf-row"><div class="pf-key">E</div><div class="pf-body"><b>Expand — Expanda</b><span>Amplie a consciência de volta ao corpo inteiro, à mente, à situação — segurando tudo com gentileza.</span></div></div>
+    <div class="pf-row"><div class="pf-key">R</div><div class="pf-body"><b>Respond — Responda</b><span>Responda com consciência (em vez de reagir): o que esta situação realmente pede? Como me cuido melhor agora? Haja o que houver, a escolha da resposta é sua.</span></div></div>
+  </div>
+  <p class="note">Acrônimo SOBER conforme MBRP (Bowen et al., 2021), adaptação do "espaço de respiração de 3 minutos" de Segal, Williams &amp; Teasdale (MBCT). Tradução livre com siglas originais preservadas.</p>
+
+  <div class="card blue">
+    <h4>🌊 Protocolo 90 segundos — fissura aguda</h4>
+    <ol>
+      <li><strong>Nomeie:</strong> "fissura presente" (dizer mentalmente já descola você dela).</li>
+      <li><strong>Localize no corpo:</strong> onde exatamente? Peito, garganta, mãos, estômago?</li>
+      <li><strong>Respire dentro da sensação</strong>, como se o ar chegasse até lá.</li>
+      <li><strong>Surfe:</strong> acompanhe a intensidade subir → pico → descer, como onda. Não lute, não alimente.</li>
+      <li><strong>Âncora</strong> (se instalada na S1): pressione polegar + dedo médio.</li>
+      <li><strong>Decida só o próximo passo de 5 minutos</strong> — mudar de ambiente, ligar para alguém, beber água. Nada além disso.</li>
+    </ol>
+    <p class="note">A onda passa mesmo sem usar — tipicamente em minutos. Se não passar ou escalar: cartão vermelho abaixo.</p>
+  </div>
+
+  <div class="card red">
+    <h4>🆘 Cartão de emergência</h4>
+    <ul>
+      <li><strong>SAMU 192</strong> — emergência médica (intoxicação, convulsão, ideação com risco).</li>
+      <li><strong>CVV 188</strong> — apoio emocional, 24h, gratuito (também chat em cvv.org.br).</li>
+      <li><strong>CAPS-AD</strong> do meu município: ______________________</li>
+      <li><strong>Pessoa de apoio nº1:</strong> ______________________ · <strong>nº2:</strong> ______________________</li>
+      <li>Sintomas de abstinência grave (tremor intenso, confusão, alucinação, convulsão) = <strong>emergência médica, não "força de vontade"</strong>.</li>
+    </ul>
+  </div>
+</section>
+<!-- ============ SEMANA 1 ============ -->
+<section class="panel" id="p-s1" role="tabpanel" aria-labelledby="tab-s1">
+  <h2 class="wk-title"><small>Semana 1 · Fundação</small>Piloto automático e atenção plena</h2>
+  <p class="wk-sub">Boa parte do dia — e quase toda recaída — acontece no piloto automático: agir sem testemunhar. Esta semana instala o observador. A ferramenta é o escaneamento corporal: atenção sistemática ao corpo, sem tentar mudar nada.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Escaneamento corporal</b> <span class="chip">15–25 min</span><br>Todos os dias, de preferência no mesmo horário e local.</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Uma atividade rotineira em atenção plena</b> <span class="chip calm">~5 min</span><br>Escolha 1 por dia (escovar os dentes, o primeiro café, o banho): faça-a com os cinco sentidos, como se fosse a primeira vez.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> <span class="chip calm">2 min</span> + <b class="tt">PNL: âncora de presença</b> <span class="chip calm">5 min</span></td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática formal · Escaneamento corporal (passo a passo)</h4>
+    <ol>
+      <li>Deite-se ou sente-se com a coluna confortavelmente ereta. Olhos fechados ou semicerrados. Três respirações completas para chegar.</li>
+      <li>Leve a atenção aos <strong>pés</strong>: temperatura, contato, pressão, formigamento — ou ausência de sensação (também é um dado).</li>
+      <li>Suba lentamente por regiões: pernas → quadril → abdome → tórax → costas → mãos e braços → ombros → pescoço → rosto → topo da cabeça. ~1–2 min por região.</li>
+      <li>Quando a mente vagar (ela vai — isso não é falha, é o fenômeno a observar), <strong>nomeie em silêncio "pensando"</strong> e retorne, sem bronca, à última região.</li>
+      <li>Feche com 1 minuto sentindo o corpo inteiro respirar como um todo.</li>
+    </ol>
+    <p class="note">O objetivo <strong>não</strong> é relaxar (se acontecer, é bônus) nem "esvaziar a mente". É treinar o gesto de <em>notar e voltar</em> — o mesmo músculo que interrompe a cadeia da recaída. Se dormir sempre: pratique sentado, com olhos entreabertos.</p>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (condicionamento)</span>
+    <h4>Âncora de presença</h4>
+    <ol>
+      <li>Nos <strong>últimos 2 minutos</strong> do escaneamento, quando notar o ponto de maior estabilidade/calma do dia, pressione <strong>polegar + dedo médio</strong> da mão dominante por 5–7 segundos, com atenção total ao estado.</li>
+      <li>Solte antes de o estado decair. Repita 1× por prática, todos os dias desta semana (instalação exige repetição + estado genuíno + gesto exclusivo — não use esse toque para mais nada).</li>
+      <li>A partir do D4, <strong>teste em campo</strong>: em um momento neutro do dia, dispare a âncora e observe o que o corpo lembra.</li>
+    </ol>
+    <p class="note">Funcionalmente, é condicionamento clássico: um gesto motor pareado repetidamente a um estado fisiológico passa a evocá-lo parcialmente. A âncora será reutilizada no passo B do SOBER (S3) e no protocolo de 90 s.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="1"></div>
+  <p class="track-note">Marque o dia se cumpriu ao menos a prática da manhã. D4 = checkpoint (releia os fundamentos). D7 = revisão: o que mudou na sua percepção do corpo?</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Perceber a mente vagando <em>mais</em> vezes (paradoxal: é o observador ligando).</li><li>Notar sensações corporais durante o dia sem ter planejado.</li><li>Um momento qualquer em que você <em>escolheu</em> em vez de reagir.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Transformar a prática em teste de desempenho ("não consegui relaxar").</li><li>Pular dias e compensar com sessão dupla — frequência vale mais que duração.</li><li>Usar a âncora fora de estado genuíno (instala ruído).</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 2 ============ -->
+<section class="panel" id="p-s2" role="tabpanel" aria-labelledby="tab-s2">
+  <h2 class="wk-title"><small>Semana 2 · Exposição interna</small>Uma nova relação com o desconforto</h2>
+  <p class="wk-sub">Gatilhos disparam uma cadeia — sensação, pensamento, emoção, impulso — que costuma rodar inteira no escuro. Esta semana acende a luz: mapear os próprios gatilhos e, pela primeira vez, ficar <em>com</em> a fissura sem obedecê-la nem lutar contra ela.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Escaneamento corporal</b> <span class="chip">20–25 min</span> — agora com interesse especial pelas regiões onde o desconforto aparece.</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Mapa de gatilhos</b> <span class="chip calm">1 registro/dia</span><br>Anote 1 gatilho: situação → sensação no corpo → pensamento → emoção → intensidade do impulso (0–10) → o que fez.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: submodalidades da fissura</b> <span class="chip calm">5 min</span><br><b class="tt">D3–D4:</b> prática de surfar o impulso · <b class="tt">D5–D6:</b> meditação da montanha.</td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática-chave · Surfar o impulso (urge surfing) — D3 e D4, após a prática da manhã</h4>
+    <ol>
+      <li><strong>Escolha uma cena de intensidade 3–4/10</strong> — algo desafiador, mas longe do seu maior gatilho. (Regra inviolável: nunca comece pelo pior.)</li>
+      <li>Visualize a cena <strong>até o instante imediatamente anterior</strong> ao ponto em que você normalmente reagiria — e congele aí.</li>
+      <li>Desça ao corpo: onde a fissura mora agora? Que formato, temperatura, movimento tem?</li>
+      <li>Respire "dentro" da sensação e acompanhe-a como onda: subida → pico → descida. Não empurre, não alimente, não obedeça. Apenas surfe.</li>
+      <li>Curiosidade extra: olhe <em>por baixo</em> da fissura. O que ela realmente pede — alívio? descanso? conexão? Anote.</li>
+    </ol>
+    <p class="note">Se a intensidade passar de ~6/10, abra os olhos, sinta os pés no chão, encerre e reduza a cena no dia seguinte. Exposição é dose-dependente.</p>
+  </div>
+
+  <div class="card teal">
+    <h4>Prática de apoio · Meditação da montanha — D5 e D6 (10 min)</h4>
+    <p>Sentado, evoque a imagem de uma montanha: base larga, cume estável. Estações passam por ela — tempestade, neve, calor — e a montanha permanece montanha. Incorpore: seu corpo é a base; clima interno (emoções, fissuras, pensamentos) é só clima. Fique 10 minutos sendo a montanha que assiste ao tempo passar.</p>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (descentramento/defusão)</span>
+    <h4>Submodalidades da fissura + dissociação</h4>
+    <ol>
+      <li>À noite, evoque brevemente a imagem mental do gatilho registrado no dia (leve — 2–3/10).</li>
+      <li>Examine a <strong>estrutura</strong> da imagem, não o conteúdo: tamanho? distância? cores vivas ou opacas? com som?</li>
+      <li>Experimente, um por vez: <strong>afastar</strong> a imagem, <strong>encolhê-la</strong>, <strong>tirar a cor</strong>, <strong>tirar o som</strong>. Note o efeito no corpo a cada mudança.</li>
+      <li>Por fim, <strong>veja a cena de fora</strong>, como num monitor de segurança em que você aparece. Observe a diferença entre estar <em>na</em> cena e <em>ver</em> a cena.</li>
+    </ol>
+    <p class="note">O mecanismo ativo é o descentramento: tratar a experiência como objeto observável, não como ordem. É o mesmo princípio da defusão cognitiva — aqui com um procedimento perceptual explícito.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="2"></div>
+  <p class="track-note">D7 = revisão do mapa: seus gatilhos têm padrão de horário, lugar, pessoa ou emoção?</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Nomear a cadeia em tempo real ("isso é a sensação... agora veio o pensamento").</li><li>Uma onda surfada até o fim, por menor que seja.</li><li>Descobrir o que a fissura pede por baixo.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Escolher o maior gatilho "para treinar de verdade".</li><li>Usar o surfe como técnica de supressão disfarçada (a postura é curiosidade, não combate).</li><li>Mapear gatilhos só "de cabeça", sem anotar — o padrão só aparece no papel.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 3 ============ -->
+<section class="panel" id="p-s3" role="tabpanel" aria-labelledby="tab-s3">
+  <h2 class="wk-title"><small>Semana 3 · A pausa portátil</small>Do reagir ao responder — o espaço SOBER</h2>
+  <p class="wk-sub">"Entre o estímulo e a resposta há um espaço" (Frankl). A respiração é a âncora que está sempre com você; o SOBER é o protocolo que transforma essa âncora em pausa operacional de 3 minutos, em qualquer lugar. Esta é a semana em que o treino sai do tatame.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Meditação da respiração</b> <span class="chip">15–20 min</span></td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">SOBER 3× programado</b> <span class="chip calm">3 × 3 min</span> (ao acordar · pós-almoço · fim de tarde) <strong>+ sempre que houver gatilho</strong>. Checklist completo no Kit de bolso.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> (em quais situações usei o SOBER?) + <b class="tt">PNL: pares se–então</b> <span class="chip calm">5 min</span></td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática formal · Meditação da respiração</h4>
+    <ol>
+      <li>Sente-se ereto e digno, sem rigidez. Escolha o ponto onde a respiração é mais nítida: narinas ou abdome.</li>
+      <li>Acompanhe uma respiração por vez, do início ao fim — sem controlar o ritmo. A respiração respira; você assiste.</li>
+      <li>A cada dispersão: nomeie ("pensando", "planejando", "lembrando") e volte. Cada retorno é uma repetição do músculo certo — o treino <em>é</em> o voltar.</li>
+      <li>Nos 3 minutos finais, expanda a atenção da respiração para o corpo inteiro sentado.</li>
+    </ol>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (intenções de implementação — meta-análise robusta)</span>
+    <h4>Pares se–então + âncora empilhada</h4>
+    <ol>
+      <li>Escreva <strong>3 frases no formato exato</strong>: <em>"Se eu notar [meu sinal precoce específico — ex.: passar em frente ao bar X; sexta 19h; briga com Y], então farei o SOBER imediatamente."</em> Especificidade é o ingrediente ativo — "se eu ficar mal" não funciona.</li>
+      <li>Leia as 3 frases em voz alta, visualizando cada cena por 20 segundos.</li>
+      <li><strong>Empilhe a âncora:</strong> a partir desta semana, dispare a âncora da S1 (polegar + dedo médio) sempre no passo <strong>B</strong> do SOBER. O gesto passa a carregar o protocolo inteiro.</li>
+    </ol>
+    <p class="note">Intenções "se–então" (Gollwitzer) delegam a decisão ao gatilho ambiental — exatamente o que uma mente sob fissura precisa: não decidir na hora.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="3"></div>
+  <p class="track-note">Marque o dia com manhã + ≥2 SOBER. D7 = liste as situações em que o SOBER foi usado de verdade.</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Um SOBER disparado <em>espontaneamente</em> diante de estresse.</li><li>Sensação nítida de "espaço" antes de uma resposta que teria sido automática.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Guardar o SOBER só para crises — os 3 programados em situações neutras são o que constrói o reflexo.</li><li>Fazer o SOBER "de cabeça" correndo, pulando o passo E (Expandir) — é ele que devolve o contexto.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 4 ============ -->
+<section class="panel" id="p-s4" role="tabpanel" aria-labelledby="tab-s4">
+  <h2 class="wk-title"><small>Semana 4 · Pressão controlada</small>Atenção plena em situações desafiadoras</h2>
+  <p class="wk-sub">Ficar presente quando tudo está calmo é treino; ficar presente diante do que antes disparava o uso é a competência-alvo. Esta semana amplia a meditação para todos os canais (som, corpo, pensamento, emoção) e leva o SOBER para dentro de situações reais — com ensaio mental como simulador.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Meditação sentada ampliada</b> <span class="chip">20–25 min</span> — sons → respiração → sensações → pensamentos e emoções.</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Caminhada em atenção plena</b> <span class="chip calm">10 min</span> + <b class="tt">SOBER em ≥1 situação desafiadora real</b> (não só nos horários programados).</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: ensaio mental (future pacing)</b> <span class="chip calm">5–7 min</span></td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática formal · Meditação sentada ampliada</h4>
+    <ol>
+      <li><strong>Sons (3 min):</strong> receba os sons como chegam — próximos, distantes, o silêncio entre eles — sem rotular como bom/ruim.</li>
+      <li><strong>Respiração (5 min):</strong> âncora habitual.</li>
+      <li><strong>Sensações (5 min):</strong> abra para o corpo inteiro; se houver desconforto, aproxime-se dele com a mesma curiosidade do surfe.</li>
+      <li><strong>Pensamentos e emoções (5 min):</strong> observe-os como eventos que surgem e passam no espaço da mente — prévia do foco da S6.</li>
+      <li>Feche voltando 2 min à respiração.</li>
+    </ol>
+    <h4 style="margin-top:14px">Caminhada em atenção plena</h4>
+    <p>10 minutos, passo mais lento que o habitual: sinta o contato do pé, a transferência de peso, o balanço. Quando a mente for embora, o chão traz de volta. Serve como prática de emergência em dias em que sentar é impossível.</p>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (ensaio de enfrentamento — núcleo do RP de Marlatt)</span>
+    <h4>Ensaio mental da situação de risco</h4>
+    <ol>
+      <li>Escolha uma situação de risco <strong>provável na próxima semana</strong> (use o mapa da S2).</li>
+      <li>Visualize-a em 1ª pessoa, com detalhe sensorial, <strong>incluindo a fissura surgindo</strong>.</li>
+      <li>Veja-se executando o SOBER passo a passo dentro da cena — e saindo dela sem usar. Sinta o estado ao final.</li>
+      <li>Rode <strong>2 versões</strong>: uma fácil e uma difícil (alguém oferecendo, pressão social). No mínimo 3 noites nesta semana.</li>
+    </ol>
+    <p class="note">Regra de ouro: ensaio mental <strong>não autoriza exposição deliberada</strong>. Evitar situação de altíssimo risco continua sendo a resposta habilidosa — o ensaio é para as situações que virão sem convite.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="4"></div>
+  <p class="track-note">D7 = compare: intensidade média dos impulsos registrados na S2 vs. agora.</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Um desconforto real atravessado com SOBER, sem escalada.</li><li>Perceber emoção surgindo <em>antes</em> de ela virar comportamento.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Testar-se de propósito em ambiente de alto risco ("agora eu aguento").</li><li>Ensaiar só a versão fácil da cena.</li></ul></div>
+  </div>
+</section>
+<!-- ============ SEMANA 5 ============ -->
+<section class="panel" id="p-s5" role="tabpanel" aria-labelledby="tab-s5">
+  <h2 class="wk-title"><small>Semana 5 · Antifragilidade</small>Aceitação e ação habilidosa</h2>
+  <p class="wk-sub">Aceitar não é aprovar nem se resignar: é reconhecer o que já está aqui — porque só se responde bem ao que se vê inteiro. E é a semana da verdade incômoda: lapsos podem acontecer. A diferença entre lapso e recaída completa é, em grande parte, o que você pensa e faz na primeira hora depois. Isso se planeja <em>antes</em>.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Prática à sua escolha</b> <span class="chip">25 min</span> — sentada ampliada, escaneamento ou movimento consciente (alongamento lento com atenção total).</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">SOBER em situações desafiadoras</b> + registrar 1 situação: <em>o que aceitei que estava presente · o que escolhi fazer</em>.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: ressignificação do lapso</b> <span class="chip calm">5 min</span> · <b class="tt">D3:</b> escrever o plano de contingência.</td></tr>
+  </table>
+
+  <div class="card amber">
+    <h4>Plano de contingência de lapso — escreva no D3, à mão, e guarde na carteira</h4>
+    <ol>
+      <li><strong>1ª ação:</strong> sair do ambiente/situação imediatamente.</li>
+      <li><strong>2ª ação:</strong> SOBER completo (a fissura pós-lapso é a maior de todas — é ela que decide o resto).</li>
+      <li><strong>3ª ação:</strong> ligar para ______________ (definir agora, não na hora).</li>
+      <li><strong>Frase-protocolo:</strong> "Lapso é dado, não veredito. O episódio termina agora."</li>
+      <li><strong>Proibido:</strong> autopunição e a matemática do "já que" ("já que usei, uso tudo").</li>
+    </ol>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (reestruturação cognitiva do efeito de violação da abstinência)</span>
+    <h4>Ressignificação estruturada (reframing)</h4>
+    <p>Aplique a qualquer deslize — de um lapso real a "furei a prática 2 dias". Responda por escrito, nesta ordem:</p>
+    <ol>
+      <li>O que este episódio <strong>informa sobre o gatilho</strong>? (novo? subestimado?)</li>
+      <li>Em que <strong>elo da cadeia</strong> a consciência chegou tarde? (sensação? pensamento? impulso?)</li>
+      <li>Qual era a <strong>janela de intervenção</strong> perdida — e qual será o sinal dela na próxima vez?</li>
+      <li>Que <strong>ajuste de 1 linha</strong> entra no plano? (novo par se–então, evitar rota X, ligar antes de Y)</li>
+    </ol>
+    <p class="note">A moldura muda de "fracassei" (identidade) para "o sistema gerou um dado de treinamento" (processo). É a mesma cirurgia cognitiva que Marlatt propõe para desarmar a espiral pós-lapso.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="5"></div>
+  <p class="track-note">D7 = releia o plano de contingência em voz alta. Ele deve caber em 30 segundos.</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Nomear "isto eu não controlo / isto eu controlo" numa situação real.</li><li>Plano de contingência escrito, curto e acessível.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Confundir aceitação com passividade ("aceitei, então não faço nada").</li><li>Achar que escrever o plano "atrai" o lapso — cinto de segurança não causa acidente.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 6 ============ -->
+<section class="panel" id="p-s6" role="tabpanel" aria-labelledby="tab-s6">
+  <h2 class="wk-title"><small>Semana 6 · Defusão</small>Pensamentos como pensamentos</h2>
+  <p class="wk-sub">Um pensamento não é um fato — e, sobretudo, não é uma ordem. A recaída costuma ser precedida por pensamentos permissivos de uniforme discreto: <em>"só uma"</em>, <em>"eu mereço"</em>, <em>"ninguém vai saber"</em>, <em>"desta vez eu controlo"</em>. Esta semana o foco da meditação vira diretamente para o pensar — para vê-lo como evento mental, com começo, meio e fim.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Meditação dos pensamentos</b> <span class="chip">20–25 min</span></td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Caçada ao pensamento permissivo</b> <span class="chip calm">1/dia</span> — flagrou, anotou <strong>entre aspas</strong>, prefixou: <em>"Estou tendo o pensamento de que ____".</em> + SOBER habitual.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: metamodelo</b> <span class="chip calm">5 min</span> (+ swish opcional).</td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática formal · Meditação dos pensamentos</h4>
+    <ol>
+      <li>Estabilize 5 min na respiração.</li>
+      <li>Solte a âncora e observe a própria mente como um céu: pensamentos são nuvens que entram e saem. Alternativa: legendas passando num telão vazio.</li>
+      <li>Rotule a categoria, não o conteúdo: "planejando", "julgando", "lembrando", "ensaiando". Rotulou, soltou.</li>
+      <li>Se um pensamento sugar você para dentro (vai acontecer): ao perceber, nomeie "fui levado", sorria por dentro e volte ao céu. Esse flagrante <em>é</em> a prática.</li>
+      <li>Feche 3 min na respiração.</li>
+    </ol>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (questionamento socrático / reestruturação)</span>
+    <h4>Metamodelo aplicado ao pensamento do dia</h4>
+    <p>Pegue o pensamento permissivo anotado e interrogue a <strong>forma</strong> dele:</p>
+    <ul>
+      <li><strong>Generalização:</strong> "sempre"? "nunca"? "todo mundo"? — Sempre mesmo? Quem, exatamente?</li>
+      <li><strong>Eliminação:</strong> "eu mereço" — mereço <em>o quê</em>, especificamente? O alívio ou a substância? Há outro entregador do mesmo alívio?</li>
+      <li><strong>Distorção:</strong> "desta vez eu controlo" — com base em qual histórico? O que os dados dizem?</li>
+      <li><strong>Teste final:</strong> este pensamento é um fato, uma previsão ou um vendedor?</li>
+    </ul>
+    <span class="tag ev-c">Opcional · evidência fraca</span>
+    <p class="note"><strong>Swish para imagem intrusiva recorrente:</strong> se uma mesma imagem de uso retorna, veja-a grande e escura; no canto, pequena e brilhante, uma imagem-recurso (você, saudável, no dia seguinte de uma escolha boa). Num gesto mental rápido, troque: a pequena explode em tela cheia, a antiga encolhe e some. Repita 5× rápido, abrindo os olhos entre repetições. Se não funcionar em 3 dias, descarte sem culpa.</p>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="6"></div>
+  <p class="track-note">D7 = releia os 7 pensamentos anotados. Qual é o slogan favorito da sua fissura?</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>Pegar um pensamento permissivo <em>no ato</em>, com meio sorriso.</li><li>Diminuição do poder de comando dos pensamentos (eles vêm — e daí?).</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Debater o conteúdo do pensamento por 20 min (o objetivo é desarmar, não vencer a discussão).</li><li>Usar a defusão para ignorar sinais legítimos (fome, exaustão, solidão pedem ação, não rótulo).</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 7 ============ -->
+<section class="panel" id="p-s7" role="tabpanel" aria-labelledby="tab-s7">
+  <h2 class="wk-title"><small>Semana 7 · Manutenção do sistema</small>Sustentar o bem-estar</h2>
+  <p class="wk-sub">Recuperação não se sustenta só bloqueando o negativo; exige abastecer o positivo. Duas frentes: treinar o tom interno (bondade dirigida — o oposto funcional da autopunição que alimenta recaídas) e auditar a rotina — o que nutre, o que esgota — porque um estilo de vida cronicamente esgotado é fator de risco estrutural.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Meditação da bondade</b> <span class="chip">15–20 min</span></td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Balanço N/E</b>: liste as atividades típicas do seu dia e marque cada uma — <strong>N</strong> (nutre) ou <strong>E</strong> (esgota). Planeje <strong>+1 atividade N por dia</strong>, pequena e concreta. + SOBER habitual.</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: alinhamento de identidade + cartão-lembrete</b> <span class="chip calm">5 min</span></td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Prática formal · Meditação da bondade</h4>
+    <ol>
+      <li>Estabilize 3 min na respiração.</li>
+      <li>Dirija a si mesmo, em silêncio e no seu ritmo, frases como: <em>"Que eu esteja em segurança. Que eu tenha saúde. Que eu me trate com gentileza. Que eu viva com mais leveza."</em> (Ajuste as palavras até soarem suas.)</li>
+      <li>Não force sentimento nenhum — as frases são sementes, não interruptores. Resistência, ironia interna ou frieza são reações comuns e fazem parte; apenas note e continue.</li>
+      <li>Expanda: alguém querido → alguém neutro → (quando houver prontidão) alguém difícil → todos.</li>
+      <li>Feche voltando a si: 1 minuto de mão no peito, respirando.</li>
+    </ol>
+    <p class="note">Racional clínico: vergonha e autoataque são combustível documentado do ciclo de recaída. Bondade dirigida é treino de substituição do tom interno — não autoindulgência.</p>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (identidade + valores; entrevista motivacional)</span>
+    <h4>Alinhamento de níveis + cartão-lembrete</h4>
+    <ol>
+      <li>Suba a escada, escrevendo 1 linha por nível: <strong>Ambiente</strong> (onde/quando estou bem?) → <strong>Comportamento</strong> (o que faço quando estou bem?) → <strong>Capacidade</strong> (o que já sei fazer — SOBER, surfe, defusão?) → <strong>Crença</strong> (o que passei a acreditar nestas 7 semanas?) → <strong>Identidade</strong>: complete — <em>"Sou alguém que ______."</em></li>
+      <li>Escreva num <strong>cartão físico</strong>: a frase de identidade + seus 3 sinais precoces de risco + o 1º passo do plano de contingência. Carteira ou fundo de tela.</li>
+    </ol>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="7"></div>
+  <p class="track-note">D7 = revise o balanço N/E: qual troca estrutural de 1 item (não heroica) é sustentável a partir de agora?</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Sinais de progresso</h4><ul><li>O tom interno pós-erro mudou de promotor para técnico.</li><li>+1 atividade nutritiva executada em ≥5 dias.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Reformar a vida inteira numa semana (a troca de 1 item sustentada vence o plano heroico abandonado).</li><li>Pular a bondade "porque é piegas" — é justamente onde ela mais tende a faltar.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ SEMANA 8 ============ -->
+<section class="panel" id="p-s8" role="tabpanel" aria-labelledby="tab-s8">
+  <h2 class="wk-title"><small>Semana 8 · Handover</small>Rede de apoio e prática contínua</h2>
+  <p class="wk-sub">Recuperação e prática são jornadas de longo prazo — e ninguém sustenta uma travessia dessas sozinho. A última semana entrega duas coisas: seu <strong>protocolo mínimo viável</strong> (o que você realmente vai manter) e sua <strong>rede</strong> (quem caminha junto). O programa termina; o sistema, não.</p>
+
+  <table class="dia">
+    <tr><th>Manhã</th><td><b class="tt">Prática à sua escolha</b> <span class="chip">20–30 min</span> — teste as candidatas ao seu protocolo definitivo.</td></tr>
+    <tr><th>Ao longo do dia</th><td><b class="tt">Construção da rede</b>: mapear 3 pessoas/serviços de apoio + 1 grupo (AA/NA, grupo de mindfulness, CAPS-AD) e dar <strong>1 passo concreto de conexão</strong> nesta semana (mensagem, presença, cadastro).</td></tr>
+    <tr><th>Noite</th><td><b class="tt">Registro</b> + <b class="tt">PNL: ponte ao futuro + carta a si mesmo</b> <span class="chip calm">7 min · D5–D7</span></td></tr>
+  </table>
+
+  <div class="card teal">
+    <h4>Protocolo mínimo viável (escreva no D4)</h4>
+    <ul>
+      <li><strong>Prática formal:</strong> qual? · quantos min? · quais dias? (piso honesto: 4×/semana — o que você cumpre em semana ruim, não em semana boa)</li>
+      <li><strong>SOBER:</strong> ≥1×/dia programado + sob demanda, para sempre.</li>
+      <li><strong>Revisão mensal (30 min, dia fixo):</strong> reler mapa de gatilhos, plano de contingência e cartão-lembrete; atualizar pares se–então.</li>
+      <li><strong>Rede:</strong> 1 contato de recuperação por semana, no mínimo.</li>
+    </ul>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ev-b">Camada PNL · análogo validado (intenção de implementação + contrato comportamental)</span>
+    <h4>Ponte ao futuro + carta a si mesmo</h4>
+    <ol>
+      <li><strong>Ponte (D5):</strong> visualize-se daqui a 6 meses, num dia comum, executando o protocolo mínimo — a prática da manhã, um SOBER no meio do caos, o contato da semana. Em 1ª pessoa, com detalhe. Note como esse futuro trata o presente.</li>
+      <li><strong>Carta (D6):</strong> escreva uma carta de você-de-hoje para você-num-dia-difícil: o que você sabe agora que ele vai precisar ouvir? Inclua o cartão-lembrete e a frase de identidade. Lacre, date para abrir em 3 meses (ou entregue a alguém de confiança).</li>
+      <li><strong>Compromisso (D7):</strong> assine o protocolo mínimo viável como se assina um contrato — porque é um.</li>
+    </ol>
+  </div>
+
+  <h3>Rastreio da semana</h3>
+  <div class="track" data-week="8"></div>
+  <p class="track-note">D7 = releia a Semana 1. Meça a distância. Ela é sua — e é reprodutível: o programa pode ser refeito a qualquer momento, inclusive após um tropeço.</p>
+
+  <div class="duo">
+    <div class="card green"><h4>✓ Critérios de conclusão</h4><ul><li>Protocolo mínimo escrito e assinado.</li><li>1 passo de conexão com a rede executado.</li><li>Carta lacrada e datada.</li></ul></div>
+    <div class="card"><h4>✕ Erros comuns</h4><ul><li>Protocolo maximalista (o que impressiona no papel falha na terça-feira ruim).</li><li>Terminar sem rede: prática solo é assobio no escuro.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ REGISTRO ============ -->
+<section class="panel" id="p-reg" role="tabpanel" aria-labelledby="tab-reg">
+  <h2 class="wk-title"><small>Painel · Registro geral</small>56 dias em uma tela</h2>
+  <p class="wk-sub">Progresso agregado do rastreio diário. Os dados ficam apenas neste dispositivo (localStorage); nada é enviado a servidor algum.</p>
+  <div class="card">
+    <h4 id="reg-total">Total: 0 / 56 dias</h4>
+    <div class="bar" aria-hidden="true"><i id="reg-bar"></i></div>
+    <div class="progress-grid" id="reg-grid"></div>
+    <p style="margin-top:18px"><button class="btn danger" id="btn-reset" type="button">Zerar todo o progresso</button></p>
+  </div>
+  <p class="note">Critério de avanço: ≥5/7 por semana. O painel não julga — mede. Semana incompleta se repete; não se pula.</p>
+</section>
+
+</main>
+
+<footer>
+  VIA · MENTE — MBRP-8 · v0.1 · Derivado de Bowen, Chawla, Grow &amp; Marlatt (2021), <em>Mindfulness-Based Relapse Prevention for Addictive Behaviors</em>, 2ª ed., Guilford Press. Redação original em PT-BR. Material psicoeducacional — não substitui tratamento.<br>
+  <span class="persist-warn" id="persist-warn">⚠ Persistência indisponível neste ambiente: o progresso vale só para esta sessão.</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  /* ---------- storage seguro (degrada p/ memória) ---------- */
+  var mem = {};
+  var persist = true;
+  function sget(k){ try { var v = localStorage.getItem(k); return v===null? (k in mem? mem[k]:null) : v; } catch(e){ persist=false; return (k in mem? mem[k]:null); } }
+  function sset(k,v){ mem[k]=v; try { localStorage.setItem(k,v); } catch(e){ persist=false; } warn(); }
+  function sdel(k){ delete mem[k]; try { localStorage.removeItem(k); } catch(e){ persist=false; } }
+  function warn(){ if(!persist){ var w=document.getElementById('persist-warn'); if(w) w.style.display='inline'; } }
+
+  var WEEKS = 8, DAYS = 7;
+  function key(w){ return 'viaMbrp.s'+w; }
+  function getWeek(w){
+    var raw = sget(key(w)); if(!raw) return [0,0,0,0,0,0,0];
+    try { var a = JSON.parse(raw); if(Array.isArray(a) && a.length===7) return a.map(function(x){return x?1:0;}); } catch(e){}
+    return [0,0,0,0,0,0,0];
+  }
+  function setWeek(w,arr){ sset(key(w), JSON.stringify(arr)); }
+
+  /* ---------- abas ---------- */
+  var TABS = [
+    {id:'inicio', code:'BRF', name:'Início', util:true},
+    {id:'fund',   code:'FND', name:'Fundamentos', util:true},
+    {id:'s1', code:'S1', name:'Piloto autom.', week:1},
+    {id:'s2', code:'S2', name:'Desconforto', week:2},
+    {id:'s3', code:'S3', name:'SOBER', week:3},
+    {id:'s4', code:'S4', name:'Desafios', week:4},
+    {id:'s5', code:'S5', name:'Aceitação', week:5},
+    {id:'s6', code:'S6', name:'Pensamentos', week:6},
+    {id:'s7', code:'S7', name:'Bem-estar', week:7},
+    {id:'s8', code:'S8', name:'Rede', week:8},
+    {id:'kit', code:'KIT', name:'Kit de bolso', util:true},
+    {id:'reg', code:'REG', name:'Registro', util:true}
+  ];
+  var tablist = document.getElementById('tablist');
+  TABS.forEach(function(t){
+    var b = document.createElement('button');
+    b.className = 'tab' + (t.util? ' util':'');
+    b.id = 'tab-'+t.id;
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-controls','p-'+t.id);
+    b.setAttribute('aria-selected','false');
+    var dots = '';
+    if(t.week){ dots = '<span class="t-dots" data-dots="'+t.week+'" aria-hidden="true">'+'<i></i>'.repeat(7)+'</span>'; }
+    b.innerHTML = '<span class="t-code">'+t.code+'</span><span class="t-name">'+t.name+'</span>'+dots;
+    b.addEventListener('click', function(){ show(t.id); });
+    tablist.appendChild(b);
+  });
+  function show(id){
+    TABS.forEach(function(t){
+      var on = (t.id===id);
+      document.getElementById('p-'+t.id).classList.toggle('active', on);
+      document.getElementById('tab-'+t.id).setAttribute('aria-selected', on?'true':'false');
+    });
+    try { history.replaceState(null,'','#'+id); } catch(e){}
+    window.scrollTo({top:0});
+  }
+
+  /* ---------- rastreio semanal ---------- */
+  document.querySelectorAll('.track').forEach(function(box){
+    var w = parseInt(box.getAttribute('data-week'),10);
+    var st = getWeek(w);
+    for(var d=0; d<DAYS; d++){
+      (function(d){
+        var wrap = document.createElement('div');
+        wrap.className='dbox';
+        var lab = document.createElement('label');
+        var inp = document.createElement('input');
+        inp.type='checkbox'; inp.checked=!!st[d];
+        inp.setAttribute('aria-label','Semana '+w+', dia '+(d+1)+' praticado');
+        var mark = document.createElement('span'); mark.className='mark'; mark.textContent='✓';
+        var dl = document.createElement('span'); dl.className='dlbl'; dl.textContent='D'+(d+1);
+        inp.addEventListener('change', function(){
+          var arr = getWeek(w); arr[d] = inp.checked?1:0; setWeek(w,arr); refresh();
+        });
+        lab.appendChild(inp); lab.appendChild(mark); lab.appendChild(dl);
+        wrap.appendChild(lab); box.appendChild(wrap);
+      })(d);
+    }
+  });
+
+  /* ---------- painel de registro + dots das abas ---------- */
+  var WKNAMES = ['Piloto automático','Desconforto','SOBER','Desafios','Aceitação','Pensamentos','Bem-estar','Rede'];
+  function refresh(){
+    var total=0, grid=document.getElementById('reg-grid'); grid.innerHTML='';
+    for(var w=1; w<=WEEKS; w++){
+      var arr=getWeek(w), n=arr.reduce(function(a,b){return a+b;},0); total+=n;
+      var row=document.createElement('div'); row.className='pg-row';
+      var ok = n>=5;
+      row.innerHTML = '<span>S'+w+' · '+WKNAMES[w-1]+'</span>'
+        + '<span class="bar"><i style="width:'+Math.round(n/7*100)+'%"></i></span>'
+        + '<span class="pg-n">'+n+'/7 '+(ok?'<span style="color:var(--green)">✓</span>':'')+'</span>';
+      grid.appendChild(row);
+      var dots=document.querySelector('[data-dots="'+w+'"]');
+      if(dots){ var ii=dots.querySelectorAll('i'); for(var d=0; d<7; d++){ ii[d].classList.toggle('on', !!arr[d]); } }
+    }
+    document.getElementById('reg-total').textContent = 'Total: '+total+' / 56 dias';
+    document.getElementById('reg-bar').style.width = Math.round(total/56*100)+'%';
+  }
+  document.getElementById('btn-reset').addEventListener('click', function(){
+    if(confirm('Zerar todo o progresso das 8 semanas? Esta ação não pode ser desfeita.')){
+      for(var w=1; w<=WEEKS; w++){ sdel(key(w)); }
+      document.querySelectorAll('.track input').forEach(function(i){ i.checked=false; });
+      refresh();
+    }
+  });
+
+  /* ---------- init ---------- */
+  refresh();
+  var h = (location.hash||'').replace('#','');
+  var valid = TABS.some(function(t){ return t.id===h; });
+  show(valid? h : 'inicio');
+  try{ localStorage.setItem('viaMbrp.ping','1'); localStorage.removeItem('viaMbrp.ping'); }catch(e){ persist=false; warn(); }
+})();
+</script>
+</body>
+</html>

@@ -4,7 +4,8 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 
 ## Acesso
 
-GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
+GitHub Pages: <https://lucashralmeida.github.io/via-hub/>  
+VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 
 ## Estrutura
 
@@ -13,6 +14,7 @@ GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
 - `app.js` — navegação móvel, filtros e renderização segura do portfólio.
 - `projects.json` — fonte versionada das demonstrações e respectivos status.
 - `.github/ISSUE_TEMPLATE/parceria.yml` — formulário para propostas institucionais.
+- `via-mente-mbrp/index.html` — webapp psicoeducacional MBRP-8.
 - `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
 
 ## Princípios editoriais

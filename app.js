@@ -1,6 +1,6 @@
 const fallbackData = {
   meta: {
-    updated: "2026-07-17"
+    updated: "2026-07-18"
   },
   projects: [
     {
@@ -41,6 +41,19 @@ const fallbackData = {
       tags: ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
       url: "https://lucashralmeida.github.io/sarampo-alertas-2026/",
       repo: "https://github.com/LucasHRAlmeida/sarampo-alertas-2026"
+    },
+    {
+      id: "via-mente-mbrp",
+      name: "VIA MENTE — MBRP-8",
+      kicker: "Saúde mental · prevenção de recaída",
+      categories: ["medicina", "educacao"],
+      status: "beta",
+      statusKey: "beta",
+      featured: false,
+      description: "Roteiro psicoeducacional interativo de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias, ferramentas de campo e registro local de progresso.",
+      tags: ["MBRP", "mindfulness", "56 dias", "localStorage"],
+      url: "https://lucashralmeida.github.io/via-hub/via-mente-mbrp/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp"
     },
     {
       id: "regulacao-inteligente",
