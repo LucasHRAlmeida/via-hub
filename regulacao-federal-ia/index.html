@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulação Federal Inteligente | SUS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stone-50: #fafaf9;
+            --stone-100: #f5f5f4;
+            --slate-900: #0f172a;
+            --gold-600: #d97706;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--stone-50);
+            color: var(--slate-900);
+            scroll-behavior: smooth;
+        }
+        .serif { font-family: 'Playfair Display', serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+        }
+        .step-active { border-left: 4px solid var(--slate-900); padding-left: 1rem; }
+        .traffic-light {
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 640px) {
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <span class="font-bold tracking-tighter text-xl uppercase italic">Regulação Federal <span class="text-indigo-600">IA</span></span>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
+                <a href="#diagnostico" class="hover:text-indigo-600">O Estol</a>
+                <a href="#metfora" class="hover:text-indigo-600">A Metáfora</a>
+                <a href="#solucao" class="hover:text-indigo-600">IA Federativa</a>
+                <a href="#episteme" class="hover:text-indigo-600">Episteme</a>
+            </div>
+            <button onclick="window.print()" class="text-xs border border-slate-900 px-4 py-1 hover:bg-slate-900 hover:text-white transition">IMPRIMIR BRIEFING</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-6 max-w-5xl mx-auto text-center">
+        <p class="text-indigo-600 font-semibold tracking-widest mb-4 uppercase text-xs">Proposta de Governança Sistêmica</p>
+        <h1 class="serif text-5xl md:text-7xl mb-6 leading-tight">A Arquitetura da <br><span class="italic font-light">Decisão Complexa</span> em Saúde</h1>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-slate-500 text-sm">
+            <span>Dr. Lucas HR (FMRP-USP)</span>
+            <span class="hidden md:inline">•</span>
+            <span>Coordenação de Inteligência Logística</span>
+            <span class="hidden md:inline">•</span>
+            <span>Fevereiro 2025</span>
+        </div>
+    </header>
+
+    <!-- Section 1: Diagnóstico -->
+    <section id="diagnostico" class="py-20 bg-stone-100 border-y border-stone-200 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="serif text-3xl mb-6">O Caso-Sentinela: A "Zona Morta"</h2>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Analisamos o colapso sistêmico através de um evento índice: uma paciente com sepse biliar retida por barreiras burocráticas entre o <strong>SUS Fácil (MG)</strong> e o <strong>CROSS (SP)</strong>. O erro não foi a falta de leitos, mas a falha de roteamento.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded border-l-4 border-red-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase text-red-500 mb-1">Falha de Roteamento (D3)</h4>
+                            <p class="text-sm">Priorização da proximidade geográfica (SJDR) em detrimento da capacidade tecnológica (CPRE).</p>
+                        </div>
+                        <div class="bg-white p-4 rounded border-l-4 border-orange-500 shadow-sm">
+                            <h4 class="font-bold text-xs uppercase text-orange-500 mb-1">Falha de Interoperabilidade</h4>
+                            <p class="text-sm">Vaga aceita no HCRP-USP mas não efetivada pela incomunicabilidade dos sistemas estaduais.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                    <p class="text-[10px] uppercase text-slate-400 mt-4 tracking-widest text-center">Impacto estimado da IA na redução do tempo de transferência (Horas)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: AF447 Table -->
+    <section id="metfora" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="serif text-4xl mb-4 italic">Lição Aprendida: AF447</h2>
+            <p class="text-slate-500 max-w-2xl mx-auto">No estol clínico, o ego e o pânico pesam mais que a evidência. A recuperação exige soltar o manche.</p>
+        </div>
+
+        <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-xl">
+            <table class="w-full text-left bg-white border-collapse">
+                <thead>
+                    <tr class="bg-slate-900 text-white text-xs uppercase tracking-tighter">
+                        <th class="p-6 border-r border-slate-700">Item de Checklist</th>
+                        <th class="p-6 border-r border-slate-700">O que Manda (Protocolo)</th>
+                        <th class="p-6 border-r border-slate-700">Falha no AF447 (O Estol)</th>
+                        <th class="p-6">Responsabilidade</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr class="border-b border-stone-100">
+                        <td class="p-6 font-bold bg-stone-50 border-r border-stone-200">UNRELIABLE AIRSPEED</td>
+                        <td class="p-6 border-r border-stone-200">Soltar manche. Atitude 5° N/U. TOGA OFF.</td>
+                        <td class="p-6 border-r border-stone-200 text-red-600 italic">Bonin puxou e manteve manche a ré 99% do tempo.</td>
+                        <td class="p-6 font-medium">PF: Bonin</td>
+                    </tr>
+                    <tr class="border-b border-stone-100">
+                        <td class="p-6 font-bold bg-stone-50 border-r border-stone-200">STALL RECOVERY</td>
+                        <td class="p-6 border-r border-stone-200">1. Soltar manche. 2. Asas niveladas. 3. TOGA.</td>
+                        <td class="p-6 border-r border-stone-200 text-red-600 italic">Nariz 15° acima. AOA 40°. Alarme 75x ignorado.</td>
+                        <td class="p-6 font-medium">PF: Bonin</td>
+                    </tr>
+                    <tr>
+                        <td class="p-6 font-bold bg-stone-50 border-r border-stone-200">CRM - CONTESTAÇÃO</td>
+                        <td class="p-6 border-r border-stone-200">PNF deve corrigir PF de forma assertiva.</td>
+                        <td class="p-6 border-r border-stone-200 text-red-600 italic">9x "cuidado", nunca "SOLTA O MANCHE".</td>
+                        <td class="p-6 font-medium">PNF: Robert + Dubois</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="mt-8 text-center">
+            <p class="font-bold text-slate-900 text-lg uppercase tracking-tight">"No estol, o ego pesa mais que o avião. O Brasil não pode pagar esse peso."</p>
+        </footer>
+    </section>
+
+    <!-- Section 3: IA Solution Dashboard -->
+    <section id="solucao" class="py-20 bg-slate-900 text-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <header class="mb-16">
+                <h2 class="serif text-4xl mb-4 italic">A Camada de Inteligência Federal</h2>
+                <div class="h-1 w-20 bg-indigo-500"></div>
+            </header>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pillar 1 -->
+                <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition">01</div>
+                    <h3 class="font-bold text-xl mb-4 uppercase tracking-tight">IA de Orquestração Federativa</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Algoritmo nacional que opera acima das regulações estaduais para casos críticos. Rompe a lógica regional e autoriza transportes interestaduais via "Match Automático" de recursos.
+                    </p>
+                </div>
+                <!-- Pillar 2 -->
+                <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition">02</div>
+                    <h3 class="font-bold text-xl mb-4 uppercase tracking-tight">Roteamento por Recurso</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        O sistema bloqueia transferências para hospitais sem a tecnologia específica. Identifica o <strong>Vínculo Longitudinal</strong> pelo CPF e prioriza o hospital de origem do paciente.
+                    </p>
+                </div>
+                <!-- Pillar 3 -->
+                <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition">03</div>
+                    <h3 class="font-bold text-xl mb-4 uppercase tracking-tight">Corredores Aeromédicos</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Convênio com a Força Aérea Brasileira (FAB) para transporte interestadual. Agilidade garantida em janelas de 150-400km, preenchendo o vácuo da regulação terrestre.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Pediatric Triage & Phronesis -->
+    <section id="episteme" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="serif text-4xl mb-6">Phrónesis Clínica: A Sabedoria Prática</h2>
+                <p class="text-slate-600 mb-8 italic">"Trate o estado geral, não o número do termômetro."</p>
+                
+                <div class="space-y-6">
+                    <div id="sim-triage" class="p-8 rounded-2xl bg-white border border-stone-200 shadow-sm">
+                        <h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-slate-400">Simulador de Decisão Pediátrica (NICE NG143)</h4>
+                        <div class="flex gap-4 mb-6">
+                            <button onclick="updateTriage('verde')" class="flex-1 py-2 rounded bg-green-100 text-green-700 font-bold text-xs uppercase hover:bg-green-200 transition">Verde</button>
+                            <button onclick="updateTriage('ambar')" class="flex-1 py-2 rounded bg-amber-100 text-amber-700 font-bold text-xs uppercase hover:bg-amber-200 transition">Âmbar</button>
+                            <button onclick="updateTriage('vermelho')" class="flex-1 py-2 rounded bg-red-100 text-red-700 font-bold text-xs uppercase hover:bg-red-200 transition">Vermelho</button>
+                        </div>
+                        <div id="triage-result" class="p-6 rounded bg-stone-50 border border-stone-200">
+                            <p class="text-sm font-medium text-slate-400">Selecione uma categoria para avaliar a conduta...</p>
+                        </div>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-indigo-50 border border-indigo-100">
+                        <h4 class="font-bold text-indigo-900 mb-2">O Teste da Reversão</h4>
+                        <p class="text-sm text-indigo-700 leading-relaxed">
+                            "O risco que estou tratando é relevante — ou estou tratando a minha insegurança e a que despertei nos pais?" A coragem clínica reside na observação ativa, não na prescrição defensiva.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="serif text-4xl mb-6">Ontologia Pós-Cartesiana</h2>
+                <div class="space-y-8">
+                    <div class="border-b border-stone-200 pb-6">
+                        <h5 class="font-bold uppercase text-xs text-indigo-600 mb-2">Georges Canguilhem</h5>
+                        <p class="text-sm text-slate-600">A doença não é um desvio estatístico, mas a perda de plasticidade. Saúde é a capacidade de criar novas normas e colocar-se em risco.</p>
+                    </div>
+                    <div class="border-b border-stone-200 pb-6">
+                        <h5 class="font-bold uppercase text-xs text-indigo-600 mb-2">Friedrich Nietzsche</h5>
+                        <p class="text-sm text-slate-600">"O espírito é um estômago." Fidelidade à terra. A sabedoria não escapa ao somático; ela deriva da saúde do metabolismo.</p>
+                    </div>
+                    <div class="bg-stone-900 text-white p-8 rounded-2xl">
+                        <h4 class="font-bold mb-6 text-sm uppercase tracking-widest text-indigo-400">Os 3 Níveis do Sofrimento</h4>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <span class="font-bold text-indigo-400">01.</span>
+                                <div>
+                                    <p class="text-sm font-bold">Desregulação Neurobiológica</p>
+                                    <p class="text-xs text-slate-400">Perda de homeostase primária (Eixo HPA).</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold text-indigo-400">02.</span>
+                                <div>
+                                    <p class="text-sm font-bold">Colapso da Simbolização</p>
+                                    <p class="text-xs text-slate-400">Alexitimia e perda da narrativa interna.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold text-indigo-400">03.</span>
+                                <div>
+                                    <p class="text-sm font-bold">Perda de Agência</p>
+                                    <p class="text-xs text-slate-400">Ação compulsiva e supressão da volição.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-stone-200 py-16 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="max-w-md">
+                <h3 class="serif text-2xl mb-2">Legado Institucional</h3>
+                <p class="text-sm text-slate-500 italic">"Cuidar significa reconhecer que a saúde não habita a paragem absoluta e esterilizada, mas o equilíbrio dinâmico e intrépido perante o iminente risco da vida."</p>
+            </div>
+            <div class="text-right">
+                <p class="font-bold text-slate-900">Dr. Lucas HR</p>
+                <p class="text-xs text-slate-400 uppercase tracking-widest">Comprometido com respostas proativas</p>
+                <p class="text-xs text-slate-400 mt-2">lucas.henrique.almeida@alumni.usp.br</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data for comparison chart
+        const ctx = document.getElementById('impactChart').getContext('2d');
+        const impactChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Caso-Sentinela (Real)', 'Com IA Federativa', 'Janela Terapêutica Alvo'],
+                datasets: [{
+                    label: 'Tempo de Resposta (Horas)',
+                    data: [144, 4, 6],
+                    backgroundColor: [
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(79, 70, 229, 0.8)',
+                        'rgba(34, 197, 94, 0.2)'
+                    ],
+                    borderColor: [
+                        '#ef4444',
+                        '#4f46e5',
+                        '#22c55e'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Horas' }
+                    }
+                }
+            }
+        });
+
+        // Triage Logic
+        function updateTriage(state) {
+            const resultDiv = document.getElementById('triage-result');
+            const states = {
+                'verde': {
+                    title: 'Risco Baixo',
+                    desc: 'Cor normal, interage, sorri. Choro forte normal.',
+                    action: 'Cuidados domiciliários. Safety-netting adequado. Antitérmicos apenas para conforto.'
+                },
+                'ambar': {
+                    title: 'Risco Intermédio',
+                    desc: 'Palidez, taquicardia (>160 bpm em <12m), preenchimento capilar ≥ 3s.',
+                    action: 'Avaliação médica em 24-48h. Investigação laboratorial e observação estrita.'
+                },
+                'vermelho': {
+                    title: 'Risco Elevado',
+                    desc: 'Exantema não-branqueável, cianose, incapacidade de despertar, febre em < 3 meses.',
+                    action: 'REFERENCIAÇÃO EMERGENTE. Antibioterapia IV imediata na suspeita de sépsis.'
+                }
+            };
+
+            const data = states[state];
+            resultDiv.innerHTML = `
+                <h5 class="font-bold text-slate-900 text-lg uppercase mb-2">${data.title}</h5>
+                <p class="text-sm text-slate-600 mb-4"><strong>Sinais:</strong> ${data.desc}</p>
+                <div class="p-3 bg-white border border-slate-200 rounded text-xs font-mono">
+                    <span class="text-indigo-600 font-bold">CONDUTA:</span> ${data.action}
+                </div>
+            `;
+            
+            // Re-apply focus style or animation if needed
+            resultDiv.classList.add('animate-pulse');
+            setTimeout(() => resultDiv.classList.remove('animate-pulse'), 500);
+        }
+
+        // Initialize first view
+        updateTriage('verde');
+    </script>
+</body>
+</html>
