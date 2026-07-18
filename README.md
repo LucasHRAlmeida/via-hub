@@ -4,8 +4,9 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 
 ## Acesso
 
-GitHub Pages: <https://lucashralmeida.github.io/via-hub/>  
-VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
+- GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
+- VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
+- VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
 
 ## Estrutura
 
@@ -15,6 +16,9 @@ VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 - `projects.json` — fonte versionada das demonstrações e respectivos status.
 - `.github/ISSUE_TEMPLATE/parceria.yml` — formulário para propostas institucionais.
 - `via-mente-mbrp/index.html` — webapp psicoeducacional MBRP-8.
+- `via-literacia-programacao-github/index.html` — trilha web introdutória com progresso local.
+- `via-literacia-programacao-github/apostila.md` — fonte pedagógica versionada de programação, Git e GitHub.
+- `via-literacia-programacao-github/README.md` — documentação editorial e técnica do módulo.
 - `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
 
 ## Princípios editoriais

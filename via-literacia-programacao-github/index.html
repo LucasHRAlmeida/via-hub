@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIA Literacia — Programação, Git e GitHub</title>
+  <meta name="description" content="Trilha prática e gratuita para criar um primeiro programa em Python, versioná-lo com Git e publicá-lo no GitHub.">
+  <meta name="theme-color" content="#082f4f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="VIA Literacia — Programação, Git e GitHub">
+  <meta property="og:description" content="Do primeiro algoritmo ao primeiro pull request, em uma trilha prática para iniciantes.">
+  <meta property="og:url" content="https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/">
+  <link rel="canonical" href="https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/">
+  <style>
+    :root {
+      --navy-950: #05263f;
+      --navy-900: #0c3e67;
+      --navy-800: #15577f;
+      --teal-500: #19a6c9;
+      --teal-100: #dff5fa;
+      --green-500: #2eaf53;
+      --green-100: #e8f7ec;
+      --amber-100: #fff5da;
+      --amber-600: #a96b00;
+      --ink: #122331;
+      --muted: #566b7a;
+      --line: #d8e2e8;
+      --paper: #fff;
+      --wash: #f4f7f9;
+      --code: #071f32;
+      --shadow: 0 20px 55px rgba(5, 38, 63, .12);
+      --radius-lg: 26px;
+      --radius-md: 16px;
+      --shell: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.68;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    :focus-visible { outline: 3px solid rgba(25, 166, 201, .55); outline-offset: 3px; }
+    .shell { width: min(calc(100% - 42px), var(--shell)); margin-inline: auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .skip-link { position: fixed; z-index: 1000; top: 10px; left: 10px; padding: 9px 13px; border-radius: 8px; background: white; color: var(--navy-900); font-weight: 800; transform: translateY(-150%); }
+    .skip-link:focus { transform: translateY(0); }
+
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      color: white;
+      background: rgba(5, 38, 63, .96);
+      backdrop-filter: blur(16px);
+    }
+    .header-inner { min-height: 68px; display: flex; align-items: center; gap: 25px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: white; text-decoration: none; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid currentColor; border-radius: 11px 3px 11px 3px; font-weight: 850; }
+    .brand-copy { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-copy strong { letter-spacing: .16em; }
+    .brand-copy small { margin-top: 4px; font-size: 9px; letter-spacing: .055em; opacity: .68; }
+    .header-label { margin-left: 6px; padding-left: 22px; border-left: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.7); font-size: 12px; font-weight: 700; }
+    .header-links { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+    .header-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 12px; font-weight: 750; }
+    .header-links a:hover { color: white; }
+
+    .hero {
+      position: relative;
+      padding: 102px 0 88px;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(25,166,201,.37), transparent 29%),
+        radial-gradient(circle at 72% 88%, rgba(46,175,83,.15), transparent 28%),
+        linear-gradient(135deg, var(--navy-950), var(--navy-900));
+    }
+    .hero::after { content: ""; position: absolute; right: -120px; bottom: -250px; width: 480px; height: 480px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; box-shadow: 0 0 0 70px rgba(255,255,255,.025), 0 0 0 140px rgba(255,255,255,.018); }
+    .hero-grid { position: absolute; inset: 0; opacity: .1; background-image: linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: linear-gradient(to right, transparent, black); }
+    .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr); align-items: center; gap: 72px; }
+    .eyebrow, .kicker { margin: 0 0 15px; color: #a9e2ed; font-size: 10px; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+    .hero h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 6vw, 5.3rem); letter-spacing: -.065em; line-height: .98; }
+    .hero h1 em { display: block; margin-top: 12px; color: #a8e2ed; font-family: Georgia, serif; font-weight: 400; }
+    .hero-lede { max-width: 700px; margin: 28px 0 0; color: rgba(255,255,255,.72); font-size: 18px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 33px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 17px; border: 1px solid transparent; border-radius: 999px; text-decoration: none; font-size: 12px; font-weight: 820; cursor: pointer; }
+    .button-primary { color: var(--navy-950); background: white; }
+    .button-secondary { border-color: rgba(255,255,255,.27); color: white; background: transparent; }
+    .button-dark { color: white; background: var(--navy-900); }
+    .hero-card { padding: 28px; border: 1px solid rgba(255,255,255,.17); border-radius: 4px var(--radius-lg) 4px var(--radius-lg); background: rgba(255,255,255,.07); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
+    .hero-card h2 { margin: 0 0 22px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+    .route { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 13px 0; border-top: 1px solid rgba(255,255,255,.13); }
+    .route span { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; color: #b9e9f2; background: rgba(25,166,201,.15); font-size: 10px; font-weight: 850; }
+    .route strong, .route small { display: block; }
+    .route strong { font-size: 13px; }
+    .route small { color: rgba(255,255,255,.55); font-size: 11px; }
+    .hero-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 20px; }
+    .hero-facts div { padding: 12px; border-radius: 10px; background: rgba(5,38,63,.45); }
+    .hero-facts strong, .hero-facts small { display: block; }
+    .hero-facts strong { color: #b7e9f2; font-size: 20px; }
+    .hero-facts small { color: rgba(255,255,255,.55); font-size: 9px; line-height: 1.35; }
+
+    .outcomes { padding: 75px 0; border-bottom: 1px solid var(--line); }
+    .outcome-layout { display: grid; grid-template-columns: .7fr 1.3fr; gap: 75px; }
+    .outcomes h2, .trail-head h2, .module h2, .reference h2 { margin: 0; color: var(--navy-950); letter-spacing: -.045em; line-height: 1.12; }
+    .outcomes h2, .trail-head h2 { font-size: clamp(2.2rem, 4vw, 3.7rem); }
+    .outcome-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .outcome { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--wash); }
+    .outcome span { display: block; margin-bottom: 24px; color: var(--teal-500); font-size: 11px; font-weight: 850; }
+    .outcome p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .trail { padding: 86px 0 110px; background: var(--wash); }
+    .trail-head { display: grid; grid-template-columns: 1.1fr .9fr; gap: 70px; align-items: end; margin-bottom: 45px; }
+    .trail-head > p { margin: 0; color: var(--muted); }
+    .learning-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .progress-panel { position: sticky; top: 92px; padding: 21px; border: 1px solid var(--line); border-radius: var(--radius-md); background: white; box-shadow: 0 10px 30px rgba(5,38,63,.06); }
+    .progress-panel h2 { margin: 0; color: var(--navy-950); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+    .meter { height: 8px; margin: 15px 0 9px; overflow: hidden; border-radius: 99px; background: var(--line); }
+    .meter span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal-500), var(--green-500)); transition: width .25s ease; }
+    .progress-copy { margin: 0 0 17px; color: var(--muted); font-size: 11px; }
+    .module-nav { display: grid; gap: 2px; margin: 0; padding: 15px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); list-style: none; }
+    .module-nav a { display: flex; gap: 9px; padding: 7px 5px; border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 11px; line-height: 1.35; }
+    .module-nav a span { color: var(--teal-500); font-weight: 850; }
+    .module-nav a:hover, .module-nav a.is-active { color: var(--navy-900); background: var(--teal-100); }
+    .reset-button { width: 100%; margin-top: 15px; padding: 8px; border: 0; color: var(--muted); background: transparent; font-size: 10px; font-weight: 750; cursor: pointer; }
+    .reset-button:hover { color: var(--navy-900); }
+
+    .module-stack { display: grid; gap: 18px; }
+    .module { padding: 36px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: white; box-shadow: 0 12px 30px rgba(5,38,63,.04); }
+    .module-top { display: flex; justify-content: space-between; gap: 25px; align-items: flex-start; padding-bottom: 25px; border-bottom: 1px solid var(--line); }
+    .module-index { display: inline-flex; margin-bottom: 12px; color: var(--teal-500); font-size: 10px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .module h2 { font-size: clamp(1.8rem, 3vw, 2.7rem); }
+    .module-goal { max-width: 650px; margin: 22px 0; padding: 14px 16px; border-left: 3px solid var(--green-500); color: var(--muted); background: var(--green-100); font-size: 13px; }
+    .complete { display: inline-flex; align-items: center; gap: 8px; min-width: max-content; padding: 8px 11px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 10px; font-weight: 800; cursor: pointer; }
+    .complete:has(input:checked) { color: #17672e; border-color: #a9dab5; background: var(--green-100); }
+    .complete input { width: 16px; height: 16px; accent-color: var(--green-500); }
+    .module h3 { margin: 30px 0 10px; color: var(--navy-900); font-size: 18px; letter-spacing: -.02em; }
+    .module p, .module li { color: var(--muted); font-size: 14px; }
+    .module strong { color: var(--ink); }
+    .module table { width: 100%; margin: 18px 0; border-collapse: collapse; font-size: 12px; }
+    .module th, .module td { padding: 11px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .module th { color: var(--navy-900); background: var(--wash); }
+    .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 20px 0; }
+    .flow div { position: relative; padding: 17px; border: 1px solid var(--line); border-radius: 12px; color: var(--navy-900); background: var(--wash); font-size: 12px; font-weight: 800; text-align: center; }
+    .flow div:not(:last-child)::after { content: "→"; position: absolute; z-index: 2; right: -10px; color: var(--teal-500); }
+    .callout { margin: 22px 0; padding: 17px 19px; border-radius: 12px; color: var(--muted); background: var(--amber-100); font-size: 13px; }
+    .callout strong { display: block; margin-bottom: 4px; color: var(--amber-600); }
+    pre { position: relative; margin: 17px 0; padding: 19px; border-radius: 12px; color: #d9edf5; background: var(--code); font-size: 12px; line-height: 1.7; overflow-x: auto; }
+    pre code { color: inherit; }
+    :not(pre) > code { padding: 2px 5px; border-radius: 5px; color: var(--navy-800); background: var(--teal-100); font-size: .9em; }
+    .copy-code { position: absolute; top: 8px; right: 8px; padding: 5px 8px; border: 1px solid rgba(255,255,255,.2); border-radius: 7px; color: rgba(255,255,255,.68); background: rgba(255,255,255,.06); font-size: 9px; font-weight: 800; cursor: pointer; }
+    .copy-code:hover { color: white; background: rgba(255,255,255,.12); }
+    .check { margin-top: 26px; padding: 19px; border: 1px dashed #9bc7d2; border-radius: 12px; background: #f1fbfd; }
+    .check strong { display: block; margin-bottom: 5px; color: var(--navy-900); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .check p { margin: 0; }
+    details { margin: 17px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--wash); }
+    summary { padding: 13px 16px; color: var(--navy-900); font-size: 12px; font-weight: 800; cursor: pointer; }
+    details > div { padding: 0 16px 16px; }
+    .rubric { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin: 18px 0; }
+    .rubric div { padding: 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--wash); }
+    .rubric strong, .rubric span { display: block; }
+    .rubric strong { color: var(--navy-900); font-size: 12px; }
+    .rubric span { margin-top: 4px; color: var(--muted); font-size: 11px; }
+
+    .reference { padding: 88px 0; color: white; background: var(--navy-950); }
+    .reference h2 { color: white; font-size: clamp(2.2rem, 4vw, 3.6rem); }
+    .reference-lede { max-width: 720px; color: rgba(255,255,255,.6); }
+    .reference-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 35px; }
+    .reference-card { padding: 25px; border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius-md); background: rgba(255,255,255,.035); }
+    .reference-card h3 { margin: 0 0 13px; color: #a8e2ed; font-size: 13px; }
+    .reference-card pre { margin: 0; padding: 0; background: transparent; }
+    .resources { padding: 75px 0; }
+    .resources-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; }
+    .resources h2 { margin: 0; color: var(--navy-950); font-size: clamp(2rem, 4vw, 3.4rem); letter-spacing: -.045em; }
+    .resource-list { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+    .resource-list a { display: flex; justify-content: space-between; gap: 20px; padding: 17px 0; border-bottom: 1px solid var(--line); color: var(--navy-900); text-decoration: none; font-size: 13px; font-weight: 800; }
+    .resource-list a:hover { color: var(--teal-500); }
+    .resource-list small { display: block; margin-top: 3px; color: var(--muted); font-weight: 400; }
+    .site-footer { padding: 48px 0 25px; color: rgba(255,255,255,.62); background: #041c2e; }
+    .footer-layout { display: grid; grid-template-columns: 1fr 1fr auto; gap: 40px; align-items: start; }
+    .footer-layout p { margin: 0; font-size: 10px; }
+    .footer-layout a { color: #a8e2ed; text-decoration: none; font-size: 11px; font-weight: 800; }
+    .footer-base { margin-top: 35px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+    .toast { position: fixed; z-index: 500; right: 18px; bottom: 18px; padding: 10px 14px; border-radius: 9px; color: white; background: var(--navy-950); box-shadow: var(--shadow); font-size: 11px; font-weight: 800; opacity: 0; transform: translateY(12px); pointer-events: none; transition: .2s ease; }
+    .toast.is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .hero-layout, .outcome-layout, .trail-head, .resources-grid { grid-template-columns: 1fr; gap: 42px; }
+      .learning-layout { grid-template-columns: 1fr; }
+      .progress-panel { position: static; }
+      .module-nav { grid-template-columns: repeat(2, 1fr); }
+      .hero-card { max-width: 580px; }
+    }
+    @media (max-width: 650px) {
+      .shell { width: min(calc(100% - 28px), var(--shell)); }
+      .header-label, .header-links a:first-child { display: none; }
+      .hero { padding: 75px 0 64px; }
+      .hero h1 { font-size: clamp(2.75rem, 15vw, 4rem); }
+      .hero-facts, .flow, .outcome-grid, .reference-grid, .rubric { grid-template-columns: 1fr; }
+      .module { padding: 25px 20px; border-radius: 18px; }
+      .module-top { display: grid; }
+      .complete { width: fit-content; }
+      .module-nav { grid-template-columns: 1fr; }
+      .module table { display: block; overflow-x: auto; }
+      .flow div:not(:last-child)::after { content: "↓"; right: 50%; bottom: -17px; }
+      .footer-layout { grid-template-columns: 1fr; gap: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../" aria-label="Voltar ao portal da Iniciativa VIA">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-copy"><strong>VIA</strong><small>Vida Integrada e Autônoma</small></span>
+      </a>
+      <span class="header-label">Literacia digital</span>
+      <nav class="header-links" aria-label="Links do módulo">
+        <a href="#trilha">Trilha</a>
+        <a href="apostila.md">Apostila .md</a>
+        <a href="https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github" target="_blank" rel="noopener noreferrer">Código ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="shell hero-layout">
+        <div>
+          <p class="eyebrow">VIA Literacia · edição 1.0</p>
+          <h1>Do primeiro algoritmo<em>ao primeiro pull request.</em></h1>
+          <p class="hero-lede">Uma trilha prática para criar um programa em Python, compreender o histórico do Git e colaborar com clareza no GitHub — sem exigir experiência prévia.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#trilha">Começar a trilha <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="apostila.md">Ler versão Markdown</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Resumo da rota de aprendizagem">
+          <h2>Uma entrega em três movimentos</h2>
+          <div class="route"><span>01</span><div><strong>Construir</strong><small>algoritmo, Python e depuração</small></div></div>
+          <div class="route"><span>02</span><div><strong>Versionar</strong><small>stage, commit, histórico e branch</small></div></div>
+          <div class="route"><span>03</span><div><strong>Compartilhar</strong><small>remoto, push e pull request</small></div></div>
+          <div class="hero-facts">
+            <div><strong>4–6h</strong><small>carga sugerida</small></div>
+            <div><strong>8</strong><small>etapas verificáveis</small></div>
+            <div><strong>1</strong><small>projeto final</small></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="outcomes" aria-labelledby="outcomes-title">
+      <div class="shell outcome-layout">
+        <div>
+          <p class="kicker">Contrato de aprendizagem</p>
+          <h2 id="outcomes-title">Ao final, você consegue demonstrar — não apenas reconhecer.</h2>
+        </div>
+        <div class="outcome-grid">
+          <article class="outcome"><span>01 · Explicar</span><p>Algoritmo, variável, decisão, repetição e função em linguagem comum.</p></article>
+          <article class="outcome"><span>02 · Construir</span><p>Um programa Python que recebe, transforma, valida e apresenta dados.</p></article>
+          <article class="outcome"><span>03 · Versionar</span><p>Um histórico com commits coerentes e uma branch dedicada à tarefa.</p></article>
+          <article class="outcome"><span>04 · Colaborar</span><p>Um pull request documentado, verificável e livre de credenciais.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="trail" id="trilha">
+      <div class="shell">
+        <div class="trail-head">
+          <div><p class="kicker">Trilha guiada</p><h2>Entender. Executar. Modificar. Verificar.</h2></div>
+          <p>Marque uma etapa somente depois de realizar sua verificação. O progresso fica salvo neste navegador e não é enviado a nenhum servidor.</p>
+        </div>
+
+        <div class="learning-layout">
+          <aside class="progress-panel" aria-labelledby="progress-title">
+            <h2 id="progress-title">Seu progresso</h2>
+            <div class="meter" aria-hidden="true"><span data-meter></span></div>
+            <p class="progress-copy" aria-live="polite" data-progress-copy>0 de 8 etapas concluídas</p>
+            <ol class="module-nav">
+              <li><a href="#modulo-0"><span>00</span> Preparar</a></li>
+              <li><a href="#modulo-1"><span>01</span> Pensar</a></li>
+              <li><a href="#modulo-2"><span>02</span> Construir</a></li>
+              <li><a href="#modulo-3"><span>03</span> Depurar</a></li>
+              <li><a href="#modulo-4"><span>04</span> Versionar</a></li>
+              <li><a href="#modulo-5"><span>05</span> Colaborar</a></li>
+              <li><a href="#modulo-6"><span>06</span> Proteger</a></li>
+              <li><a href="#projeto-final"><span>07</span> Integrar</a></li>
+            </ol>
+            <button class="reset-button" type="button" data-reset>Reiniciar progresso</button>
+          </aside>
+
+          <div class="module-stack">
+            <article class="module" id="modulo-0" data-module="ambiente">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 00 · 20 min</span><h2>Preparar o ambiente</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="ambiente"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> confirmar que Python e Git estão disponíveis e criar uma pasta de trabalho.</p>
+              <h3>Verifique as ferramentas</h3>
+              <pre><code>python --version
+git --version
+
+mkdir projeto-media
+cd projeto-media</code></pre>
+              <div class="callout"><strong>Terminal não é Git.</strong> O terminal recebe comandos; Python e Git são programas chamados por ele. <code>cd</code> muda de pasta, enquanto <code>git status</code> consulta um repositório.</div>
+              <div class="check"><strong>Verificação</strong><p>O terminal mostrou as versões do Python e do Git? Você está dentro da pasta <code>projeto-media</code>? Se não, resolva a instalação antes de seguir.</p></div>
+            </article>
+
+            <article class="module" id="modulo-1" data-module="algoritmo">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 01 · 25 min</span><h2>Pensar como um programa</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="algoritmo"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> decompor um problema em entradas, transformação e saída antes de escrever sintaxe.</p>
+              <div class="flow"><div>Entrada<br><small>três notas</small></div><div>Processamento<br><small>somar e dividir</small></div><div>Saída<br><small>mostrar média</small></div></div>
+              <h3>Três formas de fluxo</h3>
+              <ul>
+                <li><strong>Sequência:</strong> instruções executadas em ordem.</li>
+                <li><strong>Decisão:</strong> um caminho escolhido por uma condição.</li>
+                <li><strong>Repetição:</strong> um bloco executado para vários itens.</li>
+              </ul>
+              <pre><code>receber notas
+se não houver notas:
+    informar que faltam dados
+senão:
+    para cada nota:
+        somar nota ao total
+    dividir total pela quantidade
+    mostrar média</code></pre>
+              <div class="check"><strong>Prática de recuperação</strong><p>Escreva, sem consultar o texto, um algoritmo que recebe uma idade e informa se ela é maior ou igual a 18. Identifique entrada, decisão e saída.</p></div>
+            </article>
+
+            <article class="module" id="modulo-2" data-module="python">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 02 · 70 min</span><h2>Construir com Python</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="python"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> combinar variáveis, tipos, condição, repetição e função em um programa pequeno.</p>
+              <h3>Primeira execução</h3>
+              <pre><code>nome = input("Como você se chama? ")
+print(f"Olá, {nome}!")</code></pre>
+              <p>Salve como <code>programa.py</code> e execute <code>python programa.py</code>. <code>input</code> devolve texto; por isso, números recebidos precisam de conversão explícita.</p>
+              <h3>Tipos e decisões</h3>
+              <table>
+                <thead><tr><th>Tipo</th><th>Exemplo</th><th>Uso</th></tr></thead>
+                <tbody><tr><td><code>str</code></td><td><code>"Ana"</code></td><td>texto</td></tr><tr><td><code>int</code></td><td><code>24</code></td><td>inteiro</td></tr><tr><td><code>float</code></td><td><code>7.5</code></td><td>decimal</td></tr><tr><td><code>bool</code></td><td><code>True</code></td><td>condição</td></tr><tr><td><code>list</code></td><td><code>[8, 7, 9]</code></td><td>coleção</td></tr></tbody>
+              </table>
+              <pre><code>media = 7.5
+
+if media >= 7:
+    print("Aprovado")
+else:
+    print("Revisar conteúdo")</code></pre>
+              <div class="callout"><strong>Atribuição não é comparação.</strong> <code>=</code> associa um valor a uma variável. <code>==</code> compara dois valores.</div>
+              <h3>Função de média</h3>
+              <pre><code>def calcular_media(notas):
+    if not notas:
+        return 0
+    return sum(notas) / len(notas)
+
+
+entrada = input("Notas separadas por espaço: ")
+notas = [float(item) for item in entrada.split()]
+media = calcular_media(notas)
+print(f"Média: {media:.1f}")</code></pre>
+              <div class="check"><strong>Verificação</strong><p>Teste <code>8 7 9</code>, <code>10</code> e <code>5.5 6.5</code>. Depois acrescente uma decisão que classifique a média usando o limite 7.</p></div>
+            </article>
+
+            <article class="module" id="modulo-3" data-module="depuracao">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 03 · 25 min</span><h2>Ler erros e testar hipóteses</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="depuracao"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> usar a mensagem de erro para localizar, explicar e corrigir uma falha.</p>
+              <p><strong>Erro de sintaxe</strong> impede a leitura do código; <strong>erro de execução</strong> ocorre durante o uso; <strong>erro de lógica</strong> produz um resultado incorreto.</p>
+              <pre><code>try:
+    entrada = input("Notas separadas por espaço: ")
+    notas = [float(item) for item in entrada.split()]
+except ValueError:
+    print("Use apenas números separados por espaço.")</code></pre>
+              <h3>Rotina de depuração</h3>
+              <ol><li>Reproduza o erro.</li><li>Leia a última linha da mensagem.</li><li>Localize a primeira linha do seu arquivo citada.</li><li>Formule uma hipótese pequena.</li><li>Altere uma coisa por vez.</li><li>Execute novamente e reteste o que já funcionava.</li></ol>
+              <h3>Teste rápido da regra</h3>
+              <pre><code>assert calcular_media([6, 8]) == 7
+assert calcular_media([]) == 0</code></pre>
+              <div class="check"><strong>Verificação</strong><p>Digite <code>8 sete 9</code>, observe o <code>ValueError</code> e implemente uma mensagem compreensível para a pessoa usuária.</p></div>
+            </article>
+
+            <article class="module" id="modulo-4" data-module="git">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 04 · 45 min</span><h2>Registrar a evolução com Git</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="git"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> criar um repositório local e produzir um histórico legível com pelo menos dois commits.</p>
+              <div class="flow"><div>Pasta de trabalho<br><small>editar</small></div><div>Stage<br><small>git add</small></div><div>Histórico<br><small>git commit</small></div></div>
+              <pre><code>git config --global user.name "Seu Nome"
+git config --global user.email "seu-email@example.com"
+
+git init -b main
+git status
+git add programa.py
+git diff --staged
+git commit -m "Cria calculadora de média"
+git log --oneline</code></pre>
+              <p>Crie um <code>README.md</code> com objetivo e instruções de execução. Registre-o em outro commit:</p>
+              <pre><code>git add README.md
+git diff --staged
+git commit -m "Documenta como executar o programa"</code></pre>
+              <div class="callout"><strong>Commits são decisões editoriais.</strong> Prefira uma mudança coerente e uma mensagem descritiva. Nunca inclua senha, token, chave ou dado pessoal desnecessário.</div>
+              <div class="check"><strong>Verificação</strong><p><code>git status</code> mostra a pasta limpa? <code>git log --oneline --graph --decorate</code> mostra pelo menos dois commits?</p></div>
+            </article>
+
+            <article class="module" id="modulo-5" data-module="github">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 05 · 50 min</span><h2>Publicar e colaborar no GitHub</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="github"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> conectar um remoto, publicar uma branch e abrir um pull request verificável.</p>
+              <p><strong>Git</strong> registra versões localmente. <strong>GitHub</strong> hospeda repositórios Git e acrescenta colaboração, revisão, issues, Actions e Pages.</p>
+              <pre><code>git remote add origin https://github.com/SEU-USUARIO/projeto-media.git
+git remote -v
+git push -u origin main
+
+git switch -c feat/classificacao
+# edite e teste programa.py
+git add programa.py
+git commit -m "Adiciona classificação pela média"
+git push -u origin feat/classificacao</code></pre>
+              <h3>Descrição mínima do pull request</h3>
+              <pre><code>## Objetivo
+Mostrar uma orientação após o cálculo da média.
+
+## Mudanças
+- adiciona classificação com limite 7;
+- mantém o cálculo existente.
+
+## Como verifiquei
+- [x] média 8 mostra "aprovado";
+- [x] média 6 mostra "revisar conteúdo";
+- [x] entrada inválida continua tratada.</code></pre>
+              <table><thead><tr><th>Objeto</th><th>Pergunta</th></tr></thead><tbody><tr><td>Issue</td><td>Qual problema ou tarefa precisa de atenção?</td></tr><tr><td>Commit</td><td>Qual mudança coerente foi registrada?</td></tr><tr><td>Pull request</td><td>Esta sequência de mudanças deve entrar em <code>main</code>?</td></tr></tbody></table>
+              <div class="check"><strong>Verificação</strong><p>Seu GitHub mostra branch, commits e pull request? Outra pessoa conseguiria testar a mudança apenas pela descrição?</p></div>
+            </article>
+
+            <article class="module" id="modulo-6" data-module="seguranca">
+              <div class="module-top">
+                <div><span class="module-index">Módulo 06 · 35 min</span><h2>Resolver e proteger</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="seguranca"> Etapa concluída</label>
+              </div>
+              <p class="module-goal"><strong>Objetivo:</strong> resolver um conflito simples e trabalhar sem expor credenciais.</p>
+              <h3>Conflito é uma decisão, não um defeito</h3>
+              <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+conteúdo da branch atual
+&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+conteúdo da outra branch
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; outra-branch</code></pre>
+              <p>Leia as duas propostas, produza o resultado correto, remova todas as marcações, execute o programa e então registre a resolução.</p>
+              <pre><code>git add programa.py
+git commit -m "Resolve conflito na mensagem de resultado"</code></pre>
+              <h3>Autenticação atual</h3>
+              <p>O GitHub não aceita senha da conta para operações Git via HTTPS. Para iniciantes, prefira <code>gh auth login</code> com navegador ou Git Credential Manager. Use token pessoal apenas quando necessário, com prazo e permissões mínimas.</p>
+              <pre><code># .gitignore
+.env
+.venv/
+__pycache__/
+*.pyc</code></pre>
+              <ul><li>ative 2FA e guarde os códigos de recuperação;</li><li>nunca coloque token em código, README ou captura de tela;</li><li>revise <code>git diff --staged</code> antes do commit;</li><li>se um segredo for publicado, revogue-o imediatamente.</li></ul>
+              <div class="check"><strong>Verificação</strong><p>Execute <code>git status</code>, <code>git diff --staged</code> e <code>git remote -v</code>. Confirme que não há credenciais nem arquivos acidentais.</p></div>
+            </article>
+
+            <article class="module" id="projeto-final" data-module="projeto">
+              <div class="module-top">
+                <div><span class="module-index">Projeto final · 60–90 min</span><h2>Calculadora versionada</h2></div>
+                <label class="complete"><input type="checkbox" data-progress="projeto"> Projeto concluído</label>
+              </div>
+              <p class="module-goal"><strong>Entrega:</strong> programa documentado, testado, desenvolvido em branch e integrado por pull request.</p>
+              <pre><code>projeto-media/
+├── .gitignore
+├── README.md
+├── programa.py
+└── test_programa.py</code></pre>
+              <div class="rubric">
+                <div><strong>Funciona</strong><span>Três entradas válidas e uma inválida verificadas.</span></div>
+                <div><strong>É legível</strong><span>Nomes claros e funções com uma responsabilidade.</span></div>
+                <div><strong>É testável</strong><span>Cálculo separado da entrada e da saída.</span></div>
+                <div><strong>É versionado</strong><span>Commits pequenos e mensagens descritivas.</span></div>
+                <div><strong>É reproduzível</strong><span>README permite executar sem explicação oral.</span></div>
+                <div><strong>É seguro</strong><span>Nenhum segredo ou dado sensível no histórico.</span></div>
+              </div>
+              <details><summary>Ver versão integrada de referência</summary><div><pre><code>def calcular_media(notas):
+    if not notas:
+        return 0
+    return sum(notas) / len(notas)
+
+
+def classificar(media, limite=7):
+    return "aprovado" if media >= limite else "revisar conteúdo"
+
+
+try:
+    entrada = input("Notas separadas por espaço: ")
+    notas = [float(item) for item in entrada.split()]
+    media = calcular_media(notas)
+    print(f"Média: {media:.1f}")
+    print(f"Situação: {classificar(media)}")
+except ValueError:
+    print("Entrada inválida. Use apenas números separados por espaço.")</code></pre></div></details>
+              <details><summary>Ver testes mínimos</summary><div><pre><code>from programa import calcular_media, classificar
+
+assert calcular_media([6, 8]) == 7
+assert calcular_media([]) == 0
+assert classificar(7) == "aprovado"
+assert classificar(6.9) == "revisar conteúdo"</code></pre></div></details>
+              <div class="check"><strong>Autoavaliação</strong><p>Sem consultar: você explica o fluxo pasta → stage → commit, distingue pull de push, cria uma branch e mostra a outra pessoa onde estão as instruções de execução?</p></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reference" id="consulta">
+      <div class="shell">
+        <p class="kicker">Folha de consulta</p>
+        <h2>Comandos para lembrar o fluxo.</h2>
+        <p class="reference-lede">Use esta seção depois de compreender o modelo. A consulta rápida apoia a prática; não substitui a decisão sobre o que deve entrar em cada commit.</p>
+        <div class="reference-grid">
+          <article class="reference-card"><h3>Git local</h3><pre><code>git init -b main
+git status
+git diff
+git add arquivo.py
+git diff --staged
+git commit -m "Mensagem"
+git log --oneline --graph --decorate</code></pre></article>
+          <article class="reference-card"><h3>Branches e remoto</h3><pre><code>git switch -c feat/tarefa
+git switch main
+git merge nome-da-branch
+git remote -v
+git pull --ff-only origin main
+git push -u origin nome-da-branch</code></pre></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="resources">
+      <div class="shell resources-grid">
+        <div><p class="kicker">Próximos passos</p><h2>Aprofunde com fontes primárias.</h2></div>
+        <ul class="resource-list">
+          <li><a href="https://git-scm.com/book/pt-br/v2" target="_blank" rel="noopener noreferrer"><span>Pro Git em português<small>Fundamentos e referência do Git.</small></span><span>↗</span></a></li>
+          <li><a href="https://docs.github.com/pt" target="_blank" rel="noopener noreferrer"><span>Documentação do GitHub<small>Repositórios, pull requests, autenticação e segurança.</small></span><span>↗</span></a></li>
+          <li><a href="https://docs.python.org/pt-br/3/tutorial/" target="_blank" rel="noopener noreferrer"><span>Tutorial oficial do Python<small>Aprofundamento após esta introdução.</small></span><span>↗</span></a></li>
+          <li><a href="apostila.md"><span>Apostila completa em Markdown<small>Fonte pedagógica versionada e respostas comentadas.</small></span><span>→</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-layout">
+      <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">V</span><span class="brand-copy"><strong>VIA</strong><small>Vida Integrada e Autônoma</small></span></a>
+      <p>Dr Lucas HR — Médico Generalista (FMRP-USP)<br>CRM-SP: 226836 | CRM-MG: 109752</p>
+      <a href="../">Voltar ao VIA Hub →</a>
+    </div>
+    <div class="shell footer-base">Edição 1.0 · 18 jul. 2026 · Ciência e Tecnologia a serviço do Cuidado.</div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script>
+    const storageKey = "via-literacia-programacao-github:v1";
+    const checks = [...document.querySelectorAll("[data-progress]")];
+    const meter = document.querySelector("[data-meter]");
+    const progressCopy = document.querySelector("[data-progress-copy]");
+    const toast = document.querySelector("[data-toast]");
+
+    function loadProgress() {
+      try { return JSON.parse(localStorage.getItem(storageKey)) || {}; }
+      catch { return {}; }
+    }
+
+    function saveProgress() {
+      const progress = Object.fromEntries(checks.map((check) => [check.dataset.progress, check.checked]));
+      try { localStorage.setItem(storageKey, JSON.stringify(progress)); } catch {}
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const done = checks.filter((check) => check.checked).length;
+      const percent = Math.round((done / checks.length) * 100);
+      meter.style.width = `${percent}%`;
+      progressCopy.textContent = `${done} de ${checks.length} etapas concluídas · ${percent}%`;
+    }
+
+    const progress = loadProgress();
+    for (const check of checks) {
+      check.checked = Boolean(progress[check.dataset.progress]);
+      check.addEventListener("change", saveProgress);
+    }
+    updateProgress();
+
+    document.querySelector("[data-reset]")?.addEventListener("click", () => {
+      if (!window.confirm("Reiniciar todo o progresso desta trilha?")) return;
+      for (const check of checks) check.checked = false;
+      saveProgress();
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("is-visible"), 1600);
+    }
+
+    for (const pre of document.querySelectorAll("pre")) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-code";
+      button.textContent = "Copiar";
+      button.addEventListener("click", async () => {
+        const code = pre.querySelector("code")?.innerText || pre.innerText;
+        try {
+          await navigator.clipboard.writeText(code);
+          showToast("Código copiado");
+        } catch {
+          showToast("Selecione e copie o código");
+        }
+      });
+      pre.append(button);
+    }
+
+    const navLinks = [...document.querySelectorAll(".module-nav a")];
+    const sections = [...document.querySelectorAll("[data-module]")];
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        for (const link of navLinks) link.classList.toggle("is-active", link.hash === `#${visible.target.id}`);
+      }, { rootMargin: "-18% 0px -68%", threshold: [0, .2, .5] });
+      sections.forEach((section) => observer.observe(section));
+    }
+  </script>
+</body>
+</html>
