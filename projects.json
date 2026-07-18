@@ -108,6 +108,27 @@
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp"
     },
     {
+      "id": "via-literacia-programacao-github",
+      "name": "VIA Literacia — Programação, Git e GitHub",
+      "kicker": "Literacia digital · aprendizagem prática",
+      "categories": [
+        "educacao",
+        "sistemas"
+      ],
+      "status": "publicado",
+      "statusKey": "stable",
+      "featured": false,
+      "description": "Trilha introdutória em Python que conecta conceitos de programação a um projeto versionado com Git, publicado em branch e integrado por pull request.",
+      "tags": [
+        "Python",
+        "Git e GitHub",
+        "4–6 horas",
+        "progresso local"
+      ],
+      "url": "https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
+    },
+    {
       "id": "regulacao-inteligente",
       "name": "Regulação Inteligente do Cuidado",
       "kicker": "Sistemas de saúde · governança",
