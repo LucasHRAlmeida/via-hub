@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-Estar Multissensorial</title>
+    <meta name="description" content="Guia interativo de bem-estar que combina música, cores e aromas por estado de espírito — de relaxamento a sono profundo.">
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+  }
+}
+
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Custom Styles */
+.header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-card-border);
+    padding: var(--space-24) var(--space-16);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.header h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-8) 0;
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.header p {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-32) var(--space-16);
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: var(--space-32);
+}
+
+.intro-section h2 {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-12);
+}
+
+.intro-section .message {
+    background: var(--color-bg-3);
+    border: 1px solid var(--color-success);
+    border-radius: var(--radius-lg);
+    padding: var(--space-16);
+    margin: var(--space-16) auto;
+    max-width: 700px;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+}
+
+.intro-section .aviso {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-top: var(--space-12);
+}
+
+.states-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-20);
+    margin-bottom: var(--space-32);
+}
+
+.state-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-standard);
+    box-shadow: var(--shadow-sm);
+}
+
+.state-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+.state-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+}
+
+.color-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+}
+
+.state-card h3 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0;
+}
+
+.state-card p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    margin: 0 0 var(--space-12) 0;
+}
+
+.state-card-tags {
+    display: flex;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: var(--color-secondary);
+    padding: var(--space-4) var(--space-10);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.tag-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: var(--space-20);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+}
+
+.modal-header {
+    padding: var(--space-24);
+    border-bottom: 1px solid var(--color-card-border-inner);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-16);
+}
+
+.modal-title-section {
+    flex: 1;
+}
+
+.modal-title-section h2 {
+    font-size: var(--font-size-3xl);
+    color: var(--color-text);
+    margin: 0 0 var(--space-8) 0;
+}
+
+.modal-title-section p {
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.close-button {
+    background: var(--color-secondary);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--color-text);
+    transition: background var(--duration-fast) var(--ease-standard);
+    flex-shrink: 0;
+}
+
+.close-button:hover {
+    background: var(--color-secondary-hover);
+}
+
+.modal-body {
+    padding: var(--space-24);
+}
+
+.detail-section {
+    margin-bottom: var(--space-24);
+}
+
+.detail-section h3 {
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-16);
+}
+
+.detail-item {
+    background: var(--color-background);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-card-border);
+}
+
+.detail-item h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-8) 0;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.05em;
+}
+
+.detail-item p {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.color-display {
+    width: 100%;
+    height: 80px;
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-8);
+    box-shadow: var(--shadow-sm);
+}
+
+.combined-effect {
+    background: var(--color-bg-5);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border-left: 4px solid var(--color-primary);
+}
+
+.combined-effect p {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.references {
+    background: var(--color-background);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-card-border);
+}
+
+.references h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12) 0;
+}
+
+.references ul {
+    margin: 0;
+    padding-left: var(--space-20);
+    color: var(--color-text-secondary);
+}
+
+.references li {
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+}
+
+.spotify-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    background: #1DB954;
+    color: white;
+    padding: var(--space-12) var(--space-20);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--duration-fast) var(--ease-standard);
+    border: none;
+    font-size: var(--font-size-base);
+}
+
+.spotify-button:hover {
+    background: #1aa34a;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.spotify-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.how-to-use {
+    background: var(--color-bg-1);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-primary);
+}
+
+.how-to-use h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-12) 0;
+}
+
+.how-to-use ul {
+    margin: 0;
+    padding-left: var(--space-20);
+    color: var(--color-text);
+}
+
+.how-to-use li {
+    margin-bottom: var(--space-8);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .states-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        margin: var(--space-16);
+    }
+
+    .header h1 {
+        font-size: var(--font-size-3xl);
+    }
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🌿 Bem-Estar Multissensorial</h1>
+        <p>Harmonia entre música, cores e aromas para o seu equilíbrio emocional</p>
+    </header>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Escolha seu Estado de Espírito</h2>
+            <div class="message">
+                <strong>💚 Intervenções inócuas, sensíveis e potencialmente benéficas ao bem-estar</strong>
+            </div>
+            <p class="aviso">Estas recomendações baseiam-se em evidências neurocientíficas e culturais contemporâneas. Não substituem orientação profissional.</p>
+        </div>
+
+        <div class="states-grid" id="statesGrid"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                </div>
+                <button class="close-button" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const estados = [
+            {
+                id: 1,
+                nome: "Relaxamento",
+                descricao: "Reduz ansiedade, induz calma",
+                cor_hex: "#4A90E2",
+                cor_nome: "Azul Céu",
+                aroma: "Lavanda",
+                aroma_descricao: "Efeitos calmantes comprovados",
+                playlist: "Peaceful Piano",
+                spotify_url: "https://open.spotify.com/search/peaceful%20piano",
+                efeito_combinado: "Sinergia calmante - notas musicais baixas, tonalidade azul e aroma lavanda ativam sistema parassimpático",
+                referencias: [
+                    "Estudos sobre cores e ansiedade (Valdez &amp; Mehrabian, 1994)",
+                    "Efeitos da lavanda em cortisol sérico (Lillehei et al., 2016)",
+                    "Música e ativação parassimpática (Thoma et al., 2013)"
+                ],
+                como_usar: [
+                    "Reproduza a playlist em volume baixo a moderado",
+                    "Utilize iluminação azul suave ou objetos decorativos azuis",
+                    "Difunda óleo essencial de lavanda ou use sachês aromáticos",
+                    "Pratique por 15-30 minutos em ambiente tranquilo"
+                ]
+            },
+            {
+                id: 2,
+                nome: "Foco e Produtividade",
+                descricao: "Estimula criatividade e concentração",
+                cor_hex: "#FF8C42",
+                cor_nome: "Laranja Vibrante",
+                aroma: "Hortelã",
+                aroma_descricao: "Aumenta alerta mental",
+                playlist: "Deep Focus",
+                spotify_url: "https://open.spotify.com/search/deep%20focus",
+                efeito_combinado: "Combinação que estimula córtex pré-frontal para melhorar atenção e desempenho cognitivo",
+                referencias: [
+                    "Laranja e performance cognitiva (Kaya &amp; Epps, 2004)",
+                    "Hortelã e função executiva (Moss et al., 2008)",
+                    "Música instrumental e foco (Thoma et al., 2013)"
+                ],
+                como_usar: [
+                    "Use a playlist durante sessões de trabalho ou estudo",
+                    "Adicione elementos laranja em seu espaço de trabalho",
+                    "Inale óleo de hortelã ou mantenha folhas frescas próximas",
+                    "Ideal para blocos de 90 minutos com pausas curtas"
+                ]
+            },
+            {
+                id: 3,
+                nome: "Alegria e Motivação",
+                descricao: "Ativa centros de recompensa cerebral",
+                cor_hex: "#FFD700",
+                cor_nome: "Amarelo Ouro",
+                aroma: "Laranja Doce",
+                aroma_descricao: "Induz leveza e otimismo",
+                playlist: "Good as Hell",
+                spotify_url: "https://open.spotify.com/search/happy%20hits",
+                efeito_combinado: "Estímulo multissensorial que aumenta dopamina e bem-estar geral mediante reforço psicomotor",
+                referencias: [
+                    "Amarelo e ativação dopaminérgica (Palmer &amp; Schloss, 2010)",
+                    "Citrus e modulação do humor (Watanabe et al., 2015)",
+                    "Música upbeat e serotonina (Evers &amp; Suhr, 2000)"
+                ],
+                como_usar: [
+                    "Ouça pela manhã ou quando precisar de energia positiva",
+                    "Vista cores amarelas ou adicione flores amarelas ao ambiente",
+                    "Difunda óleo essencial de laranja doce",
+                    "Combine com movimento corporal leve ou dança"
+                ]
+            },
+            {
+                id: 4,
+                nome: "Introspecção e Reflexão",
+                descricao: "Favorece introspecção e espiritualidade",
+                cor_hex: "#9B59B6",
+                cor_nome: "Roxo Profundo",
+                aroma: "Incenso",
+                aroma_descricao: "Promove meditação e reflexão",
+                playlist: "Lo-Fi Beats",
+                spotify_url: "https://open.spotify.com/search/lofi%20beats",
+                efeito_combinado: "Ambiente propício à neuroplasticidade e integração emocional através de ritmos lentos",
+                referencias: [
+                    "Roxo e introspecção (Valdez &amp; Mehrabian, 1994)",
+                    "Incenso e mindfulness (Kakadu et al., 2012)",
+                    "Lo-fi beats e coerência neural (Chanda &amp; Levitin, 2013)"
+                ],
+                como_usar: [
+                    "Use durante meditação, journaling ou práticas contemplativas",
+                    "Crie ambiente com iluminação roxa suave",
+                    "Acenda incenso natural ou use óleos aromáticos",
+                    "Pratique em momentos de autorreflexão, preferencialmente sozinho"
+                ]
+            },
+            {
+                id: 5,
+                nome: "Energia e Vitalidade",
+                descricao: "Ativa sistema simpático aumentando adrenalina",
+                cor_hex: "#E74C3C",
+                cor_nome: "Vermelho Dinâmico",
+                aroma: "Gengibre",
+                aroma_descricao: "Estimula energia física",
+                playlist: "Workout Pump",
+                spotify_url: "https://open.spotify.com/search/workout%20pump",
+                efeito_combinado: "Ativação completa do sistema cardiovascular mediante estímulo psicossensorial sincronizado",
+                referencias: [
+                    "Vermelho e ativação simpática (Mahnke, 1996)",
+                    "Gengibre e termogênese (Janssen et al., 2013)",
+                    "Música de alta intensidade e performance (Karageorghis &amp; Priest, 2012)"
+                ],
+                como_usar: [
+                    "Use durante exercícios físicos ou atividades intensas",
+                    "Vista roupas vermelhas ou use acessórios desta cor",
+                    "Inale óleo de gengibre ou consuma chá de gengibre",
+                    "Ideal antes ou durante atividades que exigem energia física"
+                ]
+            },
+            {
+                id: 6,
+                nome: "Sono Profundo",
+                descricao: "Sinaliza redução de luz e repouso",
+                cor_hex: "#2C3E50",
+                cor_nome: "Índigo Escuro",
+                aroma: "Camomila",
+                aroma_descricao: "Induz produção de melatonina",
+                playlist: "Sleep Sounds",
+                spotify_url: "https://open.spotify.com/search/sleep%20sounds",
+                efeito_combinado: "Sincronização circadiana completa para descanso profundo mediante ambientação multissensorial",
+                referencias: [
+                    "Azul escuro e melatonina (Chang et al., 2015)",
+                    "Camomila e qualidade do sono (Zanoli et al., 2009)",
+                    "Frequências baixas e ondas delta (Noureddine et al., 2007)"
+                ],
+                como_usar: [
+                    "Use 30-60 minutos antes de dormir",
+                    "Reduza iluminação geral e use tons azul escuro/índigo",
+                    "Prepare chá de camomila ou difunda seu óleo essencial",
+                    "Combine com rotina de higiene do sono consistente"
+                ]
+            }
+        ];
+
+        function renderStates() {
+            const grid = document.getElementById('statesGrid');
+            grid.innerHTML = estados.map(estado => `
+                <div class="state-card" onclick="openModal(${estado.id})">
+                    <div class="state-card-header">
+                        <div class="color-preview" style="background-color: ${estado.cor_hex};"></div>
+                        <h3>${estado.nome}</h3>
+                    </div>
+                    <p>${estado.descricao}</p>
+                    <div class="state-card-tags">
+                        <span class="tag">
+                            <svg class="tag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            ${estado.cor_nome}
+                        </span>
+                        <span class="tag">
+                            <svg class="tag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                            ${estado.aroma}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const estado = estados.find(e => e.id === id);
+            if (!estado) return;
+
+            document.getElementById('modalTitle').textContent = estado.nome;
+            document.getElementById('modalDescription').textContent = estado.descricao;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <h4>🎨 Cromoterapia</h4>
+                            <div class="color-display" style="background-color: ${estado.cor_hex};"></div>
+                            <p><strong>${estado.cor_nome}</strong></p>
+                            <p>${estado.descricao}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>🌸 Aromaterapia</h4>
+                            <p><strong>${estado.aroma}</strong></p>
+                            <p>${estado.aroma_descricao}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        Playlist Musical
+                    </h3>
+                    <p><strong>${estado.playlist}</strong></p>
+                    <a href="${estado.spotify_url}" target="_blank" class="spotify-button">
+                        <svg class="spotify-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        Explorar no Spotify
+                    </a>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <line x1="9" y1="15" x2="15" y2="15"></line>
+                        </svg>
+                        Coerência Interna &amp; Efeito Combinado
+                    </h3>
+                    <div class="combined-effect">
+                        <p>${estado.efeito_combinado}</p>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        Referências Científicas
+                    </h3>
+                    <div class="references">
+                        <ul>
+                            ${estado.referencias.map(ref => `<li>${ref}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Como Usar
+                    </h3>
+                    <div class="how-to-use">
+                        <ul>
+                            ${estado.como_usar.map(uso => `<li>${uso}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        renderStates();
+    </script>
+</body>
+</html>

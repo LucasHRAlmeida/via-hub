@@ -7,6 +7,7 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
 - VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 - VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
+- Bem-Estar Multissensorial: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
 
 ## Estrutura
 
@@ -19,6 +20,8 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - `via-literacia-programacao-github/index.html` — trilha web introdutória com progresso local.
 - `via-literacia-programacao-github/apostila.md` — fonte pedagógica versionada de programação, Git e GitHub.
 - `via-literacia-programacao-github/README.md` — documentação editorial e técnica do módulo.
+- `bem-estar-multissensorial/index.html` — guia multissensorial de bem-estar (música, cores e aromas).
+- `bem-estar-multissensorial/README.md` — escopo, limitações e documentação do módulo.
 - `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
 
 ## Princípios editoriais

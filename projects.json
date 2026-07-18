@@ -129,6 +129,26 @@
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
     },
     {
+      "id": "bem-estar-multissensorial",
+      "name": "Bem-Estar Multissensorial",
+      "kicker": "Bem-estar · autocuidado",
+      "categories": [
+        "saude-publica"
+      ],
+      "status": "publicado",
+      "statusKey": "stable",
+      "featured": false,
+      "description": "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui orientação profissional.",
+      "tags": [
+        "cromoterapia",
+        "aromaterapia",
+        "playlists",
+        "6 estados"
+      ],
+      "url": "https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial"
+    },
+    {
       "id": "regulacao-inteligente",
       "name": "Regulação Inteligente do Cuidado",
       "kicker": "Sistemas de saúde · governança",
