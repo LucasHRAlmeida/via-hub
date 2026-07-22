@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saúde na Última Semana — Iniciativa VIA | Dr Lucas HR</title>
+  <meta name="description" content="Boletim de utilidade pública da Iniciativa VIA: prevenção e vigilância traduzidas para o público geral, com o sarampo como caso de comunicação de risco. Educação em saúde, não substitui atendimento profissional.">
+  <meta name="theme-color" content="#0C3E67">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Saúde na Última Semana — Iniciativa VIA">
+  <meta property="og:description" content="Utilidade pública e educação em saúde: sarampo, vacinação, arboviroses e vírus respiratórios, com fontes oficiais e limites declarados.">
+  <meta property="og:url" content="https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/">
+  <link rel="canonical" href="https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/">
+  <style>
+    :root {
+      --navy-950: #062a47;
+      --navy-900: #0c3e67;
+      --navy-800: #12527f;
+      --navy-700: #196793;
+      --teal-500: #19a6c9;
+      --teal-100: #dff5fa;
+      --green-500: #2eaf53;
+      --green-600: #218c42;
+      --green-100: #e6f6ea;
+      --amber-500: #d89a2b;
+      --ink: #122331;
+      --muted: #526879;
+      --line: #d7e1e8;
+      --line-strong: #b8c8d3;
+      --paper: #ffffff;
+      --wash: #f3f7f9;
+      --wash-blue: #edf5f8;
+      --shadow: 0 24px 60px rgba(6, 42, 71, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 10px;
+      --shell: 1120px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-h) + 24px);
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .shell {
+      width: min(calc(100% - 48px), var(--shell));
+      margin-inline: auto;
+    }
+
+    .section { padding: 96px 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 999;
+      top: 12px; left: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--navy-900);
+      font-weight: 700;
+      text-decoration: none;
+      transform: translateY(-140%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    :focus-visible {
+      outline: 3px solid rgba(25, 166, 201, 0.55);
+      outline-offset: 3px;
+    }
+
+    /* Header */
+    .site-header {
+      position: fixed;
+      z-index: 100;
+      inset: 0 0 auto;
+      height: var(--header-h);
+      color: var(--paper);
+      transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--navy-950);
+      box-shadow: 0 1px 0 rgba(12, 62, 103, 0.1), 0 10px 32px rgba(6, 42, 71, 0.08);
+      backdrop-filter: blur(18px);
+    }
+    .header-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+      color: inherit;
+      text-decoration: none;
+    }
+    .brand-mark {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 42px; height: 42px;
+      border: 1px solid currentColor;
+      border-radius: 12px 4px 12px 4px;
+      overflow: hidden;
+    }
+    .brand-mark::before, .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      opacity: 0.24;
+    }
+    .brand-mark::before { width: 1px; height: 150%; transform: rotate(35deg); }
+    .brand-mark::after { width: 150%; height: 1px; transform: rotate(-20deg); }
+    .brand-mark span {
+      position: relative;
+      z-index: 1;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.08em;
+    }
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+    .brand-copy strong { font-size: 16px; letter-spacing: 0.18em; }
+    .brand-copy small {
+      margin-top: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.055em;
+      opacity: 0.72;
+    }
+
+    .header-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      padding: 10px 15px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      color: inherit;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 750;
+      transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+    .header-back:hover { color: var(--navy-950); background: var(--paper); border-color: var(--paper); }
+    .site-header.is-scrolled .header-back:hover { color: var(--paper); background: var(--navy-900); border-color: var(--navy-900); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 150px 0 88px;
+      overflow: hidden;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 84% 18%, rgba(25, 166, 201, 0.34), transparent 30%),
+        radial-gradient(circle at 66% 88%, rgba(46, 175, 83, 0.16), transparent 32%),
+        linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 58%, #0b496e 100%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to right, transparent 2%, black 45%, black 100%);
+    }
+    .hero-inner { position: relative; }
+    .eyebrow, .section-kicker {
+      margin: 0 0 18px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #c9edf5;
+    }
+    .eyebrow span { width: 26px; height: 2px; background: var(--green-500); }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+      font-weight: 760;
+      letter-spacing: -0.055em;
+      line-height: 1.02;
+    }
+    .hero h1 em {
+      color: #c8edf4;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+    .hero-lede {
+      max-width: 660px;
+      margin: 28px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .hero-meta li {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero-meta li::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal-500);
+    }
+
+    .scope-callout {
+      position: relative;
+      max-width: 720px;
+      margin: 34px 0 0;
+      padding: 20px 22px 20px 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(6, 42, 71, 0.42);
+      backdrop-filter: blur(8px);
+    }
+    .scope-callout::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 16px; bottom: 16px;
+      width: 3px;
+      border-radius: 3px;
+      background: var(--green-500);
+    }
+    .scope-callout strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #cdeff6;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .scope-callout p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Section heading */
+    .section-kicker { color: var(--teal-500); }
+    .section-heading { max-width: 760px; margin-bottom: 46px; }
+    .section-heading h2 {
+      margin: 0;
+      color: var(--navy-950);
+      font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+      font-weight: 740;
+      letter-spacing: -0.045em;
+      line-height: 1.1;
+    }
+    .section-heading p {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    /* Focus (measles) section */
+    .focus { background: var(--paper); border-bottom: 1px solid var(--line); }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .info-card {
+      position: relative;
+      padding: 26px 26px 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--paper);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(25, 166, 201, 0.6);
+      box-shadow: 0 18px 42px rgba(6, 42, 71, 0.08);
+    }
+    .info-card .card-tag {
+      display: inline-block;
+      margin: 0 0 12px;
+      color: var(--green-600);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .info-card h3 {
+      margin: 0 0 12px;
+      color: var(--navy-950);
+      font-size: 21px;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .info-card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+    .info-card ul {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .info-card li {
+      position: relative;
+      padding: 6px 0 6px 24px;
+      color: var(--ink);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .info-card li:first-child { border-top: 0; }
+    .info-card li::before {
+      content: "";
+      position: absolute;
+      left: 2px; top: 13px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal-500);
+    }
+    .info-card strong { color: var(--navy-900); }
+
+    .card-full {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 28px;
+      align-items: center;
+      padding: 30px 32px;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 92% 8%, rgba(25, 166, 201, 0.3), transparent 38%),
+        var(--navy-950);
+      border-color: var(--navy-950);
+    }
+    .card-full:hover { transform: none; }
+    .card-full h3 { color: var(--paper); font-size: 24px; }
+    .card-full p { color: rgba(255, 255, 255, 0.76); font-size: 15px; }
+    .card-full .card-tag { color: #a8e0ec; }
+    .card-full ul { margin: 0; }
+    .card-full li {
+      color: rgba(255, 255, 255, 0.88);
+      border-top-color: rgba(255, 255, 255, 0.14);
+    }
+    .card-full li::before { background: var(--green-500); }
+    .card-full strong { color: var(--paper); }
+
+    /* Care note */
+    .care-note {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px 26px;
+      margin-top: 24px;
+      padding: 22px 26px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--amber-500);
+      border-radius: var(--radius-md);
+      background: var(--wash);
+    }
+    .care-note .care-body { flex: 1 1 340px; }
+    .care-note h3 {
+      margin: 0 0 6px;
+      color: var(--navy-950);
+      font-size: 16px;
+    }
+    .care-note p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 11px 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary {
+      color: var(--paper);
+      background: var(--navy-900);
+      box-shadow: 0 12px 30px rgba(6, 42, 71, 0.18);
+    }
+    .button-primary:hover { background: var(--navy-950); box-shadow: 0 16px 36px rgba(6, 42, 71, 0.24); }
+    .button-teal {
+      color: var(--paper);
+      background: var(--teal-500);
+      box-shadow: 0 12px 30px rgba(25, 166, 201, 0.24);
+    }
+    .button-teal:hover { background: #148aa8; }
+
+    /* Topics grid */
+    .topics { background: var(--wash); }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .topic-card {
+      display: flex;
+      flex-direction: column;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--paper);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .topic-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-strong);
+      box-shadow: 0 20px 46px rgba(6, 42, 71, 0.1);
+    }
+    .topic-icon {
+      display: grid;
+      place-items: center;
+      width: 46px; height: 46px;
+      margin-bottom: 18px;
+      border-radius: 12px 4px 12px 4px;
+      background: var(--wash-blue);
+      color: var(--navy-800);
+    }
+    .topic-icon svg { width: 24px; height: 24px; }
+    .topic-card .card-tag {
+      display: block;
+      margin: 0 0 8px;
+      color: var(--teal-500);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .topic-card h3 {
+      margin: 0 0 10px;
+      color: var(--navy-950);
+      font-size: 19px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .topic-card p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+    .topic-card .topic-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: auto;
+      color: var(--navy-900);
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+    .topic-card .topic-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+    /* Checklist */
+    .checklist { background: var(--navy-950); color: var(--paper); }
+    .checklist .section-heading h2 { color: var(--paper); }
+    .checklist .section-heading p { color: rgba(255, 255, 255, 0.62); }
+    .checklist .section-kicker { color: #8dd9e9; }
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .check-item {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 16px;
+      padding: 22px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+    }
+    .check-item .check-mark {
+      display: grid;
+      place-items: center;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(46, 175, 83, 0.16);
+      color: var(--green-500);
+    }
+    .check-item .check-mark svg { width: 20px; height: 20px; }
+    .check-item h3 { margin: 0 0 5px; color: var(--paper); font-size: 16px; }
+    .check-item p { margin: 0; color: rgba(255, 255, 255, 0.6); font-size: 13.5px; }
+
+    /* Sources */
+    .sources { background: var(--paper); }
+    .sources-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 56px;
+      align-items: start;
+    }
+    .sources-note {
+      padding: 24px 26px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--wash);
+    }
+    .sources-note span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--green-600);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .sources-note strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--navy-950);
+      font-size: 17px;
+      line-height: 1.4;
+    }
+    .sources-note p { margin: 0; color: var(--muted); font-size: 14px; }
+    .source-list { margin: 0; padding: 0; list-style: none; }
+    .source-list li { border-top: 1px solid var(--line); }
+    .source-list li:first-child { border-top: 0; }
+    .source-list a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 4px;
+      color: var(--navy-950);
+      text-decoration: none;
+      transition: color 0.16s ease;
+    }
+    .source-list a:hover { color: var(--teal-500); }
+    .source-list .source-name { font-size: 15px; font-weight: 750; }
+    .source-list .source-desc {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 400;
+    }
+    .source-list .source-arrow { color: var(--teal-500); font-weight: 800; flex-shrink: 0; }
+
+    /* Footer */
+    .site-footer {
+      padding: 60px 0 24px;
+      color: rgba(255, 255, 255, 0.7);
+      background: #051f34;
+    }
+    .footer-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      align-items: start;
+      gap: 40px;
+    }
+    .footer-brand { color: var(--paper); margin-bottom: 14px; }
+    .footer-col p { margin: 0 0 4px; font-size: 11.5px; line-height: 1.7; }
+    .footer-col p strong { color: var(--paper); }
+    .footer-col .footer-title {
+      margin-bottom: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .footer-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #9edce8;
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+    .footer-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .footer-disclaimer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .footer-base {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 22px;
+      color: rgba(255, 255, 255, 0.36);
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .card-full { grid-template-columns: 1fr; gap: 20px; }
+      .topic-grid { grid-template-columns: 1fr; }
+      .sources-layout { grid-template-columns: 1fr; gap: 32px; }
+      .footer-layout { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      :root { --header-h: 64px; }
+      .shell { width: min(calc(100% - 32px), var(--shell)); }
+      .section { padding: 68px 0; }
+      .hero { padding: 120px 0 66px; }
+      .brand-copy small { display: none; }
+      .card-grid, .check-grid { grid-template-columns: 1fr; }
+      .footer-layout { grid-template-columns: 1fr; gap: 28px; }
+      .footer-base { flex-direction: column; gap: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header" data-header>
+    <div class="shell header-inner">
+      <a class="brand" href="https://lucashralmeida.github.io/via-hub/" aria-label="Iniciativa VIA — início">
+        <span class="brand-mark" aria-hidden="true"><span>V</span></span>
+        <span class="brand-copy">
+          <strong>VIA</strong>
+          <small>Vida Integrada e Autônoma</small>
+        </span>
+      </a>
+      <a class="header-back" href="https://lucashralmeida.github.io/via-hub/">
+        <span aria-hidden="true">←</span> Voltar ao hub
+      </a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="shell hero-inner">
+        <p class="eyebrow"><span></span> Saúde pública · Comunicação de risco</p>
+        <h1>Saúde na Última Semana</h1>
+        <p class="hero-lede">Boletim de <strong>utilidade pública</strong> da Iniciativa VIA. Traduzimos temas de vigilância e prevenção para o público geral — com o <em>sarampo</em> como caso de comunicação de risco — em linguagem clara, com escopo explícito e fontes oficiais.</p>
+        <ul class="hero-meta">
+          <li>Edição de julho de 2026</li>
+          <li>Educação em saúde</li>
+          <li>Brasil</li>
+        </ul>
+        <div class="scope-callout">
+          <strong>O que este boletim é — e o que não é</strong>
+          <p>É material educativo para orientar decisões cotidianas de prevenção. <strong>Não é</strong> triagem, diagnóstico nem fonte de dados epidemiológicos ao vivo. Diante de sintomas, procure uma unidade de saúde; para números atualizados, consulte as fontes oficiais indicadas ao final.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus section" id="sarampo" aria-labelledby="sarampo-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">01 · Em foco</p>
+          <h2 id="sarampo-titulo">Sarampo: por que uma doença evitável ainda merece atenção</h2>
+          <p>O sarampo é um dos vírus mais contagiosos que se conhece. Ele volta a circular sempre que a cobertura vacinal cai — por isso funciona tão bem como caso de estudo de comunicação de risco: a prevenção é simples, gratuita e depende de todos.</p>
+        </div>
+
+        <div class="card-grid">
+          <article class="info-card">
+            <span class="card-tag">O que é</span>
+            <h3>Um vírus de altíssima transmissão</h3>
+            <p>Transmite-se pelo ar, por gotículas e aerossóis que permanecem suspensos por até cerca de duas horas em ambientes fechados.</p>
+            <ul>
+              <li>Uma pessoa não imunizada pode contagiar, em média, <strong>12 a 18 outras</strong> (R₀).</li>
+              <li>O período de incubação costuma ser de <strong>10 a 14 dias</strong>.</li>
+              <li>A pessoa transmite <strong>antes mesmo</strong> de a manifestação de pele aparecer.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <span class="card-tag">Sinais</span>
+            <h3>Como o quadro costuma se apresentar</h3>
+            <p>A combinação clássica é febre alta seguida de manchas na pele, acompanhada dos chamados “três C”.</p>
+            <ul>
+              <li><strong>Tosse, coriza e conjuntivite</strong> (olhos vermelhos) com febre.</li>
+              <li>Manchas vermelhas que surgem no rosto e <strong>descem pelo corpo</strong>.</li>
+              <li>Sinais de alerta: falta de ar, sonolência importante, desidratação.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <span class="card-tag">Prevenção</span>
+            <h3>Duas doses resolvem</h3>
+            <p>A vacina tríplice viral (sarampo, caxumba e rubéola) é <strong>gratuita no SUS</strong> e altamente eficaz.</p>
+            <ul>
+              <li><strong>Duas doses</strong> conferem cerca de <strong>97% de proteção</strong>.</li>
+              <li>No calendário infantil: 1ª dose aos 12 meses, 2ª aos 15 meses.</li>
+              <li>Adultos sem comprovação devem verificar a caderneta na unidade de saúde.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <span class="card-tag">Contexto</span>
+            <h3>Eliminação conquistada, atenção mantida</h3>
+            <p>O Brasil recuperou em 2024 o certificado de país livre da circulação do sarampo. Manter esse status depende de cobertura vacinal alta e constante.</p>
+            <ul>
+              <li>É preciso cerca de <strong>95% de cobertura</strong> para bloquear a circulação.</li>
+              <li>Casos importados ainda ocorrem e podem reacender surtos onde há bolsões não vacinados.</li>
+              <li>Prevenir é responsabilidade coletiva: protege quem não pode se vacinar.</li>
+            </ul>
+          </article>
+
+          <article class="info-card card-full">
+            <div>
+              <span class="card-tag">Quem corre mais risco</span>
+              <h3>A vacinação protege os mais vulneráveis</h3>
+              <p>As complicações são mais graves em grupos que dependem da imunidade coletiva — a chamada proteção de rebanho.</p>
+            </div>
+            <ul>
+              <li>Bebês com menos de 1 ano, ainda sem idade para a 1ª dose.</li>
+              <li>Gestantes e pessoas com imunidade comprometida.</li>
+              <li>Complicações possíveis: pneumonia, otite e, mais raramente, encefalite.</li>
+              <li>Cada pessoa vacinada reduz a chance de o vírus chegar a esses grupos.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="care-note">
+          <div class="care-body">
+            <h3>Quando procurar atendimento</h3>
+            <p>Febre com manchas na pele, especialmente após contato com caso suspeito ou viagem, merece avaliação. Ligue antes para a unidade e evite exposição a outras pessoas no trajeto.</p>
+          </div>
+          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sarampo" target="_blank" rel="noopener noreferrer">Orientações do Ministério da Saúde <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="topics section" id="questoes" aria-labelledby="questoes-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">02 · Também nesta semana</p>
+          <h2 id="questoes-titulo">Outras questões de saúde em pauta</h2>
+          <p>Temas de prevenção que acompanham o calendário brasileiro. Orientações gerais e consolidadas — confira sempre a recomendação vigente na sua região.</p>
+        </div>
+
+        <div class="topic-grid">
+          <article class="topic-card">
+            <span class="topic-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12l2 2 4-4"></path>
+                <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"></path>
+              </svg>
+            </span>
+            <span class="card-tag">Vacinação</span>
+            <h3>Caderneta em dia, sempre</h3>
+            <p>A carteira de vacinação não é só das crianças. Adultos e idosos também têm doses e reforços a manter — inclusive contra sarampo, febre amarela, hepatite B, dT e outras.</p>
+            <a class="topic-link" href="https://www.gov.br/saude/pt-br/vacinacao" target="_blank" rel="noopener noreferrer">Calendário nacional de vacinação <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="topic-card">
+            <span class="topic-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C8 7 6 10 6 14a6 6 0 0 0 12 0c0-4-2-7-6-12z"></path>
+              </svg>
+            </span>
+            <span class="card-tag">Arboviroses</span>
+            <h3>Dengue e o combate ao mosquito</h3>
+            <p>A prevenção segue sendo eliminar criadouros do <em>Aedes aegypti</em>: água parada em vasos, calhas e recipientes. Há vacina contra a dengue disponível no SUS para faixas etárias definidas.</p>
+            <a class="topic-link" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue" target="_blank" rel="noopener noreferrer">Prevenção da dengue <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="topic-card">
+            <span class="topic-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 12a6 6 0 0 1 12 0v0a4 4 0 0 1-4 4h-1"></path>
+                <path d="M12 16v4"></path>
+                <path d="M9 20h6"></path>
+              </svg>
+            </span>
+            <span class="card-tag">Inverno</span>
+            <h3>Vírus respiratórios da estação</h3>
+            <p>No inverno circulam mais influenza, covid-19 e o vírus sincicial respiratório. Vacinas atualizadas, ambientes ventilados e etiqueta respiratória reduzem a transmissão.</p>
+            <a class="topic-link" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gripe-influenza" target="_blank" rel="noopener noreferrer">Sobre a gripe e a vacina <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="checklist section" id="acoes" aria-labelledby="acoes-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">03 · Ação prática</p>
+          <h2 id="acoes-titulo">O que fazer esta semana</h2>
+          <p>Quatro atitudes de baixo custo e alto retorno, que qualquer pessoa pode adotar sem sair da rotina.</p>
+        </div>
+
+        <div class="check-grid">
+          <div class="check-item">
+            <span class="check-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div>
+              <h3>Confira a caderneta de vacinação</h3>
+              <p>Sua e da família. Doses atrasadas de tríplice viral e outras podem ser atualizadas gratuitamente na unidade de saúde.</p>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <span class="check-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div>
+              <h3>Elimine água parada</h3>
+              <p>Dez minutos por semana checando vasos, garrafas, calhas e caixas d'água cortam os criadouros do mosquito da dengue.</p>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <span class="check-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div>
+              <h3>Cuide da etiqueta respiratória</h3>
+              <p>Ventile ambientes, higienize as mãos e cubra tosse e espirro. Com sintomas respiratórios, evite aglomerações.</p>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <span class="check-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div>
+              <h3>Busque a fonte oficial</h3>
+              <p>Antes de compartilhar um alerta de saúde, confirme na fonte oficial. Boato circula mais rápido que vírus — e desorienta a prevenção.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sources section" id="fontes" aria-labelledby="fontes-titulo">
+      <div class="shell">
+        <div class="sources-layout">
+          <div>
+            <p class="section-kicker">04 · Transparência</p>
+            <div class="sources-note">
+              <span>Princípio editorial</span>
+              <strong>A fonte não é a ferramenta.</strong>
+              <p>Este boletim organiza e traduz orientações de prevenção; ele não gera dados. Números epidemiológicos mudam a cada semana e devem ser conferidos diretamente nas instituições responsáveis. Onde citamos ordens de grandeza, elas são consolidadas na literatura e servem para explicar o mecanismo, não para reportar a situação atual.</p>
+            </div>
+          </div>
+
+          <div>
+            <h2 id="fontes-titulo" class="sr-only">Fontes oficiais</h2>
+            <ul class="source-list">
+              <li>
+                <a href="https://www.gov.br/saude/" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Ministério da Saúde</span><span class="source-desc">Vacinação, boletins e orientações oficiais do SUS</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.paho.org/pt/brasil" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">OPAS/OMS Brasil</span><span class="source-desc">Vigilância regional e certificação de eliminação</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.who.int/health-topics/measles" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Organização Mundial da Saúde</span><span class="source-desc">Panorama global do sarampo e imunização</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.fiocruz.br/" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Fiocruz</span><span class="source-desc">Ciência, pesquisa e educação em saúde pública</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-layout">
+        <div>
+          <div class="brand footer-brand">
+            <span class="brand-mark" aria-hidden="true"><span>V</span></span>
+            <span class="brand-copy"><strong>VIA</strong><small>Vida Integrada e Autônoma</small></span>
+          </div>
+          <p>Ciência e Tecnologia a serviço do Cuidado.</p>
+          <a class="footer-link" href="https://lucashralmeida.github.io/via-hub/">Conheça a Iniciativa VIA →</a>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-title">Direção clínica</p>
+          <p><strong>Dr Lucas HR</strong></p>
+          <p>Médico Generalista (FMRP-USP)</p>
+          <p>CRM-SP: 226836 | CRM-MG: 109752</p>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-title">Este boletim</p>
+          <p>Utilidade pública e educação em saúde.</p>
+          <a class="footer-link" href="https://github.com/LucasHRAlmeida/via-hub/tree/main/sarampo-alertas-2026" target="_blank" rel="noopener noreferrer">Código e versões ↗</a>
+        </div>
+      </div>
+
+      <p class="footer-disclaimer">Conteúdo educativo, sem finalidade diagnóstica ou terapêutica. Não substitui a consulta com profissional de saúde nem os canais oficiais de vigilância. Diante de sinais de alerta, procure uma unidade de saúde ou o serviço de emergência.</p>
+
+      <div class="footer-base">
+        <span>© <span data-year>2026</span> Iniciativa VIA</span>
+        <span>Publicado via GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var header = document.querySelector("[data-header]");
+      function onScroll() {
+        if (header) header.classList.toggle("is-scrolled", window.scrollY > 24);
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      var year = document.querySelector("[data-year]");
+      if (year) year.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 const fallbackData = {
   meta: {
-    updated: "2026-07-18"
+    updated: "2026-07-22"
   },
   projects: [
     {
@@ -37,10 +37,10 @@ const fallbackData = {
       status: "publicado",
       statusKey: "stable",
       featured: false,
-      description: "Boletim web que traduz temas de prevenção e vigilância para o público geral, com os alertas de sarampo de 2026 como caso de comunicação de risco.",
+      description: "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e vírus respiratórios, com fontes oficiais e limites declarados.",
       tags: ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
-      url: "https://lucashralmeida.github.io/sarampo-alertas-2026/",
-      repo: "https://github.com/LucasHRAlmeida/sarampo-alertas-2026"
+      url: "https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/sarampo-alertas-2026"
     },
     {
       id: "via-mente-mbrp",
