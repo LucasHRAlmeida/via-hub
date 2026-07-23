@@ -154,6 +154,27 @@
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
     },
     {
+      "id": "via-economia-saude",
+      "name": "VIA Economia & Saúde",
+      "kicker": "Educação financeira · prática médica",
+      "categories": [
+        "medicina",
+        "educacao"
+      ],
+      "status": "MVP educacional",
+      "statusKey": "beta",
+      "featured": false,
+      "description": "Trilha interativa para tornar caixa, valor de referência, ponto de equilíbrio e reserva mais legíveis na prática de profissionais da saúde, com diagnóstico, simuladores locais, casos e plano de ação.",
+      "tags": [
+        "fluxo de caixa",
+        "ponto de equilíbrio",
+        "reserva",
+        "dados locais"
+      ],
+      "url": "https://lucashralmeida.github.io/via-hub/via-economia-saude/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude"
+    },
+    {
       "id": "bem-estar-multissensorial",
       "name": "Bem-Estar Multissensorial",
       "kicker": "Bem-estar · autocuidado",

@@ -820,3 +820,15 @@ git branch -vv
 O material original foi reorganizado para reduzir alternância entre linguagens e aproximar cada conceito de uma ação observável. Python é usado como linguagem de entrada; JavaScript, GitHub Actions, rebase e estratégias avançadas de merge ficam para uma etapa posterior. Essa escolha não reduz a importância desses temas: apenas preserva uma progressão compatível com iniciantes.
 
 Esta apostila introduz prática técnica, não substitui políticas de segurança, revisão de código ou treinamento específico exigido por uma organização.
+
+---
+
+**Dr Lucas HR — Médico Generalista (FMRP-USP)**
+
+CRM-SP: 226836 | CRM-MG: 109752
+
+[WhatsApp Business: +55 16 99618-0196](https://wa.me/5516996180196)
+
+**Iniciativa VIA — Vida Integrada e Autônoma**
+
+Ciência e Tecnologia a serviço do Cuidado.

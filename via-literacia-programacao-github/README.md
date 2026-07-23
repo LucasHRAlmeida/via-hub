@@ -66,6 +66,12 @@ O módulo cobre fundamentos. Ambientes virtuais, dependências, testes com frame
 
 ---
 
+**Dr Lucas HR — Médico Generalista (FMRP-USP)**
+
+CRM-SP: 226836 | CRM-MG: 109752
+
+[WhatsApp Business: +55 16 99618-0196](https://wa.me/5516996180196)
+
 **Iniciativa VIA — Vida Integrada e Autônoma**
 
 Ciência e Tecnologia a serviço do Cuidado.
