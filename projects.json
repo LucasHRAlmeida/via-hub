@@ -50,6 +50,27 @@
       "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado"
     },
     {
+      "id": "mentoria-sincronismo-hibrido",
+      "name": "Mentoria Sincronismo Híbrido",
+      "kicker": "Educação médica · calibração de juízo",
+      "categories": [
+        "medicina",
+        "educacao"
+      ],
+      "status": "sob demanda",
+      "statusKey": "beta",
+      "featured": true,
+      "description": "Calibração de juízo clínico em regime híbrido: sessões síncronas densas + estrutura assíncrona de templates, feedback e Escala Móvel de Evidência. Oferta paga, cohort fechada ou 1:1.",
+      "tags": [
+        "phronesis",
+        "SBAR",
+        "Escala Móvel",
+        "cohort"
+      ],
+      "url": "https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/mentoria-sincronismo-hibrido"
+    },
+    {
       "id": "mentoria-ia-osce-fmrp",
       "name": "Mentoria IA Literacy — OSCE",
       "kicker": "Educação médica · simulação",
