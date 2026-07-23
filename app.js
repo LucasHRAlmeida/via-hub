@@ -1,6 +1,6 @@
 const fallbackData = {
   meta: {
-    updated: "2026-07-22"
+    updated: "2026-07-23"
   },
   projects: [
     {
@@ -15,6 +15,19 @@ const fallbackData = {
       tags: ["14 hallmarks", "quiz comentado", "JSON/CSV", "relatório em PDF"],
       url: "https://lucashralmeida.github.io/ensino-gamificado/",
       repo: "https://github.com/LucasHRAlmeida/ensino-gamificado"
+    },
+    {
+      id: "mentoria-sincronismo-hibrido",
+      name: "Mentoria Sincronismo Híbrido",
+      kicker: "Educação médica · calibração de juízo",
+      categories: ["medicina", "educacao"],
+      status: "sob demanda",
+      statusKey: "beta",
+      featured: true,
+      description: "Calibração de juízo clínico em regime híbrido: sessões síncronas densas + estrutura assíncrona de templates, feedback e Escala Móvel de Evidência. Oferta paga, cohort fechada ou 1:1.",
+      tags: ["phronesis", "SBAR", "Escala Móvel", "cohort"],
+      url: "https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/mentoria-sincronismo-hibrido"
     },
     {
       id: "mentoria-ia-osce-fmrp",
@@ -37,7 +50,7 @@ const fallbackData = {
       status: "publicado",
       statusKey: "stable",
       featured: false,
-      description: "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e vírus respiratórios, com fontes oficiais e limites declarados.",
+      description: "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e outras prioridades.",
       tags: ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
       url: "https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/sarampo-alertas-2026"
@@ -69,6 +82,19 @@ const fallbackData = {
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
     },
     {
+      id: "via-economia-saude",
+      name: "VIA Economia & Saúde",
+      kicker: "Educação financeira · prática médica",
+      categories: ["medicina", "educacao"],
+      status: "MVP educacional",
+      statusKey: "beta",
+      featured: false,
+      description: "Trilha interativa para tornar caixa, valor de referência, ponto de equilíbrio e reserva mais legíveis na prática de profissionais da saúde, com diagnóstico, simuladores locais, casos e plano de ação.",
+      tags: ["fluxo de caixa", "ponto de equilíbrio", "reserva", "dados locais"],
+      url: "https://lucashralmeida.github.io/via-hub/via-economia-saude/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude"
+    },
+    {
       id: "bem-estar-multissensorial",
       name: "Bem-Estar Multissensorial",
       kicker: "Bem-estar · autocuidado",
@@ -76,7 +102,7 @@ const fallbackData = {
       status: "publicado",
       statusKey: "stable",
       featured: false,
-      description: "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui orientação profissional.",
+      description: "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui intervenção clínica.",
       tags: ["cromoterapia", "aromaterapia", "playlists", "6 estados"],
       url: "https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial"
@@ -89,23 +115,23 @@ const fallbackData = {
       status: "em estruturação",
       statusKey: "beta",
       featured: false,
-      description: "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza auditoria, denúncia automática nem coleta dados.",
+      description: "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza análise jurídica formal.",
       tags: ["LGPD", "perfilamento", "rastreabilidade", "direitos do titular"],
       url: "https://lucashralmeida.github.io/via-hub/soberania-informacional/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional"
     },
     {
-      id: "regulacao-inteligente",
-      name: "Regulação Inteligente do Cuidado",
-      kicker: "Sistemas de saúde · governança",
+      id: "regulacao-federal-ia",
+      name: "Regulação Federal IA",
+      kicker: "Governança sistêmica · transferências interestaduais",
       categories: ["saude-publica", "sistemas"],
-      status: "protótipo reservado",
-      statusKey: "reserved",
+      status: "proposta conceitual",
+      statusKey: "beta",
       featured: false,
-      description: "Prova de conceito para organizar decisões complexas de regulação por recurso, contexto clínico e interoperabilidade. Conteúdo técnico mantido em desenvolvimento reservado.",
-      tags: ["SUS", "regulação", "interoperabilidade", "apoio à decisão"],
-      url: null,
-      repo: null
+      description: "Arquitetura de inteligência federativa para orquestração de transferências críticas entre estados do SUS. Integra diagnóstico sistêmico (caso-sentinela), lições de segurança aeronáutica (AF447), 3 pilares técnicos (IA, roteamento, corredores aeromédicos) e episteme clínica (Canguilhem, Nietzsche, phrónesis).",
+      tags: ["SUS", "IA federativa", "CRM clínico", "epistemologia", "transferências"],
+      url: "https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/regulacao-federal-ia"
     }
   ]
 };

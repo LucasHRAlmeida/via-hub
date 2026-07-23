@@ -8,6 +8,7 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - Mentoria Sincronismo Híbrido (oferta paga): <https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/>
 - VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 - VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
+- VIA Economia & Saúde: <https://lucashralmeida.github.io/via-hub/via-economia-saude/>
 - Bem-Estar Multissensorial: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
 - Saúde na Última Semana: <https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/>
 
@@ -23,6 +24,10 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - `via-literacia-programacao-github/index.html` — trilha web introdutória com progresso local.
 - `via-literacia-programacao-github/apostila.md` — fonte pedagógica versionada de programação, Git e GitHub.
 - `via-literacia-programacao-github/README.md` — documentação editorial e técnica do módulo.
+- `via-economia-saude/index.html` — trilha interativa com diagnóstico, simuladores locais e plano de ação.
+- `via-economia-saude/conteudo.md` — fonte editorial versionada de economia e saúde.
+- `via-economia-saude/README.md` — escopo, privacidade, limites e manutenção do módulo.
+- `via-economia-saude/og.png` — cartão social alinhado ao branding VIA.
 - `bem-estar-multissensorial/index.html` — guia multissensorial de bem-estar (música, cores e aromas).
 - `bem-estar-multissensorial/README.md` — escopo, limitações e documentação do módulo.
 - `soberania-informacional/index.html` — frente de proteção de dados, autonomia e direitos digitais.
@@ -51,7 +56,12 @@ Depois, abra `http://localhost:8000`.
 
 ---
 
-**Dr Lucas HR - Médico Generalista (FMRP-USP)**  
-CRM-SP: 226836 | CRM-MG: 109752  
-**Iniciativa VIA - Vida Integrada e Autônoma**  
+**Dr Lucas HR — Médico Generalista (FMRP-USP)**
+
+CRM-SP: 226836 | CRM-MG: 109752
+
+[WhatsApp Business: +55 16 99618-0196](https://wa.me/5516996180196)
+
+**Iniciativa VIA — Vida Integrada e Autônoma**
+
 Ciência e Tecnologia a serviço do Cuidado.

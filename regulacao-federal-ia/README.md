@@ -95,9 +95,12 @@ A saúde não é **ausência de doença** (Descartes), mas **capacidade de criar
 
 ---
 
-**Iniciativa VIA — Vida Integrada e Autônoma**
+**Dr Lucas HR — Médico Generalista (FMRP-USP)**
 
-Dr. Lucas HR — Médico Generalista (FMRP-USP)  
 CRM-SP: 226836 | CRM-MG: 109752
+
+[WhatsApp Business: +55 16 99618-0196](https://wa.me/5516996180196)
+
+**Iniciativa VIA — Vida Integrada e Autônoma**
 
 Ciência e Tecnologia a serviço do Cuidado.
