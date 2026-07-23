@@ -3,7 +3,7 @@
     "hub": "Iniciativa VIA",
     "owner": "Dr Lucas HR",
     "affiliation": "FMRP-USP",
-    "updated": "2026-07-22"
+    "updated": "2026-07-23"
   },
   "categories": [
     {
@@ -80,7 +80,7 @@
       "status": "publicado",
       "statusKey": "stable",
       "featured": false,
-      "description": "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e vírus respiratórios, com fontes oficiais e limites declarados.",
+      "description": "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e outras prioridades.",
       "tags": [
         "vigilância",
         "prevenção",
@@ -142,7 +142,7 @@
       "status": "publicado",
       "statusKey": "stable",
       "featured": false,
-      "description": "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui orientação profissional.",
+      "description": "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui intervenção clínica.",
       "tags": [
         "cromoterapia",
         "aromaterapia",
@@ -163,7 +163,7 @@
       "status": "em estruturação",
       "statusKey": "beta",
       "featured": false,
-      "description": "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza auditoria, denúncia automática nem coleta dados.",
+      "description": "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza análise jurídica formal.",
       "tags": [
         "LGPD",
         "perfilamento",
@@ -174,25 +174,26 @@
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional"
     },
     {
-      "id": "regulacao-inteligente",
-      "name": "Regulação Inteligente do Cuidado",
-      "kicker": "Sistemas de saúde · governança",
+      "id": "regulacao-federal-ia",
+      "name": "Regulação Federal IA",
+      "kicker": "Governança sistêmica · transferências interestaduais",
       "categories": [
         "saude-publica",
         "sistemas"
       ],
-      "status": "protótipo reservado",
-      "statusKey": "reserved",
+      "status": "proposta conceitual",
+      "statusKey": "beta",
       "featured": false,
-      "description": "Prova de conceito para organizar decisões complexas de regulação por recurso, contexto clínico e interoperabilidade. Conteúdo técnico mantido em desenvolvimento reservado.",
+      "description": "Arquitetura de inteligência federativa para orquestração de transferências críticas entre estados do SUS. Integra diagnóstico sistêmico (caso-sentinela), lições de segurança aeronáutica (AF447), 3 pilares técnicos (IA, roteamento, corredores aeromédicos) e episteme clínica (Canguilhem, Nietzsche, phrónesis).",
       "tags": [
         "SUS",
-        "regulação",
-        "interoperabilidade",
-        "apoio à decisão"
+        "IA federativa",
+        "CRM clínico",
+        "epistemologia",
+        "transferências"
       ],
-      "url": null,
-      "repo": null
+      "url": "https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/",
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/regulacao-federal-ia"
     }
   ]
 }
