@@ -82,6 +82,19 @@ const fallbackData = {
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial"
     },
     {
+      id: "soberania-informacional",
+      name: "VIA Soberania Informacional",
+      kicker: "Direitos digitais · proteção de dados",
+      categories: ["sistemas", "direitos-digitais"],
+      status: "em estruturação",
+      statusKey: "beta",
+      featured: false,
+      description: "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza auditoria, denúncia automática nem coleta dados.",
+      tags: ["LGPD", "perfilamento", "rastreabilidade", "direitos do titular"],
+      url: "https://lucashralmeida.github.io/via-hub/soberania-informacional/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional"
+    },
+    {
       id: "regulacao-inteligente",
       name: "Regulação Inteligente do Cuidado",
       kicker: "Sistemas de saúde · governança",
