@@ -5,6 +5,7 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 ## Acesso
 
 - GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
+- Mentoria Sincronismo Híbrido (oferta paga): <https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/>
 - VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 - VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
 - Bem-Estar Multissensorial: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
@@ -17,6 +18,7 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - `app.js` — navegação móvel, filtros e renderização segura do portfólio.
 - `projects.json` — fonte versionada das demonstrações e respectivos status.
 - `.github/ISSUE_TEMPLATE/parceria.yml` — formulário para propostas institucionais.
+- `mentoria-sincronismo-hibrido/` — landing pública da oferta de mentoria paga (calibração de juízo clínico).
 - `via-mente-mbrp/index.html` — webapp psicoeducacional MBRP-8.
 - `via-literacia-programacao-github/index.html` — trilha web introdutória com progresso local.
 - `via-literacia-programacao-github/apostila.md` — fonte pedagógica versionada de programação, Git e GitHub.
