@@ -1,6 +1,6 @@
 const fallbackData = {
   meta: {
-    updated: "2026-07-23"
+    updated: "2026-08-03"
   },
   projects: [
     {
@@ -15,6 +15,18 @@ const fallbackData = {
       tags: ["14 hallmarks", "quiz comentado", "JSON/CSV", "relatório em PDF"],
       url: "https://lucashralmeida.github.io/ensino-gamificado/",
       repo: "https://github.com/LucasHRAlmeida/ensino-gamificado"
+    },
+    {
+      id: "escala-movel-evidencia",
+      name: "Escala Móvel de Evidência",
+      kicker: "Instrumento 01 · calibração de juízo clínico",
+      categories: ["medicina", "educacao"],
+      status: "rascunho público",
+      statusKey: "beta",
+      featured: true,
+      description: "Instrumento interativo que calcula o limiar de ação, explicita a robustez de evidência exigida e audita o julgamento. Parâmetros arbitrados são declarados; ainda sem validação prospectiva.",
+      tags: ["Pauker-Kassirer", "limiar de ação", "auditoria do julgamento", "v0.2.1"],
+      url: "https://escala-movel-evidencia.doctorparnassus.chatgpt.site"
     },
     {
       id: "mentoria-sincronismo-hibrido",
