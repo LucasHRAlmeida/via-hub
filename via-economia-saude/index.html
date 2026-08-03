@@ -2116,6 +2116,38 @@
         });
       }
 
+      const resultFields = {
+        price: [
+          "price-reference",
+          "price-contribution",
+          "price-margin",
+          "price-break-even",
+          "price-operating-result",
+          "price-interpretation"
+        ],
+        cash: [
+          "cash-result-mode",
+          "cash-closing",
+          "cash-operating",
+          "cash-net",
+          "cash-outflows",
+          "cash-interpretation"
+        ],
+        reserve: [
+          "reserve-target",
+          "reserve-coverage",
+          "reserve-gap",
+          "reserve-progress",
+          "reserve-term",
+          "reserve-interpretation"
+        ]
+      };
+
+      function invalidateResult(name) {
+        resultFields[name].forEach((id) => setText(id, "—"));
+        results[name] = { valid: false };
+      }
+
       function calculatePrice() {
         const fixed = value("price-fixed");
         const current = value("price-current");
@@ -2136,6 +2168,7 @@
         ) {
           showError("price-error", "Revise o cenário: valores monetários devem ficar entre zero e dez milhões, deduções abaixo de 100% e volume entre 1 e 100.000.");
           setInputsDisabled(form, true);
+          invalidateResult("price");
           return;
         }
 
@@ -2198,6 +2231,7 @@
         if (allValues.some((item) => item < 0 || item > 10000000)) {
           showError("cash-error", "Use valores entre zero e dez milhões. Reclassifique estornos ou ajustes em vez de inserir números negativos.");
           setInputsDisabled(form, true);
+          invalidateResult("cash");
           return;
         }
 
@@ -2253,6 +2287,7 @@
         ) {
           showError("reserve-error", "Informe valores entre zero e dez milhões, uma base essencial maior que zero e escolha entre 1 e 24 meses de cobertura.");
           setInputsDisabled(form, true);
+          invalidateResult("reserve");
           return;
         }
 
