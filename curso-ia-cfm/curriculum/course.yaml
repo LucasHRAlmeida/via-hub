@@ -1,0 +1,131 @@
+course:
+  id: via.ia_cfm.governanca_clinica
+  title: "IA na prática médica após a Resolução CFM nº 2.454/2026"
+  subtitle: "Uso clínico, responsabilidade e governança sem sensacionalismo"
+  version: "0.1.0-internal"
+  language: pt-BR
+  status: internal-study
+  owner: "Dr Lucas HR Almeida"
+  organization: "VIA — Vida Integrada e Autônoma"
+  deployment_allowed: false
+
+positioning:
+  central_claim: >-
+    A inteligência artificial pode ampliar a capacidade clínica, mas não herda
+    responsabilidade médica; seu uso deve ser proporcional ao risco, criticamente
+    supervisionado, documentável e orientado à utilidade verificável.
+  exclusions:
+    - curso_genérico_de_prompts
+    - terrorismo_regulatório
+    - aconselhamento_jurídico_individual
+    - promessa_de_conformidade_automática
+    - delegação_de_decisão_clínica
+
+primary_audience:
+  - médicos_generalistas
+  - médicos_em_formação
+  - coordenadores_clínicos
+  - docentes_e_preceptores
+
+learning_outcomes:
+  - id: LO1
+    description: "Explicar o escopo e os princípios operacionais da Resolução CFM nº 2.454/2026."
+  - id: LO2
+    description: "Classificar usos de IA por finalidade, relevância clínica e risco."
+  - id: LO3
+    description: "Distinguir apoio cognitivo de delegação indevida de julgamento médico."
+  - id: LO4
+    description: "Aplicar um fluxo de uso governado a casos clínicos sintéticos."
+  - id: LO5
+    description: "Propor documentação proporcional ao papel efetivamente desempenhado pela IA."
+  - id: LO6
+    description: "Reconhecer quando a ferramenta deve se abster, ser rejeitada ou escalada para revisão humana."
+  - id: LO7
+    description: "Demonstrar o Guia do Plantonista como instrumento auditável, e não como oráculo clínico."
+
+modules:
+  - id: M0
+    slug: enquadramento
+    title: "A pergunta correta"
+    duration_minutes: 20
+    outcomes: [LO1, LO3]
+    artifacts:
+      - manifesto_de_uma_página
+      - pitch_de_90_segundos
+
+  - id: M1
+    slug: resolucao-cfm
+    title: "O que a norma regula de fato"
+    duration_minutes: 50
+    outcomes: [LO1, LO5]
+    artifacts:
+      - matriz_normativa
+      - quadro_o_que_muda_e_o_que_nao_muda
+
+  - id: M2
+    slug: taxonomia-de-usos
+    title: "Nem todo uso de IA é equivalente"
+    duration_minutes: 50
+    outcomes: [LO2, LO6]
+    artifacts:
+      - matriz_finalidade_relevancia_risco
+
+  - id: M3
+    slug: indelegabilidade
+    title: "O que permanece indelegável"
+    duration_minutes: 45
+    outcomes: [LO3, LO6]
+    artifacts:
+      - quadro_apoio_versus_responsabilidade
+
+  - id: M4
+    slug: uso-governado
+    title: "Uso ingênuo versus uso governado"
+    duration_minutes: 60
+    outcomes: [LO2, LO4, LO6]
+    artifacts:
+      - checklist_uso_governado
+      - tres_casos_comparativos
+
+  - id: M5
+    slug: documentacao-e-governanca
+    title: "Prontuário, informação e governança mínima"
+    duration_minutes: 50
+    outcomes: [LO5, LO6]
+    artifacts:
+      - template_prontuario
+      - roteiro_informacao_paciente
+      - checklist_institucional
+
+  - id: M6
+    slug: guia-do-plantonista
+    title: "Demonstração aplicada"
+    duration_minutes: 60
+    outcomes: [LO4, LO7]
+    artifacts:
+      - caso_sintetico_dor_abdominal
+      - roteiro_demo_sete_minutos
+      - registro_de_limites
+
+assessment:
+  mode: mastery
+  minimum_score_percent: 85
+  required_demonstrations:
+    - pitch_sem_consulta
+    - análise_de_caso
+    - crítica_de_saida_de_ia
+    - justificativa_de_registro
+    - demo_do_guia
+
+publication_gate:
+  required:
+    - fontes_primárias_verificadas
+    - revisão_médica_artigo_por_artigo
+    - revisão_jurídico_normativa_externa_quando_houver_alegação_jurídica
+    - casos_apenas_sintéticos_ou_anonimizados_com_base_legítima
+    - artefatos_rotulados_como_modelos_propostos
+    - ensaio_interno_gravado
+  forbidden:
+    - deploy_automático
+    - merge_sem_aprovação_explícita
+    - alegar_certificação_ou_endosso_do_CFM
