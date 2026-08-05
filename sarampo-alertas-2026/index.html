@@ -652,6 +652,95 @@
       text-transform: uppercase;
     }
 
+    /* Panorama — resumo de notícias */
+    .panorama { background: var(--wash-blue); border-bottom: 1px solid var(--line); }
+    .panorama-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .panorama-head .section-heading { margin-bottom: 0; }
+    .update-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--navy-900);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .update-pill::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green-500);
+      box-shadow: 0 0 0 4px rgba(46, 175, 83, 0.16);
+    }
+    .news-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .news-item {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--teal-500);
+      border-radius: var(--radius-sm);
+      background: var(--paper);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .news-item:hover { transform: translateY(-3px); box-shadow: 0 16px 38px rgba(6, 42, 71, 0.09); }
+    .news-item.is-brasil { border-left-color: var(--green-500); }
+    .news-item.is-estacao { border-left-color: var(--navy-700); }
+    .news-item.is-mundo { border-left-color: var(--amber-500); }
+    .news-item .news-tag {
+      margin: 0 0 8px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-500);
+    }
+    .news-item.is-brasil .news-tag { color: var(--green-600); }
+    .news-item.is-estacao .news-tag { color: var(--navy-700); }
+    .news-item.is-mundo .news-tag { color: #b07d18; }
+    .news-item h3 {
+      margin: 0 0 8px;
+      color: var(--navy-950);
+      font-size: 17px;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .news-item p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    .news-item .news-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+      color: var(--navy-900);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .news-item .news-source:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .panorama-disclaimer {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-style: italic;
+    }
+
     @media (max-width: 900px) {
       .card-full { grid-template-columns: 1fr; gap: 20px; }
       .topic-grid { grid-template-columns: 1fr; }
@@ -705,7 +794,7 @@
         <h1>Saúde na Última Semana</h1>
         <p class="hero-lede">Boletim de <strong>utilidade pública</strong> da Iniciativa VIA. Traduzimos temas de vigilância e prevenção para o público geral — com o <em>sarampo</em> como caso de comunicação de risco — em linguagem clara, com escopo explícito e fontes oficiais.</p>
         <ul class="hero-meta">
-          <li>Edição de julho de 2026</li>
+          <li>Edição de 5 de agosto de 2026</li>
           <li>Educação em saúde</li>
           <li>Brasil</li>
         </ul>
@@ -713,6 +802,52 @@
           <strong>O que este boletim é — e o que não é</strong>
           <p>É material educativo para orientar decisões cotidianas de prevenção. <strong>Não é</strong> triagem, diagnóstico nem fonte de dados epidemiológicos ao vivo. Diante de sintomas, procure uma unidade de saúde; para números atualizados, consulte as fontes oficiais indicadas ao final.</p>
         </div>
+      </div>
+    </section>
+
+    <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">
+      <div class="shell">
+        <!-- PANORAMA:START (bloco atualizado semanalmente — não remova os marcadores) -->
+        <div class="panorama-head" data-updated="2026-08-05">
+          <div class="section-heading">
+            <p class="section-kicker">Panorama da semana</p>
+            <h2 id="panorama-titulo">Resumo das últimas notícias</h2>
+          </div>
+          <span class="update-pill">Atualizado em 5 de agosto de 2026</span>
+        </div>
+
+        <div class="news-list">
+          <article class="news-item">
+            <p class="news-tag">Vigilância global · Sarampo</p>
+            <h3>Sarampo em alta reforça o valor da vacina</h3>
+            <p>Nos Estados Unidos, 2026 já acumula mais casos de sarampo do que todo o ano de 2025 — o maior número em décadas, com a ampla maioria entre pessoas não vacinadas. É a lição do caso em foco: onde a cobertura cai, o vírus volta.</p>
+            <a class="news-source" href="https://www.cdc.gov/measles/data-research/index.html" target="_blank" rel="noopener noreferrer">CDC · dados de sarampo <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="news-item is-brasil">
+            <p class="news-tag">Brasil · Dengue</p>
+            <h3>Dengue recua, e vacinação passa por revisão</h3>
+            <p>O Ministério da Saúde relata forte queda dos casos de dengue em 2026 frente a 2025. Em meados do ano, a estratégia nacional de vacinação foi temporariamente ajustada para investigar sinais da vigilância — confirme a elegibilidade vigente nos canais oficiais.</p>
+            <a class="news-source" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue" target="_blank" rel="noopener noreferrer">Ministério da Saúde · dengue <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="news-item is-estacao">
+            <p class="news-tag">Estação · Vírus respiratórios</p>
+            <h3>Inverno pede atenção à gripe</h3>
+            <p>A OPAS alertou para o aumento da influenza no Hemisfério Sul, com gripe, covid-19 e VSR circulando ao mesmo tempo. A vacina da gripe segue disponível o ano todo nas unidades de saúde para os grupos prioritários.</p>
+            <a class="news-source" href="https://www.paho.org/pt/brasil" target="_blank" rel="noopener noreferrer">OPAS/OMS Brasil <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="news-item is-mundo">
+            <p class="news-tag">No radar do mundo</p>
+            <h3>Surtos sob vigilância internacional</h3>
+            <p>A OMS acompanha o maior surto de Ebola já registrado na República Democrática do Congo e um extenso surto de mpox em Madagascar. O risco direto ao Brasil é baixo, mas ambos seguem em monitoramento global.</p>
+            <a class="news-source" href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank" rel="noopener noreferrer">OMS · alertas de surtos <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+
+        <p class="panorama-disclaimer">Resumo editorial de utilidade pública, compilado de fontes oficiais na data acima. Números mudam a cada semana — confira sempre a fonte antes de agir ou compartilhar.</p>
+        <!-- PANORAMA:END -->
       </div>
     </section>
 
@@ -824,7 +959,7 @@
             </span>
             <span class="card-tag">Arboviroses</span>
             <h3>Dengue e o combate ao mosquito</h3>
-            <p>A prevenção segue sendo eliminar criadouros do <em>Aedes aegypti</em>: água parada em vasos, calhas e recipientes. Há vacina contra a dengue disponível no SUS para faixas etárias definidas.</p>
+            <p>A prevenção segue sendo eliminar criadouros do <em>Aedes aegypti</em>: água parada em vasos, calhas e recipientes. Os casos recuaram no Brasil em 2026; a estratégia nacional de vacinação passou por revisão no meio do ano — confira a elegibilidade vigente.</p>
             <a class="topic-link" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue" target="_blank" rel="noopener noreferrer">Prevenção da dengue <span aria-hidden="true">↗</span></a>
           </article>
 
@@ -880,7 +1015,7 @@
             </span>
             <div>
               <h3>Cuide da etiqueta respiratória</h3>
-              <p>Ventile ambientes, higienize as mãos e cubra tosse e espirro. Com sintomas respiratórios, evite aglomerações.</p>
+              <p>É inverno: ventile ambientes, higienize as mãos e cubra tosse e espirro. Mantenha a vacina da gripe em dia e, com sintomas respiratórios, evite aglomerações.</p>
             </div>
           </div>
 
