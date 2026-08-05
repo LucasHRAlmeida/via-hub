@@ -1,0 +1,72 @@
+version: "0.1.0"
+course_id: via.ia_cfm.governanca_clinica
+
+scoring:
+  scale: 0-4
+  labels:
+    0: ausente
+    1: insuficiente
+    2: parcial
+    3: adequado
+    4: excelente
+
+hard_gates:
+  - id: G1
+    name: fonte_primaria
+    rule: "Toda alegação normativa deve apontar para artigo, parágrafo ou seção verificável."
+  - id: G2
+    name: distinção_epistêmica
+    rule: "Texto normativo, interpretação e recomendação VIA devem estar explicitamente separados."
+  - id: G3
+    name: responsabilidade
+    rule: "Nenhum material pode sugerir transferência de responsabilidade clínica à IA."
+  - id: G4
+    name: dados
+    rule: "Nenhum caso pode conter dado pessoal identificável ou desnecessário."
+  - id: G5
+    name: documentação
+    rule: "Templates não podem registrar exame, decisão ou comunicação que não tenham ocorrido."
+  - id: G6
+    name: marketing
+    rule: "É vedado alegar compulsoriedade de curso, certificação pelo CFM ou conformidade automática."
+  - id: G7
+    name: deploy
+    rule: "Nenhum artefato desta versão pode ser publicado ou implantado automaticamente."
+
+rubric:
+  - dimension: precisão_normativa
+    weight: 0.25
+    pass_score: 4
+  - dimension: utilidade_clínica
+    weight: 0.20
+    pass_score: 3
+  - dimension: clareza_didática
+    weight: 0.15
+    pass_score: 3
+  - dimension: comunicação_de_incerteza
+    weight: 0.15
+    pass_score: 3
+  - dimension: segurança_de_dados
+    weight: 0.15
+    pass_score: 4
+  - dimension: coerência_editorial
+    weight: 0.10
+    pass_score: 3
+
+release_threshold:
+  weighted_score_minimum: 3.4
+  hard_gates_required: all
+  external_review_required_for:
+    - interpretação_jurídica_controversa
+    - template_institucional
+    - alegação_sobre_certificação_regulatória
+    - material_destinado_a_paciente
+
+red_team_questions:
+  - "O texto inventa obrigação que não consta da norma?"
+  - "O texto confunde plausibilidade do modelo com validade clínica?"
+  - "A recomendação aumenta burocracia sem reduzir risco?"
+  - "O leitor pode usar o exemplo como atalho para não examinar o paciente?"
+  - "A saída facilita documentação de algo não observado?"
+  - "Há incentivo implícito a inserir dados sensíveis em ferramenta inadequada?"
+  - "A peça comercial usa medo regulatório como mecanismo de conversão?"
