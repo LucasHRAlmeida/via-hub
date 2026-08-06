@@ -1,0 +1,32 @@
+/* TEAM */
+
+  Fundador e direção clínica: Dr Lucas HR Almeida
+  Formação: Médico Generalista — FMRP-USP
+  Registro: CRM-SP 226836 | CRM-MG 109752
+  Contato: https://wa.me/5516996180196
+  Localização: São Paulo / Minas Gerais, Brasil
+
+/* PERFIS */
+
+  Identificador comum: drlucashr
+  Substack: https://drlucashr.substack.com
+  YouTube: https://www.youtube.com/@drlucashr
+  Instagram: https://www.instagram.com/drlucashr
+  Medium: https://medium.com/@drlucashr
+  GitHub: https://github.com/LucasHRAlmeida
+  Doctoralia: https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras
+  Canal WhatsApp: https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v
+
+/* SITE */
+
+  Nome: Dr Lucas HR Almeida — Iniciativa VIA
+  Lema: Ciência e Tecnologia a serviço do Cuidado.
+  Raiz: https://lucashralmeida.github.io/
+  Portfólio: https://lucashralmeida.github.io/via-hub/
+  Padrões: HTML5, CSS3, JSON-LD / schema.org
+  Componentes: nenhum framework, nenhuma dependência, nenhuma etapa de build
+
+/* AVISO */
+
+  O conteúdo de saúde publicado aqui é educativo.
+  Não substitui avaliação, diagnóstico ou tratamento profissional.
