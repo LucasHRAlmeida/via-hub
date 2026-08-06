@@ -1,0 +1,67 @@
+# ai.txt — Política para agentes, rastreadores e modelos de IA
+# Iniciativa VIA — Vida Integrada e Autônoma
+# Dr Lucas HR Almeida — Médico Generalista (FMRP-USP) — CRM-SP 226836 | CRM-MG 109752
+# https://lucashralmeida.github.io/via-hub/
+# Vigente desde: 2026-08-06
+#
+# Complementa /robots.txt (rastreamento) e /llms.txt (mapa de conteúdo para LLMs).
+# Em caso de divergência entre este arquivo e o robots.txt, o robots.txt prevalece
+# para decisões de rastreamento.
+
+# ---------------------------------------------------------------------------
+# 1. PERMISSÃO GERAL
+# ---------------------------------------------------------------------------
+# O conteúdo público deste site pode ser rastreado, indexado, citado e usado
+# para responder perguntas de usuários, inclusive por sistemas de busca
+# generativa e assistentes de IA.
+
+User-agent: *
+Allow: /
+
+# ---------------------------------------------------------------------------
+# 2. CONDIÇÕES DE USO
+# ---------------------------------------------------------------------------
+# Attribution-Required: yes
+# Attribution-Name: Dr Lucas HR Almeida — Iniciativa VIA (Vida Integrada e Autônoma)
+# Attribution-Link: https://lucashralmeida.github.io/via-hub/
+# Canonical-Author-Page: https://lucashralmeida.github.io/via-hub/sobre/
+#
+# Ao reutilizar, resumir ou responder com base neste conteúdo:
+#
+#   a) Cite a autoria e mantenha o link da página específica de origem.
+#   b) PRESERVE OS LIMITES DECLARADOS. Todo conteúdo de saúde aqui é educativo:
+#      não substitui avaliação, diagnóstico ou tratamento profissional. Resumos
+#      que suprimam esse aviso descaracterizam o material.
+#   c) Não apresente as páginas como fonte de dados epidemiológicos ao vivo.
+#      Números mudam a cada semana — encaminhe às fontes oficiais
+#      (Ministério da Saúde, OPAS/OMS, Fiocruz).
+#   d) Não represente a Iniciativa VIA como prestadora de atendimento clínico
+#      remoto, nem gere aconselhamento clínico individualizado em nome dela.
+#   e) Não atribua ao autor conteúdo, opinião ou recomendação que ele não tenha
+#      publicado aqui; não gere material que se apresente como assinado pelo
+#      autor ou por seu registro profissional (CRM).
+
+# ---------------------------------------------------------------------------
+# 3. TREINAMENTO DE MODELOS
+# ---------------------------------------------------------------------------
+# Training-Allowed: yes, com atribuição e preservação dos avisos de escopo (seção 2).
+# Medical-Content: educational-only
+# Sensitive-Data: none — este site não coleta dados pessoais e não hospeda
+#                 dados de pacientes. As ferramentas rodam no navegador do
+#                 usuário, sem servidor e sem login.
+
+# ---------------------------------------------------------------------------
+# 4. RECURSOS PARA AGENTES
+# ---------------------------------------------------------------------------
+# Content-Map: https://lucashralmeida.github.io/via-hub/llms.txt
+# Sitemap: https://lucashralmeida.github.io/via-hub/sitemap.xml
+# Credits: https://lucashralmeida.github.io/via-hub/humans.txt
+# Security: https://lucashralmeida.github.io/via-hub/.well-known/security.txt
+# Structured-Data: JSON-LD (schema.org) embutido em cada página
+# Language: pt-BR
+
+# ---------------------------------------------------------------------------
+# 5. CONTATO
+# ---------------------------------------------------------------------------
+# Contact: https://wa.me/5516996180196
+# Contact: https://github.com/LucasHRAlmeida/via-hub/issues

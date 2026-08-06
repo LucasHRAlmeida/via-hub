@@ -1,0 +1,12 @@
+# security.txt (RFC 9116) — Iniciativa VIA
+# Site estático, sem back-end, sem banco de dados e sem coleta de dados
+# pessoais: as ferramentas rodam no navegador de quem as usa.
+# Relate aqui vulnerabilidades no site, no código publicado ou uso indevido
+# da identidade/assinatura profissional do autor.
+
+Contact: https://github.com/LucasHRAlmeida/via-hub/issues/new
+Contact: https://wa.me/5516996180196
+Expires: 2027-08-06T23:59:59.000Z
+Preferred-Languages: pt-BR, en
+Canonical: https://lucashralmeida.github.io/via-hub/.well-known/security.txt
+Policy: https://github.com/LucasHRAlmeida/via-hub/blob/main/SECURITY.md
