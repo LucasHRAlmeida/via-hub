@@ -34,6 +34,19 @@ Site: https://lucashralmeida.github.io/via-hub/ · Código aberto: https://githu
 - [VIA Literacia — Programação, Git e GitHub](https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/): trilha introdutória em Python conectada a um projeto versionado com Git e integrado por pull request.
 - [VIA Economia & Saúde](https://lucashralmeida.github.io/via-hub/via-economia-saude/): trilha interativa sobre caixa, valor de referência, ponto de equilíbrio e reserva na prática de profissionais de saúde, com simuladores locais.
 
+## Perfis e canais oficiais
+
+Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando possível, o mesmo identificador (`drlucashr`). São os perfis declarados em `sameAs` nos dados estruturados de todas as páginas.
+
+- [Substack VIA](https://drlucashr.substack.com): publicação editorial da iniciativa.
+- [YouTube — Lucas HR (MD)](https://www.youtube.com/@drlucashr): canal em vídeo.
+- [Instagram — @drlucashr](https://www.instagram.com/drlucashr): divulgação e educação em saúde.
+- [Medium — @drlucashr](https://medium.com/@drlucashr): textos longos.
+- [GitHub — @LucasHRAlmeida](https://github.com/LucasHRAlmeida): código-fonte de todas as ferramentas.
+- [Doctoralia](https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras): perfil clínico e agendamento.
+- [Canal no WhatsApp](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v) · [WhatsApp Business](https://wa.me/5516996180196): contato direto.
+- [Página autoral](https://dr-lucas-hr.doctorparnassus.chatgpt.site): perfil biográfico externo.
+
 ## Como citar e usar este conteúdo
 
 - **Atribuição**: cite como *Dr Lucas HR Almeida — Iniciativa VIA (Vida Integrada e Autônoma)*, com o link da página específica.
