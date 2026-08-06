@@ -1,0 +1,44 @@
+/* TEAM */
+
+  Fundador e direção clínica: Dr Lucas HR Almeida
+  Formação: Médico Generalista — FMRP-USP
+  Registro: CRM-SP 226836 | CRM-MG 109752
+  Contato: https://wa.me/5516996180196
+  GitHub: @LucasHRAlmeida
+  Localização: São Paulo / Minas Gerais, Brasil
+
+/* SITE */
+
+  Nome: Iniciativa VIA — Vida Integrada e Autônoma
+  Lema: Ciência e Tecnologia a serviço do Cuidado.
+  URL: https://lucashralmeida.github.io/via-hub/
+  Código: https://github.com/LucasHRAlmeida/via-hub
+  Última atualização: 2026-08-06
+  Idioma: Português do Brasil
+  Padrões: HTML5, CSS3, JavaScript (vanilla), JSON-LD / schema.org
+  Componentes: nenhum framework, nenhuma dependência externa, nenhuma etapa de build
+  Software: publicado como site estático pelo GitHub Pages
+
+/* ARQUITETURA */
+
+  As ferramentas da VIA rodam no navegador de quem as usa:
+  sem servidor, sem login, sem coleta de dados pessoais.
+  A recusa em capturar o usuário não é detalhe técnico —
+  é a tese da iniciativa materializada na arquitetura.
+
+  Invariantes de todo módulo:
+    1. Separar a fonte da ferramenta.
+    2. Declarar estágio, escopo e limites.
+    3. Tratar software como argumento verificável.
+
+/* AVISO */
+
+  O conteúdo de saúde publicado aqui é educativo.
+  Não substitui avaliação, diagnóstico ou tratamento por
+  profissional de saúde, nem os canais oficiais de vigilância.
+
+/* AGRADECIMENTOS */
+
+  Às fontes públicas que sustentam a prática e o conteúdo:
+  Ministério da Saúde, OPAS/OMS, Fiocruz, FMRP-USP
+  e à comunidade de software livre.
