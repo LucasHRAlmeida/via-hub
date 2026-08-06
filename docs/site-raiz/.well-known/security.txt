@@ -1,0 +1,11 @@
+# security.txt (RFC 9116) — Dr Lucas HR Almeida / Iniciativa VIA
+# Sites estáticos, sem back-end e sem coleta de dados pessoais.
+# Relate vulnerabilidades no site, no código publicado ou uso indevido
+# da identidade/assinatura profissional do autor.
+
+Contact: https://github.com/LucasHRAlmeida/via-hub/issues/new
+Contact: https://wa.me/5516996180196
+Expires: 2027-08-06T23:59:59.000Z
+Preferred-Languages: pt-BR, en
+Canonical: https://lucashralmeida.github.io/.well-known/security.txt
+Policy: https://github.com/LucasHRAlmeida/via-hub/blob/main/SECURITY.md
