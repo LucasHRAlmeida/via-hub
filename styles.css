@@ -20,6 +20,36 @@
   --radius-sm: 10px;
   --shell: 1180px;
   --header-h: 76px;
+
+  /* --- Escala tipográfica ------------------------------------------------
+     Razão progressiva: apertada no texto, aberta no display.
+     Substitui 19 tamanhos arbitrários (8px–52px) por 9 degraus nomeados.  */
+  --t-micro: 0.6875rem;    /* 11.0px — rótulos caixa-alta, kickers        */
+  --t-caption: 0.78125rem; /* 12.5px — legendas, metadados                */
+  --t-small: 0.875rem;     /* 14.0px — texto de apoio                     */
+  --t-base: 1rem;          /* 16.0px — corpo                              */
+  --t-md: 1.125rem;        /* 18.0px — corpo destacado                    */
+  --t-lg: 1.3125rem;       /* 21.0px — lide                               */
+  --t-xl: 1.5625rem;       /* 25.0px — título de cartão                   */
+  --t-2xl: 1.9375rem;      /* 31.0px — título de cartão primário          */
+  --t-3xl: clamp(2.25rem, 3.4vw, 3.25rem);   /* 36→52px                   */
+  --t-display-sm: clamp(1.5rem, 2.4vw, 2rem);    /* 24→32px               */
+  --t-display-md: clamp(2.25rem, 4vw, 4rem);     /* 36→64px               */
+  --t-display-lg: clamp(3.15rem, 6vw, 5.7rem);   /* 50→91px               */
+
+  /* --- Alturas de linha (11 valores avulsos -> 6 papéis nomeados) ------- */
+  --lh-display: 1.02;
+  --lh-tight: 1.14;
+  --lh-snug: 1.22;
+  --lh-heading: 1.38;
+  --lh-text: 1.55;
+  --lh-body: 1.68;
+
+  /* --- Ritmo de espaçamento (base 4px) ---------------------------------- */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+  --s-5: 20px;  --s-6: 24px;  --s-7: 28px;  --s-8: 32px;
+  --s-9: 36px;  --s-10: 40px; --s-12: 48px; --s-14: 56px;
+  --s-16: 64px; --s-18: 72px; --s-22: 88px; --s-28: 112px;
 }
 
 * {
@@ -36,8 +66,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -169,7 +199,7 @@ button {
 .brand-mark span {
   position: relative;
   z-index: 1;
-  font-size: 19px;
+  font-size: var(--t-md);
   font-weight: 800;
   letter-spacing: -0.08em;
 }
@@ -177,17 +207,17 @@ button {
 .brand-copy {
   display: flex;
   flex-direction: column;
-  line-height: 1.05;
+  line-height: var(--lh-display);
 }
 
 .brand-copy strong {
-  font-size: 16px;
+  font-size: var(--t-base);
   letter-spacing: 0.18em;
 }
 
 .brand-copy small {
   margin-top: 5px;
-  font-size: 10px;
+  font-size: var(--t-micro);
   font-weight: 600;
   letter-spacing: 0.055em;
   opacity: 0.72;
@@ -204,7 +234,7 @@ button {
   position: relative;
   color: inherit;
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--t-caption);
   font-weight: 650;
 }
 
@@ -233,7 +263,7 @@ button {
   border-radius: 999px;
   color: inherit;
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 750;
   transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
@@ -274,7 +304,7 @@ button {
 .hero {
   position: relative;
   min-height: 820px;
-  padding: 170px 0 110px;
+  padding: 172px 0 112px;
   overflow: hidden;
   color: var(--paper);
   background:
@@ -317,7 +347,7 @@ button {
 .eyebrow,
 .section-kicker {
   margin: 0 0 18px;
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -339,10 +369,10 @@ button {
 .hero h1 {
   max-width: 780px;
   margin: 0;
-  font-size: clamp(3.15rem, 6vw, 5.7rem);
+  font-size: var(--t-display-lg);
   font-weight: 760;
   letter-spacing: -0.065em;
-  line-height: 0.98;
+  line-height: var(--lh-display);
 }
 
 .hero h1 em {
@@ -356,15 +386,15 @@ button {
   max-width: 720px;
   margin: 32px 0 0;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 18px;
-  line-height: 1.72;
+  font-size: var(--t-md);
+  line-height: var(--lh-body);
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 34px;
+  margin-top: 36px;
 }
 
 .button {
@@ -377,7 +407,7 @@ button {
   border: 1px solid transparent;
   border-radius: 999px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--t-caption);
   font-weight: 800;
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
@@ -408,9 +438,9 @@ button {
 
 .hero-facts {
   display: flex;
-  gap: 30px;
+  gap: 32px;
   margin: 48px 0 0;
-  padding: 30px 0 0;
+  padding: 32px 0 0;
   border-top: 1px solid rgba(255, 255, 255, 0.17);
 }
 
@@ -421,7 +451,7 @@ button {
 .hero-facts dt {
   margin: 0;
   color: var(--paper);
-  font-size: 26px;
+  font-size: var(--t-xl);
   font-weight: 800;
   letter-spacing: -0.04em;
 }
@@ -429,8 +459,8 @@ button {
 .hero-facts dd {
   margin: 2px 0 0;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 11px;
-  line-height: 1.35;
+  font-size: var(--t-micro);
+  line-height: var(--lh-heading);
 }
 
 .hero-system {
@@ -455,7 +485,7 @@ button {
   justify-content: space-between;
   padding: 16px 20px;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -515,7 +545,7 @@ button {
 }
 
 .core-mark span {
-  font-size: 25px;
+  font-size: var(--t-xl);
   font-weight: 850;
   letter-spacing: 0.13em;
 }
@@ -523,7 +553,7 @@ button {
 .core-mark small {
   margin-top: 2px;
   color: #b7e9f2;
-  font-size: 8px;
+  font-size: var(--t-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -557,7 +587,7 @@ button {
   border-radius: 999px;
   background: rgba(6, 42, 71, 0.86);
   color: rgba(255, 255, 255, 0.78);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -598,10 +628,10 @@ button {
 .founder h2 {
   margin: 0;
   color: var(--navy-950);
-  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-size: var(--t-display-md);
   font-weight: 740;
   letter-spacing: -0.055em;
-  line-height: 1.08;
+  line-height: var(--lh-tight);
 }
 
 .thesis-copy p {
@@ -611,13 +641,13 @@ button {
 .thesis-copy .lead {
   margin: 0 0 24px;
   color: var(--ink);
-  font-size: 22px;
-  line-height: 1.5;
+  font-size: var(--t-lg);
+  line-height: var(--lh-text);
 }
 
 .principle-callout {
   margin-top: 36px;
-  padding: 24px 26px;
+  padding: 24px 28px;
   border-left: 3px solid var(--green-500);
   background: var(--wash);
 }
@@ -626,7 +656,7 @@ button {
   display: block;
   margin-bottom: 8px;
   color: var(--green-500);
-  font-size: 10px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -635,8 +665,8 @@ button {
 .principle-callout strong {
   display: block;
   color: var(--navy-950);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: var(--t-base);
+  line-height: var(--lh-text);
 }
 
 .fronts {
@@ -647,14 +677,14 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
   align-items: end;
-  gap: 70px;
-  margin-bottom: 54px;
+  gap: 72px;
+  margin-bottom: 56px;
 }
 
 .section-heading > p {
   margin: 0 0 4px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: var(--t-small);
 }
 
 .front-grid {
@@ -709,7 +739,7 @@ button {
   display: block;
   margin-bottom: 36px;
   color: var(--teal-500);
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 800;
   letter-spacing: 0.1em;
 }
@@ -721,7 +751,7 @@ button {
 .front-label {
   margin: 0 0 8px;
   color: var(--green-500);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -731,21 +761,21 @@ button {
   max-width: 420px;
   margin: 0 0 12px;
   color: var(--navy-950);
-  font-size: 23px;
+  font-size: var(--t-xl);
   letter-spacing: -0.035em;
-  line-height: 1.2;
+  line-height: var(--lh-snug);
 }
 
 .front-primary h3 {
   color: var(--paper);
-  font-size: 31px;
+  font-size: var(--t-2xl);
 }
 
 .front-card > p:not(.front-label) {
   max-width: 530px;
   margin: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--t-small);
 }
 
 .front-primary > p:not(.front-label) {
@@ -758,7 +788,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 26px 0 0;
+  margin: 28px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -768,7 +798,7 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 10px;
+  font-size: var(--t-micro);
 }
 
 .portfolio {
@@ -776,7 +806,7 @@ button {
 }
 
 .portfolio-heading {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 .filter-bar {
@@ -794,7 +824,7 @@ button {
   border-radius: 999px;
   background: var(--paper);
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 750;
   cursor: pointer;
   transition: color 0.16s ease, border-color 0.16s ease, background 0.16s ease;
@@ -818,7 +848,7 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 390px;
-  padding: 30px;
+  padding: 32px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--paper);
@@ -853,7 +883,7 @@ button {
 
 .project-num {
   color: var(--teal-500);
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 800;
   letter-spacing: 0.12em;
 }
@@ -866,7 +896,7 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -894,9 +924,9 @@ button {
 }
 
 .project-kicker {
-  margin: 58px 0 8px;
+  margin: 60px 0 8px;
   color: var(--teal-500);
-  font-size: 10px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -905,9 +935,9 @@ button {
 .project-card h3 {
   margin: 0 0 15px;
   color: var(--navy-950);
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: var(--t-display-sm);
   letter-spacing: -0.045em;
-  line-height: 1.14;
+  line-height: var(--lh-tight);
 }
 
 .project-card.is-featured h3 {
@@ -917,7 +947,7 @@ button {
 .project-description {
   margin: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--t-small);
 }
 
 .is-featured .project-description {
@@ -938,7 +968,7 @@ button {
   border-radius: 999px;
   background: var(--wash-blue);
   color: var(--navy-800);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 750;
 }
 
@@ -953,7 +983,7 @@ button {
   flex-wrap: wrap;
   gap: 17px;
   margin-top: auto;
-  padding-top: 30px;
+  padding-top: 32px;
 }
 
 .project-link {
@@ -962,7 +992,7 @@ button {
   gap: 7px;
   color: var(--navy-900);
   text-decoration: none;
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 800;
 }
 
@@ -977,7 +1007,7 @@ button {
 
 .project-lock {
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--t-micro);
   font-weight: 750;
 }
 
@@ -989,7 +1019,7 @@ button {
 .error-state {
   grid-column: 1 / -1;
   margin: 0;
-  padding: 26px;
+  padding: 28px;
   border: 1px dashed var(--line-strong);
   border-radius: var(--radius-md);
   color: var(--muted);
@@ -1024,13 +1054,13 @@ button {
   display: grid;
   grid-template-columns: 80px 1fr;
   gap: 24px;
-  padding: 23px 0;
+  padding: 24px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .method-flow li > span {
   color: var(--teal-500);
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 800;
   letter-spacing: 0.12em;
 }
@@ -1043,13 +1073,13 @@ button {
 
 .method-flow strong {
   color: var(--paper);
-  font-size: 16px;
+  font-size: var(--t-base);
 }
 
 .method-flow p {
   margin: 0;
   color: rgba(255, 255, 255, 0.55);
-  font-size: 13px;
+  font-size: var(--t-caption);
 }
 
 .method-notes {
@@ -1061,7 +1091,7 @@ button {
 
 .method-notes article {
   min-height: 230px;
-  padding: 25px;
+  padding: 24px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.035);
@@ -1069,23 +1099,23 @@ button {
 
 .method-notes span {
   color: var(--green-500);
-  font-size: 9px;
+  font-size: var(--t-micro);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .method-notes h3 {
-  margin: 42px 0 11px;
+  margin: 44px 0 11px;
   color: var(--paper);
-  font-size: 20px;
-  line-height: 1.2;
+  font-size: var(--t-lg);
+  line-height: var(--lh-snug);
 }
 
 .method-notes p {
   margin: 0;
   color: rgba(255, 255, 255, 0.54);
-  font-size: 13px;
+  font-size: var(--t-caption);
 }
 
 .partnerships {
@@ -1096,7 +1126,7 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(350px, 0.8fr);
   align-items: center;
-  gap: 90px;
+  gap: 92px;
 }
 
 .partnerships .section-kicker {
@@ -1111,7 +1141,7 @@ button {
   max-width: 650px;
   margin: 28px 0 32px;
   color: rgba(6, 42, 71, 0.78);
-  font-size: 16px;
+  font-size: var(--t-base);
 }
 
 .button-light {
@@ -1121,7 +1151,7 @@ button {
 }
 
 .partner-panel {
-  padding: 31px;
+  padding: 32px;
   border: 1px solid rgba(6, 42, 71, 0.17);
   border-radius: 4px 24px 4px 24px;
   background: rgba(255, 255, 255, 0.8);
@@ -1129,9 +1159,9 @@ button {
 }
 
 .panel-title {
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   color: var(--navy-950);
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 800;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -1153,7 +1183,7 @@ button {
 
 .partner-panel li > span {
   color: var(--teal-500);
-  font-size: 10px;
+  font-size: var(--t-micro);
   font-weight: 800;
 }
 
@@ -1164,13 +1194,13 @@ button {
 
 .partner-panel strong {
   color: var(--navy-950);
-  font-size: 13px;
+  font-size: var(--t-caption);
 }
 
 .partner-panel small {
   margin-top: 2px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--t-micro);
 }
 
 .founder {
@@ -1192,7 +1222,7 @@ button {
   width: 300px;
   height: 240px;
   margin: 0;
-  padding: 34px 26px;
+  padding: 36px 28px;
   border: 1px solid var(--line);
   border-radius: 4px 36px 4px 36px;
   background:
@@ -1231,13 +1261,13 @@ button {
 }
 
 .founder h2 {
-  font-size: 52px;
+  font-size: var(--t-3xl);
 }
 
 .founder-role {
   margin: 7px 0 24px;
   color: var(--teal-500);
-  font-size: 13px;
+  font-size: var(--t-caption);
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1246,20 +1276,20 @@ button {
 .founder-layout > div:last-child > p:not(.section-kicker):not(.founder-role) {
   margin: 0;
   color: var(--muted);
-  font-size: 17px;
+  font-size: var(--t-base);
 }
 
 .founder-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 22px;
+  gap: 24px;
   margin-top: 28px;
 }
 
 .founder-links a {
   color: var(--navy-900);
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--t-caption);
   font-weight: 800;
 }
 
@@ -1287,8 +1317,8 @@ button {
 
 .footer-layout p {
   margin: 0;
-  font-size: 11px;
-  line-height: 1.75;
+  font-size: var(--t-micro);
+  line-height: var(--lh-body);
 }
 
 .footer-layout p strong {
@@ -1298,19 +1328,19 @@ button {
 .footer-link {
   color: #9edce8;
   text-decoration: none;
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 800;
 }
 
 .footer-base {
   display: flex;
   justify-content: space-between;
-  gap: 30px;
-  margin-top: 50px;
+  gap: 32px;
+  margin-top: 52px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.38);
-  font-size: 9px;
+  font-size: var(--t-micro);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -1321,7 +1351,7 @@ button {
   }
 
   .site-nav a {
-    font-size: 12px;
+    font-size: var(--t-caption);
   }
 
   .header-cta {
@@ -1373,7 +1403,7 @@ button {
     display: grid;
     gap: 0;
     margin: 0;
-    padding: 14px 18px 22px;
+    padding: 14px 18px 24px;
     color: var(--navy-950);
     background: var(--paper);
     border-top: 1px solid var(--line);
@@ -1391,7 +1421,7 @@ button {
   .site-nav a {
     padding: 15px 8px;
     border-bottom: 1px solid var(--line);
-    font-size: 14px;
+    font-size: var(--t-small);
   }
 
   .site-nav a:last-child {
@@ -1417,7 +1447,7 @@ button {
 
   .hero {
     min-height: auto;
-    padding: 130px 0 84px;
+    padding: 132px 0 84px;
   }
 
   .hero-layout,
@@ -1428,7 +1458,7 @@ button {
   }
 
   .hero-layout {
-    gap: 58px;
+    gap: 60px;
   }
 
   .hero-system {
@@ -1439,7 +1469,7 @@ button {
   .thesis-layout,
   .section-heading,
   .partnership-layout {
-    gap: 38px;
+    gap: 40px;
   }
 
   .front-primary,
@@ -1459,7 +1489,7 @@ button {
 
   .founder-layout {
     grid-template-columns: 250px 1fr;
-    gap: 45px;
+    gap: 44px;
   }
 
   .founder-mark {
@@ -1474,7 +1504,7 @@ button {
   }
 
   .section {
-    padding: 70px 0;
+    padding: 72px 0;
   }
 
   .brand-copy small {
@@ -1486,7 +1516,7 @@ button {
   }
 
   .hero-lede {
-    font-size: 16px;
+    font-size: var(--t-base);
   }
 
   .hero-actions .button {
@@ -1504,7 +1534,7 @@ button {
   }
 
   .hero-facts dt {
-    font-size: 22px;
+    font-size: var(--t-lg);
   }
 
   .hero-system {
@@ -1529,7 +1559,7 @@ button {
   }
 
   .thesis-copy .lead {
-    font-size: 19px;
+    font-size: var(--t-md);
   }
 
   .front-primary,
@@ -1552,7 +1582,7 @@ button {
   }
 
   .partner-panel {
-    padding: 23px;
+    padding: 24px;
   }
 
   .founder-layout {
@@ -1571,7 +1601,7 @@ button {
 
   .footer-layout {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 24px;
   }
 
   .footer-base {
