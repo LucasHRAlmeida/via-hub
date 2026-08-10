@@ -5,37 +5,67 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 ## Acesso
 
 - GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
+- Sobre (perfil do fundador): <https://lucashralmeida.github.io/via-hub/sobre/>
 - Mentoria Sincronismo Híbrido (oferta paga): <https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/>
 - VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
 - VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
 - VIA Economia & Saúde: <https://lucashralmeida.github.io/via-hub/via-economia-saude/>
 - Bem-Estar Multissensorial: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
+- VIA Soberania Informacional: <https://lucashralmeida.github.io/via-hub/soberania-informacional/>
+- Regulação Federal de IA em Saúde: <https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/>
 - Saúde na Última Semana: <https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/>
 
 ## Estrutura
+
+**Raiz do site (GitHub Pages)**
 
 - `index.html` — conteúdo e semântica da página.
 - `styles.css` — sistema visual responsivo com a paleta institucional VIA.
 - `app.js` — navegação móvel, filtros e renderização segura do portfólio.
 - `projects.json` — fonte versionada das demonstrações e respectivos status.
+- `sitemap.xml` — mapa de URLs do hub para indexação em buscadores.
+- `robots.txt` — diretivas de rastreamento para crawlers, referenciando o sitemap.
+- `ai.txt` / `llms.txt` — mapa de conteúdo e política de uso para agentes de IA.
+- `humans.txt` — créditos.
+- `SECURITY.md` — política de segurança e canal de divulgação responsável.
+- `.well-known/security.txt` — política de segurança em formato padronizado (RFC 9116).
+- `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
+
+**Governança de repositório**
+
 - `.github/ISSUE_TEMPLATE/parceria.yml` — formulário para propostas institucionais.
+- `.github/ISSUE_TEMPLATE/config.yml` — configuração do seletor de templates de issue.
+- `.claude/settings.json` — configuração de sessão para agentes Claude Code operando neste repositório.
+- `assets/` — imagens institucionais (retrato do fundador, selo de marca, cartão social do hub).
+
+**Módulos**
+
+- `sobre/index.html` — página institucional "Sobre", com o perfil do fundador.
 - `mentoria-sincronismo-hibrido/` — landing pública da oferta de mentoria paga (calibração de juízo clínico).
 - `via-mente-mbrp/index.html` — webapp psicoeducacional MBRP-8.
+- `via-mente-mbrp/README.md` — escopo e documentação do módulo.
 - `via-literacia-programacao-github/index.html` — trilha web introdutória com progresso local.
 - `via-literacia-programacao-github/apostila.md` — fonte pedagógica versionada de programação, Git e GitHub.
 - `via-literacia-programacao-github/README.md` — documentação editorial e técnica do módulo.
 - `via-economia-saude/index.html` — trilha interativa com diagnóstico, simuladores locais e plano de ação.
 - `via-economia-saude/conteudo.md` — fonte editorial versionada de economia e saúde.
+- `via-economia-saude/EDITORIAL.md` — diretrizes editoriais do módulo.
 - `via-economia-saude/README.md` — escopo, privacidade, limites e manutenção do módulo.
 - `via-economia-saude/og.png` — cartão social alinhado ao branding VIA.
 - `bem-estar-multissensorial/index.html` — guia multissensorial de bem-estar (música, cores e aromas).
 - `bem-estar-multissensorial/README.md` — escopo, limitações e documentação do módulo.
 - `soberania-informacional/index.html` — frente de proteção de dados, autonomia e direitos digitais.
 - `soberania-informacional/README.md` — tese, escopo e limites editoriais do módulo.
-- `soberania-informacional/docs/` — protocolo de evidência e modelo de representação administrativa calibrado.
+- `soberania-informacional/docs/` — protocolo de evidência, modelo de representação administrativa (ANPD) e tese do módulo.
+- `regulacao-federal-ia/index.html` — briefing interativo sobre governança federativa de transferências interestaduais de pacientes críticos no SUS.
+- `regulacao-federal-ia/README.md` — diagnóstico sistêmico, analogia operacional (CRM/AF447) e proposta técnica do módulo.
 - `sarampo-alertas-2026/index.html` — boletim de utilidade pública em saúde (sarampo e prevenção), alinhado à paleta VIA.
 - `sarampo-alertas-2026/README.md` — escopo, limitações e documentação do módulo.
-- `.nojekyll` — publicação direta dos arquivos estáticos pelo GitHub Pages.
+
+**Documentação interna e futuro domínio próprio**
+
+- `docs/decisoes/0001-tese-fundadora.md` — registro de decisão de arquitetura (ADR 0001): tese fundadora da Iniciativa VIA.
+- `docs/site-raiz/` — código-fonte preparado para a futura raiz institucional do domínio próprio (iniciativa-via.com), com seu próprio `index.html`, `robots.txt`, `sitemap.xml`, `ai.txt`/`llms.txt`, `humans.txt` e `.well-known/security.txt`. Ainda não publicado como site ativo; receberá o arquivo `CNAME` quando o domínio for de fato apontado ao GitHub Pages (ver `docs/site-raiz/README.md` e `docs/site-raiz/COMO-PUBLICAR.md`).
 
 ## Princípios editoriais
 
@@ -65,3 +95,4 @@ CRM-SP: 226836 | CRM-MG: 109752
 **Iniciativa VIA — Vida Integrada e Autônoma**
 
 Ciência e Tecnologia a serviço do Cuidado.
+
