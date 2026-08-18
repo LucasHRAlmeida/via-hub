@@ -4,9 +4,9 @@ Proposta de arquitetura federativa para orquestração inteligente de transferê
 
 ## Acesso
 
-- **Briefing Interativo**: <https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/>
+- **Briefing Interativo**: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
 - **Documentação Técnica**: [`docs/`](./docs/)
-- **Portfólio VIA**: <https://lucashralmeida.github.io/via-hub/>
+- **Portfólio VIA**: <https://iniciativa-via.com/via-hub/>
 
 ## Propósito
 

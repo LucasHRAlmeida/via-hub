@@ -4,16 +4,18 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 
 ## Acesso
 
-- GitHub Pages: <https://lucashralmeida.github.io/via-hub/>
-- Sobre (perfil do fundador): <https://lucashralmeida.github.io/via-hub/sobre/>
-- Mentoria Sincronismo Híbrido (oferta paga): <https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/>
-- VIA MENTE — MBRP-8: <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
-- VIA Literacia — Programação, Git e GitHub: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
-- VIA Economia & Saúde: <https://lucashralmeida.github.io/via-hub/via-economia-saude/>
-- Bem-Estar Multissensorial: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
-- VIA Soberania Informacional: <https://lucashralmeida.github.io/via-hub/soberania-informacional/>
-- Regulação Federal de IA em Saúde: <https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/>
-- Saúde na Última Semana: <https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/>
+O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.com`, com HTTPS ativo. As URLs canônicas do hub são as listadas abaixo.
+
+- Portal: <https://iniciativa-via.com/via-hub/>
+- Sobre (perfil do fundador): <https://iniciativa-via.com/via-hub/sobre/>
+- Mentoria Sincronismo Híbrido (oferta paga): <https://iniciativa-via.com/via-hub/mentoria-sincronismo-hibrido/>
+- VIA MENTE — MBRP-8: <https://iniciativa-via.com/via-hub/via-mente-mbrp/>
+- VIA Literacia — Programação, Git e GitHub: <https://iniciativa-via.com/via-hub/via-literacia-programacao-github/>
+- VIA Economia & Saúde: <https://iniciativa-via.com/via-hub/via-economia-saude/>
+- Bem-Estar Multissensorial: <https://iniciativa-via.com/via-hub/bem-estar-multissensorial/>
+- VIA Soberania Informacional: <https://iniciativa-via.com/via-hub/soberania-informacional/>
+- Regulação Federal de IA em Saúde: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
+- Saúde na Última Semana: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/>
 
 ## Estrutura
 
@@ -62,10 +64,10 @@ Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site org
 - `sarampo-alertas-2026/index.html` — boletim de utilidade pública em saúde (sarampo e prevenção), alinhado à paleta VIA.
 - `sarampo-alertas-2026/README.md` — escopo, limitações e documentação do módulo.
 
-**Documentação interna e futuro domínio próprio**
+**Documentação interna e raiz do domínio próprio**
 
 - `docs/decisoes/0001-tese-fundadora.md` — registro de decisão de arquitetura (ADR 0001): tese fundadora da Iniciativa VIA.
-- `docs/site-raiz/` — código-fonte preparado para a futura raiz institucional do domínio próprio (iniciativa-via.com), com seu próprio `index.html`, `robots.txt`, `sitemap.xml`, `ai.txt`/`llms.txt`, `humans.txt` e `.well-known/security.txt`. Ainda não publicado como site ativo; receberá o arquivo `CNAME` quando o domínio for de fato apontado ao GitHub Pages (ver `docs/site-raiz/README.md` e `docs/site-raiz/COMO-PUBLICAR.md`).
+- `docs/site-raiz/` — espelho versionado da raiz institucional do domínio próprio (iniciativa-via.com), com seu próprio `index.html`, `robots.txt`, `sitemap.xml`, `ai.txt`/`llms.txt`, `humans.txt` e `.well-known/security.txt`. Publicado pelo repositório `LucasHRAlmeida.github.io`, que já contém o arquivo `CNAME` do domínio; o apontamento ao GitHub Pages está concluído e verificado (ver `docs/site-raiz/README.md` e `docs/site-raiz/COMO-PUBLICAR.md`).
 
 ## Princípios editoriais
 

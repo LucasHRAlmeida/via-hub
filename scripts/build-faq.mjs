@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const corpus = JSON.parse(readFileSync(join(root, "data/faq.json"), "utf8"));
 
-const SITE = "https://lucashralmeida.github.io/via-hub/";
+const SITE = "https://iniciativa-via.com/via-hub/";
 const PAGE = `${SITE}faq/`;
 const TITLE = "Perguntas frequentes — Iniciativa VIA | Dr Lucas HR Almeida";
 const DESCRIPTION =

@@ -4,7 +4,7 @@ Guia web interativo que sugere combinações de **música, cor e aroma** para se
 
 ## Acesso
 
-- Página publicada: <https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/>
+- Página publicada: <https://iniciativa-via.com/via-hub/bem-estar-multissensorial/>
 
 ## Escopo e limitações
 

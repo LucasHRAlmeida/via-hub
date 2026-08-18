@@ -4,9 +4,9 @@ Módulo educacional introdutório da Iniciativa VIA para pessoas sem experiênci
 
 ## Acessos
 
-- Aplicação web: <https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/>
+- Aplicação web: <https://iniciativa-via.com/via-hub/via-literacia-programacao-github/>
 - Apostila versionada: [`apostila.md`](./apostila.md)
-- Portfólio VIA: <https://lucashralmeida.github.io/via-hub/>
+- Portfólio VIA: <https://iniciativa-via.com/via-hub/>
 
 ## Proposta pedagógica
 

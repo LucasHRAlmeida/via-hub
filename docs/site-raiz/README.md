@@ -1,8 +1,8 @@
-# lucashralmeida.github.io — raiz institucional
+# iniciativa-via.com — raiz institucional
 
-Raiz canônica de **Dr Lucas HR Almeida** e da **Iniciativa VIA — Vida Integrada e Autônoma**.
+Raiz canônica de **Dr Lucas HR Almeida** e da **Iniciativa VIA — Vida Integrada e Autônoma**, publicada pelo repositório `LucasHRAlmeida.github.io` (site de usuário do GitHub Pages) sob o domínio próprio `iniciativa-via.com`.
 
-Este repositório existe por uma razão estrutural: convenções da web — `robots.txt`, `ai.txt`, `/.well-known/` — só são lidas automaticamente na **raiz do domínio**. Enquanto a raiz respondia 404, todo o portfólio vivia em subcaminho e esses arquivos não tinham efeito. Esta raiz resolve isso e serve de porta de entrada para o [VIA-HUB](https://lucashralmeida.github.io/via-hub/).
+Este repositório existe por uma razão estrutural: convenções da web — `robots.txt`, `ai.txt`, `/.well-known/` — só são lidas automaticamente na **raiz do domínio**. Enquanto a raiz respondia 404, todo o portfólio vivia em subcaminho e esses arquivos não tinham efeito. Esta raiz resolve isso e serve de porta de entrada para o [VIA-HUB](https://iniciativa-via.com/via-hub/).
 
 ## Estrutura
 
@@ -16,7 +16,7 @@ Este repositório existe por uma razão estrutural: convenções da web — `rob
 
 ## Domínio próprio
 
-Quando `iniciativa-via.com` for apontado ao GitHub Pages, este é o repositório que deve receber o arquivo `CNAME` — a raiz passa a ser o domínio, e todas as URLs canônicas migram junto.
+`iniciativa-via.com` foi apontado ao GitHub Pages e está ativo. Este repositório contém o arquivo `CNAME` do domínio, o HTTPS está habilitado e a raiz responde no domínio próprio. Todas as URLs canônicas — `canonical`, `og:url`, `@id` do JSON-LD e sitemaps — migraram junto, em uma passada única, para não fragmentar a entidade.
 
 ---
 

@@ -2,8 +2,8 @@
   "$comment": "Corpus canônico do FAQ da Iniciativa VIA. Fonte de registro, versionada à parte da interface que a serve (ADR 0001, invariante 1). A página /faq/ espelha este arquivo em HTML estático e em JSON-LD FAQPage; ao editar aqui, atualize também faq/index.html.",
   "version": "2026-08-16",
   "language": "pt-BR",
-  "canonical": "https://lucashralmeida.github.io/via-hub/faq/",
-  "authorPage": "https://lucashralmeida.github.io/via-hub/sobre/",
+  "canonical": "https://iniciativa-via.com/via-hub/faq/",
+  "authorPage": "https://iniciativa-via.com/via-hub/sobre/",
   "categories": [
     { "id": "autor", "label": "Dr Lucas HR" },
     { "id": "via", "label": "Iniciativa VIA" },

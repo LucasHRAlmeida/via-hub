@@ -3,7 +3,7 @@
 Webapp psicoeducacional de oito semanas para organização de práticas de atenção plena e prevenção de recaída. Desenvolvido pela **VIA — Vida Integrada e Autônoma**, o módulo traduz a estrutura do *Mindfulness-Based Relapse Prevention* (MBRP) para um roteiro diário em português brasileiro.
 
 > **Estado:** beta v0.1  
-> **Acesso público:** <https://lucashralmeida.github.io/via-hub/via-mente-mbrp/>
+> **Acesso público:** <https://iniciativa-via.com/via-hub/via-mente-mbrp/>
 
 ## O que é
 

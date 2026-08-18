@@ -4,9 +4,9 @@ Webapp educacional da **Iniciativa VIA — Vida Integrada e Autônoma** para apo
 
 ## Acesso
 
-- Aplicação: <https://lucashralmeida.github.io/via-hub/via-economia-saude/>
+- Aplicação: <https://iniciativa-via.com/via-hub/via-economia-saude/>
 - Fonte editorial: [`conteudo.md`](./conteudo.md)
-- Portal VIA: <https://lucashralmeida.github.io/via-hub/>
+- Portal VIA: <https://iniciativa-via.com/via-hub/>
 
 ## Proposta do MVP
 

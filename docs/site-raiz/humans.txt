@@ -21,8 +21,8 @@
 
   Nome: Dr Lucas HR Almeida — Iniciativa VIA
   Lema: Ciência e Tecnologia a serviço do Cuidado.
-  Raiz: https://lucashralmeida.github.io/
-  Portfólio: https://lucashralmeida.github.io/via-hub/
+  Raiz: https://iniciativa-via.com/
+  Portfólio: https://iniciativa-via.com/via-hub/
   Padrões: HTML5, CSS3, JSON-LD / schema.org
   Componentes: nenhum framework, nenhuma dependência, nenhuma etapa de build
 

@@ -1,17 +1,17 @@
 [
   {
     "@type": "WebSite",
-    "@id": "https://lucashralmeida.github.io/via-hub/#website",
-    "url": "https://lucashralmeida.github.io/via-hub/",
+    "@id": "https://iniciativa-via.com/via-hub/#website",
+    "url": "https://iniciativa-via.com/via-hub/",
     "name": "Iniciativa VIA — Vida Integrada e Autônoma",
     "alternateName": "VIA",
     "description": "A Iniciativa VIA transforma conhecimento clínico e científico em ferramentas auditáveis para medicina, educação, pesquisa e saúde pública.",
     "inLanguage": "pt-BR",
     "publisher": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#organization"
+      "@id": "https://iniciativa-via.com/via-hub/#organization"
     },
     "author": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#lucas-hr-almeida"
+      "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida"
     }
   },
   {
@@ -19,25 +19,25 @@
       "MedicalOrganization",
       "Organization"
     ],
-    "@id": "https://lucashralmeida.github.io/via-hub/#organization",
+    "@id": "https://iniciativa-via.com/via-hub/#organization",
     "name": "Iniciativa VIA",
     "alternateName": "VIA — Vida Integrada e Autônoma",
     "legalName": "Iniciativa VIA — Vida Integrada e Autônoma",
-    "url": "https://lucashralmeida.github.io/via-hub/",
+    "url": "https://iniciativa-via.com/via-hub/",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://lucashralmeida.github.io/via-hub/assets/og-via.png",
+      "url": "https://iniciativa-via.com/via-hub/assets/og-via.png",
       "width": 1200,
       "height": 630
     },
-    "image": "https://lucashralmeida.github.io/via-hub/assets/og-via.png",
+    "image": "https://iniciativa-via.com/via-hub/assets/og-via.png",
     "slogan": "Ciência e Tecnologia a serviço do Cuidado",
     "description": "Iniciativa médico-científica independente que converte conhecimento clínico, científico, jurídico e econômico em ferramentas verificáveis e autônomas, executadas no navegador do usuário — sem servidor, sem login e sem coleta de dados.",
     "founder": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#lucas-hr-almeida"
+      "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida"
     },
     "employee": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#lucas-hr-almeida"
+      "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida"
     },
     "medicalSpecialty": [
       "https://schema.org/PublicHealth",
@@ -89,7 +89,7 @@
       "Person",
       "Physician"
     ],
-    "@id": "https://lucashralmeida.github.io/via-hub/#lucas-hr-almeida",
+    "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida",
     "name": "Dr Lucas HR Almeida",
     "alternateName": "Dr Lucas HR",
     "honorificPrefix": "Dr",
@@ -97,11 +97,11 @@
     "familyName": "Almeida",
     "jobTitle": "Médico Generalista",
     "description": "Médico Generalista (FMRP-USP) e fundador da Iniciativa VIA — Vida Integrada e Autônoma. Converte conhecimento clínico e científico em ferramentas verificáveis, com escopo declarado e supervisão humana.",
-    "url": "https://lucashralmeida.github.io/via-hub/sobre/",
-    "mainEntityOfPage": "https://lucashralmeida.github.io/via-hub/sobre/",
+    "url": "https://iniciativa-via.com/via-hub/sobre/",
+    "mainEntityOfPage": "https://iniciativa-via.com/via-hub/sobre/",
     "image": {
       "@type": "ImageObject",
-      "url": "https://lucashralmeida.github.io/via-hub/assets/dr-lucas-hr.jpg",
+      "url": "https://iniciativa-via.com/via-hub/assets/dr-lucas-hr.jpg",
       "width": 900,
       "height": 1200
     },
@@ -111,10 +111,10 @@
       "url": "https://www.fmrp.usp.br/"
     },
     "affiliation": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#organization"
+      "@id": "https://iniciativa-via.com/via-hub/#organization"
     },
     "worksFor": {
-      "@id": "https://lucashralmeida.github.io/via-hub/#organization"
+      "@id": "https://iniciativa-via.com/via-hub/#organization"
     },
     "identifier": [
       {

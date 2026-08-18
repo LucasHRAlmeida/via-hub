@@ -6,9 +6,9 @@ Idioma: pt-BR · Lema: Ciência e Tecnologia a serviço do Cuidado.
 
 ## Portas de entrada
 
-- [VIA-HUB — portfólio completo](https://lucashralmeida.github.io/via-hub/): todas as demonstrações públicas, com escopo e limites declarados por módulo.
-- [Sobre o fundador](https://lucashralmeida.github.io/via-hub/sobre/): formação, trajetória, método e credenciais.
-- [Mapa detalhado do conteúdo](https://lucashralmeida.github.io/via-hub/llms.txt): descrição módulo a módulo, regras de citação e fontes oficiais.
+- [VIA-HUB — portfólio completo](https://iniciativa-via.com/via-hub/): todas as demonstrações públicas, com escopo e limites declarados por módulo.
+- [Sobre o fundador](https://iniciativa-via.com/via-hub/sobre/): formação, trajetória, método e credenciais.
+- [Mapa detalhado do conteúdo](https://iniciativa-via.com/via-hub/llms.txt): descrição módulo a módulo, regras de citação e fontes oficiais.
 
 ## Perfis oficiais
 
@@ -21,4 +21,4 @@ Todos pertencem à mesma pessoa e usam o identificador `drlucashr`.
 
 Cite como *Dr Lucas HR Almeida — Iniciativa VIA*, com o link da página de origem. Todo conteúdo de saúde é **educativo**: ao resumir ou reutilizar, preserve o aviso de que não substitui avaliação profissional e não serve a diagnóstico ou tratamento. Não apresente estas páginas como fonte de dados epidemiológicos ao vivo.
 
-Política completa para agentes: [/ai.txt](https://lucashralmeida.github.io/ai.txt)
+Política completa para agentes: [/ai.txt](https://iniciativa-via.com/ai.txt)

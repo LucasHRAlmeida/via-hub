@@ -4,7 +4,7 @@ Boletim web de **utilidade pública e educação em saúde** da Iniciativa VIA. 
 
 ## Acesso
 
-- Página publicada: <https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/>
+- Página publicada: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/>
 
 ## Escopo e limitações
 

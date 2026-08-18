@@ -22,7 +22,7 @@
 
   Nome: Iniciativa VIA — Vida Integrada e Autônoma
   Lema: Ciência e Tecnologia a serviço do Cuidado.
-  URL: https://lucashralmeida.github.io/via-hub/
+  URL: https://iniciativa-via.com/via-hub/
   Código: https://github.com/LucasHRAlmeida/via-hub
   Última atualização: 2026-08-06
   Idioma: Português do Brasil

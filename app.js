@@ -38,7 +38,7 @@ const fallbackData = {
       featured: true,
       description: "Calibração de juízo clínico em regime híbrido: sessões síncronas densas + estrutura assíncrona de templates, feedback e Escala Móvel de Evidência. Oferta paga, cohort fechada ou 1:1.",
       tags: ["phronesis", "SBAR", "Escala Móvel", "cohort"],
-      url: "https://lucashralmeida.github.io/via-hub/mentoria-sincronismo-hibrido/",
+      url: "https://iniciativa-via.com/via-hub/mentoria-sincronismo-hibrido/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/mentoria-sincronismo-hibrido"
     },
     {
@@ -64,7 +64,7 @@ const fallbackData = {
       featured: false,
       description: "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e outras prioridades.",
       tags: ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
-      url: "https://lucashralmeida.github.io/via-hub/sarampo-alertas-2026/",
+      url: "https://iniciativa-via.com/via-hub/sarampo-alertas-2026/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/sarampo-alertas-2026"
     },
     {
@@ -77,7 +77,7 @@ const fallbackData = {
       featured: false,
       description: "Roteiro psicoeducacional interativo de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias, ferramentas de campo e registro local de progresso.",
       tags: ["MBRP", "mindfulness", "56 dias", "localStorage"],
-      url: "https://lucashralmeida.github.io/via-hub/via-mente-mbrp/",
+      url: "https://iniciativa-via.com/via-hub/via-mente-mbrp/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp"
     },
     {
@@ -90,7 +90,7 @@ const fallbackData = {
       featured: false,
       description: "Trilha introdutória em Python que conecta conceitos de programação a um projeto versionado com Git, publicado em branch e integrado por pull request.",
       tags: ["Python", "Git e GitHub", "4–6 horas", "progresso local"],
-      url: "https://lucashralmeida.github.io/via-hub/via-literacia-programacao-github/",
+      url: "https://iniciativa-via.com/via-hub/via-literacia-programacao-github/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
     },
     {
@@ -103,7 +103,7 @@ const fallbackData = {
       featured: false,
       description: "Trilha interativa para tornar caixa, valor de referência, ponto de equilíbrio e reserva mais legíveis na prática de profissionais da saúde, com diagnóstico, simuladores locais, casos e plano de ação.",
       tags: ["fluxo de caixa", "ponto de equilíbrio", "reserva", "dados locais"],
-      url: "https://lucashralmeida.github.io/via-hub/via-economia-saude/",
+      url: "https://iniciativa-via.com/via-hub/via-economia-saude/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude"
     },
     {
@@ -116,7 +116,7 @@ const fallbackData = {
       featured: false,
       description: "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui intervenção clínica.",
       tags: ["cromoterapia", "aromaterapia", "playlists", "6 estados"],
-      url: "https://lucashralmeida.github.io/via-hub/bem-estar-multissensorial/",
+      url: "https://iniciativa-via.com/via-hub/bem-estar-multissensorial/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial"
     },
     {
@@ -129,7 +129,7 @@ const fallbackData = {
       featured: false,
       description: "Frente pública de literacia, documentação e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados que possam incidir sobre vulnerabilidades. Não realiza análise jurídica formal.",
       tags: ["LGPD", "perfilamento", "rastreabilidade", "direitos do titular"],
-      url: "https://lucashralmeida.github.io/via-hub/soberania-informacional/",
+      url: "https://iniciativa-via.com/via-hub/soberania-informacional/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional"
     },
     {
@@ -142,7 +142,7 @@ const fallbackData = {
       featured: false,
       description: "Arquitetura de inteligência federativa para orquestração de transferências críticas entre estados do SUS. Integra diagnóstico sistêmico (caso-sentinela), lições de segurança aeronáutica (AF447), 3 pilares técnicos (IA, roteamento, corredores aeromédicos) e episteme clínica (Canguilhem, Nietzsche, phrónesis).",
       tags: ["SUS", "IA federativa", "CRM clínico", "epistemologia", "transferências"],
-      url: "https://lucashralmeida.github.io/via-hub/regulacao-federal-ia/",
+      url: "https://iniciativa-via.com/via-hub/regulacao-federal-ia/",
       repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/regulacao-federal-ia"
     }
   ]
