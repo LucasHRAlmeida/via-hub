@@ -276,7 +276,7 @@ ${jsonLd}
       </a>
       <nav class="header-nav" aria-label="Navegação da página">
         <a href="../sobre/">Sobre o fundador</a>
-        <a href="../#demonstracoes">Demonstrações</a>
+        <a href="../#portfolio">Portfólio</a>
         <a class="cta" href="../">Explorar o hub</a>
       </nav>
     </div>
