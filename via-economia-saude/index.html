@@ -1643,7 +1643,7 @@
   </noscript>
 
   <main id="conteudo-principal">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div>
           <p class="eyebrow">VIA Economia & Saúde · MVP educacional 0.1</p>
@@ -1651,7 +1651,9 @@
           <p class="hero-lede">
             Uma experiência curta para profissionais da saúde examinarem caixa, sustentabilidade da prática e reserva com premissas explícitas — sem promessas de investimento e sem transformar cuidado em mercadoria.
           </p>
-          <div class="hero-actions">
+          
+<aside class="via-bridge" data-series="economia-saude" data-via-episode="abertura"></aside>
+<div class="hero-actions">
             <a class="button" href="#diagnostico">Começar diagnóstico</a>
             <a class="button secondary" href="#simuladores">Abrir simuladores</a>
           </div>
@@ -1787,6 +1789,8 @@
           <article class="learning-card">
             <span class="duration">Núcleo 1 · 12 minutos</span>
             <h3>Caixa legível</h3>
+<aside class="via-bridge" data-series="economia-saude" data-via-episode="n1"></aside>
+
             <p>Separar o que foi recebido do que apenas foi faturado e enxergar o movimento do mês.</p>
             <ul>
               <li>saldo inicial e final;</li>
@@ -1802,6 +1806,8 @@
           <article class="learning-card">
             <span class="duration">Núcleo 2 · 15 minutos</span>
             <h3>Sustentabilidade da prática</h3>
+<aside class="via-bridge" data-series="economia-saude" data-via-episode="n2"></aside>
+
             <p>Relacionar custos, deduções e capacidade sem apresentar o cálculo como honorário recomendado.</p>
             <ul>
               <li>margem de contribuição;</li>
@@ -1817,6 +1823,8 @@
           <article class="learning-card">
             <span class="duration">Núcleo 3 · 10 minutos</span>
             <h3>Reserva e fôlego</h3>
+<aside class="via-bridge" data-series="economia-saude" data-via-episode="n3"></aside>
+
             <p>Distinguir a proteção pessoal da continuidade profissional e escolher uma cobertura compatível com o contexto.</p>
             <ul>
               <li>base essencial mensal;</li>
@@ -2074,6 +2082,8 @@
             <span class="number-tag">04</span>
             <p class="eyebrow">Casos sintéticos</p>
             <h2 id="casos-title">A decisão muda conforme o contexto.</h2>
+<aside class="via-bridge" data-series="economia-saude" data-via-episode="casos"></aside>
+
           </div>
           <p>Abra cada caso, identifique a primeira pergunta útil e compare com a resposta comentada. Nenhum caso representa uma pessoa real.</p>
         </div>
@@ -2603,6 +2613,16 @@
         openTabFromHash(event.currentTarget.hash);
       });
 
+      const HASH_ALIAS = { "#caixa": "#tab-cash", "#equilibrio": "#tab-price", "#reserva": "#tab-reserve" };
+      const _openTabFromHash = openTabFromHash;
+      openTabFromHash = function(hash) {
+        hash = HASH_ALIAS[hash] || hash;
+        _openTabFromHash(hash);
+      };
+      openTabFromHash(location.hash);
+      window.addEventListener("hashchange", function () { openTabFromHash(location.hash); });
+
+
       const routes = {
         cash: {
           title: "Comece pelo caixa",
@@ -2823,5 +2843,6 @@
     <div style="margin-top:10px"><a href="https://iniciativa-via.com/via-hub/" style="color:#9edce8;text-decoration:none;font-weight:700">Iniciativa VIA</a> &nbsp;·&nbsp; <a href="https://iniciativa-via.com/via-hub/sobre/" style="color:#9edce8;text-decoration:none;font-weight:700">Sobre o fundador</a></div>
   </div>
 </aside>
+<script src="../ponte/bridge.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,124 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-08-20",
+  "hub": "https://iniciativa-via.com/via-hub",
+  "channel": "https://www.youtube.com/@drlucashr",
+  "worker": {
+    "shortPattern": "/v/{slug}/{episode}",
+    "note": "Cloudflare Worker resolve o atalho para a URL canônica do módulo com UTM. O ID do YouTube é campo, não chave."
+  },
+  "series": [
+    {
+      "slug": "mbrp-8",
+      "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/",
+      "playlistUrl": null,
+      "episodes": [
+        {
+          "id": "trailer",
+          "title": "VIA MENTE · O que é o MBRP-8 — e o que não é",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=trailer#inicio",
+          "shortPath": "/v/mbrp-8/trailer",
+          "youtubeId": null
+        },
+        {
+          "id": "s1",
+          "title": "VIA MENTE · S1 — Piloto automático",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s1#s1",
+          "shortPath": "/v/mbrp-8/s1",
+          "youtubeId": null
+        },
+        {
+          "id": "s2",
+          "title": "VIA MENTE · S2 — Desconforto e fissura",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s2#s2",
+          "shortPath": "/v/mbrp-8/s2",
+          "youtubeId": null
+        },
+        {
+          "id": "s3",
+          "title": "VIA MENTE · S3 — A pausa SOBER",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s3#s3",
+          "shortPath": "/v/mbrp-8/s3",
+          "youtubeId": null
+        },
+        {
+          "id": "s4",
+          "title": "VIA MENTE · S4 — Situações desafiadoras",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s4#s4",
+          "shortPath": "/v/mbrp-8/s4",
+          "youtubeId": null
+        },
+        {
+          "id": "s5",
+          "title": "VIA MENTE · S5 — Aceitação e plano de contingência",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s5#s5",
+          "shortPath": "/v/mbrp-8/s5",
+          "youtubeId": null
+        },
+        {
+          "id": "s6",
+          "title": "VIA MENTE · S6 — Pensamentos como pensamentos",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s6#s6",
+          "shortPath": "/v/mbrp-8/s6",
+          "youtubeId": null
+        },
+        {
+          "id": "s7",
+          "title": "VIA MENTE · S7 — Sustentar o bem-estar",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s7#s7",
+          "shortPath": "/v/mbrp-8/s7",
+          "youtubeId": null
+        },
+        {
+          "id": "s8",
+          "title": "VIA MENTE · S8 — Rede e continuidade",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-mente-mbrp/?utm_source=youtube&utm_medium=description&utm_campaign=mbrp-8&utm_content=s8#s8",
+          "shortPath": "/v/mbrp-8/s8",
+          "youtubeId": null
+        }
+      ]
+    },
+    {
+      "slug": "economia-saude",
+      "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/",
+      "playlistUrl": null,
+      "episodes": [
+        {
+          "id": "abertura",
+          "title": "VIA ECONOMIA · Números para decidir — sem mercantilizar o cuidado",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/?utm_source=youtube&utm_medium=description&utm_campaign=economia-saude&utm_content=abertura#inicio",
+          "shortPath": "/v/economia-saude/abertura",
+          "youtubeId": null
+        },
+        {
+          "id": "n1",
+          "title": "VIA ECONOMIA · N1 — Caixa legível",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/?utm_source=youtube&utm_medium=description&utm_campaign=economia-saude&utm_content=n1#tab-cash",
+          "shortPath": "/v/economia-saude/n1",
+          "youtubeId": null
+        },
+        {
+          "id": "n2",
+          "title": "VIA ECONOMIA · N2 — Preço e ponto de equilíbrio",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/?utm_source=youtube&utm_medium=description&utm_campaign=economia-saude&utm_content=n2#tab-price",
+          "shortPath": "/v/economia-saude/n2",
+          "youtubeId": null
+        },
+        {
+          "id": "n3",
+          "title": "VIA ECONOMIA · N3 — Reserva e resiliência",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/?utm_source=youtube&utm_medium=description&utm_campaign=economia-saude&utm_content=n3#tab-reserve",
+          "shortPath": "/v/economia-saude/n3",
+          "youtubeId": null
+        },
+        {
+          "id": "casos",
+          "title": "VIA ECONOMIA · C — Três casos e o plano de 30 dias",
+          "moduleUrl": "https://iniciativa-via.com/via-hub/via-economia-saude/?utm_source=youtube&utm_medium=description&utm_campaign=economia-saude&utm_content=casos#casos",
+          "shortPath": "/v/economia-saude/casos",
+          "youtubeId": null
+        }
+      ]
+    }
+  ]
+}

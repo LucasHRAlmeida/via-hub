@@ -11,6 +11,7 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - Mentoria Sincronismo Híbrido (oferta paga): <https://iniciativa-via.com/via-hub/mentoria-sincronismo-hibrido/>
 - VIA MENTE — MBRP-8: <https://iniciativa-via.com/via-hub/via-mente-mbrp/>
 - VIA Literacia — Programação, Git e GitHub: <https://iniciativa-via.com/via-hub/via-literacia-programacao-github/>
+- Ponte YouTube ↔ módulos: <https://iniciativa-via.com/via-hub/ponte/>
 - VIA Economia & Saúde: <https://iniciativa-via.com/via-hub/via-economia-saude/>
 - Bem-Estar Multissensorial: <https://iniciativa-via.com/via-hub/bem-estar-multissensorial/>
 - VIA Soberania Informacional: <https://iniciativa-via.com/via-hub/soberania-informacional/>

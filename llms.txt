@@ -38,6 +38,11 @@ Site: https://iniciativa-via.com/via-hub/ · Código aberto: https://github.com/
 - [VIA Literacia — Programação, Git e GitHub](https://iniciativa-via.com/via-hub/via-literacia-programacao-github/): trilha introdutória em Python conectada a um projeto versionado com Git e integrado por pull request.
 - [VIA Economia & Saúde](https://iniciativa-via.com/via-hub/via-economia-saude/): trilha interativa sobre caixa, valor de referência, ponto de equilíbrio e reserva na prática de profissionais de saúde, com simuladores locais.
 
+## Ponte YouTube ↔ módulos
+
+- [Ponte](https://iniciativa-via.com/via-hub/ponte/): contrato bidirecional. Cada episódio aponta para um hash do módulo; cada semana aponta para o episódio. Contrato versionado em `ponte/via-bridge.json`.
+- Séries-piloto: [MBRP-8](https://iniciativa-via.com/via-hub/ponte/mbrp-8/) e [Economia & Saúde](https://iniciativa-via.com/via-hub/ponte/economia-saude/).
+
 ## Perfis e canais oficiais
 
 Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando possível, o mesmo identificador (`drlucashr`). São os perfis declarados em `sameAs` nos dados estruturados de todas as páginas.
@@ -67,4 +72,4 @@ Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando poss�
 
 Contato: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180196) · [Propor parceria](https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml)
 
-Última atualização: 2026-08-16
+Última atualização: 2026-08-20

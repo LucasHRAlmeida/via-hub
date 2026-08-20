@@ -3,7 +3,7 @@
     "hub": "Iniciativa VIA",
     "owner": "Dr Lucas HR",
     "affiliation": "FMRP-USP",
-    "updated": "2026-08-03"
+    "updated": "2026-08-20"
   },
   "categories": [
     {
@@ -139,9 +139,9 @@
         "medicina",
         "educacao"
       ],
-      "status": "beta",
+      "status": "beta · piloto de distribuição",
       "statusKey": "beta",
-      "featured": false,
+      "featured": true,
       "description": "Roteiro psicoeducacional interativo de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias, ferramentas de campo e registro local de progresso.",
       "tags": [
         "MBRP",
@@ -150,7 +150,9 @@
         "localStorage"
       ],
       "url": "https://iniciativa-via.com/via-hub/via-mente-mbrp/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp",
+      "featuredPilot": true,
+      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/mbrp-8/"
     },
     {
       "id": "via-literacia-programacao-github",
@@ -181,9 +183,9 @@
         "medicina",
         "educacao"
       ],
-      "status": "MVP educacional",
+      "status": "MVP educacional · piloto de distribuição",
       "statusKey": "beta",
-      "featured": false,
+      "featured": true,
       "description": "Trilha interativa para tornar caixa, valor de referência, ponto de equilíbrio e reserva mais legíveis na prática de profissionais da saúde, com diagnóstico, simuladores locais, casos e plano de ação.",
       "tags": [
         "fluxo de caixa",
@@ -192,7 +194,9 @@
         "dados locais"
       ],
       "url": "https://iniciativa-via.com/via-hub/via-economia-saude/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude",
+      "featuredPilot": true,
+      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/economia-saude/"
     },
     {
       "id": "bem-estar-multissensorial",

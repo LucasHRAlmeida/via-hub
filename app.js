@@ -224,7 +224,8 @@ function createProjectCard(project, index) {
 
   const actions = document.createElement("div");
   actions.className = "project-actions";
-  if (project.url) actions.append(buildLink("Abrir demonstração", project.url));
+  if (project.seriesUrl) actions.append(buildLink("Abrir série", project.seriesUrl));
+  if (project.url) actions.append(buildLink(project.featuredPilot ? "Abrir módulo" : "Abrir demonstração", project.url));
   if (project.repo) actions.append(buildLink("Ver código", project.repo));
   if (!project.url && !project.repo) {
     const lock = document.createElement("span");
@@ -261,10 +262,10 @@ async function loadProjects() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     if (!Array.isArray(data.projects)) throw new Error("Formato inválido");
-    state.projects = data.projects;
+    state.projects = data.projects.slice().sort((a,b) => Number(!!b.featuredPilot) - Number(!!a.featuredPilot));
   } catch (error) {
     console.warn("projects.json indisponível; usando conteúdo incorporado.", error);
-    state.projects = fallbackData.projects;
+    state.projects = fallbackData.projects.slice().sort((a,b) => Number(!!b.featuredPilot) - Number(!!a.featuredPilot));
   }
   renderProjects(state.projects);
 }
