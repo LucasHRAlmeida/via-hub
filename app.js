@@ -24,9 +24,9 @@ const fallbackData = {
       status: "rascunho público",
       statusKey: "beta",
       featured: true,
-      description: "Instrumento interativo que calcula o limiar de ação, explicita a robustez de evidência exigida e audita o julgamento. Parâmetros arbitrados são declarados; ainda sem validação prospectiva.",
-      tags: ["Pauker-Kassirer", "limiar de ação", "auditoria do julgamento", "v0.2.1"],
-      url: "https://escala-movel-evidencia.doctorparnassus.chatgpt.site"
+      description: "Instrumento interativo que calcula o limiar de ação, audita o julgamento e propaga a incerteza dos multiplicadores por valor da informação e envelope credal. Ainda sem validação prospectiva.",
+      tags: ["Pauker-Kassirer", "limiar de ação", "valor da informação", "rede credal", "v0.3.0"],
+      url: "https://iniciativa-via.com/via-hub/escala-movel-evidencia/"
     },
     {
       id: "mentoria-sincronismo-hibrido",
