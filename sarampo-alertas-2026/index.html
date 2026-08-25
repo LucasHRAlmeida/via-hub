@@ -41,12 +41,12 @@
           "@id": "https://iniciativa-via.com/via-hub/#organization"
         },
         "isAccessibleForFree": true,
-        "dateModified": "2026-08-06",
+        "dateModified": "2026-08-21",
         "audience": {
           "@type": "MedicalAudience",
           "audienceType": "Patient"
         },
-        "lastReviewed": "2026-08-06",
+        "lastReviewed": "2026-08-21",
         "reviewedBy": {
           "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida"
         },
@@ -990,6 +990,40 @@
       font-style: italic;
     }
 
+    /* --- Revista: sumário, evidência e artigos --- */
+    .issue-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+      padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:34px}
+    .issue-bar .issue-id{color:var(--navy-950);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+    .toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+    .toc a{display:block;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius-sm);
+      background:var(--paper);text-decoration:none;transition:border-color .16s,transform .16s}
+    .toc a:hover{border-color:var(--teal-500);transform:translateY(-2px)}
+    .toc b{display:block;color:var(--teal-500);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+    .toc span{color:var(--navy-950);font-size:14px;font-weight:650;letter-spacing:-.01em;line-height:1.25}
+    .evidence{margin:22px 0 0;padding:22px 24px;border:1px solid var(--line);border-left:3px solid var(--navy-700);
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0;background:var(--wash)}
+    .evidence .ev-tag{display:block;margin-bottom:8px;color:var(--navy-700);font-size:9px;font-weight:800;
+      letter-spacing:.12em;text-transform:uppercase}
+    .evidence p{margin:0 0 10px;color:var(--ink);font-size:14.5px}
+    .evidence p:last-child{margin-bottom:0}
+    .evidence cite{display:block;color:var(--muted);font-size:12px;font-style:normal;line-height:1.55}
+    .evidence cite a{color:var(--navy-900);font-weight:700;text-decoration:none}
+    .evidence cite a:hover{text-decoration:underline;text-underline-offset:3px}
+    .agenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:30px}
+    .agenda-item{padding:22px 24px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--paper)}
+    .agenda-item .when{display:inline-block;margin-bottom:10px;padding:5px 11px;border-radius:999px;
+      background:var(--green-100);color:var(--green-600);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+    .agenda-item.is-now .when{background:#fdf0d8;color:#a4761a}
+    .agenda-item h3{margin:0 0 7px;color:var(--navy-950);font-size:17px;letter-spacing:-.02em;line-height:1.25}
+    .agenda-item p{margin:0;color:var(--muted);font-size:14px}
+    .treat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:30px}
+    .treat{padding:24px;border:1px solid var(--line);border-top:3px solid var(--teal-500);border-radius:0 0 var(--radius-sm) var(--radius-sm);background:var(--paper);transition:transform .2s,box-shadow .2s}
+    .treat:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(6,42,71,.08)}
+    .treat .who{display:block;margin-bottom:8px;color:var(--teal-500);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .treat h3{margin:0 0 8px;color:var(--navy-950);font-size:16.5px;letter-spacing:-.02em;line-height:1.3}
+    .treat p{margin:0;color:var(--muted);font-size:14px}
+    @media (max-width:620px){.issue-bar{flex-direction:column;align-items:flex-start;gap:10px}}
+
     @media (max-width: 900px) {
       .card-full { grid-template-columns: 1fr; gap: 20px; }
       .topic-grid { grid-template-columns: 1fr; }
@@ -1043,7 +1077,7 @@
         <h1>Saúde na Última Semana</h1>
         <p class="hero-lede">Boletim de <strong>utilidade pública</strong> da Iniciativa VIA. Traduzimos temas de vigilância e prevenção para o público geral — com o <em>sarampo</em> como caso de comunicação de risco — em linguagem clara, com escopo explícito e fontes oficiais.</p>
         <ul class="hero-meta">
-          <li>Edição de 5 de agosto de 2026</li>
+          <li>Edição de 21 de agosto de 2026</li>
           <li>Educação em saúde</li>
           <li>Brasil</li>
         </ul>
@@ -1057,45 +1091,30 @@
     <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">
       <div class="shell">
         <!-- PANORAMA:START (bloco atualizado semanalmente — não remova os marcadores) -->
-        <div class="panorama-head" data-updated="2026-08-05">
+        <div class="panorama-head" data-updated="2026-08-21">
           <div class="section-heading">
-            <p class="section-kicker">Panorama da semana</p>
-            <h2 id="panorama-titulo">Resumo das últimas notícias</h2>
+            <p class="section-kicker">Nesta edição</p>
+            <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>
           </div>
-          <span class="update-pill">Atualizado em 5 de agosto de 2026</span>
+          <span class="update-pill">Atualizado em 21 de agosto de 2026</span>
         </div>
 
-        <div class="news-list">
-          <article class="news-item">
-            <p class="news-tag">Vigilância global · Sarampo</p>
-            <h3>Sarampo em alta reforça o valor da vacina</h3>
-            <p>Nos Estados Unidos, 2026 já acumula mais casos de sarampo do que todo o ano de 2025 — o maior número em décadas, com a ampla maioria entre pessoas não vacinadas. É a lição do caso em foco: onde a cobertura cai, o vírus volta.</p>
-            <a class="news-source" href="https://www.cdc.gov/measles/data-research/index.html" target="_blank" rel="noopener noreferrer">CDC · dados de sarampo <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="news-item is-brasil">
-            <p class="news-tag">Brasil · Dengue</p>
-            <h3>Dengue recua, e vacinação passa por revisão</h3>
-            <p>O Ministério da Saúde relata forte queda dos casos de dengue em 2026 frente a 2025. Em meados do ano, a estratégia nacional de vacinação foi temporariamente ajustada para investigar sinais da vigilância — confirme a elegibilidade vigente nos canais oficiais.</p>
-            <a class="news-source" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue" target="_blank" rel="noopener noreferrer">Ministério da Saúde · dengue <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="news-item is-estacao">
-            <p class="news-tag">Estação · Vírus respiratórios</p>
-            <h3>Inverno pede atenção à gripe</h3>
-            <p>A OPAS alertou para o aumento da influenza no Hemisfério Sul, com gripe, covid-19 e VSR circulando ao mesmo tempo. A vacina da gripe segue disponível o ano todo nas unidades de saúde para os grupos prioritários.</p>
-            <a class="news-source" href="https://www.paho.org/pt/brasil" target="_blank" rel="noopener noreferrer">OPAS/OMS Brasil <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="news-item is-mundo">
-            <p class="news-tag">No radar do mundo</p>
-            <h3>Surtos sob vigilância internacional</h3>
-            <p>A OMS acompanha o maior surto de Ebola já registrado na República Democrática do Congo e um extenso surto de mpox em Madagascar. O risco direto ao Brasil é baixo, mas ambos seguem em monitoramento global.</p>
-            <a class="news-source" href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank" rel="noopener noreferrer">OMS · alertas de surtos <span aria-hidden="true">↗</span></a>
-          </article>
+        <div class="issue-bar">
+          <span class="issue-id">Edição 21.08.2026 · Ano I</span>
+          <span class="issue-id" style="color:var(--muted);font-weight:650;letter-spacing:.02em;text-transform:none">
+            Vigilância · Vacinação · Tratamentos · Inteligência artificial
+          </span>
         </div>
 
-        <p class="panorama-disclaimer">Resumo editorial de utilidade pública, compilado de fontes oficiais na data acima. Números mudam a cada semana — confira sempre a fonte antes de agir ou compartilhar.</p>
+        <ul class="toc">
+          <li><a href="#sarampo"><b>01 · Em foco</b><span>Sarampo nas Américas: o pior ano em duas décadas</span></a></li>
+          <li><a href="#agenda"><b>02 · Agenda</b><span>Multivacinação e o Dia D de 22 de agosto</span></a></li>
+          <li><a href="#tratamentos"><b>03 · Tratamentos</b><span>O que foi aprovado e o que vem por aí</span></a></li>
+          <li><a href="#ia"><b>04 · IA na saúde</b><span>A evidência econômica desmente a promessa</span></a></li>
+          <li><a href="#acoes"><b>05 · Prática</b><span>O que fazer nesta semana</span></a></li>
+        </ul>
+
+        <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e da literatura científica na data acima. Números mudam a cada semana — confira sempre a fonte antes de agir ou compartilhar.</p>
         <!-- PANORAMA:END -->
       </div>
     </section>
@@ -1104,8 +1123,8 @@
       <div class="shell">
         <div class="section-heading">
           <p class="section-kicker">01 · Em foco</p>
-          <h2 id="sarampo-titulo">Sarampo: por que uma doença evitável ainda merece atenção</h2>
-          <p>O sarampo é um dos vírus mais contagiosos que se conhece. Ele volta a circular sempre que a cobertura vacinal cai — por isso funciona tão bem como caso de estudo de comunicação de risco: a prevenção é simples, gratuita e depende de todos.</p>
+          <h2 id="sarampo-titulo">Sarampo nas Américas: o maior número de casos em 22 anos</h2>
+          <p>Em <strong>7 de agosto</strong>, a Organização Pan-Americana da Saúde (OPAS) emitiu alerta epidemiológico: a Região das Américas registra em 2026 o maior número de casos confirmados de sarampo dos últimos <strong>22 anos</strong>. A recomendação é fortalecer vacinação, vigilância e resposta rápida. No Brasil, o Ministério da Saúde reforçou o <strong>bloqueio vacinal</strong> diante de casos importados, com intensificação em <strong>Guarulhos, São Bernardo do Campo e São Paulo</strong>.</p>
         </div>
 
         <div class="card-grid">
@@ -1143,12 +1162,12 @@
           </article>
 
           <article class="info-card">
-            <span class="card-tag">Contexto</span>
-            <h3>Eliminação conquistada, atenção mantida</h3>
-            <p>O Brasil recuperou em 2024 o certificado de país livre da circulação do sarampo. Manter esse status depende de cobertura vacinal alta e constante.</p>
+            <span class="card-tag">Por que importa agora</span>
+            <h3>Eliminação conquistada, atenção redobrada</h3>
+            <p>O Brasil recuperou em 2024 o certificado de país livre da circulação do sarampo. Com o vírus em alta no continente, manter esse status depende de cobertura vacinal alta e constante.</p>
             <ul>
               <li>É preciso cerca de <strong>95% de cobertura</strong> para bloquear a circulação.</li>
-              <li>Casos importados ainda ocorrem e podem reacender surtos onde há bolsões não vacinados.</li>
+              <li>Casos importados reacendem surtos onde há bolsões não vacinados.</li>
               <li>Prevenir é responsabilidade coletiva: protege quem não pode se vacinar.</li>
             </ul>
           </article>
@@ -1173,57 +1192,122 @@
             <h3>Quando procurar atendimento</h3>
             <p>Febre com manchas na pele, especialmente após contato com caso suspeito ou viagem, merece avaliação. Ligue antes para a unidade e evite exposição a outras pessoas no trajeto.</p>
           </div>
-          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sarampo" target="_blank" rel="noopener noreferrer">Orientações do Ministério da Saúde <span aria-hidden="true">↗</span></a>
+          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/alerta-sobre-sarampo-nas-americas-reforca-importancia-de-intensificar-vacinacao-no-brasil" target="_blank" rel="noopener noreferrer">Alerta do Ministério da Saúde <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
 
-    <section class="topics section" id="questoes" aria-labelledby="questoes-titulo">
+    <section class="topics section" id="agenda" aria-labelledby="agenda-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">02 · Também nesta semana</p>
-          <h2 id="questoes-titulo">Outras questões de saúde em pauta</h2>
-          <p>Temas de prevenção que acompanham o calendário brasileiro. Orientações gerais e consolidadas — confira sempre a recomendação vigente na sua região.</p>
+          <p class="section-kicker">02 · Agenda de vacinação</p>
+          <h2 id="agenda-titulo">A campanha está aberta — e o Dia D é amanhã</h2>
+          <p>Duas mudanças concretas no calendário nacional entram em vigor neste mês. Ambas são gratuitas no SUS e dependem apenas de levar a caderneta à unidade de saúde.</p>
         </div>
 
-        <div class="topic-grid">
-          <article class="topic-card">
-            <span class="topic-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 12l2 2 4-4"></path>
-                <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"></path>
-              </svg>
-            </span>
-            <span class="card-tag">Vacinação</span>
-            <h3>Caderneta em dia, sempre</h3>
-            <p>A carteira de vacinação não é só das crianças. Adultos e idosos também têm doses e reforços a manter — inclusive contra sarampo, febre amarela, hepatite B, dT e outras.</p>
-            <a class="topic-link" href="https://www.gov.br/saude/pt-br/vacinacao" target="_blank" rel="noopener noreferrer">Calendário nacional de vacinação <span aria-hidden="true">↗</span></a>
+        <div class="agenda">
+          <article class="agenda-item is-now">
+            <span class="when">Dia D · 22 de agosto</span>
+            <h3>Multivacinação 2026</h3>
+            <p>Campanha nacional para atualizar a caderneta de crianças e adolescentes <strong>menores de 15 anos</strong>. A mobilização segue até <strong>1º de setembro</strong>, com Dia D nacional em 22 de agosto.</p>
           </article>
-
-          <article class="topic-card">
-            <span class="topic-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2C8 7 6 10 6 14a6 6 0 0 0 12 0c0-4-2-7-6-12z"></path>
-              </svg>
-            </span>
-            <span class="card-tag">Arboviroses</span>
-            <h3>Dengue e o combate ao mosquito</h3>
-            <p>A prevenção segue sendo eliminar criadouros do <em>Aedes aegypti</em>: água parada em vasos, calhas e recipientes. Os casos recuaram no Brasil em 2026; a estratégia nacional de vacinação passou por revisão no meio do ano — confira a elegibilidade vigente.</p>
-            <a class="topic-link" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue" target="_blank" rel="noopener noreferrer">Prevenção da dengue <span aria-hidden="true">↗</span></a>
+          <article class="agenda-item">
+            <span class="when">Desde 3 de agosto</span>
+            <h3>Poliomielite: novo reforço aos 4 anos</h3>
+            <p>O esquema contra a poliomielite passou a incluir um <strong>segundo reforço da VIP</strong> (vacina inativada) aos <strong>4 anos de idade</strong>.</p>
           </article>
+          <article class="agenda-item">
+            <span class="when">O ano todo</span>
+            <h3>Adultos também têm calendário</h3>
+            <p>Tríplice viral, febre amarela, hepatite B, dT e gripe têm indicação para adultos. Quem não comprova doses de sarampo deve procurar a unidade.</p>
+          </article>
+        </div>
 
+        <div class="care-note" style="margin-top:24px">
+          <div class="care-body">
+            <h3>Leve a caderneta — mesmo que esteja em dia</h3>
+            <p>A conferência é rápida e gratuita. Doses atrasadas podem ser atualizadas na hora, sem necessidade de recomeçar o esquema.</p>
+          </div>
+          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/vacinacao" target="_blank" rel="noopener noreferrer">Calendário nacional de vacinação <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus section" id="tratamentos" aria-labelledby="trat-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">03 · Avanços em tratamentos</p>
+          <h2 id="trat-titulo">O que foi aprovado — e o que ainda é promessa</h2>
+          <p>Registro do que saiu do laboratório e chegou à regulação neste ciclo. A distinção importa: <strong>aprovação regulatória</strong> não é o mesmo que disponibilidade no SUS, nem que indicação para todos os pacientes.</p>
+        </div>
+
+        <div class="treat-grid">
+          <article class="treat">
+            <span class="who">Anvisa · Brasil</span>
+            <h3>Novos registros e indicações ampliadas</h3>
+            <p>A Resolução nº 2.831/2026, de 20 de julho, reúne decisões de registro e ampliação de indicações terapêuticas para <strong>linfoma não Hodgkin, câncer renal, hemofilia, lúpus e esclerose múltipla</strong>.</p>
+          </article>
+          <article class="treat">
+            <span class="who">FDA · Terapia gênica</span>
+            <h3>Primeira terapia gênica para surdez genética</h3>
+            <p>Aprovada a primeira terapia gênica destinada à <strong>perda auditiva de origem genética</strong> — marco para doenças sensoriais hereditárias.</p>
+          </article>
+          <article class="treat">
+            <span class="who">Oncologia · CAR-T</span>
+            <h3>CAR-T chega ao tumor sólido</h3>
+            <p>A terapia <strong>satri-cel</strong> foi aprovada para adenocarcinoma gástrico ou da junção esofagogástrica: a primeira terapia com células CAR-T aprovada para um <strong>tumor sólido</strong>.</p>
+          </article>
+          <article class="treat">
+            <span class="who">Diabetes · Em avaliação</span>
+            <h3>Células-tronco no diabetes tipo 1</h3>
+            <p>O <strong>zimislecel</strong> deve ser submetido às agências reguladoras: em estudos, uma injeção única levou casos específicos a dispensar insulina. Ainda <strong>sem aprovação</strong>.</p>
+          </article>
+          <article class="treat">
+            <span class="who">Brasil · Pesquisa nacional</span>
+            <h3>Vacina brasileira contra covid-19 avança</h3>
+            <p>A <strong>SpiN-TEC</strong> (CTVacinas/UFMG, com apoio da Finep) deve entrar na última fase de estudos clínicos — a primeira vacina 100% desenvolvida no Brasil a chegar a essa etapa.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="topics section" id="ia" aria-labelledby="ia-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">04 · Inteligência artificial na saúde</p>
+          <h2 id="ia-titulo">A evidência econômica não sustenta a promessa</h2>
+          <p>Este é o eixo em que a VIA tem posição declarada: <strong>complexidade precisa pagar aluguel</strong>. Uma camada nova só se justifica quando reduz risco, trabalho ou ambiguidade de forma demonstrável. A literatura desta semana ajuda a separar ganho de retórica.</p>
+        </div>
+
+        <div class="evidence">
+          <span class="ev-tag">Revisão sistemática · Health Policy, 2026</span>
+          <p>Projeções de mercado falam em <strong>US$ 200–360 bilhões</strong> de economia anual nos Estados Unidos e <strong>€ 212 bilhões</strong> na Europa. Uma revisão sistemática rastreou 16.430 registros acadêmicos e analisou <strong>98 avaliações econômicas</strong> de tecnologias de IA em saúde. Resultado: apenas <strong>36% demonstram preferência econômica clara</strong> pela IA — proporção que sobe para <strong>44%</strong> entre os 51 estudos de alta qualidade.</p>
+          <p>A conclusão dos autores é sóbria e vale como régua editorial: há potencial real de custo-efetividade, mas a evidência disponível <strong>não sustenta</strong> as projeções de centenas de bilhões em economia. As aplicações concentram-se em oftalmologia e oncologia, voltadas a prestadores de serviço.</p>
+          <cite>Schmidt J, Carter AW, McGuire A, Mossialos E, van Kessel R. <em>A systematic review of economic evidence of artificial intelligence in healthcare.</em> Health Policy. 2026;172:105715. Recuperado do PubMed. <a href="https://doi.org/10.1016/j.healthpol.2026.105715" target="_blank" rel="noopener noreferrer">DOI: 10.1016/j.healthpol.2026.105715 ↗</a></cite>
+        </div>
+
+        <div class="evidence" style="border-left-color:var(--green-500)">
+          <span class="ev-tag" style="color:var(--green-600)">Revisão sistemática · Nursing in Critical Care, 2026</span>
+          <p>Do lado clínico, o sinal é promissor e igualmente cauteloso. Em cuidados agudos e intensivos, sistemas de apoio à decisão com IA <strong>operados por enfermeiros</strong> associaram-se a menor mortalidade hospitalar (<strong>RR 0,68; IC 95% 0,53–0,87</strong>) em sete estudos com cerca de <strong>75 mil pacientes</strong>.</p>
+          <p>O próprio estudo qualifica o achado: o intervalo de predição <strong>inclui a possibilidade de nenhum efeito</strong>, os desfechos relatados por profissionais são escassos e a implementação exige atenção a carga de alertas, equidade e segurança. Ferramentas que <strong>apoiam</strong> o julgamento clínico — sem substituí-lo — são as que mostram benefício.</p>
+          <cite>Almagharbeh WT, Alkubati SA, Alasmari AA, et al. <em>Harnessing Artificial Intelligence to Strengthen Acute and Critical Care Nursing Practice: A Systematic Review.</em> Nurs Crit Care. 2026;31(5):e70606. Recuperado do PubMed. <a href="https://doi.org/10.1111/nicc.70606" target="_blank" rel="noopener noreferrer">DOI: 10.1111/nicc.70606 ↗</a></cite>
+        </div>
+
+        <div class="topic-grid" style="margin-top:30px">
           <article class="topic-card">
-            <span class="topic-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 12a6 6 0 0 1 12 0v0a4 4 0 0 1-4 4h-1"></path>
-                <path d="M12 16v4"></path>
-                <path d="M9 20h6"></path>
-              </svg>
-            </span>
-            <span class="card-tag">Inverno</span>
-            <h3>Vírus respiratórios da estação</h3>
-            <p>No inverno circulam mais influenza, covid-19 e o vírus sincicial respiratório. Vacinas atualizadas, ambientes ventilados e etiqueta respiratória reduzem a transmissão.</p>
-            <a class="topic-link" href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gripe-influenza" target="_blank" rel="noopener noreferrer">Sobre a gripe e a vacina <span aria-hidden="true">↗</span></a>
+            <span class="card-tag">Brasil · Adoção</span>
+            <h3>Mais operação do que diagnóstico</h3>
+            <p>A adoção de IA por estabelecimentos de saúde brasileiros avança, mas concentrada em tarefas <strong>operacionais</strong> — organização de processos clínicos e administrativos — mais do que em decisão diagnóstica.</p>
+          </article>
+          <article class="topic-card">
+            <span class="card-tag">Brasil · Regulação</span>
+            <h3>O CFM chegou antes do marco legal</h3>
+            <p>Antes da consolidação de um marco legal geral sobre inteligência artificial, o <strong>Conselho Federal de Medicina</strong> passou a disciplinar o uso da tecnologia na prática médica.</p>
+          </article>
+          <article class="topic-card">
+            <span class="card-tag">Princípio</span>
+            <h3>A decisão continua humana</h3>
+            <p>O desafio declarado é garantir que a decisão médica siga sendo tomada por pessoas. A IA entra como <strong>apoio técnico</strong>, com supervisão e rastreabilidade — nunca como substituto do juízo clínico.</p>
           </article>
         </div>
       </div>
@@ -1232,9 +1316,9 @@
     <section class="checklist section" id="acoes" aria-labelledby="acoes-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">03 · Ação prática</p>
-          <h2 id="acoes-titulo">O que fazer esta semana</h2>
-          <p>Quatro atitudes de baixo custo e alto retorno, que qualquer pessoa pode adotar sem sair da rotina.</p>
+          <p class="section-kicker">05 · Ação prática</p>
+          <h2 id="acoes-titulo">O que fazer nesta semana</h2>
+          <p>Cinco atitudes de baixo custo e alto retorno, ancoradas no que esta edição trouxe.</p>
         </div>
 
         <div class="check-grid">
@@ -1243,8 +1327,18 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
             </span>
             <div>
-              <h3>Confira a caderneta de vacinação</h3>
-              <p>Sua e da família. Doses atrasadas de tríplice viral e outras podem ser atualizadas gratuitamente na unidade de saúde.</p>
+              <h3>Aproveite o Dia D, em 22 de agosto</h3>
+              <p>Leve a caderneta de crianças e adolescentes menores de 15 anos à unidade de saúde. A campanha segue até 1º de setembro.</p>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <span class="check-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <div>
+              <h3>Confirme as duas doses de tríplice viral</h3>
+              <p>Com o sarampo em alta nas Américas, quem não comprova as duas doses deve procurar a unidade — inclusive adultos, antes de viajar.</p>
             </div>
           </div>
 
@@ -1264,7 +1358,7 @@
             </span>
             <div>
               <h3>Cuide da etiqueta respiratória</h3>
-              <p>É inverno: ventile ambientes, higienize as mãos e cubra tosse e espirro. Mantenha a vacina da gripe em dia e, com sintomas respiratórios, evite aglomerações.</p>
+              <p>Ventile ambientes, higienize as mãos e cubra tosse e espirro. Mantenha a vacina da gripe em dia.</p>
             </div>
           </div>
 
@@ -1273,8 +1367,8 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
             </span>
             <div>
-              <h3>Busque a fonte oficial</h3>
-              <p>Antes de compartilhar um alerta de saúde, confirme na fonte oficial. Boato circula mais rápido que vírus — e desorienta a prevenção.</p>
+              <h3>Desconfie de promessa sem estudo</h3>
+              <p>Vale para tratamento novo e para IA: pergunte qual estudo sustenta a alegação, com quantos pacientes e comparado a quê. Antes de compartilhar, confirme na fonte oficial.</p>
             </div>
           </div>
         </div>
@@ -1285,32 +1379,50 @@
       <div class="shell">
         <div class="sources-layout">
           <div>
-            <p class="section-kicker">04 · Transparência</p>
+            <p class="section-kicker">Transparência</p>
             <div class="sources-note">
-              <span>Princípio editorial</span>
+              <span>Método editorial</span>
               <strong>A fonte não é a ferramenta.</strong>
-              <p>Este boletim organiza e traduz orientações de prevenção; ele não gera dados. Números epidemiológicos mudam a cada semana e devem ser conferidos diretamente nas instituições responsáveis. Onde citamos ordens de grandeza, elas são consolidadas na literatura e servem para explicar o mecanismo, não para reportar a situação atual.</p>
+              <p>Cada edição é montada por varredura de fontes oficiais de saúde e da literatura científica indexada, com verificação de data e origem. Esta revista organiza e traduz; ela não gera dados. Números epidemiológicos mudam a cada semana e devem ser conferidos nas instituições responsáveis. Onde citamos ordens de grandeza consolidadas — como R₀ e eficácia vacinal —, elas explicam o mecanismo, não reportam a situação atual. Estudos científicos são citados com identificador digital (DOI) para verificação direta.</p>
             </div>
           </div>
 
           <div>
-            <h2 id="fontes-titulo" class="sr-only">Fontes oficiais</h2>
+            <h2 id="fontes-titulo" class="sr-only">Fontes desta edição</h2>
             <ul class="source-list">
               <li>
-                <a href="https://www.gov.br/saude/" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde</span><span class="source-desc">Vacinação, boletins e orientações oficiais do SUS</span></span>
+                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Ministério da Saúde</span><span class="source-desc">Alerta de sarampo, Multivacinação 2026 e calendário nacional</span></span>
                   <span class="source-arrow" aria-hidden="true">↗</span>
                 </a>
               </li>
               <li>
                 <a href="https://www.paho.org/pt/brasil" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">OPAS/OMS Brasil</span><span class="source-desc">Vigilância regional e certificação de eliminação</span></span>
+                  <span><span class="source-name">OPAS/OMS Brasil</span><span class="source-desc">Alerta epidemiológico de 7 de agosto sobre sarampo nas Américas</span></span>
                   <span class="source-arrow" aria-hidden="true">↗</span>
                 </a>
               </li>
               <li>
-                <a href="https://www.who.int/health-topics/measles" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Organização Mundial da Saúde</span><span class="source-desc">Panorama global do sarampo e imunização</span></span>
+                <a href="https://www.gov.br/anvisa/pt-br" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Anvisa</span><span class="source-desc">Resolução nº 2.831/2026 — registros e ampliação de indicações</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">PubMed</span><span class="source-desc">Base de literatura biomédica — revisões sistemáticas citadas nesta edição</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://doi.org/10.1016/j.healthpol.2026.105715" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Schmidt J, et al. Health Policy, 2026</span><span class="source-desc">Evidência econômica de IA em saúde — DOI 10.1016/j.healthpol.2026.105715</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://doi.org/10.1111/nicc.70606" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Almagharbeh WT, et al. Nurs Crit Care, 2026</span><span class="source-desc">IA em enfermagem de cuidados críticos — DOI 10.1111/nicc.70606</span></span>
                   <span class="source-arrow" aria-hidden="true">↗</span>
                 </a>
               </li>
@@ -1325,6 +1437,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
