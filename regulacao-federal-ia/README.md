@@ -5,6 +5,8 @@ Proposta de arquitetura federativa para orquestração inteligente de transferê
 ## Acesso
 
 - **Briefing Interativo**: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
+- **EVAM Conversor**: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/>
+- **Federal Regulation Lab**: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/lab/>
 - **Documentação Técnica**: [`docs/`](./docs/)
 - **Portfólio VIA**: <https://iniciativa-via.com/via-hub/>
 
@@ -29,6 +31,8 @@ Este módulo articula três camadas de conhecimento:
 regulacao-federal-ia/
 ├── README.md                       # este arquivo
 ├── index.html                      # briefing interativo
+├── evam/                            # narrativa livre → envelope regulatório versionado
+├── lab/                             # matching sintético por capacidade resolutiva
 ├── docs/
 │   ├── caso-sentinela.md          # análise técnica do colapso
 │   ├── af447-lições.md            # framework CRM → clínica
