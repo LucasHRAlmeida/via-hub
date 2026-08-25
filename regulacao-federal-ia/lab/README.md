@@ -6,6 +6,10 @@ Sandbox público e sintético associado ao módulo `regulacao-federal-ia`.
 
 Tornar discutível e auditável o contrato computacional de uma futura camada de apoio à regulação de urgências: necessidade clínica + janela terapêutica + capacidade executora + logística + incerteza.
 
+## Submódulo de entrada
+
+O [EVAM Conversor](../evam/) recebe narrativa clínica livre, cria um envelope versionado por síndrome/especialidade, preserva proveniência e declara campos críticos ausentes. Ele prepara a entrada; este Lab demonstra o matching experimental. A separação evita misturar extração textual com decisão regulatória.
+
 ## V1.0 pública
 
 - 100% client-side.

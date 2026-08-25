@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#082736">
+  <title>EVAM Conversor — VIA Federal Regulation Lab</title>
+  <meta name="description" content="Conversor local e auditável de narrativa clínica para resumo regulatório e schema versionado por síndrome e especialidade. Protótipo público com validação humana obrigatória.">
+  <meta name="author" content="Dr Lucas HR — Iniciativa VIA">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "EVAM Conversor",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "url": "https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/",
+    "description": "Protótipo público para estruturar narrativas clínicas em resumos regulatórios auditáveis, com templates versionados e validação humana obrigatória.",
+    "author": {
+      "@type": "Person",
+      "name": "Dr Lucas HR Almeida"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Iniciativa VIA — Vida Integrada e Autônoma"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Ir ao conversor</a>
+
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Navegação principal">
+      <a class="brand" href="../../" aria-label="Iniciativa VIA — início">
+        <span class="brand-mark" aria-hidden="true">VIA</span>
+        <span><strong>Vida Integrada e Autônoma</strong><small>Ciência e tecnologia a serviço do cuidado.</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="../">Proposta federal</a>
+        <a href="../lab/">Regulation Lab</a>
+        <a href="./README.md">Documentação</a>
+      </div>
+    </nav>
+
+    <div class="hero shell">
+      <div>
+        <p class="eyebrow">Iniciativa VIA · Federal Regulation Lab</p>
+        <h1><span>EVAM</span> Conversor</h1>
+        <p class="lede">Narrativa clínica livre entra. Um envelope regulatório estruturado, revisável e versionado sai — sem enviar o texto a servidor.</p>
+        <div class="hero-badges" aria-label="Características">
+          <span>100% local</span><span>proveniência por campo</span><span>JSON Schema</span><span>validação humana</span>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Escopo da versão">
+        <strong>V1.0 pública</strong>
+        <p>Extrator heurístico e editor estruturado para casos sintéticos ou desidentificados. Não diagnostica, não prioriza e não escolhe destino.</p>
+      </aside>
+    </div>
+  </header>
+
+  <main id="workspace" class="shell workspace">
+    <section class="notice" aria-labelledby="notice-title">
+      <span class="notice-icon" aria-hidden="true">!</span>
+      <div>
+        <h2 id="notice-title">Barreira de segurança</h2>
+        <p>Não cole nome, CPF, CNS, telefone, e-mail ou outro identificador. A desidentificação automática cobre somente padrões óbvios e não substitui revisão. Esta demonstração não deve receber dados clínicos reais identificáveis.</p>
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="step-1-title">
+      <div class="step-heading">
+        <span class="step-number">01</span>
+        <div><p class="kicker">Contrato semântico</p><h2 id="step-1-title">Escolha o template clínico-regulatório</h2></div>
+      </div>
+      <div class="template-layout">
+        <label class="control grow" for="schema-select">
+          <span>Síndrome e especialidade</span>
+          <select id="schema-select"></select>
+        </label>
+        <div id="schema-meta" class="schema-meta" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="step-card" aria-labelledby="step-2-title">
+      <div class="step-heading">
+        <span class="step-number">02</span>
+        <div><p class="kicker">Dado não estruturado</p><h2 id="step-2-title">Cole a narrativa de origem</h2></div>
+      </div>
+      <label class="control" for="narrative">
+        <span>Texto clínico livre</span>
+        <textarea id="narrative" rows="13" spellcheck="true" placeholder="Ex.: Mulher, 81 anos. Colangite com reconhecimento às... PA 80/45, PAM 58 mmHg, lactato 4,1 mmol/L..."></textarea>
+      </label>
+      <div class="options-row">
+        <label class="check"><input id="redact" type="checkbox" checked><span>Redigir padrões diretos antes de processar</span></label>
+        <label class="check"><input id="include-source" type="checkbox"><span>Incluir narrativa no JSON exportado</span></label>
+      </div>
+      <div class="action-row">
+        <button id="process" class="button primary" type="button">Estruturar rascunho</button>
+        <button id="example" class="button secondary" type="button">Carregar caso sintético</button>
+        <button id="clear" class="button ghost" type="button">Limpar sessão</button>
+      </div>
+    </section>
+
+    <section id="review-section" class="step-card" aria-labelledby="step-3-title" hidden>
+      <div class="step-heading split">
+        <div class="heading-group"><span class="step-number">03</span><div><p class="kicker">Supervisão humana</p><h2 id="step-3-title">Revise campo por campo</h2></div></div>
+        <div id="review-status" class="review-status" aria-live="polite"></div>
+      </div>
+      <p class="section-intro">Campos extraídos exibem o trecho de origem. Complete os ausentes e corrija qualquer inferência inadequada antes de exportar.</p>
+      <form id="review-form" class="review-form"></form>
+    </section>
+
+    <section id="output-section" class="step-card" aria-labelledby="step-4-title" hidden>
+      <div class="step-heading">
+        <span class="step-number">04</span>
+        <div><p class="kicker">Saída interoperável</p><h2 id="step-4-title">Texto formatado e envelope JSON</h2></div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Formatos de saída">
+        <button class="tab active" id="tab-text" role="tab" aria-selected="true" aria-controls="panel-output" data-format="text" type="button">Resumo regulatório</button>
+        <button class="tab" id="tab-json" role="tab" aria-selected="false" aria-controls="panel-output" data-format="json" type="button">Envelope JSON</button>
+        <button class="tab" id="tab-schema" role="tab" aria-selected="false" aria-controls="panel-output" data-format="schema" type="button">JSON Schema</button>
+      </div>
+      <label class="sr-only" for="output">Saída gerada</label>
+      <textarea id="output" class="output" rows="18" readonly></textarea>
+      <div class="action-row">
+        <button id="copy" class="button primary" type="button">Copiar saída</button>
+        <button id="download" class="button secondary" type="button">Baixar arquivo</button>
+      </div>
+    </section>
+
+    <section class="governance-grid" aria-label="Integração com a proposta federal">
+      <article>
+        <p class="kicker">Entrada</p>
+        <h2>Da narrativa ao episódio computável</h2>
+        <p>O EVAM não elimina o texto livre. Ele preserva o original como fonte opcional, separa extração automática de revisão humana e explicita o que não foi localizado.</p>
+      </article>
+      <article>
+        <p class="kicker">Saída</p>
+        <h2>Capacidade resolutiva, não “vaga” abstrata</h2>
+        <p>Cada template pergunta qual intervenção é necessária, qual capacidade realmente a executa e qual limitação impede a unidade atual de resolver o caso.</p>
+      </article>
+      <article>
+        <p class="kicker">Governança</p>
+        <h2>Schema, versão e proveniência</h2>
+        <p>A saída registra template, versão, campos críticos ausentes e origem de cada valor. O contrato pode ser auditado antes de qualquer motor de matching ou IA.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <div><strong>Dr Lucas HR Almeida</strong><span>Médico Generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752</span></div>
+      <div><strong>Iniciativa VIA</strong><span>Vida Integrada e Autônoma</span></div>
+      <p>EVAM Conversor V1.0 · Protótipo público · Execução local · Validação humana obrigatória.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

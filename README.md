@@ -16,6 +16,7 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - Bem-Estar Multissensorial: <https://iniciativa-via.com/via-hub/bem-estar-multissensorial/>
 - VIA Soberania Informacional: <https://iniciativa-via.com/via-hub/soberania-informacional/>
 - Regulação Federal de IA em Saúde: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
+- EVAM Conversor: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/>
 - Saúde na Última Semana: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/>
 
 ## Estrutura
@@ -62,6 +63,8 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - `soberania-informacional/docs/` — protocolo de evidência, modelo de representação administrativa (ANPD) e tese do módulo.
 - `regulacao-federal-ia/index.html` — briefing interativo sobre governança federativa de transferências interestaduais de pacientes críticos no SUS.
 - `regulacao-federal-ia/README.md` — diagnóstico sistêmico, analogia operacional (CRM/AF447) e proposta técnica do módulo.
+- `regulacao-federal-ia/evam/` — conversor local de narrativa clínica para resumo e schema regulatório versionados.
+- `regulacao-federal-ia/lab/` — sandbox sintético de matching entre necessidade clínica e capacidade resolutiva.
 - `sarampo-alertas-2026/index.html` — boletim de utilidade pública em saúde (sarampo e prevenção), alinhado à paleta VIA.
 - `sarampo-alertas-2026/README.md` — escopo, limitações e documentação do módulo.
 
