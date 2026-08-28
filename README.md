@@ -68,10 +68,10 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - `sarampo-alertas-2026/index.html` — boletim de utilidade pública em saúde (sarampo e prevenção), alinhado à paleta VIA.
 - `sarampo-alertas-2026/README.md` — escopo, limitações e documentação do módulo.
 
-**Documentação interna e raiz do domínio próprio**
+**Documentação interna**
 
 - `docs/decisoes/0001-tese-fundadora.md` — registro de decisão de arquitetura (ADR 0001): tese fundadora da Iniciativa VIA.
-- `docs/site-raiz/` — espelho versionado da raiz institucional do domínio próprio (iniciativa-via.com), com seu próprio `index.html`, `robots.txt`, `sitemap.xml`, `ai.txt`/`llms.txt`, `humans.txt` e `.well-known/security.txt`. Publicado pelo repositório `LucasHRAlmeida.github.io`, que já contém o arquivo `CNAME` do domínio; o apontamento ao GitHub Pages está concluído e verificado (ver `docs/site-raiz/README.md` e `docs/site-raiz/COMO-PUBLICAR.md`).
+- A raiz do domínio próprio é versionada exclusivamente em `LucasHRAlmeida/LucasHRAlmeida.github.io`; este repositório não mantém espelho publicável.
 
 ## Princípios editoriais
 
