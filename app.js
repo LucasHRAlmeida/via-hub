@@ -55,17 +55,17 @@ const fallbackData = {
       repo: "https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp"
     },
     {
-      id: "sarampo-alertas-2026",
-      name: "Saúde na Última Semana",
+      id: "revista",
+      name: "Saúde na Última Semana — Revista Eletrônica VIA",
       kicker: "Saúde pública · comunicação",
       categories: ["saude-publica"],
       status: "publicado",
       statusKey: "stable",
       featured: false,
-      description: "Boletim de utilidade pública que traduz vigilância e prevenção para o público geral — sarampo como caso de comunicação de risco, além de vacinação, arboviroses e outras prioridades.",
+      description: "Revista semanal que hierarquiza fatos de saúde pública, ciência, cuidado e tecnologia, com fontes primárias, implicações práticas e limites declarados.",
       tags: ["vigilância", "prevenção", "vacinação", "comunicação de risco"],
-      url: "https://iniciativa-via.com/via-hub/sarampo-alertas-2026/",
-      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/sarampo-alertas-2026"
+      url: "https://iniciativa-via.com/via-hub/revista/",
+      repo: "https://github.com/LucasHRAlmeida/via-hub/tree/main/revista"
     },
     {
       id: "via-mente-mbrp",
