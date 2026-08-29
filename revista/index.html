@@ -256,7 +256,6 @@
     ]
   }
   </script>
-
   <meta name="description" content="Saúde na Última Semana — Revista Eletrônica VIA: curadoria semanal de saúde pública, ciência, cuidado e tecnologia, com fontes primárias e ação prática.">
   <meta name="theme-color" content="#0C3E67">
   <meta property="og:type" content="website">
@@ -290,14 +289,11 @@
       --shell: 1120px;
       --header-h: 72px;
     }
-
     * { box-sizing: border-box; }
-
     html {
       scroll-behavior: smooth;
       scroll-padding-top: calc(var(--header-h) + 24px);
     }
-
     body {
       margin: 0;
       background: var(--paper);
@@ -308,17 +304,13 @@
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-
     a { color: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-
     .shell {
       width: min(calc(100% - 48px), var(--shell));
       margin-inline: auto;
     }
-
     .section { padding: 96px 0; }
-
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -328,7 +320,6 @@
       white-space: nowrap;
       border: 0;
     }
-
     .skip-link {
       position: fixed;
       z-index: 999;
@@ -343,12 +334,10 @@
       transition: transform 0.2s ease;
     }
     .skip-link:focus { transform: translateY(0); }
-
     :focus-visible {
       outline: 3px solid rgba(25, 166, 201, 0.55);
       outline-offset: 3px;
     }
-
     /* Header */
     .site-header {
       position: fixed;
@@ -370,7 +359,6 @@
       align-items: center;
       gap: 20px;
     }
-
     .brand {
       display: inline-flex;
       align-items: center;
@@ -416,7 +404,6 @@
       letter-spacing: 0.055em;
       opacity: 0.72;
     }
-
     .header-back {
       display: inline-flex;
       align-items: center;
@@ -433,7 +420,6 @@
     }
     .header-back:hover { color: var(--navy-950); background: var(--paper); border-color: var(--paper); }
     .site-header.is-scrolled .header-back:hover { color: var(--paper); background: var(--navy-900); border-color: var(--navy-900); }
-
     /* Hero */
     .hero {
       position: relative;
@@ -470,7 +456,6 @@
       color: #c9edf5;
     }
     .eyebrow span { width: 26px; height: 2px; background: var(--green-500); }
-
     .hero h1 {
       max-width: 760px;
       margin: 0;
@@ -519,7 +504,6 @@
       border-radius: 50%;
       background: var(--teal-500);
     }
-
     .scope-callout {
       position: relative;
       max-width: 720px;
@@ -553,7 +537,6 @@
       font-size: 14px;
       line-height: 1.6;
     }
-
     /* Section heading */
     .section-kicker { color: var(--teal-500); }
     .section-heading { max-width: 760px; margin-bottom: 46px; }
@@ -570,7 +553,6 @@
       color: var(--muted);
       font-size: 17px;
     }
-
     /* Focus (measles) section */
     .focus { background: var(--paper); border-bottom: 1px solid var(--line); }
     .card-grid {
@@ -630,7 +612,6 @@
       background: var(--teal-500);
     }
     .info-card strong { color: var(--navy-900); }
-
     .card-full {
       grid-column: 1 / -1;
       display: grid;
@@ -655,7 +636,6 @@
     }
     .card-full li::before { background: var(--green-500); }
     .card-full strong { color: var(--paper); }
-
     /* Care note */
     .care-note {
       display: flex;
@@ -676,7 +656,6 @@
       font-size: 16px;
     }
     .care-note p { margin: 0; color: var(--muted); font-size: 14px; }
-
     /* Buttons */
     .button {
       display: inline-flex;
@@ -707,7 +686,6 @@
       box-shadow: 0 12px 30px rgba(25, 166, 201, 0.24);
     }
     .button-teal:hover { background: #148aa8; }
-
     /* Topics grid */
     .topics { background: var(--wash); }
     .topic-grid {
@@ -767,7 +745,6 @@
       font-weight: 800;
     }
     .topic-card .topic-link:hover { text-decoration: underline; text-underline-offset: 4px; }
-
     /* Checklist */
     .checklist { background: var(--navy-950); color: var(--paper); }
     .checklist .section-heading h2 { color: var(--paper); }
@@ -798,7 +775,6 @@
     .check-item .check-mark svg { width: 20px; height: 20px; }
     .check-item h3 { margin: 0 0 5px; color: var(--paper); font-size: 16px; }
     .check-item p { margin: 0; color: rgba(255, 255, 255, 0.6); font-size: 13.5px; }
-
     /* Sources */
     .sources { background: var(--paper); }
     .sources-layout {
@@ -853,7 +829,6 @@
       font-weight: 400;
     }
     .source-list .source-arrow { color: var(--teal-500); font-weight: 800; flex-shrink: 0; }
-
     /* Footer */
     .site-footer {
       padding: 60px 0 24px;
@@ -904,7 +879,6 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-
     /* Panorama — resumo de notícias */
     .panorama { background: var(--wash-blue); border-bottom: 1px solid var(--line); }
     .panorama-head {
@@ -993,7 +967,6 @@
       font-size: 12.5px;
       font-style: italic;
     }
-
     /* --- Revista: sumário, evidência e artigos --- */
     .issue-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
       padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:34px}
@@ -1026,15 +999,16 @@
     .treat .who{display:block;margin-bottom:8px;color:var(--teal-500);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
     .treat h3{margin:0 0 8px;color:var(--navy-950);font-size:16.5px;letter-spacing:-.02em;line-height:1.3}
     .treat p{margin:0;color:var(--muted);font-size:14px}
+    .subrail{display:flex;align-items:center;gap:14px;margin:38px 0 0}
+    .subrail span{color:var(--navy-700);font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+    .subrail::after{content:"";flex:1;height:1px;background:var(--line)}
     @media (max-width:620px){.issue-bar{flex-direction:column;align-items:flex-start;gap:10px}}
-
     @media (max-width: 900px) {
       .card-full { grid-template-columns: 1fr; gap: 20px; }
       .topic-grid { grid-template-columns: 1fr; }
       .sources-layout { grid-template-columns: 1fr; gap: 32px; }
       .footer-layout { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 720px) {
       :root { --header-h: 64px; }
       .shell { width: min(calc(100% - 32px), var(--shell)); }
@@ -1045,7 +1019,6 @@
       .footer-layout { grid-template-columns: 1fr; gap: 28px; }
       .footer-base { flex-direction: column; gap: 8px; }
     }
-
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after {
@@ -1057,7 +1030,6 @@
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
-
   <header class="site-header" data-header>
     <div class="shell header-inner">
       <a class="brand" href="https://iniciativa-via.com/via-hub/" aria-label="Iniciativa VIA — início">
@@ -1072,7 +1044,6 @@
       </a>
     </div>
   </header>
-
   <main id="conteudo">
     <section class="hero">
       <div class="hero-grid" aria-hidden="true"></div>
@@ -1091,7 +1062,6 @@
         </div>
       </div>
     </section>
-
     <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">
       <div class="shell">
         <!-- PANORAMA:START (bloco atualizado semanalmente — não remova os marcadores) -->
@@ -1102,27 +1072,23 @@
           </div>
           <span class="update-pill">Atualizado em 29 de agosto de 2026</span>
         </div>
-
         <div class="issue-bar">
           <span class="issue-id">Edição 29.08.2026 · Ano I</span>
           <span class="issue-id" style="color:var(--muted);font-weight:650;letter-spacing:.02em;text-transform:none">
             Saúde digital · Clima · Saúde mental · Vigilância
           </span>
         </div>
-
         <ul class="toc">
           <li><a href="#saude-digital"><b>01 · Em foco</b><span>O SUS pactua uma política nacional de saúde digital</span></a></li>
           <li><a href="#clima"><b>02 · Preparação</b><span>El Niño 2026–2027 entra no planejamento sanitário</span></a></li>
           <li><a href="#cuidado"><b>03 · Acesso</b><span>Saúde mental chega ao Meu SUS Digital</span></a></li>
-          <li><a href="#vigilancia"><b>04 · Vigilância</b><span>Sarampo segue em risco muito alto nas Américas</span></a></li>
+          <li><a href="#vigilancia"><b>04 · Vigilância</b><span>Sarampo permanece em risco muito alto nas Américas</span></a></li>
           <li><a href="#acoes"><b>05 · Prática</b><span>O que muda para pessoas e serviços</span></a></li>
         </ul>
-
         <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e da literatura científica na data acima. Números mudam a cada semana — confira sempre a fonte antes de agir ou compartilhar.</p>
         <!-- PANORAMA:END -->
       </div>
     </section>
-
     <section class="focus section" id="saude-digital" aria-labelledby="saude-digital-titulo">
       <div class="shell">
         <div class="section-heading">
@@ -1130,7 +1096,6 @@
           <h2 id="saude-digital-titulo">O SUS pactua uma política nacional para informação e saúde digital</h2>
           <p>Em <strong>27 de agosto</strong>, a Comissão Intergestores Tripartite pactuou a Política Nacional de Informação e Saúde Digital. A decisão é estrutural: União, estados e municípios passam a compartilhar uma direção comum para integrar dados, ampliar telessaúde e tornar a informação utilizável no cuidado — não apenas acumulada em sistemas que não conversam.</p>
         </div>
-
         <div class="card-grid">
           <article class="info-card">
             <span class="card-tag">Decisão</span>
@@ -1142,7 +1107,6 @@
               <li>Governança compartilhada entre entes do SUS.</li>
             </ul>
           </article>
-
           <article class="info-card">
             <span class="card-tag">Promessa concreta</span>
             <h3>Dados úteis no ponto de cuidado</h3>
@@ -1153,7 +1117,6 @@
               <li>Informação longitudinal acessível com finalidade clínica.</li>
             </ul>
           </article>
-
           <article class="info-card">
             <span class="card-tag">Condição</span>
             <h3>Interoperabilidade não nasce de decreto</h3>
@@ -1164,7 +1127,6 @@
               <li>Auditoria de uso e correção de registros.</li>
             </ul>
           </article>
-
           <article class="info-card">
             <span class="card-tag">Limite</span>
             <h3>Aplicativo não substitui rede assistencial</h3>
@@ -1175,7 +1137,6 @@
               <li>Medir desfechos, não apenas acessos à plataforma.</li>
             </ul>
           </article>
-
           <article class="info-card card-full">
             <div>
               <span class="card-tag">Leitura VIA</span>
@@ -1190,17 +1151,15 @@
             </ul>
           </article>
         </div>
-
         <div class="care-note">
           <div class="care-body">
             <h3>O que aconteceu — sem inflar a notícia</h3>
-            <p>Foi pactuada a política nacional. Implementação, padrões, cronograma e efeitos sobre o atendimento ainda precisam ser acompanhados. Confundir decisão normativa com sistema entregue seria vender a maquete como edifício.</p>
+            <p>Foi pactuada a política nacional. Implementação, padrões, cronograma e efeitos sobre o atendimento ainda precisam ser acompanhados. Confundir decisão normativa com sistema entregue seria vender a maquete como edifício. Na mesma reunião foram pactuados nove medicamentos, o programa de eliminação da tuberculose e a política de saúde da população quilombola.</p>
           </div>
-          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cit-pactua-politica-nacional-de-informacao-e-saude-digital-e-amplia-oferta-de-medicamentos-no-sus" target="_blank" rel="noopener noreferrer">Fonte primária · Ministério da Saúde <span aria-hidden="true">↗</span></a>
+          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cit-pactua-politica-nacional-de-informacao-e-saude-digital-e-amplia-oferta-de-medicamentos-no-sus" target="_blank" rel="noopener noreferrer">Anúncio oficial · Ministério da Saúde <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
-
     <section class="topics section" id="clima" aria-labelledby="clima-titulo">
       <div class="shell">
         <div class="section-heading">
@@ -1208,12 +1167,11 @@
           <h2 id="clima-titulo">El Niño 2026–2027 entra no planejamento sanitário</h2>
           <p>O Ministério da Saúde apresentou aos secretários estaduais um plano de preparação e resposta para emergências associadas ao próximo ciclo do El Niño. A notícia relevante não é o nome do fenômeno: é a tentativa de antecipar efeitos previsíveis sobre território, doenças e capacidade assistencial.</p>
         </div>
-
         <div class="agenda">
           <article class="agenda-item is-now">
-            <span class="when">Planejamento · 2026–2027</span>
+            <span class="when">Janela crítica · out. 2026 – mar. 2027</span>
             <h3>Preparar antes do evento</h3>
-            <p>O plano organiza a resposta do SUS a impactos climáticos previstos. O valor está em converter previsão em estoque, vigilância, comunicação e capacidade local antes da ruptura.</p>
+            <p>O plano organiza a resposta do SUS a impactos climáticos previstos para a janela de outubro a março. O valor está em converter previsão em estoque, vigilância, comunicação e capacidade local antes da ruptura.</p>
           </article>
           <article class="agenda-item">
             <span class="when">Riscos combinados</span>
@@ -1226,7 +1184,6 @@
             <p>Alertas só ganham utilidade quando chegam a territórios vulneráveis com protocolos simples: quem monitora, qual limiar dispara ação e para onde pessoas e equipes se deslocam.</p>
           </article>
         </div>
-
         <div class="care-note" style="margin-top:24px">
           <div class="care-body">
             <h3>Repercussão prática</h3>
@@ -1236,15 +1193,13 @@
         </div>
       </div>
     </section>
-
     <section class="focus section" id="cuidado" aria-labelledby="cuidado-titulo">
       <div class="shell">
         <div class="section-heading">
           <p class="section-kicker">03 · Acesso ao cuidado</p>
           <h2 id="cuidado-titulo">Saúde mental entra no Meu SUS Digital — com escala e limites</h2>
-          <p>Desde 24 de agosto, o SUS oferece até <strong>100 mil teleatendimentos mensais</strong> em saúde mental para mulheres em situação de violência, mães atípicas e familiares que cuidam de pessoas com deficiência, transtornos do neurodesenvolvimento ou doenças raras. O serviço amplia acesso; não elimina a necessidade de rede territorial e resposta presencial.</p>
+          <p>Desde 24 de agosto, o SUS oferece até <strong>100 mil teleatendimentos mensais</strong> em saúde mental para mulheres em situação de violência, mães atípicas e outras mulheres da família — tias, avós, irmãs — que cuidam de pessoas com deficiência, transtornos do neurodesenvolvimento ou doenças raras. O serviço amplia acesso; não elimina a necessidade de rede territorial e resposta presencial.</p>
         </div>
-
         <div class="treat-grid">
           <article class="treat">
             <span class="who">Acesso · Brasil</span>
@@ -1254,25 +1209,27 @@
           <article class="treat">
             <span class="who">Canal · Meu SUS Digital</span>
             <h3>Escala nacional pelo aplicativo</h3>
-            <p>A oferta anunciada é mensal e nacional. A experiência precisa ser acompanhada por tempo de espera, continuidade, encaminhamento e capacidade de absorção pela RAPS.</p>
+            <p>O acesso é pelo miniapp <em>Acolhe Mais +</em>, com até 10 sessões por usuária. A experiência precisa ser acompanhada por tempo de espera, continuidade, encaminhamento e capacidade de absorção pela RAPS.</p>
           </article>
           <article class="treat">
             <span class="who">Segurança · Violência</span>
             <h3>Privacidade não é detalhe de interface</h3>
             <p>Em situações de violência, notificações, histórico visível e dispositivos compartilhados podem produzir risco. Desenho seguro exige discrição, consentimento e alternativas de acesso.</p>
           </article>
+        </div>
+        <div class="subrail"><span>Também nesta semana · regulação e eliminação</span></div>
+        <div class="treat-grid" style="margin-top:16px">
           <article class="treat">
             <span class="who">Eliminação · Saúde indígena</span>
             <h3>Oncocercose atinge a meta de cobertura</h3>
-            <p>No primeiro semestre, o Brasil alcançou <strong>85% de tratamento coletivo</strong> nas comunidades endêmicas da Terra Indígena Yanomami, último foco ativo da doença nas Américas.</p>
+            <p>No primeiro semestre, o Brasil alcançou <strong>85,4% de tratamento coletivo</strong> nas comunidades endêmicas da Terra Indígena Yanomami, último foco ativo da doença nas Américas. A meta operacional é de 85%.</p>
           </article>
           <article class="treat">
             <span class="who">Anvisa · Doença rara</span>
             <h3>Primeira indicação específica para AHAI-Q</h3>
-            <p>A Anvisa aprovou o nipocalimabe para adultos e adolescentes a partir de 12 anos com anemia hemolítica autoimune por anticorpos quentes. Registro não equivale a incorporação ao SUS.</p>
+            <p>A Anvisa aprovou o nipocalimabe para adultos e adolescentes a partir de 12 anos com anemia hemolítica autoimune por anticorpos quentes — o Brasil é o primeiro país do mundo a aprovar essa indicação. Registro não equivale a incorporação ao SUS.</p>
           </article>
         </div>
-
         <div class="care-note" style="margin-top:30px">
           <div class="care-body">
             <h3>Fonte e escopo</h3>
@@ -1282,29 +1239,31 @@
         </div>
       </div>
     </section>
-
     <section class="topics section" id="vigilancia" aria-labelledby="vigilancia-titulo">
       <div class="shell">
         <div class="section-heading">
           <p class="section-kicker">04 · Vigilância epidemiológica</p>
           <h2 id="vigilancia-titulo">Sarampo permanece em risco muito alto nas Américas</h2>
-          <p>O alerta epidemiológico da OPAS, publicado em 7 de agosto e ainda vigente nesta edição, classifica o risco regional como muito alto. Até a semana epidemiológica 28, encerrada em 18 de julho, haviam sido confirmados <strong>47.459 casos</strong> em 16 países e um território, com <strong>44 mortes</strong>. O foco editorial aqui não é manter sarampo por tradição: é não descartar um risco relevante enquanto ele continua ativo.</p>
+          <p>O alerta epidemiológico da OPAS, publicado em 7 de agosto e ainda o documento regional mais recente no fechamento desta edição, classifica o risco regional como muito alto. Até a semana epidemiológica 28, encerrada em 18 de julho, haviam sido confirmados <strong>47.459 casos</strong> em 16 países e um território, com <strong>44 mortes</strong>. O foco editorial aqui não é manter sarampo por tradição: é não descartar um risco relevante enquanto ele continua ativo.</p>
         </div>
-
         <div class="evidence">
           <span class="ev-tag">Alerta epidemiológico · OPAS/OMS · 7 de agosto de 2026</span>
           <p>A região registrou o maior número de casos confirmados em <strong>22 anos</strong>. A OPAS relaciona o cenário a surtos ativos, lacunas de imunização e alta mobilidade, e recomenda vacinação, vigilância sensível, busca ativa e resposta rápida a casos suspeitos.</p>
           <p>Números absolutos envelhecem rapidamente. Por isso, esta edição registra a semana epidemiológica de referência e vincula diretamente o alerta; não transforma dado de julho em contador “ao vivo”.</p>
           <cite>Organização Pan-Americana da Saúde. <em>Alerta Epidemiológico: Sarampo na Região das Américas.</em> 7 ago. 2026. <a href="https://www.paho.org/pt/documentos/alerta-epidemiologico-sarampo-na-regiao-das-americas-7-agosto-2026" target="_blank" rel="noopener noreferrer">Documento oficial ↗</a></cite>
         </div>
-
+        <div class="evidence">
+          <span class="ev-tag">Brasil · Situação nacional declarada</span>
+          <p>Em 13 de agosto, o Ministério da Saúde registrava <strong>24 casos de sarampo no Brasil em 2026</strong>, todos relacionados à importação do vírus: três encerrados sem risco de disseminação e 21 em acompanhamento em São Paulo — 18 na capital, dois em São Bernardo do Campo e um em Guarulhos. O país mantém a recertificação de eliminação da circulação endêmica, recebida da OPAS em novembro de 2024.</p>
+          <p>É esse o dado que sustenta a distinção operativa desta edição: risco regional elevado com casos importados sob rastreamento não é o mesmo que circulação endêmica restabelecida. A afirmação vale na data da fonte e deve ser reconferida antes de ser repetida.</p>
+          <cite>Ministério da Saúde. <em>Alerta sobre sarampo nas Américas reforça importância de intensificar vacinação no Brasil.</em> 13 ago. 2026. <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/alerta-sobre-sarampo-nas-americas-reforca-importancia-de-intensificar-vacinacao-no-brasil" target="_blank" rel="noopener noreferrer">Fonte oficial ↗</a></cite>
+        </div>
         <div class="evidence" style="border-left-color:var(--green-500)">
           <span class="ev-tag" style="color:var(--green-600)">Brasil · Campanha Nacional de Multivacinação</span>
-          <p>A mobilização para crianças e adolescentes menores de 15 anos segue até <strong>1º de setembro</strong>. Em cidades paulistas com risco de casos importados, o Ministério da Saúde reforçou a vacinação contra sarampo.</p>
+          <p>A mobilização para crianças e adolescentes menores de 15 anos segue até <strong>1º de setembro</strong>. Em Guarulhos, São Bernardo do Campo e na capital paulista, o Ministério da Saúde mantém vacinação indiscriminada contra sarampo para pessoas de 6 meses a 59 anos: entre 3 e 14 de agosto foram aplicadas mais de <strong>529,8 mil doses</strong> de tríplice viral nessas cidades.</p>
           <p>O Dia D já passou; o prazo da campanha ainda não. A ação útil nesta semana é conferir a caderneta na unidade de saúde, sem reiniciar esquemas já começados e sem presumir indicação individual apenas pela idade.</p>
           <cite>Ministério da Saúde. <em>Dia D de vacinação contra mais de 20 doenças acontece neste sábado (22) em todo o país.</em> Atualizado em 21 ago. 2026. <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/dia-d-de-vacinacao-contra-mais-de-20-doencas-acontece-neste-sabado-22-em-todo-o-pais" target="_blank" rel="noopener noreferrer">Fonte oficial ↗</a></cite>
         </div>
-
         <div class="topic-grid" style="margin-top:30px">
           <article class="topic-card">
             <span class="card-tag">Suspeita clínica</span>
@@ -1324,7 +1283,6 @@
         </div>
       </div>
     </section>
-
     <section class="checklist section" id="acoes" aria-labelledby="acoes-titulo">
       <div class="shell">
         <div class="section-heading">
@@ -1332,7 +1290,6 @@
           <h2 id="acoes-titulo">O que muda para pessoas e serviços</h2>
           <p>Cinco ações proporcionais aos fatos desta edição — sem transformar notícia institucional em obrigação individual imaginária.</p>
         </div>
-
         <div class="check-grid">
           <div class="check-item">
             <span class="check-mark" aria-hidden="true">
@@ -1343,7 +1300,6 @@
               <p>A Campanha Nacional de Multivacinação continua aberta para menores de 15 anos. Leve a caderneta; a equipe confere o que realmente está indicado.</p>
             </div>
           </div>
-
           <div class="check-item">
             <span class="check-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -1353,7 +1309,6 @@
               <p>Febre com manchas após viagem ou contato merece avaliação. Telefonar para a unidade permite organizar fluxo e reduzir exposição de outras pessoas.</p>
             </div>
           </div>
-
           <div class="check-item">
             <span class="check-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -1363,17 +1318,15 @@
               <p>Cheque água segura, medicamentos contínuos, contatos, rotas e necessidades de pessoas dependentes de energia, refrigeração ou cuidadores.</p>
             </div>
           </div>
-
           <div class="check-item">
             <span class="check-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
             </span>
             <div>
               <h3>Conheça a nova porta de saúde mental</h3>
-              <p>Se pertencer ao público anunciado, consulte o Meu SUS Digital. Em urgência, risco de violência ou crise grave, procure a rede presencial e os canais de emergência.</p>
+              <p>Se pertencer ao público anunciado, abra o Meu SUS Digital em <em>Miniapps</em> e procure <em>Acolhe Mais +</em>. Em urgência, risco de violência ou crise grave, procure a rede presencial e os canais de emergência.</p>
             </div>
           </div>
-
           <div class="check-item">
             <span class="check-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -1386,7 +1339,6 @@
         </div>
       </div>
     </section>
-
     <section class="sources section" id="fontes" aria-labelledby="fontes-titulo">
       <div class="shell">
         <div class="sources-layout">
@@ -1395,10 +1347,9 @@
             <div class="sources-note">
               <span>Método editorial</span>
               <strong>A fonte não é a ferramenta.</strong>
-              <p>Cada edição parte dos fatos publicados na semana e os hierarquiza por relevância clínica, sanitária ou institucional. A revista organiza e interpreta; não gera dados. Alegações epidemiológicas, regulatórias e quantitativas apontam para fonte primária específica, com data e escopo. Uma notícia só permanece em edições posteriores quando continua materialmente ativa — tema recorrente não se torna foco automático.</p>
+              <p>Cada edição parte dos fatos publicados na semana e os hierarquiza por relevância clínica, sanitária ou institucional. A revista organiza e interpreta; não gera dados. Alegações epidemiológicas, regulatórias e quantitativas apontam para fonte oficial específica, com data e escopo — e, quando existe documento técnico, para ele. Uma notícia só permanece em edições posteriores quando continua materialmente ativa, com dado datado que o demonstre — tema recorrente não se torna foco automático.</p>
             </div>
           </div>
-
           <div>
             <h2 id="fontes-titulo" class="sr-only">Fontes desta edição</h2>
             <ul class="source-list">
@@ -1427,6 +1378,12 @@
                 </a>
               </li>
               <li>
+                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/alerta-sobre-sarampo-nas-americas-reforca-importancia-de-intensificar-vacinacao-no-brasil" target="_blank" rel="noopener noreferrer">
+                  <span><span class="source-name">Ministério da Saúde · 13 ago. 2026</span><span class="source-desc">Situação do sarampo no Brasil: 24 casos importados e recertificação de eliminação</span></span>
+                  <span class="source-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
                 <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/dia-d-de-vacinacao-contra-mais-de-20-doencas-acontece-neste-sabado-22-em-todo-o-pais" target="_blank" rel="noopener noreferrer">
                   <span><span class="source-name">Ministério da Saúde · atualizado em 21 ago. 2026</span><span class="source-desc">Campanha Nacional de Multivacinação até 1º de setembro</span></span>
                   <span class="source-arrow" aria-hidden="true">↗</span>
@@ -1449,9 +1406,7 @@
         </div>
       </div>
     </section>
-
   </main>
-
   <footer class="site-footer">
     <div class="shell">
       <div class="footer-layout">
@@ -1463,7 +1418,6 @@
           <p>Ciência e Tecnologia a serviço do Cuidado.</p>
           <a class="footer-link" href="https://iniciativa-via.com/via-hub/">Conheça a Iniciativa VIA →</a>
         </div>
-
         <div class="footer-col">
           <p class="footer-title">Direção clínica</p>
           <p><strong>Dr Lucas HR</strong></p>
@@ -1471,23 +1425,19 @@
           <p>CRM-SP: 226836 | CRM-MG: 109752</p>
           <p><a class="footer-link" href="https://wa.me/5516996180196" target="_blank" rel="noopener noreferrer">WhatsApp Business: +55 16 99618-0196</a></p>
         </div>
-
         <div class="footer-col">
           <p class="footer-title">Este boletim</p>
           <p>Utilidade pública e educação em saúde.</p>
           <a class="footer-link" href="https://github.com/LucasHRAlmeida/via-hub/tree/main/revista" target="_blank" rel="noopener noreferrer">Código e versões ↗</a>
         </div>
       </div>
-
       <p class="footer-disclaimer">Conteúdo educativo, sem finalidade diagnóstica ou terapêutica. Não substitui a consulta com profissional de saúde nem os canais oficiais de vigilância. Diante de sinais de alerta, procure uma unidade de saúde ou o serviço de emergência.</p>
-
       <div class="footer-base">
         <span>© <span data-year>2026</span> Iniciativa VIA</span>
         <span>Publicado via GitHub Pages</span>
       </div>
     </div>
   </footer>
-
   <script>
     (function () {
       var header = document.querySelector("[data-header]");
@@ -1496,12 +1446,10 @@
       }
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
-
       var year = document.querySelector("[data-year]");
       if (year) year.textContent = String(new Date().getFullYear());
     })();
   </script>
-
 <!-- via-crosslink -->
 <aside style="font-family:Inter,-apple-system,'Segoe UI',sans-serif;background:#051f34;color:rgba(255,255,255,.7);padding:26px 22px;text-align:center;line-height:1.7;font-size:12.5px">
   <div style="max-width:820px;margin:0 auto">
