@@ -1,16 +1,18 @@
-# Saúde na Última Semana
+# Saúde na Última Semana — Revista Eletrônica VIA
 
-Boletim web de **utilidade pública e educação em saúde** da Iniciativa VIA. Traduz temas de vigilância e prevenção para o público geral, tendo o **sarampo** como caso de comunicação de risco. Reúne, em uma página única, o essencial sobre a doença (transmissão, sinais, prevenção e contexto), outras questões de saúde do calendário brasileiro (vacinação, arboviroses e vírus respiratórios de inverno), um checklist de ações práticas e as fontes oficiais.
+Revista web semanal de **saúde pública, ciência, cuidado e tecnologia** da Iniciativa VIA. Seleciona os fatos materialmente mais relevantes de cada semana, explicita o que mudou, separa decisão institucional de implementação e liga cada alegação epidemiológica, regulatória ou quantitativa à fonte primária correspondente.
 
 ## Acesso
 
-- Página publicada: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/>
+- Página publicada: <https://iniciativa-via.com/via-hub/revista/>
+- Rota legada: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/> (redirecionamento)
 
 ## Escopo e limitações
 
-- Material **educativo**, voltado a decisões cotidianas de prevenção.
+- Curadoria **educativa e editorial**, voltada à compreensão de fatos e decisões informadas.
 - **Não é** triagem, diagnóstico nem fonte de dados epidemiológicos ao vivo. Diante de sintomas, o encaminhamento é a unidade de saúde; para números atualizados, as fontes oficiais citadas na página.
-- As ordens de grandeza mencionadas (por exemplo, R₀ e eficácia vacinal) são consolidadas na literatura e servem para explicar o mecanismo, não para reportar a situação atual.
+- Tema recorrente não se torna editoria fixa: só permanece quando continua materialmente relevante na semana.
+- Alegações epidemiológicas, regulatórias e quantitativas devem apontar para fonte primária específica, com data e escopo.
 - A voz de marca e a paleta seguem o portal VIA — a fonte científica permanece separada da ferramenta que a apresenta.
 
 ## Stack

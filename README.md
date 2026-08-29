@@ -17,7 +17,7 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - VIA Soberania Informacional: <https://iniciativa-via.com/via-hub/soberania-informacional/>
 - Regulação Federal de IA em Saúde: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
 - EVAM Conversor: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/>
-- Saúde na Última Semana: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/>
+- Saúde na Última Semana — Revista Eletrônica VIA: <https://iniciativa-via.com/via-hub/revista/>
 
 ## Estrutura
 
@@ -65,8 +65,9 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - `regulacao-federal-ia/README.md` — diagnóstico sistêmico, analogia operacional (CRM/AF447) e proposta técnica do módulo.
 - `regulacao-federal-ia/evam/` — conversor local de narrativa clínica para resumo e schema regulatório versionados.
 - `regulacao-federal-ia/lab/` — sandbox sintético de matching entre necessidade clínica e capacidade resolutiva.
-- `sarampo-alertas-2026/index.html` — boletim de utilidade pública em saúde (sarampo e prevenção), alinhado à paleta VIA.
-- `sarampo-alertas-2026/README.md` — escopo, limitações e documentação do módulo.
+- `revista/index.html` — edição corrente da revista eletrônica semanal, com curadoria por relevância e fontes primárias.
+- `revista/README.md` — escopo, limites e regras editoriais do módulo.
+- `sarampo-alertas-2026/index.html` — redirecionamento preservado para a antiga rota temática.
 
 **Documentação interna**
 
@@ -101,4 +102,3 @@ CRM-SP: 226836 | CRM-MG: 109752
 **Iniciativa VIA — Vida Integrada e Autônoma**
 
 Ciência e Tecnologia a serviço do Cuidado.
-
