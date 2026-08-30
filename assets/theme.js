@@ -60,13 +60,24 @@
     ensureToggle();
   }
 
-  media.addEventListener?.('change', () => {
+  const updateSystemTheme = () => {
     if (!storedTheme() && !explicitDefault) apply(systemTheme(), false);
-  });
+  };
+
+  if (typeof media.addEventListener === 'function') {
+    media.addEventListener('change', updateSystemTheme);
+  } else if (typeof media.addListener === 'function') {
+    media.addListener(updateSystemTheme);
+  }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === STORAGE_KEY && (event.newValue === 'light' || event.newValue === 'dark')) {
-      apply(event.newValue, false);
+    try {
+      if (event.storageArea !== localStorage) return;
+    } catch {
+      return;
+    }
+    if (event.key === STORAGE_KEY || event.key === null) {
+      apply(event.newValue === 'light' || event.newValue === 'dark' ? event.newValue : systemTheme(), false);
     }
   });
 
