@@ -67,7 +67,6 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - `regulacao-federal-ia/lab/` — sandbox sintético de matching entre necessidade clínica e capacidade resolutiva.
 - `revista/index.html` — edição corrente da revista eletrônica semanal, com curadoria por relevância e fontes primárias.
 - `revista/README.md` — escopo, limites e regras editoriais do módulo.
-- `sarampo-alertas-2026/index.html` — redirecionamento preservado para a antiga rota temática.
 
 **Documentação interna**
 

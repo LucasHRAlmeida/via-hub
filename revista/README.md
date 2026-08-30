@@ -5,7 +5,9 @@ Revista web semanal de **saúde pública, ciência, cuidado e tecnologia** da In
 ## Acesso
 
 - Página publicada: <https://iniciativa-via.com/via-hub/revista/>
-- Rota legada: <https://iniciativa-via.com/via-hub/sarampo-alertas-2026/> (redirecionamento)
+## Arquivo das edições
+
+Antes de substituir a edição corrente, exportar a versão publicada em PDF e preservá-la em `revista/arquivo/AAAA-MM-DD.pdf`. O PDF é o registro fechado da edição; `/revista/` permanece reservado ao número corrente. Não manter rotas temáticas antigas ou redirecionamentos concorrentes.
 
 ## Escopo e limitações
 
