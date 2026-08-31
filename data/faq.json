@@ -1,5 +1,5 @@
 {
-  "$comment": "Corpus canônico do FAQ da Iniciativa VIA. Fonte de registro, versionada à parte da interface que a serve (ADR 0001, invariante 1). A página /faq/ espelha este arquivo em HTML estático e em JSON-LD FAQPage; ao editar aqui, atualize também faq/index.html.",
+  "$comment": "Corpus canônico do FAQ da Iniciativa VIA. Fonte de registro, versionada à parte da interface que a serve (ADR 0001, invariante 1). As superfícies derivadas — faq/index.html (HTML e JSON-LD FAQPage) e data/faq.seed.sql (seed do D1 via-hub-lab) — são geradas a partir deste arquivo: após editar aqui, rode `node scripts/build-faq.mjs` e versione a saída. Não edite os arquivos derivados à mão.",
   "version": "2026-08-31",
   "language": "pt-BR",
   "canonical": "https://iniciativa-via.com/via-hub/faq/",
