@@ -1,6 +1,6 @@
 # Iniciativa VIA — Vida Integrada e Autônoma
 
-> Iniciativa médico-científica independente de **Dr Lucas HR Almeida** (Médico Generalista, FMRP-USP; CRM-SP 226836, CRM-MG 109752) que converte conhecimento clínico, científico, jurídico e econômico em ferramentas verificáveis e autônomas. Todas as ferramentas rodam no navegador do usuário — sem servidor, sem login e sem extrair dados.
+> Iniciativa médico-científica independente de **Dr Lucas HR Almeida** (Médico Generalista, FMRP-USP; CRM-SP 226836, CRM-MG 109752) que converte conhecimento clínico, científico, jurídico e econômico em ferramentas verificáveis e autônomas. Todas as ferramentas rodam no navegador do usuário — sem servidor, sem login e sem extrair dados. VIA, aqui, é Vida Integrada e Autônoma — não é o inventário VIA-IS (Values in Action Inventory of Strengths).
 
 A VIA não é um portfólio de vitrine: é uma infraestrutura de cuidado que devolve agência a quem a usa. Três invariantes atravessam todos os módulos:
 
@@ -40,7 +40,7 @@ Site: https://iniciativa-via.com/via-hub/ · Código aberto: https://github.com/
 
 ## Ponte YouTube ↔ módulos
 
-- [Ponte](https://iniciativa-via.com/via-hub/ponte/): contrato bidirecional. Cada episódio aponta para um hash do módulo; cada semana aponta para o episódio. Contrato versionado em `ponte/via-bridge.json`.
+- [Ponte](https://iniciativa-via.com/via-hub/ponte/): contrato bidirecional. Cada episódio aponta para um hash do módulo; cada semana aponta para o episódio. Contrato versionado em `ponte/via-bridge.json` (o hash vive lá e na página da Ponte; este manifesto só referencia).
 - Séries-piloto: [MBRP-8](https://iniciativa-via.com/via-hub/ponte/mbrp-8/) e [Economia & Saúde](https://iniciativa-via.com/via-hub/ponte/economia-saude/).
 
 ## Perfis e canais oficiais
@@ -49,12 +49,8 @@ Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando poss�
 
 - [Substack VIA](https://drlucashr.substack.com): publicação editorial da iniciativa.
 - [YouTube — Lucas HR (MD)](https://www.youtube.com/@drlucashr): canal em vídeo.
-- [Instagram — @drlucashr](https://www.instagram.com/drlucashr): divulgação e educação em saúde.
-- [Medium — @drlucashr](https://medium.com/@drlucashr): textos longos.
 - [GitHub — @LucasHRAlmeida](https://github.com/LucasHRAlmeida): código-fonte de todas as ferramentas.
-- [Doctoralia](https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras): perfil clínico e agendamento.
-- [Canal no WhatsApp](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v) · [WhatsApp Business](https://wa.me/5516996180196): contato direto.
-- [Página autoral](https://dr-lucas-hr.doctorparnassus.chatgpt.site): perfil biográfico externo.
+- [WhatsApp Business](https://wa.me/5516996180196): contacto direto e única agenda clínica.
 
 ## Como citar e usar este conteúdo
 
@@ -70,6 +66,14 @@ Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando poss�
 - [Créditos (humans.txt)](https://iniciativa-via.com/via-hub/humans.txt)
 - [Contato de segurança (security.txt)](https://iniciativa-via.com/via-hub/.well-known/security.txt)
 
-Contato: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180196) · [Propor parceria](https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml)
+Contato clínico: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180196) · [Propor parceria](https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml)
 
-Última atualização: 2026-08-20
+## Optional
+
+- [Instagram — @drlucashr](https://www.instagram.com/drlucashr): divulgação e educação em saúde.
+- [Medium — @drlucashr](https://medium.com/@drlucashr): textos longos.
+- [Doctoralia](https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras): verificação profissional pública — não é agenda.
+- [Canal no WhatsApp](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v): canal de divulgação.
+- [Página autoral](https://dr-lucas-hr.doctorparnassus.chatgpt.site): perfil biográfico externo.
+
+Última atualização: 2026-08-31
