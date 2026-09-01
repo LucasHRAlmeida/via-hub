@@ -15,6 +15,10 @@ jobs:
           node-version: '20'
       - name: Contrato da Escala Movel
         run: node tests/escala-movel.test.cjs
+      - name: Tema claro/escuro
+        run: node tests/theme-toggle.test.cjs
+      - name: Fixture visual do tema
+        run: node tests/theme-preview.test.cjs
       - name: Conversor EVAM
         working-directory: regulacao-federal-ia/evam
         run: npm test
