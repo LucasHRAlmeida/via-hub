@@ -18,13 +18,19 @@ O PR #30 foi incorporado manualmente pelo próprio mantenedor em 31/08/2026. O a
 - sem dependências e sem build;
 - nenhum novo merge automático.
 
+## Fixture visual isolada
+
+`qa/theme-preview/index.html` é uma superfície exclusiva de QA, marcada `noindex,nofollow,noarchive`. Ela carrega os assets compartilhados por caminhos relativos, não usa recursos externos e não altera nem simula integração com páginas reais. A fixture permite conferir os temas claro/escuro, foco de teclado, alvo mínimo, persistência e reset; seu teste contratual está em `tests/theme-preview.test.cjs`.
+
+O limite deve permanecer explícito: aprovação da fixture não equivale a aprovação da propagação página a página nem autoriza merge.
+
 ## Próxima etapa antes de novo merge
 
-1. Propagar o controlador contra o `main` atual, página a página, usando tokens semânticos em vez de inversão direta de paleta.
-2. Preservar páginas de paleta fixa quando a inversão produzir degradação visual.
-3. Executar QA desktop **e mobile**, contraste WCAG, teclado e regressão visual do modo claro.
-4. Corrigir apenas defeitos atribuíveis a esta mudança; dívida de contraste preexistente fica separada.
-5. Revisão obrigatória por Codex e GitHub Copilot antes de qualquer decisão de merge.
-6. Submeter uma superfície visual verificável ao Dr Lucas HR Almeida para QA humana.
+1. Obter QA visual humana da fixture em desktop e mobile, claro e escuro.
+2. Propagar o controlador contra o `main` atual, página a página, somente após deliberação específica.
+3. Preservar páginas de paleta fixa quando a inversão produzir degradação visual.
+4. Executar contraste WCAG, teclado e regressão visual do modo claro nas páginas consumidoras.
+5. Corrigir apenas defeitos atribuíveis a esta mudança; dívida de contraste preexistente fica separada.
+6. Revisão obrigatória por Codex e GitHub Copilot antes de qualquer decisão de merge.
 
-Estado: **NÚCLEO MERGEADO SEM CONSUMIDOR / CORREÇÃO PÓS-MERGE EM REVIEW / QA VISUAL PENDENTE**.
+Estado: **FIXTURE ISOLADA EM REVIEW / QA VISUAL HUMANA PENDENTE / NENHUM NOVO MERGE**.
