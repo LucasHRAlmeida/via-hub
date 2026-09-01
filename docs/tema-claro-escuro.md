@@ -6,7 +6,7 @@ Decisão humana em 30/08/2026: **ACEITAR E PREPARAR PR, SEM MERGE**.
 
 O PR #30 introduziu o núcleo compartilhado (`assets/theme.js` e `assets/theme.css`) antes da propagação mecânica para todas as páginas do hub. O artefato-patch produzido na sessão Claude de 28/08/2026 não está persistido como arquivo recuperável no Drive/GitHub; apenas seu hash e o endereço do artefato efêmero permanecem registrados. Por isso, esta implementação não finge aplicar bytes que não foram recuperados.
 
-O PR #30 foi incorporado fora da condição explícita “sem merge”. A decisão humana superveniente `DEC-20260901-001` escolheu preservar esse merge provisoriamente e corrigir automaticamente os findings técnicos em novo PR, sem autorizar outro merge. A aceitação visual e definitiva permanece condicionada à QA humana.
+O PR #30 foi incorporado manualmente pelo próprio mantenedor em 31/08/2026. O ato constituiu revogação deliberada da condição “sem merge”, motivada por panes não resolvidas, mas não recebeu registro contemporâneo. `RUN-20260901-CLAUDE-PR30-DIVERG-001` resolveu a divergência e `DEC-20260901-002` corrigiu o estado canônico: defeito registral, não violação de mandato. A decisão superveniente `DEC-20260901-001` preserva o núcleo provisoriamente e determina correções técnicas em novo PR, sem autorizar outro merge. A aceitação visual e definitiva permanece condicionada à QA humana.
 
 ## Invariantes
 
@@ -25,6 +25,6 @@ O PR #30 foi incorporado fora da condição explícita “sem merge”. A decis�
 3. Executar QA desktop **e mobile**, contraste WCAG, teclado e regressão visual do modo claro.
 4. Corrigir apenas defeitos atribuíveis a esta mudança; dívida de contraste preexistente fica separada.
 5. Revisão obrigatória por Codex e GitHub Copilot antes de qualquer decisão de merge.
-6. Submeter o artefato ao Dr Lucas HR Almeida para QA visual humana.
+6. Submeter uma superfície visual verificável ao Dr Lucas HR Almeida para QA humana.
 
-Estado: **CORREÇÃO PÓS-MERGE / REVIEW-ONLY / QA VISUAL PENDENTE**.
+Estado: **NÚCLEO MERGEADO SEM CONSUMIDOR / CORREÇÃO PÓS-MERGE EM REVIEW / QA VISUAL PENDENTE**.
