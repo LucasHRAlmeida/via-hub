@@ -31,9 +31,10 @@
     const button = document.querySelector('[data-via-theme-toggle]');
     if (button) {
       const isDark = theme === 'dark';
-      button.setAttribute('aria-pressed', String(isDark));
-      button.setAttribute('aria-label', isDark ? 'Usar tema claro' : 'Usar tema escuro');
-      button.title = isDark ? 'Usar tema claro' : 'Usar tema escuro';
+      const actionLabel = isDark ? 'Usar tema claro' : 'Usar tema escuro';
+      button.removeAttribute('aria-pressed');
+      button.setAttribute('aria-label', actionLabel);
+      button.title = actionLabel;
       button.textContent = isDark ? '☀︎' : '☾';
     }
   }
