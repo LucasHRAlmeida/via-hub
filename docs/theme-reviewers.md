@@ -1,0 +1,1 @@
+Technical reviewer targets: Codex and GitHub Copilot. Review the corrected accessibility semantics, cross-tab reset behavior, and regression assertions. Do not merge automatically.
