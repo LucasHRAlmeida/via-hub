@@ -17,7 +17,7 @@ jobs:
         run: node tests/escala-movel.test.cjs
       - name: Tema claro/escuro
         run: node tests/theme-toggle.test.cjs
-      - name: Fixture visual do tema
+      - name: Limite da prévia privada
         run: node tests/theme-preview.test.cjs
       - name: Conversor EVAM
         working-directory: regulacao-federal-ia/evam

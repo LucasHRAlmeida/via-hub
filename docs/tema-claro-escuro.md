@@ -18,19 +18,25 @@ O PR #30 foi incorporado manualmente pelo próprio mantenedor em 31/08/2026. O a
 - sem dependências e sem build;
 - nenhum novo merge automático.
 
-## Fixture visual isolada
+## Prévia visual privada
 
-`qa/theme-preview/index.html` é uma superfície exclusiva de QA, marcada `noindex,nofollow,noarchive`. Ela carrega os assets compartilhados por caminhos relativos, não usa recursos externos e não altera nem simula integração com páginas reais. A fixture permite conferir os temas claro/escuro, foco de teclado, alvo mínimo, persistência e reset; seu teste contratual está em `tests/theme-preview.test.cjs`.
+A QA humana usa um HTML autossuficiente entregue diretamente ao Dr Lucas HR Almeida, fora da árvore servida pelo GitHub Pages. O finding P1 do Codex demonstrou que `noindex` não impede publicação ou acesso: portanto, `qa/theme-preview/index.html` foi removido do repositório.
 
-O limite deve permanecer explícito: aprovação da fixture não equivale a aprovação da propagação página a página nem autoriza merge.
+O contrato `tests/theme-preview.test.cjs` verifica mecanicamente que:
+
+- não existe fixture de QA dentro da árvore potencialmente publicada;
+- `assets/theme.css` e `assets/theme.js` existem;
+- nenhuma página HTML real consome esses assets antes de deliberação específica.
+
+Aprovar a prévia privada não equivale a aprovar a propagação página a página nem autoriza merge.
 
 ## Próxima etapa antes de novo merge
 
-1. Obter QA visual humana da fixture em desktop e mobile, claro e escuro.
+1. Obter QA visual humana do artefato privado em desktop e mobile, claro e escuro.
 2. Propagar o controlador contra o `main` atual, página a página, somente após deliberação específica.
 3. Preservar páginas de paleta fixa quando a inversão produzir degradação visual.
 4. Executar contraste WCAG, teclado e regressão visual do modo claro nas páginas consumidoras.
 5. Corrigir apenas defeitos atribuíveis a esta mudança; dívida de contraste preexistente fica separada.
 6. Revisão obrigatória por Codex e GitHub Copilot antes de qualquer decisão de merge.
 
-Estado: **FIXTURE ISOLADA EM REVIEW / QA VISUAL HUMANA PENDENTE / NENHUM NOVO MERGE**.
+Estado: **PRÉVIA PRIVADA FORA DO PAGES / QA VISUAL HUMANA PENDENTE / NENHUM NOVO MERGE**.
