@@ -1,0 +1,1 @@
+Reviewer handoff: corrected post-merge theme branch is ready for technical review. Findings are to be applied automatically; human visual QA remains explicitly pending.
