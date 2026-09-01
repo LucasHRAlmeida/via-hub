@@ -20,7 +20,7 @@ O PR #30 foi incorporado manualmente pelo próprio mantenedor em 31/08/2026. O a
 
 ## Prévia visual privada
 
-A QA humana usa um HTML autossuficiente entregue diretamente ao Dr Lucas HR Almeida, fora da árvore servida pelo GitHub Pages. O finding P1 do Codex demonstrou que `noindex` não impede publicação ou acesso: portanto, `qa/theme-preview/index.html` foi removido do repositório.
+O HTML autossuficiente de QA deve permanecer fora da árvore servida pelo GitHub Pages; sua entrega ao decisor é uma pós-condição externa ao commit e deve ser verificada separadamente. O finding P1 do Codex demonstrou que `noindex` não impede publicação ou acesso: portanto, `qa/theme-preview/index.html` foi removido do repositório.
 
 O contrato `tests/theme-preview.test.cjs` verifica mecanicamente que:
 
