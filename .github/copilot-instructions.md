@@ -1,13 +1,16 @@
-# Revisão Copilot — Iniciativa VIA
+# Copilot — Iniciativa VIA
 
-## Função no stack (não negociável)
+## Função no stack
 
-GitHub Copilot, nestes repositórios, existe **apenas** como revisor de pull request.
+GitHub Copilot pode atuar como **executor agentivo** ou **reviewer**, com segregação de funções por PR.
 
-- NÃO implementar. NÃO abrir PR. NÃO «Corrigir com Copilot». NÃO cloud agent. NÃO coding agent.
-- NÃO mergear. NÃO force-push. NÃO tocar em `main`.
-- Deixar sempre revisão «Comment». Nunca Approve, nunca Request changes.
-- Comentários de humanos sob as tuas notas não te são visíveis — não respondas a threads.
+Pode: investigar o repositório; planejar implementação; receber/assumir issues quando o cloud agent estiver disponível; criar branch a partir do main atualizado; implementar mudanças; criar, editar e remover arquivos no escopo da tarefa; executar testes, lint, build e QA automatizável; abrir draft PR; iterar sobre feedback de reviewers; aplicar correções de review quando não houver decisão substantiva nova; realizar code review de PRs de outros agentes/humanos; usar Copilot Chat, agent mode, cloud agent, CLI e demais capacidades do plano quando pertinentes.
+
+Não pode: commit direto em main; force-push em main; decidir ou executar merge quando o fluxo reservar merge ao HUMAN_GATE; alterar secrets, permissões, branch protection, repository settings ou infraestrutura externa sem autorização explícita; considerar a própria revisão como revisão independente de um PR que ele mesmo implementou; saltar invariantes específicas deste repositório; fabricar factos, rotas, SHA, HTTP status ou fontes; remover HUMAN_GATEs substantivos já existentes.
+
+Se Copilot for o **implementador** de um PR: pode corrigir automaticamente findings de reviewers; a própria análise serve como self-check e **não** conta como review independente.
+
+Se Copilot for o **revisor** de um PR de outro autor: review normal; findings concretos e patch mínimo quando adequado; feedback executável pode ser aplicado pelo implementador sem novo HUMAN_GATE. HUMAN_GATE permanece para decisões substantivas, especialmente merge.
 
 Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMAN_GATE (Dr Lucas HR Almeida). Consenso entre agentes não é decisão.
 
@@ -39,7 +42,8 @@ Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMA
 - [ ] Lead / bio / CRM tocados sem pedido?
 - [ ] Rota inventada ou 404?
 - [ ] JSON-LD `@id` partido?
-- [ ] Agente a propor merge, force-push ou implementação?
+- [ ] Agente a propor merge, force-push ou commit direto em main?
+- [ ] Self-review a ser tratado como gate independente?
 - [ ] Marca de vendor na UI?
 
-Falha → comentar o hunk, sugerir o patch mínimo, não reescrever o ficheiro.
+Falha → comentar o hunk, sugerir o patch mínimo, não reescrever o ficheiro fora de escopo.
