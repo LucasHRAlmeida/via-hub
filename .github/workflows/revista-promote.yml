@@ -90,7 +90,9 @@ jobs:
         if: steps.state.outputs.noop == 'false'
         env:
           EDITION: ${{ steps.state.outputs.edition }}
-        run: node scripts/revista/promote.mjs --edition "$EDITION"
+        run: |
+          node scripts/revista/promote.mjs --edition "$EDITION"
+          sed -i 's/[[:space:]]\+$//' revista/index.html
 
       - name: QA da edição promovida
         env:
