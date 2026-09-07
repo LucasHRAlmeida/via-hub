@@ -41,31 +41,47 @@
           "@id": "https://iniciativa-via.com/via-hub/#organization"
         },
         "isAccessibleForFree": true,
-        "dateModified": "2026-08-29",
+        "dateModified": "2026-09-06",
         "audience": {
           "@type": "MedicalAudience",
           "audienceType": "Patient"
         },
-        "lastReviewed": "2026-08-29",
+        "lastReviewed": "2026-09-06",
         "reviewedBy": {
           "@id": "https://iniciativa-via.com/via-hub/#lucas-hr-almeida"
         },
         "about": [
           {
             "@type": "MedicalEntity",
-            "name": "Informação e saúde digital"
+            "name": "Urgência cardiovascular"
           },
           {
             "@type": "MedicalEntity",
-            "name": "Saúde pública e prevenção"
+            "name": "RNA no Brasil"
           },
           {
             "@type": "MedicalEntity",
-            "name": "Saúde da população quilombola"
+            "name": "SUS Digital"
           },
           {
             "@type": "MedicalEntity",
-            "name": "Comunicação de risco"
+            "name": "Atenção Primária"
+          },
+          {
+            "@type": "MedicalEntity",
+            "name": "Oncologia"
+          },
+          {
+            "@type": "MedicalEntity",
+            "name": "“Agora Tem Especialistas”"
+          },
+          {
+            "@type": "MedicalEntity",
+            "name": "Pesquisa Nacional de Saúde Mental"
+          },
+          {
+            "@type": "MedicalEntity",
+            "name": "Multivacinação terminou; vacinação não"
           }
         ],
         "specialty": "https://schema.org/PublicHealth"
@@ -1030,6 +1046,18 @@
         animation-duration: 0.01ms !important;
       }
     }
+
+    /* REVISTA_AUTOMATION_STYLES */
+    .article-prose{max-width:860px;color:var(--ink);font-size:16px;line-height:1.78}
+    .article-prose p{margin:0 0 18px}
+    .article-prose h3{margin:32px 0 12px;color:var(--navy-950);font-size:1.22rem;letter-spacing:-.02em}
+    .article-prose ul{margin:0 0 22px;padding-left:1.25rem}
+    .article-prose li{margin:8px 0}
+    .article-prose blockquote{margin:22px 0;padding:18px 20px;border-left:3px solid var(--teal-500);background:var(--mist-100);color:var(--navy-900);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+    .article-prose a{color:var(--teal-600);overflow-wrap:anywhere}
+    .article-prose .source-line{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+    .edition-summary{margin:0 0 30px}
+
   </style>
 </head>
 <body>
@@ -1052,372 +1080,230 @@
     <section class="hero">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="shell hero-inner">
-        <p class="eyebrow"><span></span> Revista eletrônica · Curadoria médico-científica</p>
+        <p class="eyebrow"><span></span> Revista eletrônica · Curadoria médico-científica · saúde pública, cuidado, ciência e tecnologia</p>
         <h1>Saúde na Última Semana</h1>
-        <p class="hero-lede"><strong>Revista Eletrônica VIA</strong> sobre os fatos que alteraram o cuidado, a saúde pública e a ciência nesta semana — hierarquizados por relevância, traduzidos em linguagem clara e vinculados às fontes primárias.</p>
+        <p class="hero-lede"><strong>Revista Eletrônica VIA</strong> sobre os fatos que alteraram o cuidado, a saúde pública, a ciência e a tecnologia nesta semana — com anúncio separado de implementação e evidência.</p>
         <ul class="hero-meta">
-          <li>Edição de 29 de agosto de 2026</li>
-          <li>Semana de 23–29 de agosto</li>
+          <li>Edição de 6 de setembro de 2026</li>
+          <li>Semana de 30 de agosto a 6 de setembro de 2026</li>
           <li>Brasil</li>
         </ul>
-        <div class="scope-callout">
-          <strong>O que este boletim é — e o que não é</strong>
-          <p>É curadoria editorial para compreender fatos e orientar decisões informadas. <strong>Não é</strong> triagem, diagnóstico nem fonte de dados epidemiológicos em tempo real. Cada alegação factual relevante aponta para sua fonte primária.</p>
-        </div>
+        <div class="scope-callout"><strong>Critério editorial</strong><p>Critério editorial desta edição: entrou apenas o que alterou norma, capacidade instalada, organização do cuidado, produção científica ou risco sanitário de forma material. Anúncio foi separado de implementação; intenção política, de entrega assistencial; tecnologia, de benefício clínico demonstrado.</p></div>
       </div>
     </section>
     <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">
       <div class="shell">
-        <!-- PANORAMA:START (bloco atualizado semanalmente — não remova os marcadores) -->
-        <div class="panorama-head" data-updated="2026-08-29">
+        <!-- PANORAMA:START (bloco gerado automaticamente — não remova os marcadores) -->
+        <div class="panorama-head" data-updated="2026-09-06">
           <div class="section-heading">
             <p class="section-kicker">Nesta edição</p>
             <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>
           </div>
-          <span class="update-pill">Atualizado em 29 de agosto de 2026</span>
+          <span class="update-pill">Atualizado em 6 de setembro de 2026</span>
         </div>
         <div class="issue-bar">
-          <span class="issue-id">Edição 29.08.2026 · Ano I</span>
-          <span class="issue-id" style="color:var(--muted);font-weight:650;letter-spacing:.02em;text-transform:none">
-            Saúde digital · Clima · Saúde mental · Equidade · Vigilância
-          </span>
+          <span class="issue-id">Edição 06.09.2026 · Ano I</span>
+          <span class="issue-id" style="color:var(--muted);font-weight:650;letter-spacing:.02em;text-transform:none">Fonte editorial versionada em Markdown</span>
         </div>
-        <ul class="toc">
-          <li><a href="#saude-digital"><b>01 · Em foco</b><span>O SUS pactua uma política nacional de saúde digital</span></a></li>
-          <li><a href="#clima"><b>02 · Preparação</b><span>El Niño 2026–2027 entra no planejamento sanitário</span></a></li>
-          <li><a href="#cuidado"><b>03 · Acesso</b><span>Saúde mental chega ao Meu SUS Digital</span></a></li>
-          <li><a href="#vigilancia"><b>04 · Vigilância</b><span>Sarampo permanece em risco muito alto nas Américas</span></a></li>
-          <li><a href="#acoes"><b>05 · Prática</b><span>O que muda para pessoas e serviços</span></a></li>
-        </ul>
-        <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e da literatura científica na data acima. Números mudam a cada semana — confira sempre a fonte antes de agir ou compartilhar.</p>
+        <div class="edition-summary article-prose"><p>A semana foi menos sobre “uma grande descoberta” e mais sobre <strong>infraestrutura de sistema</strong>. O SUS ganhou uma nova exigência legal para protocolos de urgência cardiovascular com medidas trombolíticas em UPA; a plataforma brasileira de RNA avançou simultaneamente em capacidade industrial-científica e ensaio clínico; a transformação digital hospitalar passou a operar com uma central nacional de UTIs conectadas; o Ministério da Saúde publicou um cronograma para abrir 109 bases de dados; a atenção primária foi incluída em uma compra nacional de ultrassons portáteis; e o programa Agora Tem Especialistas ampliou contratos com a rede privada — mas os números de execução ainda estão muito aquém dos números anunciados.</p>
+<p>A leitura correta da semana é, portanto, <strong>capacidade potencial em expansão, com implementação ainda desigual</strong>.</p></div>
+        <ul class="toc"><li><a href="#urgencia-cardiovascular-trombolise-em-upa-deixa-de-ser-apenas-po"><b>01</b><span>Urgência cardiovascular: trombólise em UPA deixa de ser apenas possibilidade operacional e entra na lei</span></a></li>
+<li><a href="#rna-no-brasil-a-diferenca-entre-ter-uma-plataforma-e-ter-um-prod"><b>02</b><span>RNA no Brasil: a diferença entre “ter uma plataforma” e ter um produto começou a ficar mensurável</span></a></li>
+<li><a href="#sus-digital-60-leitos-conectados-uma-central-nacional-e-109-base"><b>03</b><span>SUS Digital: 60 leitos conectados, uma central nacional e 109 bases programadas para abertura</span></a></li>
+<li><a href="#atencao-primaria-500-ultrassons-de-bolso-podem-mudar-a-consulta-"><b>04</b><span>Atenção Primária: 500 ultrassons de bolso podem mudar a consulta — se vierem acompanhados de competência</span></a></li>
+<li><a href="#oncologia-o-sus-esta-deixando-de-tratar-medicamento-oncologico-c"><b>05</b><span>Oncologia: o SUS está deixando de tratar medicamento oncológico como exceção administrativa permanente</span></a></li>
+<li><a href="#agora-tem-especialistas-o-dado-importante-e-a-distancia-entre-co"><b>06</b><span>“Agora Tem Especialistas”: o dado importante é a distância entre contratar e entregar</span></a></li>
+<li><a href="#pesquisa-nacional-de-saude-mental-ainda-nao-ha-resultado-e-isso-"><b>07</b><span>Pesquisa Nacional de Saúde Mental: ainda não há resultado — e isso é importante dizer</span></a></li>
+<li><a href="#multivacinacao-terminou-vacinacao-nao"><b>08</b><span>Multivacinação terminou; vacinação não</span></a></li>
+<li><a href="#saude-e-clima-preparacao-para-el-nino-entrou-na-agenda-operacion"><b>09</b><span>Saúde e clima: preparação para El Niño entrou na agenda operacional</span></a></li>
+<li><a href="#anvisa-terminou-a-transicao-regulatoria-para-parte-dos-suplement"><b>10</b><span>Anvisa: terminou a transição regulatória para parte dos suplementos alimentares</span></a></li>
+<li><a href="#metodo-editorial"><b>11</b><span>Método editorial</span></a></li></ul>
+        <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e literatura científica na data acima. Confira a fonte primária antes de agir ou compartilhar.</p>
         <!-- PANORAMA:END -->
       </div>
     </section>
-    <section class="focus section" id="saude-digital" aria-labelledby="saude-digital-titulo">
+    <section class="focus section" id="urgencia-cardiovascular-trombolise-em-upa-deixa-de-ser-apenas-po" aria-labelledby="urgencia-cardiovascular-trombolise-em-upa-deixa-de-ser-apenas-po-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">01 · Em foco</p>
-          <h2 id="saude-digital-titulo">O SUS pactua uma política nacional para informação e saúde digital</h2>
-          <p>Em <strong>27 de agosto</strong>, a Comissão Intergestores Tripartite pactuou a Política Nacional de Informação e Saúde Digital. A decisão é estrutural: União, estados e municípios passam a compartilhar uma direção comum para integrar dados, ampliar telessaúde e tornar a informação utilizável no cuidado — não apenas acumulada em sistemas que não conversam.</p>
+          <p class="section-kicker">01 · Nesta edição</p>
+          <h2 id="urgencia-cardiovascular-trombolise-em-upa-deixa-de-ser-apenas-po-titulo">Urgência cardiovascular: trombólise em UPA deixa de ser apenas possibilidade operacional e entra na lei</h2>
         </div>
-        <div class="card-grid">
-          <article class="info-card">
-            <span class="card-tag">Decisão</span>
-            <h3>Pactuação tripartite</h3>
-            <p>A política foi acordada na instância que reúne os três níveis de gestão do SUS. Isso lhe dá alcance federativo; não a transforma, por si só, em interoperabilidade pronta.</p>
-            <ul>
-              <li>Direção comum para informação e saúde digital.</li>
-              <li>Integração entre gestão, vigilância e assistência.</li>
-              <li>Governança compartilhada entre entes do SUS.</li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <span class="card-tag">Promessa concreta</span>
-            <h3>Dados úteis no ponto de cuidado</h3>
-            <p>O ganho real não é “digitalizar” mais formulários. É reduzir repetição, perda de informação e decisões tomadas com prontuários incompletos.</p>
-            <ul>
-              <li>Continuidade entre níveis de atenção.</li>
-              <li>Menos exames e cadastros repetidos.</li>
-              <li>Informação longitudinal acessível com finalidade clínica.</li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <span class="card-tag">Condição</span>
-            <h3>Interoperabilidade não nasce de decreto</h3>
-            <p>A política só produzirá cuidado melhor se vier acompanhada de padrões técnicos, identificação segura, qualidade de dados e responsabilidades verificáveis.</p>
-            <ul>
-              <li>Semântica comum entre sistemas.</li>
-              <li>Privacidade e controle de acesso proporcionais ao risco.</li>
-              <li>Auditoria de uso e correção de registros.</li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <span class="card-tag">Limite</span>
-            <h3>Aplicativo não substitui rede assistencial</h3>
-            <p>Telessaúde e acesso digital podem ampliar alcance, mas excluem quando se tornam a única porta de entrada ou ignoram conectividade, letramento e deficiência.</p>
-            <ul>
-              <li>Preservar alternativas presenciais.</li>
-              <li>Projetar para acessibilidade e baixo consumo de dados.</li>
-              <li>Medir desfechos, não apenas acessos à plataforma.</li>
-            </ul>
-          </article>
-          <article class="info-card card-full">
-            <div>
-              <span class="card-tag">Leitura VIA</span>
-              <h3>Infraestrutura só vale se reduzir a distância entre informação e decisão</h3>
-              <p>A política cria uma condição institucional favorável. O teste real será observar se a informação chega íntegra, compreensível e a tempo de alterar o cuidado.</p>
-            </div>
-            <ul>
-              <li>Qual dado precisa existir para esta decisão?</li>
-              <li>Quem responde por sua qualidade e atualização?</li>
-              <li>Quem pode acessá-lo, por qual finalidade e com qual registro?</li>
-              <li>Qual resultado clínico ou operacional provará que a camada valeu o custo?</li>
-            </ul>
-          </article>
-        </div>
-        <div class="care-note">
-          <div class="care-body">
-            <h3>O que aconteceu — sem inflar a notícia</h3>
-            <p>Foi pactuada a política nacional. Implementação, padrões, cronograma e efeitos sobre o atendimento ainda precisam ser acompanhados. Confundir decisão normativa com sistema entregue seria vender a maquete como edifício. Na mesma reunião foram pactuados nove medicamentos, o programa de eliminação da tuberculose e a política de saúde da população quilombola.</p>
-          </div>
-          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cit-pactua-politica-nacional-de-informacao-e-saude-digital-e-amplia-oferta-de-medicamentos-no-sus" target="_blank" rel="noopener noreferrer">Anúncio oficial · Ministério da Saúde <span aria-hidden="true">↗</span></a>
+        <div class="article-prose">
+<h3>O que mudou</h3>
+<p>Foi sancionada a <strong>Lei nº 15.494, de 2 de setembro de 2026</strong>, que determina a criação de protocolos de atendimento para urgências cardiovasculares no SUS e explicita a inclusão de <strong>medidas trombolíticas em Unidades de Pronto Atendimento (UPAs)</strong>, observados critérios de segurança e eficácia definidos pelo Poder Executivo.</p>
+<p>A lei entra em vigor <strong>180 dias após a publicação</strong>.</p>
+<h3>O que não mudou</h3>
+<p>Trombolíticos já faziam parte dos protocolos assistenciais do SUS para infarto agudo do miocárdio e AVC isquêmico. O próprio Ministério da Saúde reconhece que a aquisição dos medicamentos vinha sendo feita pelos gestores locais e que o uso já podia ocorrer em serviços de urgência, inclusive em determinadas unidades do SAMU 192.</p>
+<p>Portanto, a mudança desta semana <strong>não significa que toda UPA brasileira passou a ter trombolítico disponível em 2 de setembro</strong>. O ganho jurídico é outro: a oferta e os protocolos deixam de depender apenas de arranjos programáticos e passam a ter previsão legal explícita, com um comitê nacional encarregado de acompanhar a implementação das linhas de cuidado tempo-dependentes para AVC e IAM.</p>
+<h3>Por que importa</h3>
+<p>Em reperfusão, geografia e tempo são variáveis clínicas. A norma pode reduzir a distância entre o primeiro contato do paciente e uma intervenção efetiva, particularmente onde angioplastia primária ou unidade de AVC não estão disponíveis dentro da janela adequada.</p>
+<p>O gargalo, contudo, não é apenas comprar o medicamento. Uma estratégia de trombólise segura exige diagnóstico rápido, ECG ou neuroimagem quando indicada, reconhecimento de contraindicações, protocolo de transferência, monitoramento de complicações e integração com a referência definitiva.</p>
+<p>O melhor indicador para acompanhar daqui em diante não é “quantas UPAs aderiram”, mas <strong>tempo porta-diagnóstico, tempo porta-agulha, proporção de pacientes elegíveis reperfundidos, hemorragia maior e desfechos funcionais</strong>.</p>
+<p class="source-line"><strong>Fonte primária:</strong> Presidência da República — Lei nº 15.494/2026: <a href="https://planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15494.htm" target="_blank" rel="noopener noreferrer">https://planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15494.htm</a> <strong>Fonte institucional:</strong> Ministério da Saúde — <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/sancionada-lei-que-preve-oferta-de-tromboliticos-para-tratamento-de-infarto-e-avc-na-rede-de-urgencia-e-emergencia-do-sus/" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/sancionada-lei-que-preve-oferta-de-tromboliticos-para-tratamento-de-infarto-e-avc-na-rede-de-urgencia-e-emergencia-do-sus/</a></p>
         </div>
       </div>
     </section>
-    <section class="topics section" id="clima" aria-labelledby="clima-titulo">
+    <section class="topics section" id="rna-no-brasil-a-diferenca-entre-ter-uma-plataforma-e-ter-um-prod" aria-labelledby="rna-no-brasil-a-diferenca-entre-ter-uma-plataforma-e-ter-um-prod-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">02 · Clima e preparação</p>
-          <h2 id="clima-titulo">El Niño 2026–2027 entra no planejamento sanitário</h2>
-          <p>O Ministério da Saúde apresentou aos secretários estaduais um plano de preparação e resposta para emergências associadas ao próximo ciclo do El Niño. A notícia relevante não é o nome do fenômeno: é a tentativa de antecipar efeitos previsíveis sobre território, doenças e capacidade assistencial.</p>
+          <p class="section-kicker">02 · Nesta edição</p>
+          <h2 id="rna-no-brasil-a-diferenca-entre-ter-uma-plataforma-e-ter-um-prod-titulo">RNA no Brasil: a diferença entre “ter uma plataforma” e ter um produto começou a ficar mensurável</h2>
         </div>
-        <div class="agenda">
-          <article class="agenda-item is-now">
-            <span class="when">Janela crítica · out. 2026 – mar. 2027</span>
-            <h3>Preparar antes do evento</h3>
-            <p>O plano organiza a resposta do SUS a impactos climáticos previstos para a janela de outubro a março. O valor está em converter previsão em estoque, vigilância, comunicação e capacidade local antes da ruptura.</p>
-          </article>
-          <article class="agenda-item">
-            <span class="when">Riscos combinados</span>
-            <h3>Calor, chuva e deslocamento</h3>
-            <p>Eventos extremos alteram água, vetores, alimentos, abrigo e acesso aos serviços. O efeito sanitário não é uma doença isolada, mas uma cascata de exposições e interrupções.</p>
-          </article>
-          <article class="agenda-item">
-            <span class="when">Escala local</span>
-            <h3>O município é onde o plano encontra o corpo</h3>
-            <p>Alertas só ganham utilidade quando chegam a territórios vulneráveis com protocolos simples: quem monitora, qual limiar dispara ação e para onde pessoas e equipes se deslocam.</p>
-          </article>
-        </div>
-        <div class="care-note" style="margin-top:24px">
-          <div class="care-body">
-            <h3>Repercussão prática</h3>
-            <p>Famílias e serviços podem revisar antecipadamente medicamentos contínuos, água segura, contatos de emergência, rotas de acesso e proteção de pessoas dependentes de eletricidade ou refrigeração.</p>
-          </div>
-          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/ministerio-da-saude-apresenta-a-secretarios-estaduais-plano-de-preparacao-para-o-el-nino-2026-2027" target="_blank" rel="noopener noreferrer">Plano apresentado ao Conass <span aria-hidden="true">↗</span></a>
+        <div class="article-prose">
+<p>Duas notícias da mesma semana devem ser lidas juntas.</p>
+<h3>Ensaio clínico nacional de mRNA</h3>
+<p>A Anvisa informou em 2 de setembro que havia autorizado, em 20 de agosto, o estudo clínico de <strong>Fase 1</strong> da vacina de mRNA da Fiocruz/Bio-Manguinhos contra a Covid-19. O estudo avaliará segurança e imunogenicidade como dose de reforço em <strong>90 adultos saudáveis de 18 a 59 anos</strong>, utilizando mRNA que codifica a proteína Spike da variante XBB.</p>
+<p>Isso é avanço real, mas ainda inicial: <strong>Fase 1 não demonstra eficácia clínica nem autoriza uso populacional</strong>.</p>
+<h3>Centro de Competência em RNA na UFMG</h3>
+<p>Na mesma semana foi formalizado, em Belo Horizonte, o primeiro <strong>Centro de Competência em Terapias e Vacinas com RNA (CTV-RNA)</strong>, coordenado pelo CTVacinas/UFMG, com aporte de <strong>R$ 60 milhões</strong>. O Ministério informa um conjunto de investimentos da ordem de <strong>R$ 210 milhões</strong> em infraestrutura, formação e plataformas relacionadas a RNA.</p>
+<p>Há projetos que incluem dengue, malária, chikungunya, doença de Chagas e leishmaniose.</p>
+<h3>Por que isso merece destaque</h3>
+<p>“Soberania vacinal” vira slogan vazio se significar apenas que uma universidade publicou bons artigos. Ela começa a existir quando o país domina sucessivamente desenho molecular, formulação, produção em escala, controle de qualidade, ensaio pré-clínico, estudo clínico, regulação, manufatura e entrega ao SUS.</p>
+<p>A notícia relevante da semana é que <strong>duas partes diferentes dessa cadeia avançaram ao mesmo tempo</strong>: uma infraestrutura de desenvolvimento em Minas Gerais e um candidato nacional entrando em avaliação clínica.</p>
+<p>O teste rigoroso virá depois: capacidade de escalar, custo por dose, estabilidade, independência de insumos críticos, velocidade de atualização da plataforma e desempenho clínico comparável às alternativas disponíveis.</p>
+<p class="source-line"><strong>Fontes primárias/institucionais:</strong> Anvisa — <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/anvisa-autoriza-estudo-clinico-da-fiocruz-com-vacina-de-mrna-para-covid" target="_blank" rel="noopener noreferrer">https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/anvisa-autoriza-estudo-clinico-da-fiocruz-com-vacina-de-mrna-para-covid</a> Ministério da Saúde — <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/primeiro-centro-de-competencia-em-terapias-e-vacinas-com-rna-e-implementado-no-brasil-com-o-apoio-do-ministerio-da-saude/" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/primeiro-centro-de-competencia-em-terapias-e-vacinas-com-rna-e-implementado-no-brasil-com-o-apoio-do-ministerio-da-saude/</a> Ministério da Saúde — <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/brasil-consolida-desenvolvimento-de-vacinas-com-rna-mensageiro-e-amplia-respostas-contra-crises-sanitarias/" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/brasil-consolida-desenvolvimento-de-vacinas-com-rna-mensageiro-e-amplia-respostas-contra-crises-sanitarias/</a></p>
         </div>
       </div>
     </section>
-    <section class="focus section" id="cuidado" aria-labelledby="cuidado-titulo">
+    <section class="focus section" id="sus-digital-60-leitos-conectados-uma-central-nacional-e-109-base" aria-labelledby="sus-digital-60-leitos-conectados-uma-central-nacional-e-109-base-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">03 · Acesso ao cuidado</p>
-          <h2 id="cuidado-titulo">Saúde mental entra no Meu SUS Digital — com escala e limites</h2>
-          <p>Desde 24 de agosto, o SUS oferece até <strong>100 mil teleatendimentos mensais</strong> em saúde mental para mulheres em situação de violência, mães atípicas e outras mulheres da família — tias, avós, irmãs — que cuidam de pessoas com deficiência, transtornos do neurodesenvolvimento ou doenças raras. O serviço amplia acesso; não elimina a necessidade de rede territorial e resposta presencial.</p>
+          <p class="section-kicker">03 · Nesta edição</p>
+          <h2 id="sus-digital-60-leitos-conectados-uma-central-nacional-e-109-base-titulo">SUS Digital: 60 leitos conectados, uma central nacional e 109 bases programadas para abertura</h2>
         </div>
-        <div class="treat-grid">
-          <article class="treat">
-            <span class="who">Acesso · Brasil</span>
-            <h3>Uma nova porta de entrada</h3>
-            <p>O atendimento remoto pode reduzir barreiras geográficas, de tempo e de exposição para quem vive sob violência ou acumula cuidado intensivo de familiares.</p>
-          </article>
-          <article class="treat">
-            <span class="who">Canal · Meu SUS Digital</span>
-            <h3>Escala nacional pelo aplicativo</h3>
-            <p>O acesso é pelo miniapp <em>Acolhe Mais +</em>, com até 10 sessões por usuária. A experiência precisa ser acompanhada por tempo de espera, continuidade, encaminhamento e capacidade de absorção pela RAPS.</p>
-          </article>
-          <article class="treat">
-            <span class="who">Segurança · Violência</span>
-            <h3>Privacidade não é detalhe de interface</h3>
-            <p>Em situações de violência, notificações, histórico visível e dispositivos compartilhados podem produzir risco. Desenho seguro exige discrição, consentimento e alternativas de acesso.</p>
-          </article>
-        </div>
-        <div class="subrail"><span>Também nesta semana · equidade, regulação e eliminação</span></div>
-        <div class="treat-grid" style="margin-top:16px">
-          <article class="treat">
-            <span class="who">Equidade · Saúde quilombola</span>
-            <h3>Política nacional é pactuada no SUS</h3>
-            <p>Em 27 de agosto, gestores federais, estaduais e municipais pactuaram na CIT a Política Nacional de Saúde Integral da População Quilombola. A normativa busca enfrentar barreiras de acesso, racismo e desigualdades que atingem mais de <strong>1,3 milhão de pessoas</strong>; pactuação não equivale, por si só, a implementação efetiva nos territórios.</p>
-          </article>
-          <article class="treat">
-            <span class="who">Eliminação · Saúde indígena</span>
-            <h3>Oncocercose atinge a meta de cobertura</h3>
-            <p>No primeiro semestre, o Brasil alcançou <strong>85,4% de tratamento coletivo</strong> nas comunidades endêmicas da Terra Indígena Yanomami, último foco ativo da doença nas Américas. A meta operacional é de 85%.</p>
-          </article>
-          <article class="treat">
-            <span class="who">Anvisa · Doença rara</span>
-            <h3>Primeira indicação específica para AHAI-Q</h3>
-            <p>A Anvisa aprovou o nipocalimabe para adultos e adolescentes a partir de 12 anos com anemia hemolítica autoimune por anticorpos quentes — o Brasil é o primeiro país do mundo a aprovar essa indicação. Registro não equivale a incorporação ao SUS.</p>
-          </article>
-        </div>
-        <div class="care-note" style="margin-top:30px">
-          <div class="care-body">
-            <h3>Fonte e escopo</h3>
-            <p>O Ministério da Saúde anunciou a disponibilidade e o público contemplado. Detalhes operacionais devem ser conferidos no Meu SUS Digital e nos canais oficiais antes de orientar uma pessoa específica.</p>
-          </div>
-          <a class="button button-teal" href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/sus-oferece-100-mil-teleatendimentos-mensais-de-saude-mental-para-mulheres-em-situacao-de-violencia-e-maes-atipicas" target="_blank" rel="noopener noreferrer">Anúncio oficial do serviço <span aria-hidden="true">↗</span></a>
+        <div class="article-prose">
+<p>A transformação digital apareceu nesta semana em duas dimensões que deveriam sempre caminhar juntas: <strong>capacidade operacional</strong> e <strong>observabilidade pública</strong>.</p>
+<h3>UTIs Inteligentes</h3>
+<p>O Ministério da Saúde apresentou em 3 de setembro a Central de Comando das UTIs Inteligentes do SUS, sediada no HC-FMUSP. A estrutura conecta atualmente <strong>60 leitos</strong> em seis cidades — Manaus, Recife, Brasília, Belo Horizonte, Rio de Janeiro e Porto Alegre — e recebe em tempo real dados como frequência cardíaca, saturação de oxigênio e pressão arterial.</p>
+<p>A expansão anunciada prevê <strong>280 leitos em 14 instituições</strong>.</p>
+<p>A pasta descreve a iniciativa como uso de inteligência artificial e “medicina preditiva”. Aqui convém reduzir o hype: integração de sinais vitais, vigilância remota e sistemas de alerta podem ser clinicamente úteis, mas a notícia institucional não apresenta, por si, evidência de redução de mortalidade, tempo de internação ou eventos adversos atribuível ao algoritmo. Esses são desfechos a serem medidos.</p>
+<p>A pergunta correta não é “o SUS agora tem IA?”. Tem. A pergunta é: <strong>qual modelo, validado em qual população, com qual sensibilidade, especificidade, taxa de alarmes, governança de dados e efeito sobre desfechos clínicos?</strong></p>
+<h3>Plano de Dados Abertos 2026–2028</h3>
+<p>Também nesta semana foi publicado o novo Plano de Dados Abertos do Ministério da Saúde. O cronograma prevê a abertura de <strong>109 bases até agosto de 2028</strong>, sendo <strong>46 ainda no segundo semestre de 2026</strong>.</p>
+<p>O inventário atual identificou <strong>360 bases de dados</strong> no Ministério; até agosto, o Portal de Dados Abertos do SUS disponibilizava 139 conjuntos de dados e 2.845 arquivos estruturados.</p>
+<p>Abrir dados não equivale automaticamente a produzir interoperabilidade, qualidade ou utilidade analítica. Mas rastreabilidade, documentação e acesso público são condições importantes para pesquisa, controle social e auditoria de políticas — inclusive das próprias iniciativas de IA do SUS.</p>
+<p>A combinação das duas notícias é mais importante que cada uma isoladamente: <strong>quanto mais decisões forem mediadas por infraestrutura digital, maior precisa ser a capacidade de observar, auditar e contestar seus resultados</strong>.</p>
+<p class="source-line"><strong>Fontes:</strong> Ministério da Saúde — UTIs Inteligentes: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-apresenta-central-de-comando-das-utis-inteligentes-do-sus" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-apresenta-central-de-comando-das-utis-inteligentes-do-sus</a> Ministério da Saúde — Plano de Dados Abertos: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-publica-plano-de-dados-abertos-para-o-periodo-2026-2028/" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-publica-plano-de-dados-abertos-para-o-periodo-2026-2028/</a></p>
         </div>
       </div>
     </section>
-    <section class="topics section" id="vigilancia" aria-labelledby="vigilancia-titulo">
+    <section class="topics section" id="atencao-primaria-500-ultrassons-de-bolso-podem-mudar-a-consulta-" aria-labelledby="atencao-primaria-500-ultrassons-de-bolso-podem-mudar-a-consulta--titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">04 · Vigilância epidemiológica</p>
-          <h2 id="vigilancia-titulo">Sarampo permanece em risco muito alto nas Américas</h2>
-          <p>O alerta epidemiológico da OPAS, publicado em 7 de agosto e ainda o documento regional mais recente no fechamento desta edição, classifica o risco regional como muito alto. Até a semana epidemiológica 28, encerrada em 18 de julho, haviam sido confirmados <strong>47.459 casos</strong> em 16 países e um território, com <strong>44 mortes</strong>. O foco editorial aqui não é manter sarampo por tradição: é não descartar um risco relevante enquanto ele continua ativo.</p>
+          <p class="section-kicker">04 · Nesta edição</p>
+          <h2 id="atencao-primaria-500-ultrassons-de-bolso-podem-mudar-a-consulta--titulo">Atenção Primária: 500 ultrassons de bolso podem mudar a consulta — se vierem acompanhados de competência</h2>
         </div>
-        <div class="evidence">
-          <span class="ev-tag">Alerta epidemiológico · OPAS/OMS · 7 de agosto de 2026</span>
-          <p>A região registrou o maior número de casos confirmados em <strong>22 anos</strong>. A OPAS relaciona o cenário a surtos ativos, lacunas de imunização e alta mobilidade, e recomenda vacinação, vigilância sensível, busca ativa e resposta rápida a casos suspeitos.</p>
-          <p>Números absolutos envelhecem rapidamente. Por isso, esta edição registra a semana epidemiológica de referência e vincula diretamente o alerta; não transforma dado de julho em contador “ao vivo”.</p>
-          <cite>Organização Pan-Americana da Saúde. <em>Alerta Epidemiológico: Sarampo na Região das Américas.</em> 7 ago. 2026. <a href="https://www.paho.org/pt/documentos/alerta-epidemiologico-sarampo-na-regiao-das-americas-7-agosto-2026" target="_blank" rel="noopener noreferrer">Documento oficial ↗</a></cite>
-        </div>
-        <div class="evidence">
-          <span class="ev-tag">Brasil · Situação nacional declarada</span>
-          <p>Em 13 de agosto, o Ministério da Saúde registrava <strong>24 casos de sarampo no Brasil em 2026</strong>, todos relacionados à importação do vírus: três encerrados sem risco de disseminação e 21 em acompanhamento em São Paulo — 18 na capital, dois em São Bernardo do Campo e um em Guarulhos. O país mantém a recertificação de eliminação da circulação endêmica, recebida da OPAS em novembro de 2024.</p>
-          <p>É esse o dado que sustenta a distinção operativa desta edição: risco regional elevado com casos importados sob rastreamento não é o mesmo que circulação endêmica restabelecida. A afirmação vale na data da fonte e deve ser reconferida antes de ser repetida.</p>
-          <cite>Ministério da Saúde. <em>Alerta sobre sarampo nas Américas reforça importância de intensificar vacinação no Brasil.</em> 13 ago. 2026. <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/alerta-sobre-sarampo-nas-americas-reforca-importancia-de-intensificar-vacinacao-no-brasil" target="_blank" rel="noopener noreferrer">Fonte oficial ↗</a></cite>
-        </div>
-        <div class="evidence" style="border-left-color:var(--green-500)">
-          <span class="ev-tag" style="color:var(--green-600)">Brasil · Campanha Nacional de Multivacinação</span>
-          <p>A mobilização para crianças e adolescentes menores de 15 anos segue até <strong>1º de setembro</strong>. Em Guarulhos, São Bernardo do Campo e na capital paulista, o Ministério da Saúde mantém vacinação indiscriminada contra sarampo para pessoas de 6 meses a 59 anos: entre 3 e 14 de agosto foram aplicadas mais de <strong>529,8 mil doses</strong> de tríplice viral nessas cidades.</p>
-          <p>O Dia D já passou; o prazo da campanha ainda não. A ação útil nesta semana é conferir a caderneta na unidade de saúde, sem reiniciar esquemas já começados e sem presumir indicação individual apenas pela idade.</p>
-          <cite>Ministério da Saúde. <em>Dia D de vacinação contra mais de 20 doenças acontece neste sábado (22) em todo o país.</em> Atualizado em 21 ago. 2026. <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/dia-d-de-vacinacao-contra-mais-de-20-doencas-acontece-neste-sabado-22-em-todo-o-pais" target="_blank" rel="noopener noreferrer">Fonte oficial ↗</a></cite>
-        </div>
-        <div class="topic-grid" style="margin-top:30px">
-          <article class="topic-card">
-            <span class="card-tag">Suspeita clínica</span>
-            <h3>Febre, exantema e contexto importam</h3>
-            <p>Febre com manchas, tosse, coriza ou conjuntivite, sobretudo após viagem ou contato, exige avaliação e comunicação prévia à unidade para reduzir exposição de terceiros.</p>
-          </article>
-          <article class="topic-card">
-            <span class="card-tag">Prevenção</span>
-            <h3>Verifique a caderneta</h3>
-            <p>A indicação depende de idade, histórico vacinal e situações especiais. A unidade de saúde é o lugar adequado para conferir doses e atualizar o que estiver atrasado.</p>
-          </article>
-          <article class="topic-card">
-            <span class="card-tag">Comunicação de risco</span>
-            <h3>Alerta não é pânico</h3>
-            <p>Risco regional elevado pede vacinação e vigilância proporcionais. Não autoriza afirmar circulação sustentada em qualquer município sem dado local correspondente.</p>
-          </article>
+        <div class="article-prose">
+<p>O Ministério da Saúde registrou ata para aquisição futura de <strong>500 ultrassons portáteis de bolso</strong>, com investimento total previsto de <strong>R$ 12,58 milhões</strong>, destinados a ações da AgSUS em Unidades Básicas de Saúde de 23 estados e do Distrito Federal.</p>
+<p>A entrega está prevista em etapas, entre <strong>60 e 150 dias</strong> após a contratação.</p>
+<h3>O potencial</h3>
+<p>POCUS — point-of-care ultrasound — pode aumentar a resolução clínica à beira do paciente: avaliação obstétrica dirigida, bexiga e rins, derrame pleural, avaliação vascular, abscessos, procedimentos guiados e várias perguntas binárias que antes exigiriam encaminhamento para imagem convencional.</p>
+<h3>O risco do fetiche do equipamento</h3>
+<p>Ultrassom é profundamente operador-dependente. Um aparelho no bolso não transforma automaticamente uma UBS em serviço de diagnóstico por imagem. Sem treinamento, delimitação de escopo, supervisão, armazenamento adequado, critérios de encaminhamento e auditoria da qualidade, a tecnologia pode apenas deslocar incerteza de um ponto da rede para outro.</p>
+<p>A medida será bem-sucedida se for acompanhada de <strong>currículo de capacitação, número mínimo de exames supervisionados, protocolo por indicação, registro das imagens e avaliação periódica de concordância diagnóstica</strong>.</p>
+<p>Essa é uma inovação de baixo glamour e potencialmente alto impacto — justamente o tipo de tecnologia que merece ser avaliada pelo quanto resolve problemas concretos, não pela novidade do dispositivo.</p>
+<p class="source-line"><strong>Fonte:</strong> Ministério da Saúde — <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/500-ultrassons-portateis-fortalecem-atendimento-nas-unidades-basicas-de-saude" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/500-ultrassons-portateis-fortalecem-atendimento-nas-unidades-basicas-de-saude</a></p>
         </div>
       </div>
     </section>
-    <section class="checklist section" id="acoes" aria-labelledby="acoes-titulo">
+    <section class="focus section" id="oncologia-o-sus-esta-deixando-de-tratar-medicamento-oncologico-c" aria-labelledby="oncologia-o-sus-esta-deixando-de-tratar-medicamento-oncologico-c-titulo">
       <div class="shell">
         <div class="section-heading">
-          <p class="section-kicker">05 · Ação prática</p>
-          <h2 id="acoes-titulo">O que muda para pessoas e serviços</h2>
-          <p>Cinco ações proporcionais aos fatos desta edição — sem transformar notícia institucional em obrigação individual imaginária.</p>
+          <p class="section-kicker">05 · Nesta edição</p>
+          <h2 id="oncologia-o-sus-esta-deixando-de-tratar-medicamento-oncologico-c-titulo">Oncologia: o SUS está deixando de tratar medicamento oncológico como exceção administrativa permanente</h2>
         </div>
-        <div class="check-grid">
-          <div class="check-item">
-            <span class="check-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-            </span>
-            <div>
-              <h3>Atualize a caderneta até 1º de setembro</h3>
-              <p>A Campanha Nacional de Multivacinação continua aberta para menores de 15 anos. Leve a caderneta; a equipe confere o que realmente está indicado.</p>
-            </div>
-          </div>
-          <div class="check-item">
-            <span class="check-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-            </span>
-            <div>
-              <h3>Em suspeita de sarampo, avise antes de chegar</h3>
-              <p>Febre com manchas após viagem ou contato merece avaliação. Telefonar para a unidade permite organizar fluxo e reduzir exposição de outras pessoas.</p>
-            </div>
-          </div>
-          <div class="check-item">
-            <span class="check-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-            </span>
-            <div>
-              <h3>Revise o plano doméstico para eventos climáticos</h3>
-              <p>Cheque água segura, medicamentos contínuos, contatos, rotas e necessidades de pessoas dependentes de energia, refrigeração ou cuidadores.</p>
-            </div>
-          </div>
-          <div class="check-item">
-            <span class="check-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-            </span>
-            <div>
-              <h3>Conheça a nova porta de saúde mental</h3>
-              <p>Se pertencer ao público anunciado, abra o Meu SUS Digital em <em>Miniapps</em> e procure <em>Acolhe Mais +</em>. Em urgência, risco de violência ou crise grave, procure a rede presencial e os canais de emergência.</p>
-            </div>
-          </div>
-          <div class="check-item">
-            <span class="check-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-            </span>
-            <div>
-              <h3>Se trabalha no SUS, acompanhe a implementação</h3>
-              <p>A nova política de saúde digital será julgada por padrões, integração, segurança e efeito no cuidado. Conte sistema lançado; não conte slide apresentado.</p>
-            </div>
-          </div>
+        <div class="article-prose">
+<p>O Ministério da Saúde destacou nesta semana a regulamentação do <strong>Componente da Assistência Farmacêutica em Oncologia (AF-Onco)</strong>. A formulação pode dar a impressão de que o componente nasceu agora; não nasceu. Ele foi instituído em outubro de 2025 e vem recebendo atos normativos sucessivos ao longo de 2026.</p>
+<p>O que importa é o desenho que começa a se consolidar.</p>
+<p>A arquitetura inclui:</p>
+<ul><li>relação nacional de medicamentos;</li><li>negociação nacional para aquisição;</li><li>regras para medicamentos de altíssimo custo;</li><li>autorização prévia em determinados cenários;</li><li>registro por APAC oncológica específica;</li><li>centrais de diluição para medicamentos de altíssimo custo;</li><li>critérios de aquisição, distribuição, dispensação e acompanhamento.</li></ul>
+<p>Historicamente, a assistência oncológica brasileira combinou financiamento por procedimento, autonomia dos serviços habilitados e mecanismos heterogêneos de aquisição. O AF-Onco tenta criar uma camada mais explícita de <strong>governança farmacêutica nacional</strong>, especialmente à medida que terapias-alvo e imunoterapias elevam o custo e a complexidade logística.</p>
+<p>O benefício potencial é reduzir heterogeneidade e aumentar poder de negociação. O risco é trocar fragmentação local por rigidez central caso incorporação, compra e distribuição não acompanhem rapidamente a evidência e a necessidade clínica.</p>
+<p>O que deve ser observado nos próximos meses: tempo entre incorporação e disponibilidade real, desabastecimentos, diferença regional de acesso, custo efetivo por paciente e aderência aos PCDTs.</p>
+<p class="source-line"><strong>Fontes:</strong> Ministério da Saúde — Assistência Farmacêutica em Oncologia: <a href="https://www.gov.br/saude/pt-br/composicao/sectics/daf/af-onco" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/composicao/sectics/daf/af-onco</a> Legislação AF-Onco: <a href="https://www.gov.br/saude/pt-br/composicao/sectics/daf/af-onco/legislacao" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/composicao/sectics/daf/af-onco/legislacao</a></p>
         </div>
       </div>
     </section>
-    <section class="sources section" id="fontes" aria-labelledby="fontes-titulo">
+    <section class="topics section" id="agora-tem-especialistas-o-dado-importante-e-a-distancia-entre-co" aria-labelledby="agora-tem-especialistas-o-dado-importante-e-a-distancia-entre-co-titulo">
       <div class="shell">
-        <div class="sources-layout">
-          <div>
-            <p class="section-kicker">Transparência</p>
-            <div class="sources-note">
-              <span>Método editorial</span>
-              <strong>A fonte não é a ferramenta.</strong>
-              <p>Cada edição parte dos fatos publicados na semana e os hierarquiza por relevância clínica, sanitária ou institucional. A revista organiza e interpreta; não gera dados. Alegações epidemiológicas, regulatórias e quantitativas apontam para fonte oficial específica, com data e escopo — e, quando existe documento técnico, para ele. Uma notícia só permanece em edições posteriores quando continua materialmente ativa, com dado datado que o demonstre — tema recorrente não se torna foco automático.</p>
-            </div>
-          </div>
-          <div>
-            <h2 id="fontes-titulo" class="sr-only">Fontes desta edição</h2>
-            <ul class="source-list">
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cit-pactua-politica-nacional-de-informacao-e-saude-digital-e-amplia-oferta-de-medicamentos-no-sus" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 27 ago. 2026</span><span class="source-desc">Pactuação da Política Nacional de Informação e Saúde Digital</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/ministerio-da-saude-apresenta-a-secretarios-estaduais-plano-de-preparacao-para-o-el-nino-2026-2027" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 27 ago. 2026</span><span class="source-desc">Plano de preparação do SUS para o El Niño 2026–2027</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/sus-oferece-100-mil-teleatendimentos-mensais-de-saude-mental-para-mulheres-em-situacao-de-violencia-e-maes-atipicas" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 24 ago. 2026</span><span class="source-desc">Teleatendimentos de saúde mental pelo Meu SUS Digital</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/populacao-quilombola-passa-a-contar-com-politica-nacional-de-saude-integral" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 29 ago. 2026</span><span class="source-desc">Pactuação da Política Nacional de Saúde Integral da População Quilombola</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.paho.org/pt/documentos/alerta-epidemiologico-sarampo-na-regiao-das-americas-7-agosto-2026" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">OPAS/OMS · 7 ago. 2026</span><span class="source-desc">Alerta epidemiológico de sarampo nas Américas</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/alerta-sobre-sarampo-nas-americas-reforca-importancia-de-intensificar-vacinacao-no-brasil" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 13 ago. 2026</span><span class="source-desc">Situação do sarampo no Brasil: 24 casos importados e recertificação de eliminação</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/dia-d-de-vacinacao-contra-mais-de-20-doencas-acontece-neste-sabado-22-em-todo-o-pais" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · atualizado em 21 ago. 2026</span><span class="source-desc">Campanha Nacional de Multivacinação até 1º de setembro</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cobertura-de-tratamento-contra-oncocercose-com-ivermectina-atinge-nivel-satisfatorio-em-area-indigena" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Ministério da Saúde · 27 ago. 2026</span><span class="source-desc">Marco de pré-eliminação da oncocercose na Terra Indígena Yanomami</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/anvisa-aprova-registro-do-primeiro-medicamento-para-anemia-hemolitica-autoimune-por-anticorpos-quentes" target="_blank" rel="noopener noreferrer">
-                  <span><span class="source-name">Anvisa · 25 ago. 2026</span><span class="source-desc">Primeira indicação específica no Brasil para anemia hemolítica autoimune por anticorpos quentes</span></span>
-                  <span class="source-arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div class="section-heading">
+          <p class="section-kicker">06 · Nesta edição</p>
+          <h2 id="agora-tem-especialistas-o-dado-importante-e-a-distancia-entre-co-titulo">“Agora Tem Especialistas”: o dado importante é a distância entre contratar e entregar</h2>
+        </div>
+        <div class="article-prose">
+<p>O Ministério da Saúde informou que já formalizou <strong>R$ 1 bilhão</strong> em créditos financeiros com <strong>259 instituições de 21 estados</strong>, prevendo mais de <strong>600 mil procedimentos</strong> para pacientes do SUS na rede privada e filantrópica.</p>
+<p>Desse total anunciado, 458 mil procedimentos estão vinculados a Ofertas de Cuidados Integrados e 142 mil a cirurgias. Em Minas Gerais, a previsão divulgada é de <strong>205 mil procedimentos</strong>, com aproximadamente <strong>R$ 124,7 milhões</strong> em créditos.</p>
+<p>Mas o mesmo comunicado informa que apenas <strong>23 estabelecimentos</strong> haviam alcançado produção validada, somando <strong>6,2 mil procedimentos</strong>. Em Minas, quatro instituições citadas somavam pouco mais de <strong>1,7 mil procedimentos</strong> já realizados.</p>
+<p>Esse contraste é precisamente o que uma revista de saúde deve preservar: <strong>capacidade contratada não é cuidado entregue</strong>.</p>
+<p>Há ainda um ponto que merece esclarecimento oficial: o texto do Ministério menciona “6,2 mil procedimentos realizados para 7,2 mil pacientes”, uma relação numérica que não é intuitiva se “procedimento” e “paciente atendido” estiverem sendo usados em seu sentido usual. Pode haver diferença de unidade de contabilização ou erro de redação; até esclarecimento, o número deve ser reproduzido com cautela.</p>
+<p>A política é interessante porque usa créditos tributários para mobilizar capacidade ociosa ou negociável da rede privada em favor do SUS. Seu valor real será demonstrado por redução de filas e tempos de espera, e não pelo volume nominal dos contratos.</p>
+<p class="source-line"><strong>Fonte:</strong> Ministério da Saúde — Minas Gerais: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/pacientes-do-sus-em-minas-gerais-serao-atendidos-por-hospitais-particulares-para-a-realizacao-de-205-mil-procedimentos" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/pacientes-do-sus-em-minas-gerais-serao-atendidos-por-hospitais-particulares-para-a-realizacao-de-205-mil-procedimentos</a></p>
+<p># Radar da semana</p>
+        </div>
+      </div>
+    </section>
+    <section class="focus section" id="pesquisa-nacional-de-saude-mental-ainda-nao-ha-resultado-e-isso-" aria-labelledby="pesquisa-nacional-de-saude-mental-ainda-nao-ha-resultado-e-isso--titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">07 · Nesta edição</p>
+          <h2 id="pesquisa-nacional-de-saude-mental-ainda-nao-ha-resultado-e-isso--titulo">Pesquisa Nacional de Saúde Mental: ainda não há resultado — e isso é importante dizer</h2>
+        </div>
+        <div class="article-prose">
+<p>A primeira Pesquisa Nacional de Saúde Mental está em coleta de campo. Até 28 de agosto, havia <strong>1.011 entrevistas completas</strong>, em 197 municípios de 26 unidades federativas; a meta é chegar a aproximadamente <strong>10 mil entrevistas válidas</strong>.</p>
+<p>Ainda não há prevalências nacionais novas para publicar. A notícia relevante é metodológica: o Brasil está construindo uma linha de base probabilística específica para saúde mental, incluindo transtornos, violência, vulnerabilidade socioeconômica e acesso à Rede de Atenção Psicossocial.</p>
+<p>Fonte: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/pesquisa-nacional-de-saude-mental-realiza-coleta-de-dados-em-197-municipios" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/pesquisa-nacional-de-saude-mental-realiza-coleta-de-dados-em-197-municipios</a></p>
+        </div>
+      </div>
+    </section>
+    <section class="topics section" id="multivacinacao-terminou-vacinacao-nao" aria-labelledby="multivacinacao-terminou-vacinacao-nao-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">08 · Nesta edição</p>
+          <h2 id="multivacinacao-terminou-vacinacao-nao-titulo">Multivacinação terminou; vacinação não</h2>
+        </div>
+        <div class="article-prose">
+<p>A Campanha Nacional de Multivacinação terminou em 1º de setembro com <strong>mais de 8 milhões de doses aplicadas</strong>. O encerramento da campanha não retira as vacinas do SUS. Em um contexto de casos importados de sarampo e circulação intensa nas Américas, caderneta atualizada continua sendo a medida prática mais importante.</p>
+<p>Fonte: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/campanha-nacional-de-multivacinacao-encerra-nesta-terca-feira-1o-com-mais-de-8-milhoes-de-doses-aplicadas" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/campanha-nacional-de-multivacinacao-encerra-nesta-terca-feira-1o-com-mais-de-8-milhoes-de-doses-aplicadas</a></p>
+        </div>
+      </div>
+    </section>
+    <section class="focus section" id="saude-e-clima-preparacao-para-el-nino-entrou-na-agenda-operacion" aria-labelledby="saude-e-clima-preparacao-para-el-nino-entrou-na-agenda-operacion-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">09 · Nesta edição</p>
+          <h2 id="saude-e-clima-preparacao-para-el-nino-entrou-na-agenda-operacion-titulo">Saúde e clima: preparação para El Niño entrou na agenda operacional</h2>
+        </div>
+        <div class="article-prose">
+<p>Gestores de 26 estados e do Distrito Federal avançaram na elaboração de planos estaduais de enfrentamento dos efeitos sanitários esperados do El Niño. O impacto relevante não é apenas “calor”: inclui alterações em arboviroses, qualidade da água, eventos extremos, doenças respiratórias, segurança alimentar e capacidade dos serviços de saúde.</p>
+<p>Fonte: <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/sus-reforca-preparacao-em-todo-o-pais-para-antecipar-riscos-e-proteger-populacao-dos-impactos-do-el-nino" target="_blank" rel="noopener noreferrer">https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/sus-reforca-preparacao-em-todo-o-pais-para-antecipar-riscos-e-proteger-populacao-dos-impactos-do-el-nino</a></p>
+        </div>
+      </div>
+    </section>
+    <section class="topics section" id="anvisa-terminou-a-transicao-regulatoria-para-parte-dos-suplement" aria-labelledby="anvisa-terminou-a-transicao-regulatoria-para-parte-dos-suplement-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">10 · Nesta edição</p>
+          <h2 id="anvisa-terminou-a-transicao-regulatoria-para-parte-dos-suplement-titulo">Anvisa: terminou a transição regulatória para parte dos suplementos alimentares</h2>
+        </div>
+        <div class="article-prose">
+<p>Em 1º de setembro terminou o prazo de notificação, na Anvisa, para suplementos e alimentos para controle de peso abrangidos pelas regras de transição da RDC 843/2024. A ausência imediata de número de notificação no rótulo não torna automaticamente um lote já produzido irregular; data de fabricação, comunicação anterior, validade e rastreabilidade precisam ser consideradas.</p>
+<p>Fonte: <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/anvisa-alerta-e-orienta-sobre-o-prazo-de-adequacao-as-regras-de-regularizacao-de-alimentos" target="_blank" rel="noopener noreferrer">https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/anvisa-alerta-e-orienta-sobre-o-prazo-de-adequacao-as-regras-de-regularizacao-de-alimentos</a></p>
+<p># O que a VIA leva desta semana</p>
+<p>Três padrões atravessam quase todas as notícias relevantes:</p>
+<p>1. <strong>Norma não é implementação.</strong> A lei da trombólise cria uma obrigação de organização; ainda é preciso medicamento, equipe, protocolo e rede de referência. 2. <strong>Tecnologia não é desfecho.</strong> UTI “inteligente”, ultrassom portátil e plataforma de RNA só se justificam quando demonstram desempenho, segurança, acesso e capacidade de escala. 3. <strong>Número contratado não é número entregue.</strong> Em políticas públicas de grande visibilidade, convém acompanhar produção validada, tempo de espera e resultado clínico — não apenas anúncios e capacidade nominal.</p>
+<p>Essa é a função desta revista: não competir com o fluxo de notícias, mas reduzir a distância entre <strong>o que foi anunciado, o que realmente mudou e o que ainda precisa ser demonstrado</strong>.</p>
+        </div>
+      </div>
+    </section>
+    <section class="focus section" id="metodo-editorial" aria-labelledby="metodo-editorial-titulo">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">11 · Nesta edição</p>
+          <h2 id="metodo-editorial-titulo">Método editorial</h2>
+        </div>
+        <div class="article-prose">
+<p>Edição baseada prioritariamente em fontes primárias publicadas entre 30 de agosto e 6 de setembro de 2026: Presidência da República, Ministério da Saúde e Anvisa. Notícias institucionais foram lidas como descrição de decisão ou implementação administrativa, não como evidência automática de efetividade clínica. Quando uma afirmação de benefício depende de avaliação futura, isso foi explicitado.</p>
+<p><strong>Saúde na Última Semana — Revista Eletrônica VIA</strong> <strong>Dr Lucas HR — Médico Generalista (FMRP-USP)</strong> <strong>Iniciativa VIA — Vida Integrada e Autônoma</strong> *Ciência e Tecnologia a serviço do Cuidado.*</p>
         </div>
       </div>
     </section>
