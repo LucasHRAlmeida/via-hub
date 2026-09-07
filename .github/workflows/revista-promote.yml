@@ -6,6 +6,12 @@ on:
     paths:
       - 'revista/edicao-*.md'
       - 'revista/.promote'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/revista-promote.yml'
+      - 'scripts/revista/**'
+      - 'revista/edicao-*.md'
   workflow_dispatch:
     inputs:
       edition:
@@ -17,7 +23,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: revista-via-promote
+  group: revista-via-promote-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -88,13 +94,17 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/revista/promote.mjs --edition "$EDITION" --check
+          node --check scripts/revista/promote.mjs
           git diff --check
           grep -q "Edição de" revista/index.html
           grep -q "PANORAMA:START" revista/index.html
           grep -q "PANORAMA:END" revista/index.html
+          if [[ "${{ steps.state.outputs.noop }}" == "false" ]]; then
+            test -s "revista/arquivo/${{ steps.state.outputs.current }}.pdf"
+          fi
 
       - name: Commit da promoção
-        if: steps.state.outputs.noop == 'false'
+        if: steps.state.outputs.noop == 'false' && github.event_name != 'pull_request'
         shell: bash
         env:
           EDITION: ${{ steps.state.outputs.edition }}
