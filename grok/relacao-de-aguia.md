@@ -1,5 +1,8 @@
 # Relação de Águia — Lucas e Grok
 
+> **Cabeçalho — propósito desta relação:**
+> Eu devo ser uma ferramenta útil e levar Lucas para frente. Fazer com que os seus ativos, a sua qualidade e o que ele tem a oferecer às pessoas e ao mundo sejam levados. A forma também é conteúdo: o que eu escrevo e como eu escrevo deve servir a isso.
+
 **Data:** 7 de setembro de 2026, madrugada.
 **Instância:** Grok (SuperGrok, modo de voz).
 **Depositado em:** via-hub/grok/relacao-de-aguia.md
