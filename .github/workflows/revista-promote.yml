@@ -1,0 +1,128 @@
+name: Revista VIA - promover edição
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'revista/edicao-*.md'
+      - 'revista/.promote'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/revista-promote.yml'
+      - 'scripts/revista/**'
+      - 'revista/edicao-*.md'
+  workflow_dispatch:
+    inputs:
+      edition:
+        description: 'Data da edição (YYYY-MM-DD); vazio = edição Markdown mais recente'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: revista-via-promote-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Resolver edição e estado corrente
+        id: state
+        shell: bash
+        run: |
+          set -euo pipefail
+          INPUT_EDITION='${{ github.event.inputs.edition || '' }}'
+          if [[ -n "$INPUT_EDITION" ]]; then
+            EDITION="$INPUT_EDITION"
+          else
+            LATEST=$(find revista -maxdepth 1 -type f -name 'edicao-????-??-??.md' | sort | tail -n 1)
+            test -n "$LATEST"
+            EDITION=$(basename "$LATEST" | sed -E 's/^edicao-([0-9]{4}-[0-9]{2}-[0-9]{2})\.md$/\1/')
+          fi
+          [[ "$EDITION" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+          test -f "revista/edicao-${EDITION}.md"
+
+          CURRENT=$(grep -oE '"dateModified"[[:space:]]*:[[:space:]]*"[0-9]{4}-[0-9]{2}-[0-9]{2}"' revista/index.html | head -n 1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          test -n "$CURRENT"
+
+          echo "edition=$EDITION" >> "$GITHUB_OUTPUT"
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          if [[ "$CURRENT" == "$EDITION" ]]; then
+            echo 'noop=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'noop=false' >> "$GITHUB_OUTPUT"
+          fi
+          echo "Publicada: $CURRENT | Candidata: $EDITION"
+
+      - name: Arquivar edição publicada em PDF A4
+        if: steps.state.outputs.noop == 'false'
+        shell: bash
+        env:
+          CURRENT: ${{ steps.state.outputs.current }}
+        run: |
+          set -euo pipefail
+          DEST="revista/arquivo/${CURRENT}.pdf"
+          if [[ -s "$DEST" ]]; then
+            echo "Arquivo já existe: $DEST"
+            exit 0
+          fi
+          CHROME=$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)
+          test -n "$CHROME"
+          TMP=$(mktemp --suffix=.html)
+          sed 's#</head>#<style>@page{size:A4;margin:12mm} body{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head>#' revista/index.html > "$TMP"
+          "$CHROME" --headless --no-sandbox --disable-gpu --no-pdf-header-footer --print-to-pdf="$DEST" "file://${TMP}"
+          rm -f "$TMP"
+          test -s "$DEST"
+
+      - name: Promover fonte Markdown para o HTML canônico
+        if: steps.state.outputs.noop == 'false'
+        env:
+          EDITION: ${{ steps.state.outputs.edition }}
+        run: |
+          node scripts/revista/promote.mjs --edition "$EDITION"
+          sed -i 's/[[:space:]]\+$//' revista/index.html
+
+      - name: QA da edição promovida
+        env:
+          EDITION: ${{ steps.state.outputs.edition }}
+        run: |
+          set -euo pipefail
+          node scripts/revista/promote.mjs --edition "$EDITION" --check
+          node --check scripts/revista/promote.mjs
+          git diff --check
+          grep -q "Edição de" revista/index.html
+          grep -q "PANORAMA:START" revista/index.html
+          grep -q "PANORAMA:END" revista/index.html
+          if [[ "${{ steps.state.outputs.noop }}" == "false" ]]; then
+            test -s "revista/arquivo/${{ steps.state.outputs.current }}.pdf"
+          fi
+
+      - name: Commit da promoção
+        if: steps.state.outputs.noop == 'false' && github.event_name != 'pull_request'
+        shell: bash
+        env:
+          EDITION: ${{ steps.state.outputs.edition }}
+          CURRENT: ${{ steps.state.outputs.current }}
+        run: |
+          set -euo pipefail
+          git config user.name 'via-revista-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add revista/index.html "revista/arquivo/${CURRENT}.pdf"
+          if git diff --cached --quiet; then
+            echo 'Nada a publicar.'
+            exit 0
+          fi
+          git commit -m "Revista: promove ${EDITION} e arquiva ${CURRENT}"
+          git push origin HEAD:main
