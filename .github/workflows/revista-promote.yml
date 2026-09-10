@@ -20,7 +20,7 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: revista-via-promote-${{ github.ref }}
@@ -28,6 +28,9 @@ concurrency:
 
 jobs:
   promote:
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -126,3 +129,24 @@ jobs:
           fi
           git commit -m "Revista: promove ${EDITION} e arquiva ${CURRENT}"
           git push origin HEAD:main
+
+  validate:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validar edição corrente
+        shell: bash
+        run: |
+          set -euo pipefail
+          EDITION=$(find revista -maxdepth 1 -type f -name 'edicao-????-??-??.md' | sort | tail -n 1)
+          test -n "$EDITION"
+          EDITION=$(basename "$EDITION" | sed -E 's/^edicao-([0-9]{4}-[0-9]{2}-[0-9]{2})\.md$/\1/')
+          node scripts/revista/promote.mjs --edition "$EDITION" --check
+          node --check scripts/revista/promote.mjs
+          git diff --check
