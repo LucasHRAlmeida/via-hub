@@ -4,6 +4,8 @@ const path = require("node:path");
 
 const root = path.join(__dirname, "..");
 const htmlFiles = [];
+const canonicalOrigin = "https://iniciativa-via.com";
+const canonicalBasePath = "/via-hub";
 
 function walk(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -18,9 +20,27 @@ walk(root);
 
 const resolveRoute = (source, href) => {
   const cleanHref = href.split("#")[0].split("?")[0];
-  if (!cleanHref || cleanHref.includes("${") || /^(?:[a-z]+:|\/\/)/i.test(cleanHref)) return null;
-  const candidate = path.resolve(path.dirname(source), cleanHref);
-  if (cleanHref.endsWith("/")) return path.join(candidate, "index.html");
+  if (!cleanHref || cleanHref.includes("${")) return null;
+
+  let localHref = cleanHref;
+  if (/^[a-z]+:/i.test(cleanHref)) {
+    const url = new URL(cleanHref);
+    if (url.origin !== canonicalOrigin) return null;
+    if (url.pathname === canonicalBasePath) localHref = "/";
+    else if (url.pathname.startsWith(`${canonicalBasePath}/`)) localHref = url.pathname.slice(canonicalBasePath.length);
+    else return null;
+  } else if (cleanHref.startsWith("//")) {
+    return null;
+  } else if (cleanHref.startsWith("/")) {
+    if (cleanHref === canonicalBasePath) localHref = "/";
+    else if (cleanHref.startsWith(`${canonicalBasePath}/`)) localHref = cleanHref.slice(canonicalBasePath.length);
+    else return null;
+  }
+
+  const candidate = localHref.startsWith("/")
+    ? path.join(root, localHref.slice(1))
+    : path.resolve(path.dirname(source), localHref);
+  if (localHref.endsWith("/")) return path.join(candidate, "index.html");
   if (path.extname(candidate)) return candidate;
   return path.join(candidate, "index.html");
 };
@@ -35,8 +55,8 @@ for (const source of htmlFiles) {
 
 const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
 for (const [, url] of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
-  const pathname = new URL(url).pathname.replace(/^\/via-hub\/?/, "");
-  const target = path.join(root, pathname, "index.html");
+  const target = resolveRoute(root, url);
+  assert.ok(target, `sitemap usa URL fora do escopo do checkout: ${url}`);
   assert.ok(fs.existsSync(target), `sitemap aponta para rota ausente: ${url}`);
 }
 
