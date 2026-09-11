@@ -147,6 +147,12 @@ jobs:
           EDITION=$(find revista -maxdepth 1 -type f -name 'edicao-????-??-??.md' | sort | tail -n 1)
           test -n "$EDITION"
           EDITION=$(basename "$EDITION" | sed -E 's/^edicao-([0-9]{4}-[0-9]{2}-[0-9]{2})\.md$/\1/')
+          CURRENT=$(grep -oE '"dateModified"[[:space:]]*:[[:space:]]*"[0-9]{4}-[0-9]{2}-[0-9]{2}"' revista/index.html | head -n 1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          test -n "$CURRENT"
+          if [[ "$CURRENT" != "$EDITION" ]]; then
+            node scripts/revista/promote.mjs --edition "$EDITION"
+            sed -i 's/[[:space:]]\+$//' revista/index.html
+          fi
           node scripts/revista/promote.mjs --edition "$EDITION" --check
           node --check scripts/revista/promote.mjs
           git diff --check
