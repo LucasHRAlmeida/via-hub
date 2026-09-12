@@ -23,7 +23,7 @@ assert.equal(escala.url, canonicalUrl);
 
 const app = fs.readFileSync(path.join(__dirname, "..", "app.js"), "utf8");
 const sitemap = fs.readFileSync(path.join(__dirname, "..", "sitemap.xml"), "utf8");
-assert.ok(app.includes(canonicalUrl), "fallback do catálogo não aponta para a rota canônica");
+assert.ok(app.includes('fetch("projects.json"'), "catálogo deve usar a fonte versionada");
 assert.ok(sitemap.includes(`<loc>${canonicalUrl}</loc>`), "rota canônica ausente do sitemap");
 assert.ok(!app.includes(externalTarget), "fallback ainda contém o alvo externo do incidente");
 assert.ok(!JSON.stringify(projects).includes(externalTarget), "catálogo ainda contém o alvo externo do incidente");

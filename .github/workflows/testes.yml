@@ -19,6 +19,8 @@ jobs:
         run: node tests/theme-toggle.test.cjs
       - name: Limite da prévia privada
         run: node tests/theme-preview.test.cjs
+      - name: Rotas estáticas e sitemap
+        run: node tests/static-routes.test.cjs
       - name: Conversor EVAM
         working-directory: regulacao-federal-ia/evam
         run: npm test
