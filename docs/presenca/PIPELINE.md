@@ -1,7 +1,7 @@
 # Pipeline de Presença — VIA
 
 > Gerado por Nêmesis. Aprovado por Dr Lucas HR Almeida.
-> Invariante: constância sem cobrança. O sistema publica; o humano só decide.
+> Invariante: constância sem cobrança. O sistema gera; o humano decide; só o aprovado publica.
 
 ## Objetivo
 Manter presença diária em X e Substack sem depender da disciplina do fundador.
@@ -29,6 +29,6 @@ A inconstância é tratada como dado de projeto, não como falha moral.
 - Regulação Federal de IA
 
 ## Estado
-- [ ] Automação `via-presenca-diaria` criada
-- [ ] Primeira rodada de teste
-- [ ] Critério de aprovação definido
+- [x] Automação `via-presenca-diaria` criada — task `05eec2df-3581-469c-b25f-7f67de88fe8b`, diária 08:00 America/Sao_Paulo, notificação APP_ONLY
+- [x] Primeira rodada de teste — disparada em 2026-09-12 (run_now). HUMAN_GATE de publicação permanece.
+- [x] Critério de aprovação definido — aprova / ajusta / mata. Sem sinal verde, não publica.
