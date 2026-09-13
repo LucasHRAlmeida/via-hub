@@ -111,19 +111,25 @@ const sections = h2Matches.map((m, i) => {
 });
 if (!sections.length) throw new Error('Nenhuma seção ## encontrada na fonte editorial.');
 const summary = sections[0].heading.toLowerCase().includes('90 segundos') ? sections.shift() : null;
+const cleanHeading = (heading) => heading.replace(/^\d+\.\s*/, '').trim();
+const editorialSectionPattern = /^(ações práticas(?: desta semana)?|o que a via leva desta semana|método editorial)$/i;
 
 const toc = sections.map((s, i) => {
-  const clean = s.heading.replace(/^\d+\.\s*/, '');
+  const clean = cleanHeading(s.heading);
   const id = slugify(clean);
   const num = String(i + 1).padStart(2, '0');
   return `<li><a href="#${id}"><b>${num}</b><span>${escapeHtml(clean)}</span></a></li>`;
 }).join('\n');
 
-const topicNames = sections.slice(0, 8).map((s) => s.heading.replace(/^\d+\.\s*/, '').replace(/:.*/, '').trim()).filter(Boolean);
+const topicNames = sections
+  .filter((s) => !editorialSectionPattern.test(cleanHeading(s.heading)))
+  .slice(0, 8)
+  .map((s) => cleanHeading(s.heading).replace(/:.*/, '').trim())
+  .filter(Boolean);
 const aboutJson = topicNames.map((name) => `          {\n            "@type": "MedicalEntity",\n            "name": ${JSON.stringify(name)}\n          }`).join(',\n');
 
 const sectionHtml = sections.map((s, i) => {
-  const clean = s.heading.replace(/^\d+\.\s*/, '');
+  const clean = cleanHeading(s.heading);
   const id = slugify(clean);
   const num = String(i + 1).padStart(2, '0');
   const cls = i % 2 === 0 ? 'focus' : 'topics';
