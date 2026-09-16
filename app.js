@@ -36,6 +36,7 @@ function buildLink(label, href, className = "project-link") {
 }
 
 function createProjectCard(project, index) {
+  const loc = (state.lang === "en" && project.en) ? project.en : project;
   const card = document.createElement("article");
   card.className = `project-card${project.featured ? " is-featured" : ""}`;
   card.dataset.categories = project.categories.join(" ");
@@ -51,23 +52,23 @@ function createProjectCard(project, index) {
   status.className = "status-badge";
   if (project.statusKey === "beta") status.classList.add("is-beta");
   if (project.statusKey === "reserved") status.classList.add("is-reserved");
-  status.textContent = project.status;
+  status.textContent = loc.status ?? project.status;
   top.append(number, status);
 
   const kicker = document.createElement("p");
   kicker.className = "project-kicker";
-  kicker.textContent = project.kicker;
+  kicker.textContent = loc.kicker ?? project.kicker;
 
   const title = document.createElement("h3");
-  title.textContent = project.name;
+  title.textContent = loc.name ?? project.name;
 
   const description = document.createElement("p");
   description.className = "project-description";
-  description.textContent = project.description;
+  description.textContent = loc.description ?? project.description;
 
   const tags = document.createElement("ul");
   tags.className = "project-meta";
-  for (const tag of project.tags) {
+  for (const tag of (loc.tags ?? project.tags)) {
     const item = document.createElement("li");
     item.textContent = tag;
     tags.append(item);
@@ -235,6 +236,32 @@ const I18N = {
     "f4.p": "Referências, sínteses e materiais didáticos versionados antes de abastecer qualquer ferramenta.",
     "f5.label": "Passagem, não morada",
     "f5.h": "Laboratório",
+    "kicker.piloto": "04 · Piloto de distribuição",
+    "piloto.h2": "Dois módulos maduros viram série.",
+    "piloto.p": "MBRP-8 e Economia & Saúde já têm fonte, interface e limite. O que faltava era a voz com packaging consistente e o link de volta.",
+    "piloto.c1.label": "VIA MENTE",
+    "piloto.c1.h": "MBRP-8",
+    "piloto.c1.p": "Oito semanas. O vídeo traduz a semana; o módulo opera a prática.",
+    "piloto.c1.a": "Série e roteiros →",
+    "piloto.c2.label": "VIA ECONOMIA",
+    "piloto.c2.h": "Economia & Saúde",
+    "piloto.c2.p": "Caixa, equilíbrio, reserva. O número serve à decisão; não mercantiliza o cuidado.",
+    "piloto.c2.a": "Série e roteiros →",
+    "piloto.c3.label": "Contrato",
+    "piloto.c3.h": "via-bridge.json",
+    "piloto.c3.p": "IDs de YouTube são campo. O atalho /v/slug/ep não quebra.",
+    "piloto.c3.a": "Abrir a ponte →",
+    "kicker.portfolio": "05 · Portfólio",
+    "portfolio.h2": "O restante, agrupado — não por recência.",
+    "portfolio.p": "Projetos pequenos por desenho, públicos quando maduros e claros quanto ao que fazem — e ao que ainda não fazem.",
+    "portfolio.loading": "Carregando portfólio…",
+    "filter.aria": "Filtrar demonstrações",
+    "filter.all": "Todos",
+    "filter.medicina": "Medicina",
+    "filter.educacao": "Educação",
+    "filter.saude-publica": "Saúde pública",
+    "filter.sistemas": "Sistemas",
+    "filter.direitos-digitais": "Direitos digitais",
     "card.serie": "Abrir série",
     "card.modulo": "Abrir módulo",
     "card.demo": "Abrir demonstração",
@@ -319,6 +346,32 @@ const I18N = {
     "f4.p": "References, syntheses and versioned teaching materials before feeding any tool.",
     "f5.label": "Passage, not dwelling",
     "f5.h": "Laboratory",
+    "kicker.piloto": "04 · Distribution pilot",
+    "piloto.h2": "Two mature modules become a series.",
+    "piloto.p": "MBRP-8 and Economy & Health already have source, interface and limits. What was missing was a consistent voice and packaging — and the link back.",
+    "piloto.c1.label": "VIA MENTE",
+    "piloto.c1.h": "MBRP-8",
+    "piloto.c1.p": "Eight weeks. The video frames the week; the module runs the practice.",
+    "piloto.c1.a": "Series and scripts →",
+    "piloto.c2.label": "VIA ECONOMIA",
+    "piloto.c2.h": "Economy & Health",
+    "piloto.c2.p": "Cash flow, break-even, reserve. The number serves the decision; it does not commodify care.",
+    "piloto.c2.a": "Series and scripts →",
+    "piloto.c3.label": "Contract",
+    "piloto.c3.h": "via-bridge.json",
+    "piloto.c3.p": "YouTube IDs are a field. The /v/slug/ep shortcut does not break.",
+    "piloto.c3.a": "Open the bridge →",
+    "kicker.portfolio": "05 · Portfolio",
+    "portfolio.h2": "The rest, grouped — not by recency.",
+    "portfolio.p": "Small projects by design, public when mature, and clear about what they do — and what they do not yet do.",
+    "portfolio.loading": "Loading portfolio…",
+    "filter.aria": "Filter demos",
+    "filter.all": "All",
+    "filter.medicina": "Medicine",
+    "filter.educacao": "Education",
+    "filter.saude-publica": "Public health",
+    "filter.sistemas": "Systems",
+    "filter.direitos-digitais": "Digital rights",
     "card.serie": "Open series",
     "card.modulo": "Open module",
     "card.demo": "Open demo",
@@ -461,6 +514,41 @@ function applyLang(lang) {
     const lis = card.querySelectorAll("li");
     map[3].forEach((k, j) => { if (lis[j]) lis[j].textContent = t[k]; });
   });
+
+  setText("#piloto .section-kicker", t["kicker.piloto"]);
+  setText("#piloto .section-heading h2", t["piloto.h2"]);
+  setText("#piloto .section-heading > p", t["piloto.p"]);
+  const pilotoCards = document.querySelectorAll("#piloto .front-card");
+  const pilotoMap = [
+    ["piloto.c1.label", "piloto.c1.h", "piloto.c1.p", "piloto.c1.a"],
+    ["piloto.c2.label", "piloto.c2.h", "piloto.c2.p", "piloto.c2.a"],
+    ["piloto.c3.label", "piloto.c3.h", "piloto.c3.p", "piloto.c3.a"]
+  ];
+  pilotoCards.forEach((card, i) => {
+    const map = pilotoMap[i];
+    if (!map) return;
+    const label = card.querySelector(".front-label");
+    const h = card.querySelector("h3");
+    const body = card.querySelector("p:not(.front-label)");
+    const a = card.querySelector("a");
+    if (label) label.textContent = t[map[0]];
+    if (h) h.textContent = t[map[1]];
+    if (body) body.textContent = t[map[2]];
+    if (a) a.textContent = t[map[3]];
+  });
+
+  setText("#portfolio .section-kicker", t["kicker.portfolio"]);
+  setText("#portfolio .portfolio-heading h2", t["portfolio.h2"]);
+  setText("#portfolio .portfolio-heading > p", t["portfolio.p"]);
+  if (filterBar) {
+    filterBar.setAttribute("aria-label", t["filter.aria"]);
+    for (const btn of filterBar.querySelectorAll("[data-filter]")) {
+      const key = `filter.${btn.dataset.filter}`;
+      if (t[key]) btn.textContent = t[key];
+    }
+  }
+  const loading = projectGrid?.querySelector(".loading-state");
+  if (loading) loading.textContent = t["portfolio.loading"];
 
   document.querySelectorAll("[data-lang-toggle] button").forEach((btn) => {
     const on = btn.dataset.lang === state.lang;
