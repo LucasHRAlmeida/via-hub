@@ -20,7 +20,7 @@ O PR #30 foi incorporado manualmente pelo próprio mantenedor em 31/08/2026. O a
 
 ## Prévia visual privada
 
-O HTML autossuficiente de QA deve permanecer fora da árvore servida pelo GitHub Pages; sua entrega ao decisor é uma pós-condição externa ao commit e deve ser verificada separadamente. O finding P1 do Codex demonstrou que `noindex` não impede publicação ou acesso: portanto, `qa/theme-preview/index.html` foi removido do repositório.
+O HTML autossuficiente de QA deve permanecer fora da árvore servida pelo GitHub Pages; sua entrega ao decisor é uma pós-condição externa ao commit e deve ser verificada separadamente. Uma revisão técnica demonstrou que `noindex` não impede publicação ou acesso: portanto, `qa/theme-preview/index.html` foi removido do repositório.
 
 O contrato `tests/theme-preview.test.cjs` verifica mecanicamente que:
 
@@ -37,6 +37,6 @@ Aprovar a prévia privada não equivale a aprovar a propagação página a pági
 3. Preservar páginas de paleta fixa quando a inversão produzir degradação visual.
 4. Executar contraste WCAG, teclado e regressão visual do modo claro nas páginas consumidoras.
 5. Corrigir apenas defeitos atribuíveis a esta mudança; dívida de contraste preexistente fica separada.
-6. Revisão obrigatória por Codex e GitHub Copilot antes de qualquer decisão de merge.
+6. Revisão técnica obrigatória antes de qualquer decisão de merge; a escolha do revisor é contingente e não constitui dependência de fornecedor.
 
 Estado: **PRÉVIA PRIVADA FORA DO PAGES / QA VISUAL HUMANA PENDENTE / NENHUM NOVO MERGE**.
