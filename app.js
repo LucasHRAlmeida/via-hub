@@ -36,6 +36,7 @@ function buildLink(label, href, className = "project-link") {
 }
 
 function createProjectCard(project, index) {
+  const loc = (state.lang === "en" && project.en) ? project.en : project;
   const card = document.createElement("article");
   card.className = `project-card${project.featured ? " is-featured" : ""}`;
   card.dataset.categories = project.categories.join(" ");
@@ -51,23 +52,23 @@ function createProjectCard(project, index) {
   status.className = "status-badge";
   if (project.statusKey === "beta") status.classList.add("is-beta");
   if (project.statusKey === "reserved") status.classList.add("is-reserved");
-  status.textContent = project.status;
+  status.textContent = loc.status ?? project.status;
   top.append(number, status);
 
   const kicker = document.createElement("p");
   kicker.className = "project-kicker";
-  kicker.textContent = project.kicker;
+  kicker.textContent = loc.kicker ?? project.kicker;
 
   const title = document.createElement("h3");
-  title.textContent = project.name;
+  title.textContent = loc.name ?? project.name;
 
   const description = document.createElement("p");
   description.className = "project-description";
-  description.textContent = project.description;
+  description.textContent = loc.description ?? project.description;
 
   const tags = document.createElement("ul");
   tags.className = "project-meta";
-  for (const tag of project.tags) {
+  for (const tag of (loc.tags ?? project.tags)) {
     const item = document.createElement("li");
     item.textContent = tag;
     tags.append(item);
@@ -235,6 +236,61 @@ const I18N = {
     "f4.p": "Referências, sínteses e materiais didáticos versionados antes de abastecer qualquer ferramenta.",
     "f5.label": "Passagem, não morada",
     "f5.h": "Laboratório",
+    "kicker.piloto": "04 · Piloto de distribuição",
+    "piloto.h2": "Dois módulos maduros viram série.",
+    "piloto.p": "MBRP-8 e Economia & Saúde já têm fonte, interface e limite. O que faltava era a voz com packaging consistente e o link de volta.",
+    "piloto.c1.label": "VIA MENTE",
+    "piloto.c1.h": "MBRP-8",
+    "piloto.c1.p": "Oito semanas. O vídeo traduz a semana; o módulo opera a prática.",
+    "piloto.c1.a": "Série e roteiros →",
+    "piloto.c2.label": "VIA ECONOMIA",
+    "piloto.c2.h": "Economia & Saúde",
+    "piloto.c2.p": "Caixa, equilíbrio, reserva. O número serve à decisão; não mercantiliza o cuidado.",
+    "piloto.c2.a": "Série e roteiros →",
+    "piloto.c3.label": "Contrato",
+    "piloto.c3.h": "via-bridge.json",
+    "piloto.c3.p": "IDs de YouTube são campo. O atalho /v/slug/ep não quebra.",
+    "piloto.c3.a": "Abrir a ponte →",
+    "kicker.portfolio": "05 · Portfólio",
+    "portfolio.h2": "O restante, agrupado — não por recência.",
+    "portfolio.p": "Projetos pequenos por desenho, públicos quando maduros e claros quanto ao que fazem — e ao que ainda não fazem.",
+    "portfolio.loading": "Carregando portfólio…",
+    "filter.aria": "Filtrar demonstrações",
+    "filter.all": "Todos",
+    "filter.medicina": "Medicina",
+    "filter.educacao": "Educação",
+    "filter.saude-publica": "Saúde pública",
+    "filter.sistemas": "Sistemas",
+    "filter.direitos-digitais": "Direitos digitais",
+    "kicker.parcerias": "06 · Parcerias",
+    "parcerias.h2": "Problemas difíceis pedem alianças específicas.",
+    "parcerias.p": "A VIA busca instituições de saúde, grupos de pesquisa, universidades, gestores e equipes técnicas com um problema real, acesso legítimo ao contexto e disposição para validar — não apenas para “colocar IA” em uma apresentação.",
+    "parcerias.cta": "Estruturar uma proposta",
+    "parcerias.panel": "O que uma boa conversa inicial traz",
+    "parcerias.i1.t": "Um gargalo observável",
+    "parcerias.i1.s": "processo, público, frequência e impacto",
+    "parcerias.i2.t": "Uma hipótese de valor",
+    "parcerias.i2.s": "o que deveria melhorar e como medir",
+    "parcerias.i3.t": "Um campo de validação",
+    "parcerias.i3.s": "quem testa, supervisiona e pode interromper",
+    "parcerias.i4.t": "Fronteiras honestas",
+    "parcerias.i4.s": "dados disponíveis, riscos e restrições reais",
+    "kicker.fundador": "Fundador e direção clínica",
+    "fundador.role": "Médico Generalista · FMRP-USP",
+    "fundador.p": "A VIA parte de uma posição deliberadamente híbrida: o problema é lido por dentro da medicina e traduzido até uma forma que pesquisadores, engenheiros, gestores e usuários possam interrogar em conjunto.",
+    "fundador.sobre": "Sobre o fundador",
+    "fundador.portfolio": "Portfólio público",
+    "fundador.alt": "Selo pessoal LA 31 de Dr Lucas HR Almeida",
+    "footer.identity": "Dr Lucas HR Almeida — Médico Generalista (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
+    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.initiative": "Iniciativa VIA — Vida Integrada e Autônoma",
+    "footer.tagline": "Ciência e Tecnologia a serviço do Cuidado.",
+    "footer.code": "Código e versões ↗",
+    "footer.copy": "Iniciativa VIA",
+    "footer.built": "Construído como parte do próprio portfólio.",
+    "cross.role": "Médico Generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752",
+    "cross.line": "Iniciativa VIA — Vida Integrada e Autônoma · Ciência e Tecnologia a serviço do Cuidado.",
+    "cross.sobre": "Sobre o fundador",
     "card.serie": "Abrir série",
     "card.modulo": "Abrir módulo",
     "card.demo": "Abrir demonstração",
@@ -319,6 +375,61 @@ const I18N = {
     "f4.p": "References, syntheses and versioned teaching materials before feeding any tool.",
     "f5.label": "Passage, not dwelling",
     "f5.h": "Laboratory",
+    "kicker.piloto": "04 · Distribution pilot",
+    "piloto.h2": "Two mature modules become a series.",
+    "piloto.p": "MBRP-8 and Economy & Health already have source, interface and limits. What was missing was a consistent voice and packaging — and the link back.",
+    "piloto.c1.label": "VIA MENTE",
+    "piloto.c1.h": "MBRP-8",
+    "piloto.c1.p": "Eight weeks. The video frames the week; the module runs the practice.",
+    "piloto.c1.a": "Series and scripts →",
+    "piloto.c2.label": "VIA ECONOMIA",
+    "piloto.c2.h": "Economy & Health",
+    "piloto.c2.p": "Cash flow, break-even, reserve. The number serves the decision; it does not commodify care.",
+    "piloto.c2.a": "Series and scripts →",
+    "piloto.c3.label": "Contract",
+    "piloto.c3.h": "via-bridge.json",
+    "piloto.c3.p": "YouTube IDs are a field. The /v/slug/ep shortcut does not break.",
+    "piloto.c3.a": "Open the bridge →",
+    "kicker.portfolio": "05 · Portfolio",
+    "portfolio.h2": "The rest, grouped — not by recency.",
+    "portfolio.p": "Small projects by design, public when mature, and clear about what they do — and what they do not yet do.",
+    "portfolio.loading": "Loading portfolio…",
+    "filter.aria": "Filter demos",
+    "filter.all": "All",
+    "filter.medicina": "Medicine",
+    "filter.educacao": "Education",
+    "filter.saude-publica": "Public health",
+    "filter.sistemas": "Systems",
+    "filter.direitos-digitais": "Digital rights",
+    "kicker.parcerias": "06 · Partnerships",
+    "parcerias.h2": "Hard problems call for specific alliances.",
+    "parcerias.p": "VIA seeks health institutions, research groups, universities, managers and technical teams with a real problem, legitimate access to context and a willingness to validate — not merely to “put AI” into a slide deck.",
+    "parcerias.cta": "Structure a proposal",
+    "parcerias.panel": "What a good first conversation brings",
+    "parcerias.i1.t": "An observable bottleneck",
+    "parcerias.i1.s": "process, audience, frequency and impact",
+    "parcerias.i2.t": "A value hypothesis",
+    "parcerias.i2.s": "what should improve and how to measure it",
+    "parcerias.i3.t": "A validation field",
+    "parcerias.i3.s": "who tests, supervises and can stop",
+    "parcerias.i4.t": "Honest boundaries",
+    "parcerias.i4.s": "available data, risks and real constraints",
+    "kicker.fundador": "Founder and clinical direction",
+    "fundador.role": "General Practitioner · FMRP-USP",
+    "fundador.p": "VIA starts from a deliberately hybrid stance: the problem is read from inside medicine and translated into a form that researchers, engineers, managers and users can interrogate together.",
+    "fundador.sobre": "About the founder",
+    "fundador.portfolio": "Public portfolio",
+    "fundador.alt": "Personal seal LA 31 of Dr Lucas HR Almeida",
+    "footer.identity": "Dr Lucas HR Almeida — General Practitioner (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
+    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.initiative": "VIA Initiative — Integrated and Autonomous Life",
+    "footer.tagline": "Science and Technology in service of Care.",
+    "footer.code": "Code and versions ↗",
+    "footer.copy": "VIA Initiative",
+    "footer.built": "Built as part of the portfolio itself.",
+    "cross.role": "General Practitioner (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752",
+    "cross.line": "VIA Initiative — Integrated and Autonomous Life · Science and Technology in service of Care.",
+    "cross.sobre": "About the founder",
     "card.serie": "Open series",
     "card.modulo": "Open module",
     "card.demo": "Open demo",
@@ -461,6 +572,127 @@ function applyLang(lang) {
     const lis = card.querySelectorAll("li");
     map[3].forEach((k, j) => { if (lis[j]) lis[j].textContent = t[k]; });
   });
+
+  setText("#piloto .section-kicker", t["kicker.piloto"]);
+  setText("#piloto .section-heading h2", t["piloto.h2"]);
+  setText("#piloto .section-heading > p", t["piloto.p"]);
+  const pilotoCards = document.querySelectorAll("#piloto .front-card");
+  const pilotoMap = [
+    ["piloto.c1.label", "piloto.c1.h", "piloto.c1.p", "piloto.c1.a"],
+    ["piloto.c2.label", "piloto.c2.h", "piloto.c2.p", "piloto.c2.a"],
+    ["piloto.c3.label", "piloto.c3.h", "piloto.c3.p", "piloto.c3.a"]
+  ];
+  pilotoCards.forEach((card, i) => {
+    const map = pilotoMap[i];
+    if (!map) return;
+    const label = card.querySelector(".front-label");
+    const h = card.querySelector("h3");
+    const body = card.querySelector("p:not(.front-label)");
+    const a = card.querySelector("a");
+    if (label) label.textContent = t[map[0]];
+    if (h) h.textContent = t[map[1]];
+    if (body) body.textContent = t[map[2]];
+    if (a) a.textContent = t[map[3]];
+  });
+
+  setText("#portfolio .section-kicker", t["kicker.portfolio"]);
+  setText("#portfolio .portfolio-heading h2", t["portfolio.h2"]);
+  setText("#portfolio .portfolio-heading > p", t["portfolio.p"]);
+  if (filterBar) {
+    filterBar.setAttribute("aria-label", t["filter.aria"]);
+    for (const btn of filterBar.querySelectorAll("[data-filter]")) {
+      const key = `filter.${btn.dataset.filter}`;
+      if (t[key]) btn.textContent = t[key];
+    }
+  }
+  const loading = projectGrid?.querySelector(".loading-state");
+  if (loading) loading.textContent = t["portfolio.loading"];
+
+  setText("#parcerias .section-kicker", t["kicker.parcerias"]);
+  setText("#parcerias .partnership-copy h2", t["parcerias.h2"]);
+  setText("#parcerias .partnership-copy > p", t["parcerias.p"]);
+  const partnerCta = document.querySelector("#parcerias .partnership-copy a.button");
+  if (partnerCta) partnerCta.innerHTML = `${t["parcerias.cta"]} <span aria-hidden="true">↗</span>`;
+  setText("#parcerias .panel-title", t["parcerias.panel"]);
+  const partnerItems = document.querySelectorAll("#parcerias .partner-panel li");
+  ["i1","i2","i3","i4"].forEach((key, i) => {
+    const li = partnerItems[i];
+    if (!li) return;
+    const strong = li.querySelector("strong");
+    const small = li.querySelector("small");
+    if (strong) strong.textContent = t[`parcerias.${key}.t`];
+    if (small) small.textContent = t[`parcerias.${key}.s`];
+  });
+
+  setText("#fundador .section-kicker", t["kicker.fundador"]);
+  setText("#fundador .founder-role", t["fundador.role"]);
+  const fundadorBody = document.querySelector("#fundador .founder-layout > div > p:not(.section-kicker):not(.founder-role)");
+  if (fundadorBody) fundadorBody.textContent = t["fundador.p"];
+  const fundadorImg = document.querySelector("#fundador .founder-mark img");
+  if (fundadorImg) fundadorImg.alt = t["fundador.alt"];
+  const fundadorLinks = document.querySelectorAll("#fundador .founder-links a");
+  if (fundadorLinks[0]) fundadorLinks[0].innerHTML = `${t["fundador.sobre"]} <span aria-hidden="true">→</span>`;
+  if (fundadorLinks[2]) fundadorLinks[2].innerHTML = `${t["fundador.portfolio"]} <span aria-hidden="true">→</span>`;
+
+  document.querySelectorAll(".brand-copy small").forEach((el) => {
+    el.textContent = t["brand.sub"];
+  });
+  const footerPs = document.querySelectorAll(".site-footer .footer-layout > p");
+  if (footerPs[0]) {
+    footerPs[0].innerHTML = "";
+    const idLines = t["footer.identity"].split("\n");
+    footerPs[0].append(document.createTextNode(idLines[0]));
+    footerPs[0].append(document.createElement("br"));
+    footerPs[0].append(document.createTextNode(idLines[1] || ""));
+    footerPs[0].append(document.createElement("br"));
+    const wa = document.createElement("a");
+    wa.href = "https://wa.me/5516996180196";
+    wa.target = "_blank";
+    wa.rel = "noopener noreferrer";
+    wa.textContent = t["footer.whatsapp"];
+    footerPs[0].append(wa);
+  }
+  if (footerPs[1]) {
+    footerPs[1].innerHTML = "";
+    footerPs[1].append(document.createTextNode(t["footer.initiative"]));
+    footerPs[1].append(document.createElement("br"));
+    const strong = document.createElement("strong");
+    strong.textContent = t["footer.tagline"];
+    footerPs[1].append(strong);
+  }
+  setText(".site-footer .footer-link", t["footer.code"]);
+  const footerBase = document.querySelectorAll(".site-footer .footer-base > span");
+  if (footerBase[0]) {
+    const yearEl = footerBase[0].querySelector("[data-year]");
+    const year = yearEl ? yearEl.textContent : String(new Date().getFullYear());
+    footerBase[0].textContent = "";
+    footerBase[0].append(document.createTextNode("© "));
+    const y = document.createElement("span");
+    y.setAttribute("data-year", "");
+    y.textContent = year;
+    footerBase[0].append(y);
+    footerBase[0].append(document.createTextNode(" " + t["footer.copy"]));
+  }
+  if (footerBase[1]) footerBase[1].textContent = t["footer.built"];
+
+  const hubLink = document.querySelector('a[href="https://iniciativa-via.com/via-hub/"]');
+  const cross = hubLink?.closest("aside");
+  if (cross && hubLink) {
+    const linkDiv = hubLink.parentElement;
+    const lineDiv = linkDiv?.previousElementSibling;
+    const roleDiv = lineDiv?.previousElementSibling;
+    if (roleDiv) {
+      roleDiv.textContent = "";
+      const s = document.createElement("strong");
+      s.style.color = "#fff";
+      s.textContent = "Dr Lucas HR Almeida";
+      roleDiv.append(s, document.createTextNode(" — " + t["cross.role"]));
+    }
+    if (lineDiv) lineDiv.textContent = t["cross.line"];
+    const sobreLink = linkDiv?.querySelector('a[href="https://iniciativa-via.com/via-hub/sobre/"]');
+    hubLink.textContent = t["footer.copy"];
+    if (sobreLink) sobreLink.textContent = t["cross.sobre"];
+  }
 
   document.querySelectorAll("[data-lang-toggle] button").forEach((btn) => {
     const on = btn.dataset.lang === state.lang;

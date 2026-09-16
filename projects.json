@@ -47,7 +47,19 @@
         "relatório em PDF"
       ],
       "url": "https://lucashralmeida.github.io/ensino-gamificado/",
-      "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado"
+      "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado",
+      "en": {
+        "name": "Oncology Signaling Pathways",
+        "kicker": "Molecular oncology · teaching",
+        "status": "stable",
+        "description": "Interactive platform on the 14 Hallmarks of cancer, signaling pathways, key genes and targeted therapies, with a quiz and performance report.",
+        "tags": [
+          "14 hallmarks",
+          "annotated quiz",
+          "JSON/CSV",
+          "PDF report"
+        ]
+      }
     },
     {
       "id": "escala-movel-evidencia",
@@ -68,7 +80,20 @@
         "rede credal",
         "v0.3.0"
       ],
-      "url": "https://iniciativa-via.com/via-hub/escala-movel-evidencia/"
+      "url": "https://iniciativa-via.com/via-hub/escala-movel-evidencia/",
+      "en": {
+        "name": "Mobile Evidence Scale",
+        "kicker": "Instrument 01 · clinical judgment calibration",
+        "status": "public draft",
+        "description": "Interactive instrument that computes the action threshold, audits judgment and propagates multiplier uncertainty via value of information and a credal envelope. Still without prospective validation.",
+        "tags": [
+          "Pauker-Kassirer",
+          "action threshold",
+          "value of information",
+          "credal network",
+          "v0.3.0"
+        ]
+      }
     },
     {
       "id": "mentoria-sincronismo-hibrido",
@@ -89,7 +114,19 @@
         "cohort"
       ],
       "url": "https://iniciativa-via.com/via-hub/mentoria-sincronismo-hibrido/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/mentoria-sincronismo-hibrido"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/mentoria-sincronismo-hibrido",
+      "en": {
+        "name": "Hybrid Synchronism Mentorship",
+        "kicker": "Medical education · judgment calibration",
+        "status": "on demand",
+        "description": "Clinical judgment calibration in a hybrid regime: dense synchronous sessions plus an asynchronous structure of templates, feedback and the Mobile Evidence Scale. Paid offer, closed cohort or 1:1.",
+        "tags": [
+          "phronesis",
+          "SBAR",
+          "Mobile Scale",
+          "cohort"
+        ]
+      }
     },
     {
       "id": "mentoria-ia-osce-fmrp",
@@ -110,7 +147,19 @@
         "feedback local"
       ],
       "url": "https://lucashralmeida.github.io/mentoria-ia-osce-fmrp/",
-      "repo": "https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp"
+      "repo": "https://github.com/LucasHRAlmeida/mentoria-ia-osce-fmrp",
+      "en": {
+        "name": "AI Literacy Mentorship — OSCE",
+        "kicker": "Medical education · simulation",
+        "status": "beta",
+        "description": "Clinical-station simulator with structured checklists and a progress panel. The prototype demonstrates the educational interface; it does not claim AI assessment in production.",
+        "tags": [
+          "OSCE",
+          "checklists",
+          "dashboard",
+          "local feedback"
+        ]
+      }
     },
     {
       "id": "revista",
@@ -130,7 +179,19 @@
         "comunicação de risco"
       ],
       "url": "https://iniciativa-via.com/via-hub/revista/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/revista"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/revista",
+      "en": {
+        "name": "Health in the Last Week — VIA Electronic Magazine",
+        "kicker": "Public health · communication",
+        "status": "published",
+        "description": "Weekly magazine that ranks public-health, science, care and technology facts, with primary sources, practical implications and declared limits.",
+        "tags": [
+          "surveillance",
+          "prevention",
+          "vaccination",
+          "risk communication"
+        ]
+      }
     },
     {
       "id": "via-mente-mbrp",
@@ -153,7 +214,19 @@
       "url": "https://iniciativa-via.com/via-hub/via-mente-mbrp/",
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-mente-mbrp",
       "featuredPilot": true,
-      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/mbrp-8/"
+      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/mbrp-8/",
+      "en": {
+        "name": "VIA MENTE — MBRP-8",
+        "kicker": "Mental health · relapse prevention",
+        "status": "beta · distribution pilot",
+        "description": "Interactive 8-week psychoeducational pathway based on Mindfulness-Based Relapse Prevention, with daily practices, field tools and local progress logging.",
+        "tags": [
+          "MBRP",
+          "mindfulness",
+          "56 days",
+          "localStorage"
+        ]
+      }
     },
     {
       "id": "via-literacia-programacao-github",
@@ -174,7 +247,19 @@
         "progresso local"
       ],
       "url": "https://iniciativa-via.com/via-hub/via-literacia-programacao-github/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-literacia-programacao-github",
+      "en": {
+        "name": "VIA Literacy — Programming, Git and GitHub",
+        "kicker": "Digital literacy · hands-on learning",
+        "status": "published",
+        "description": "Introductory Python track that connects programming concepts to a Git-versioned project, published on a branch and integrated by pull request.",
+        "tags": [
+          "Python",
+          "Git and GitHub",
+          "4–6 hours",
+          "local progress"
+        ]
+      }
     },
     {
       "id": "via-economia-saude",
@@ -197,7 +282,19 @@
       "url": "https://iniciativa-via.com/via-hub/via-economia-saude/",
       "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/via-economia-saude",
       "featuredPilot": true,
-      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/economia-saude/"
+      "seriesUrl": "https://iniciativa-via.com/via-hub/ponte/economia-saude/",
+      "en": {
+        "name": "VIA Economy & Health",
+        "kicker": "Financial education · medical practice",
+        "status": "educational MVP · distribution pilot",
+        "description": "Interactive track to make cash flow, reference value, break-even and reserve more legible in health professionals' practice, with diagnosis, local simulators, cases and an action plan.",
+        "tags": [
+          "cash flow",
+          "break-even",
+          "reserve",
+          "local data"
+        ]
+      }
     },
     {
       "id": "bem-estar-multissensorial",
@@ -217,7 +314,19 @@
         "6 estados"
       ],
       "url": "https://iniciativa-via.com/via-hub/bem-estar-multissensorial/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial",
+      "en": {
+        "name": "Multisensory Well-Being",
+        "kicker": "Well-being · self-care",
+        "status": "published",
+        "description": "Interactive guide that combines music, colors and aromas for six mood states, with annotated references and a usage mode. Harmless well-being interventions; not a substitute for clinical care.",
+        "tags": [
+          "chromotherapy",
+          "aromatherapy",
+          "playlists",
+          "6 states"
+        ]
+      }
     },
     {
       "id": "soberania-informacional",
@@ -238,7 +347,19 @@
         "direitos do titular"
       ],
       "url": "https://iniciativa-via.com/via-hub/soberania-informacional/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/soberania-informacional",
+      "en": {
+        "name": "VIA Informational Sovereignty",
+        "kicker": "Digital rights · data protection",
+        "status": "being structured",
+        "description": "Public front for literacy, documentation and defense of autonomy against opaque collection, profiling and data uses that may affect vulnerabilities. Does not provide formal legal analysis.",
+        "tags": [
+          "LGPD",
+          "profiling",
+          "traceability",
+          "data-subject rights"
+        ]
+      }
     },
     {
       "id": "regulacao-federal-ia",
@@ -260,7 +381,20 @@
         "transferências"
       ],
       "url": "https://iniciativa-via.com/via-hub/regulacao-federal-ia/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/regulacao-federal-ia"
+      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/regulacao-federal-ia",
+      "en": {
+        "name": "Federal AI Regulation",
+        "kicker": "Systemic governance · interstate transfers",
+        "status": "conceptual proposal",
+        "description": "Federative intelligence architecture for orchestrating critical transfers across SUS states. Integrates systemic diagnosis (sentinel case), aviation-safety lessons (AF447), three technical pillars (AI, routing, aeromedical corridors) and clinical episteme (Canguilhem, Nietzsche, phronesis).",
+        "tags": [
+          "SUS",
+          "federative AI",
+          "clinical CRM",
+          "epistemology",
+          "transfers"
+        ]
+      }
     }
   ]
 }
