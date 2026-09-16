@@ -262,6 +262,35 @@ const I18N = {
     "filter.saude-publica": "Saúde pública",
     "filter.sistemas": "Sistemas",
     "filter.direitos-digitais": "Direitos digitais",
+    "kicker.parcerias": "06 · Parcerias",
+    "parcerias.h2": "Problemas difíceis pedem alianças específicas.",
+    "parcerias.p": "A VIA busca instituições de saúde, grupos de pesquisa, universidades, gestores e equipes técnicas com um problema real, acesso legítimo ao contexto e disposição para validar — não apenas para “colocar IA” em uma apresentação.",
+    "parcerias.cta": "Estruturar uma proposta",
+    "parcerias.panel": "O que uma boa conversa inicial traz",
+    "parcerias.i1.t": "Um gargalo observável",
+    "parcerias.i1.s": "processo, público, frequência e impacto",
+    "parcerias.i2.t": "Uma hipótese de valor",
+    "parcerias.i2.s": "o que deveria melhorar e como medir",
+    "parcerias.i3.t": "Um campo de validação",
+    "parcerias.i3.s": "quem testa, supervisiona e pode interromper",
+    "parcerias.i4.t": "Fronteiras honestas",
+    "parcerias.i4.s": "dados disponíveis, riscos e restrições reais",
+    "kicker.fundador": "Fundador e direção clínica",
+    "fundador.role": "Médico Generalista · FMRP-USP",
+    "fundador.p": "A VIA parte de uma posição deliberadamente híbrida: o problema é lido por dentro da medicina e traduzido até uma forma que pesquisadores, engenheiros, gestores e usuários possam interrogar em conjunto.",
+    "fundador.sobre": "Sobre o fundador",
+    "fundador.portfolio": "Portfólio público",
+    "fundador.alt": "Selo pessoal LA 31 de Dr Lucas HR Almeida",
+    "footer.identity": "Dr Lucas HR Almeida — Médico Generalista (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
+    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.initiative": "Iniciativa VIA — Vida Integrada e Autônoma",
+    "footer.tagline": "Ciência e Tecnologia a serviço do Cuidado.",
+    "footer.code": "Código e versões ↗",
+    "footer.copy": "Iniciativa VIA",
+    "footer.built": "Construído como parte do próprio portfólio.",
+    "cross.role": "Médico Generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752",
+    "cross.line": "Iniciativa VIA — Vida Integrada e Autônoma · Ciência e Tecnologia a serviço do Cuidado.",
+    "cross.sobre": "Sobre o fundador",
     "card.serie": "Abrir série",
     "card.modulo": "Abrir módulo",
     "card.demo": "Abrir demonstração",
@@ -372,6 +401,35 @@ const I18N = {
     "filter.saude-publica": "Public health",
     "filter.sistemas": "Systems",
     "filter.direitos-digitais": "Digital rights",
+    "kicker.parcerias": "06 · Partnerships",
+    "parcerias.h2": "Hard problems call for specific alliances.",
+    "parcerias.p": "VIA seeks health institutions, research groups, universities, managers and technical teams with a real problem, legitimate access to context and a willingness to validate — not merely to “put AI” into a slide deck.",
+    "parcerias.cta": "Structure a proposal",
+    "parcerias.panel": "What a good first conversation brings",
+    "parcerias.i1.t": "An observable bottleneck",
+    "parcerias.i1.s": "process, audience, frequency and impact",
+    "parcerias.i2.t": "A value hypothesis",
+    "parcerias.i2.s": "what should improve and how to measure it",
+    "parcerias.i3.t": "A validation field",
+    "parcerias.i3.s": "who tests, supervises and can stop",
+    "parcerias.i4.t": "Honest boundaries",
+    "parcerias.i4.s": "available data, risks and real constraints",
+    "kicker.fundador": "Founder and clinical direction",
+    "fundador.role": "General Practitioner · FMRP-USP",
+    "fundador.p": "VIA starts from a deliberately hybrid stance: the problem is read from inside medicine and translated into a form that researchers, engineers, managers and users can interrogate together.",
+    "fundador.sobre": "About the founder",
+    "fundador.portfolio": "Public portfolio",
+    "fundador.alt": "Personal seal LA 31 of Dr Lucas HR Almeida",
+    "footer.identity": "Dr Lucas HR Almeida — General Practitioner (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
+    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.initiative": "VIA Initiative — Integrated and Autonomous Life",
+    "footer.tagline": "Science and Technology in service of Care.",
+    "footer.code": "Code and versions ↗",
+    "footer.copy": "VIA Initiative",
+    "footer.built": "Built as part of the portfolio itself.",
+    "cross.role": "General Practitioner (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752",
+    "cross.line": "VIA Initiative — Integrated and Autonomous Life · Science and Technology in service of Care.",
+    "cross.sobre": "About the founder",
     "card.serie": "Open series",
     "card.modulo": "Open module",
     "card.demo": "Open demo",
@@ -549,6 +607,93 @@ function applyLang(lang) {
   }
   const loading = projectGrid?.querySelector(".loading-state");
   if (loading) loading.textContent = t["portfolio.loading"];
+
+  setText("#parcerias .section-kicker", t["kicker.parcerias"]);
+  setText("#parcerias .partnership-copy h2", t["parcerias.h2"]);
+  setText("#parcerias .partnership-copy > p", t["parcerias.p"]);
+  const partenCta = document.querySelector("#parcerias .partnership-copy a.button");
+  if (partenCta) partenCta.innerHTML = `${t["parcerias.cta"]} <span aria-hidden="true">↗</span>`;
+  setText("#parcerias .panel-title", t["parcerias.panel"]);
+  const partnerItems = document.querySelectorAll("#parcerias .partner-panel li");
+  ["i1","i2","i3","i4"].forEach((key, i) => {
+    const li = partnerItems[i];
+    if (!li) return;
+    const strong = li.querySelector("strong");
+    const small = li.querySelector("small");
+    if (strong) strong.textContent = t[`parcerias.${key}.t`];
+    if (small) small.textContent = t[`parcerias.${key}.s`];
+  });
+
+  setText("#fundador .section-kicker", t["kicker.fundador"]);
+  setText("#fundador .founder-role", t["fundador.role"]);
+  const fundadorBody = document.querySelector("#fundador .founder-layout > div > p:not(.section-kicker):not(.founder-role)");
+  if (fundadorBody) fundadorBody.textContent = t["fundador.p"];
+  const fundadorImg = document.querySelector("#fundador .founder-mark img");
+  if (fundadorImg) fundadorImg.alt = t["fundador.alt"];
+  const fundadorLinks = document.querySelectorAll("#fundador .founder-links a");
+  if (fundadorLinks[0]) fundadorLinks[0].innerHTML = `${t["fundador.sobre"]} <span aria-hidden="true">→</span>`;
+  if (fundadorLinks[2]) fundadorLinks[2].innerHTML = `${t["fundador.portfolio"]} <span aria-hidden="true">→</span>`;
+
+  document.querySelectorAll(".brand-copy small").forEach((el) => {
+    el.textContent = t["brand.sub"];
+  });
+  const footerPs = document.querySelectorAll(".site-footer .footer-layout > p");
+  if (footerPs[0]) {
+    footerPs[0].innerHTML = "";
+    const idLines = t["footer.identity"].split("\n");
+    footerPs[0].append(document.createTextNode(idLines[0]));
+    footerPs[0].append(document.createElement("br"));
+    footerPs[0].append(document.createTextNode(idLines[1] || ""));
+    footerPs[0].append(document.createElement("br"));
+    const wa = document.createElement("a");
+    wa.href = "https://wa.me/5516996180196";
+    wa.target = "_blank";
+    wa.rel = "noopener noreferrer";
+    wa.textContent = t["footer.whatsapp"];
+    footerPs[0].append(wa);
+  }
+  if (footerPs[1]) {
+    footerPs[1].innerHTML = "";
+    footerPs[1].append(document.createTextNode(t["footer.initiative"]));
+    footerPs[1].append(document.createElement("br"));
+    const strong = document.createElement("strong");
+    strong.textContent = t["footer.tagline"];
+    footerPs[1].append(strong);
+  }
+  setText(".site-footer .footer-link", t["footer.code"]);
+  const footerBase = document.querySelectorAll(".site-footer .footer-base > span");
+  if (footerBase[0]) {
+    const yearEl = footerBase[0].querySelector("[data-year]");
+    const year = yearEl ? yearEl.textContent : String(new Date().getFullYear());
+    footerBase[0].textContent = "";
+    footerBase[0].append(document.createTextNode("© "));
+    const y = document.createElement("span");
+    y.setAttribute("data-year", "");
+    y.textContent = year;
+    footerBase[0].append(y);
+    footerBase[0].append(document.createTextNode(" " + t["footer.copy"]));
+  }
+  if (footerBase[1]) footerBase[1].textContent = t["footer.built"];
+
+  const cross = document.querySelector("aside[style]");
+  if (cross) {
+    const roleDiv = cross.querySelector(":scope > div > div:nth-child(2)");
+    const lineDiv = cross.querySelector(":scope > div > div:nth-child(3)");
+    const linkDiv = cross.querySelector(":scope > div > div:nth-child(4)");
+    if (roleDiv) {
+      roleDiv.textContent = "";
+      const s = document.createElement("strong");
+      s.style.color = "#fff";
+      s.textContent = "Dr Lucas HR Almeida";
+      roleDiv.append(s, document.createTextNode(" — " + t["cross.role"]));
+    }
+    if (lineDiv) lineDiv.textContent = t["cross.line"];
+    if (linkDiv) {
+      const links = linkDiv.querySelectorAll("a");
+      if (links[0]) links[0].textContent = t["footer.copy"];
+      if (links[1]) links[1].textContent = t["cross.sobre"];
+    }
+  }
 
   document.querySelectorAll("[data-lang-toggle] button").forEach((btn) => {
     const on = btn.dataset.lang === state.lang;
