@@ -611,8 +611,8 @@ function applyLang(lang) {
   setText("#parcerias .section-kicker", t["kicker.parcerias"]);
   setText("#parcerias .partnership-copy h2", t["parcerias.h2"]);
   setText("#parcerias .partnership-copy > p", t["parcerias.p"]);
-  const partenCta = document.querySelector("#parcerias .partnership-copy a.button");
-  if (partenCta) partenCta.innerHTML = `${t["parcerias.cta"]} <span aria-hidden="true">↗</span>`;
+  const partnerCta = document.querySelector("#parcerias .partnership-copy a.button");
+  if (partnerCta) partnerCta.innerHTML = `${t["parcerias.cta"]} <span aria-hidden="true">↗</span>`;
   setText("#parcerias .panel-title", t["parcerias.panel"]);
   const partnerItems = document.querySelectorAll("#parcerias .partner-panel li");
   ["i1","i2","i3","i4"].forEach((key, i) => {
@@ -675,11 +675,12 @@ function applyLang(lang) {
   }
   if (footerBase[1]) footerBase[1].textContent = t["footer.built"];
 
-  const cross = document.querySelector("aside[style]");
-  if (cross) {
-    const roleDiv = cross.querySelector(":scope > div > div:nth-child(2)");
-    const lineDiv = cross.querySelector(":scope > div > div:nth-child(3)");
-    const linkDiv = cross.querySelector(":scope > div > div:nth-child(4)");
+  const hubLink = document.querySelector('a[href="https://iniciativa-via.com/via-hub/"]');
+  const cross = hubLink?.closest("aside");
+  if (cross && hubLink) {
+    const linkDiv = hubLink.parentElement;
+    const lineDiv = linkDiv?.previousElementSibling;
+    const roleDiv = lineDiv?.previousElementSibling;
     if (roleDiv) {
       roleDiv.textContent = "";
       const s = document.createElement("strong");
@@ -688,11 +689,9 @@ function applyLang(lang) {
       roleDiv.append(s, document.createTextNode(" — " + t["cross.role"]));
     }
     if (lineDiv) lineDiv.textContent = t["cross.line"];
-    if (linkDiv) {
-      const links = linkDiv.querySelectorAll("a");
-      if (links[0]) links[0].textContent = t["footer.copy"];
-      if (links[1]) links[1].textContent = t["cross.sobre"];
-    }
+    const sobreLink = linkDiv?.querySelector('a[href="https://iniciativa-via.com/via-hub/sobre/"]');
+    hubLink.textContent = t["footer.copy"];
+    if (sobreLink) sobreLink.textContent = t["cross.sobre"];
   }
 
   document.querySelectorAll("[data-lang-toggle] button").forEach((btn) => {
