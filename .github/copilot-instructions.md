@@ -12,6 +12,16 @@ Se Copilot for o **implementador** de um PR: pode corrigir automaticamente findi
 
 Se Copilot for o **revisor** de um PR de outro autor: review normal; findings concretos e patch mínimo quando adequado; feedback executável pode ser aplicado pelo implementador sem novo HUMAN_GATE. HUMAN_GATE permanece para decisões substantivas, especialmente merge.
 
+## Correção consequente
+
+Erro objetivo, localizável e não hermenêutico, com correção determinística ou suficientemente inequívoca, reversível, de baixo impacto e dentro do escopo já autorizado, deve produzir **estado corrigido**, não apenas diagnóstico.
+
+Se o Copilot tiver escrita no branch/PR correspondente, deve aplicar o patch mínimo imediatamente, executar verificação proporcional e então reportar o resultado. Não pedir nova confirmação humana apenas para uma correção que não introduz decisão substantiva nova. Não parar em comentário, sugestão ou finding quando a própria função exercida permite corrigir.
+
+Se estiver em contexto estritamente read-only/review-only, comentar o finding e fornecer patch mínimo executável ao implementador. Nunca declarar correção aplicada sem ter produzido e verificado o estado correspondente.
+
+O critério operacional é reduzir intervenção do owner e o tempo entre detecção e estado verificadamente corrigido, preservando rastreabilidade. HUMAN_GATE continua reservado a decisões substantivas ou risco real: merge, secrets, permissões, branch protection, repository settings, infraestrutura externa, irreversibilidade ou ambiguidade material.
+
 Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMAN_GATE (Dr Lucas HR Almeida). Consenso entre agentes não é decisão.
 
 ## HARD RULES
@@ -46,4 +56,4 @@ Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMA
 - [ ] Self-review a ser tratado como gate independente?
 - [ ] Marca de vendor na UI?
 
-Falha → comentar o hunk, sugerir o patch mínimo, não reescrever o ficheiro fora de escopo.
+Falha objetiva com correção determinística e segura → corrigir no branch/PR e verificar. Apenas em contexto read-only/review-only → comentar o hunk e fornecer o patch mínimo. Não reescrever o ficheiro fora de escopo.
