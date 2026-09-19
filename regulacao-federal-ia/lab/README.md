@@ -35,7 +35,6 @@ A versão colaborativa deverá separar:
 
 - **GitHub**: fonte canônica do código.
 - **GitHub Pages**: vitrine pública e sandbox sintético.
-- **Vercel**: candidato preferencial para o laboratório restrito de cowork, previews, funções server-side e observabilidade.
 - **Cloudflare**: DNS canônico; Access/Workers apenas quando houver requisito concreto de identidade institucional, policy enforcement no edge ou intermediação de APIs.
 
 ## Interface científica com C4AI
