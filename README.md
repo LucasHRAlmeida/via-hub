@@ -1,6 +1,6 @@
 # Iniciativa VIA — portal institucional
 
-Portal público da **Iniciativa VIA — Vida Integrada e Autônoma**. O site organiza o portfólio de Dr Lucas HR em uma arquitetura institucional voltada a medicina, pesquisa, tecnologia, saúde pública e formação de parcerias.
+Hub canônico da Iniciativa VIA: arquitetura modular que transforma evidência em decisão e método em ferramenta — raciocínio clínico auditável, educação médica, regulação, saúde pública e tecnologia, com responsabilidade humana no centro.
 
 ## Acesso
 
