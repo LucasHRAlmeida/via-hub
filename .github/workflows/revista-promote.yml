@@ -31,6 +31,7 @@ jobs:
     if: github.event_name != 'pull_request'
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -118,8 +119,10 @@ jobs:
         env:
           EDITION: ${{ steps.state.outputs.edition }}
           CURRENT: ${{ steps.state.outputs.current }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          BRANCH="revista/promocao-${EDITION}"
           git config user.name 'via-revista-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add revista/index.html "revista/arquivo/${CURRENT}.pdf"
@@ -128,7 +131,21 @@ jobs:
             exit 0
           fi
           git commit -m "Revista: promove ${EDITION} e arquiva ${CURRENT}"
-          git push origin HEAD:main
+          if git fetch origin "$BRANCH:refs/remotes/origin/${BRANCH}"; then
+            git push --force-with-lease origin "HEAD:${BRANCH}"
+          else
+            git push origin "HEAD:${BRANCH}"
+          fi
+
+          PR_URL=$(gh pr list --base main --head "$BRANCH" --state open --json url --jq '.[0].url')
+          if [[ -z "$PR_URL" ]]; then
+            PR_URL=$(gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Revista: promove ${EDITION}" \
+              --body "Promoção automática da edição ${EDITION}, com arquivamento da edição ${CURRENT} em PDF. A publicação aguarda revisão e merge via pull request.")
+          fi
+          echo "::notice title=Promoção da Revista VIA aguardando merge::${PR_URL}"
 
   validate:
     if: github.event_name == 'pull_request'
