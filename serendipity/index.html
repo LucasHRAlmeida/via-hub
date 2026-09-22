@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Serendipity's stochastic moments — trilha epistemológica</title>
+  <meta name="description" content="Uma trilha epistemológica interativa sobre incerteza, evidência, genômica, decisão e encontros improváveis.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Serendipity's stochastic moments">
+  <meta property="og:description" content="Do print banal à incerteza formal, da evidência ao corpo no mundo, e daí a encontros improváveis entre engenharia, genômica e medicina.">
+  <meta name="theme-color" content="#f4f0e8">
+  <style>
+    :root{
+      --paper:#f4f0e8;--ink:#1f1d1a;--muted:#6f685f;--line:#cfc6b8;
+      --card:#fffdf8;--blue:#365f82;--green:#55745e;--red:#87524e;--gold:#8b7440;
+      --shadow:0 2px 0 rgba(60,47,30,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#e9e3d8;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.52}
+    main{max-width:1040px;margin:0 auto;padding:24px 16px 64px}
+    .paper{position:relative;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(to right,rgba(90,78,61,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(90,78,61,.08) 1px,transparent 1px);background-size:24px 24px;border:1px solid #bdb2a2;border-radius:22px;padding:22px;box-shadow:0 8px 28px rgba(58,48,36,.08)}
+    h1{font-family:Georgia,serif;font-weight:500;font-size:clamp(2rem,6vw,4.6rem);line-height:.98;letter-spacing:-.035em;margin:0;max-width:900px}
+    .sub{font-family:Georgia,serif;font-style:italic;font-size:clamp(1rem,2.2vw,1.3rem);color:var(--muted);max-width:760px;margin:14px 0 0}
+    .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;color:var(--muted);font-weight:700}
+    .controls{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 18px}
+    button{appearance:none;border:1px solid var(--line);background:rgba(255,253,248,.88);color:var(--ink);border-radius:999px;min-height:44px;padding:9px 14px;font:inherit;font-size:.9rem;cursor:pointer}
+    button:hover{border-color:#9d907f}
+    button:focus-visible{outline:3px solid rgba(54,95,130,.28);outline-offset:2px}
+    button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+    .trail{display:grid;gap:14px}
+    .row{display:grid;gap:14px}
+    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .note{position:relative;min-width:0;background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:12px;padding:15px 16px 16px;box-shadow:var(--shadow);transition:opacity .2s ease,filter .2s ease,transform .2s ease}
+    .note::before{content:"";position:absolute;width:40px;height:9px;left:20px;top:-6px;background:rgba(231,221,204,.86);border:1px solid rgba(130,115,94,.34);transform:rotate(-2deg)}
+    .note h2{font-size:1.04rem;margin:4px 0 6px}
+    .note p{margin:0;color:#37312b}
+    .note small{display:block;color:var(--muted);margin-top:8px}
+    .math{border-left:4px solid var(--blue)}
+    .clinical{border-left:4px solid var(--red)}
+    .human{border-left:4px solid var(--green)}
+    .value{border-left:4px solid var(--gold)}
+    .tilt-a{transform:rotate(-.45deg)}.tilt-b{transform:rotate(.5deg)}.tilt-c{transform:rotate(-.2deg)}
+    .dim{opacity:.28;filter:grayscale(.65)}
+    .arrow{text-align:center;color:#8e8375;font-size:1.5rem;line-height:1;padding:1px 0}
+    .scribble{font-family:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;font-size:1.02rem}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#eee8dd;border:1px solid #d5ccbd;border-radius:7px;padding:2px 6px;white-space:nowrap}
+    .tag{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted);font-size:.72rem;margin-top:9px}
+    .interlude{margin:3px 0;border:1px dashed #ab9f8f;background:rgba(247,242,233,.82);border-radius:15px;padding:17px}
+    .interlude blockquote{font-family:Georgia,serif;font-size:clamp(1.06rem,2.2vw,1.35rem);font-style:italic;margin:8px 0}
+    .italian{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+    .italian strong{font-family:Georgia,serif;font-size:1.05rem}
+    .italian em{display:block;margin-top:4px;color:#3b342d;font-family:Georgia,serif;font-size:1.1rem}
+    .fine{font-size:.76rem;color:var(--muted)}
+    .bigpicture{margin-top:4px;border-top:2px solid #b9ae9f;padding-top:18px}
+    .chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
+    .chain div{background:rgba(255,253,248,.78);border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center;font-weight:650;font-size:.88rem}
+    .finale{font-family:Georgia,serif;font-size:clamp(1.2rem,3vw,1.8rem);line-height:1.25;margin-top:18px;max-width:900px}
+    .status{margin-top:12px;color:var(--muted);font-size:.86rem}
+    footer{margin-top:18px;color:var(--muted);font-size:.76rem}
+    @media(max-width:720px){.two,.three,.chain{grid-template-columns:1fr}.tilt-a,.tilt-b,.tilt-c{transform:none}.paper{padding:16px}.chain div{text-align:left}.sub{font-size:1rem}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<main>
+  <article class="paper" aria-labelledby="title">
+    <div class="kicker">VIA · trilha epistemológica · rascunho público</div>
+    <h1 id="title">Serendipity's stochastic moments</h1>
+    <p class="sub">Algumas conexões não são planejadas como organograma. Elas surgem quando uma pergunta pequena encontra um corpo no mundo, uma linguagem formal e outras pessoas que já habitavam partes diferentes do problema.</p>
+
+    <nav class="controls" aria-label="Lentes de leitura">
+      <button type="button" class="active" data-lens="all">Mapa integral</button>
+      <button type="button" data-lens="cozman">Cozman</button>
+      <button type="button" data-lens="tiezzi">Tiezzi</button>
+      <button type="button" data-lens="sebastiao">Sebastião</button>
+      <button type="button" data-lens="corpo">Corpo no mundo</button>
+    </nav>
+
+    <div class="trail">
+      <section class="row two">
+        <div class="note tilt-a" data-groups="cozman corpo">
+          <div class="kicker">01 · quase nada</div>
+          <h2>“Esse campo aceita um print?”</h2>
+          <p>Uma pergunta banal já contém uma disciplina: não fingir precisão onde só há indícios.</p>
+          <small class="scribble">primeiro gato → incerteza ≠ ignorância total</small>
+        </div>
+        <div class="note math tilt-b" data-groups="cozman">
+          <div class="kicker">02 · a linguagem aparece</div>
+          <h2>Não escolher um número só porque ele cabe numa célula.</h2>
+          <p>De <span class="formula">P(H)=0,25</span> para <span class="formula">P(H)∈[0,15;0,35]</span>. O intervalo não resolve o mundo; apenas deixa de mentir sobre quanto sabemos.</p>
+        </div>
+      </section>
+
+      <div class="arrow">↓</div>
+
+      <section class="row three">
+        <div class="note value tilt-c" data-groups="cozman tiezzi sebastiao corpo">
+          <div class="kicker">03 · escala móvel</div>
+          <h2>A evidência muda de estatuto.</h2>
+          <p>Fonte → proveniência → teste → contraditório → reprodução → consequência decisória.</p>
+        </div>
+        <div class="note human tilt-a" data-groups="corpo sebastiao tiezzi">
+          <div class="kicker">04 · corpo no mundo</div>
+          <h2>O agente não apenas observa.</h2>
+          <p>Ele envia, testa, recebe o bounce, preserva o rastro, põe a instituição em cópia e transforma uma possibilidade em informação nova.</p>
+        </div>
+        <div class="note tilt-b" data-groups="tiezzi sebastiao corpo">
+          <div class="kicker">05 · derivação</div>
+          <h2>Literacia digital vira artefato.</h2>
+          <p>Do problema formal nasce um bot no Google Chat; daí um repositório; daí uma hipótese de utilidade institucional.</p>
+        </div>
+      </section>
+
+      <div class="arrow">↓</div>
+
+      <section class="interlude" data-groups="tiezzi corpo">
+        <div class="kicker">interlúdio · clima Magoo</div>
+        <blockquote>Primeiro contato: frio, distante, cético. Uma resposta em italiano deixava várias hipóteses admissíveis — rigor, ironia, desinteresse, simples economia de palavras. Menosprezo era uma hipótese possível; identificá-lo como fato seria má estatística.</blockquote>
+        <p class="scribble">H₀: “isso talvez morra aqui.”</p>
+        <p>Evento seguinte: o professor — também treinador de rugby — aparece, inesperadamente, num chat com Sebastião, colocado ali por mim. O modelo precisou atualizar antes do intervalo.</p>
+        <div class="italian">
+          <strong>Provocazione apocrifa:</strong>
+          <em>«Fellini non era abituato a guardare film; forse per questo riusciva a vedere ciò che il cinema aveva già imparato a non guardare.»</em>
+          <div class="fine">Não é citação de Fellini; é uma provocação deliberadamente apócrifa sobre o valor de não estar excessivamente domesticado pelo enquadramento.</div>
+        </div>
+      </section>
+
+      <div class="arrow">↓</div>
+
+      <section class="row two">
+        <div class="note math tilt-a" data-groups="tiezzi cozman">
+          <div class="kicker">06 · o que Tiezzi pode reconhecer</div>
+          <h2>Escala computacional sem dissolver o fenômeno.</h2>
+          <p>TCGA, transcriptoma, genômica, subtipos, grandes datasets. Não a caça ao “gene em comum”, mas uma arquitetura para encontrar padrões, tensioná-los e saber quando deixam de ser robustos.</p>
+          <span class="tag">há algo de valor aqui</span>
+        </div>
+        <div class="note clinical tilt-b" data-groups="sebastiao cozman corpo">
+          <div class="kicker">07 · o que Sebastião pode reconhecer</div>
+          <h2>Informação só vale plenamente quando chega antes do fechamento da decisão.</h2>
+          <p>Pâncreas, periampular, biomarcadores, tempo, risco e consequência clínica. A pergunta muda de “qual padrão?” para “qual informação altera racionalmente a conduta?”.</p>
+          <span class="tag">há algo de valor aqui</span>
+        </div>
+      </section>
+
+      <div class="arrow">↓</div>
+
+      <section class="note human tilt-c" data-groups="corpo tiezzi sebastiao cozman">
+        <div class="kicker">08 · agência sem posse</div>
+        <h2>Influência orgânica. Autoria localizada. Trajetória não apropriada.</h2>
+        <p>Introduzir perguntas, pessoas e artefatos pode reduzir a distância entre domínios. O fato de uma conexão ter começado por uma ação minha não faz dela propriedade minha.</p>
+      </section>
+
+      <div class="arrow">↓</div>
+
+      <section class="row three">
+        <div class="note math tilt-a" data-groups="cozman">
+          <div class="kicker">para Cozman</div>
+          <h2>Incerteza imprecisa aplicada.</h2>
+          <p>Decisões robustas sob conjuntos admissíveis de modelos e evidências, em vez de precisão ornamental.</p>
+        </div>
+        <div class="note value tilt-b" data-groups="tiezzi">
+          <div class="kicker">para Tiezzi</div>
+          <h2>Dados que terminam em perguntas melhores.</h2>
+          <p>Multiômica, estratificação, replicação e stress test sem fetiche de correlação transversal.</p>
+        </div>
+        <div class="note clinical tilt-c" data-groups="sebastiao corpo">
+          <div class="kicker">para Sebastião</div>
+          <h2>Incerteza que termina em ação responsável.</h2>
+          <p>A próxima observação vale pelo quanto reduz incerteza relevante antes de uma decisão crítica.</p>
+        </div>
+      </section>
+
+      <section class="bigpicture" data-groups="cozman tiezzi sebastiao corpo">
+        <div class="kicker">big picture</div>
+        <div class="chain" aria-label="Cadeia conceitual">
+          <div>incerteza</div><div>evidência</div><div>intervenção</div><div>decisão</div><div>responsabilidade</div>
+        </div>
+        <p class="finale">O fio não é “IA + medicina + genômica”. O fio é: <strong>como produzir informação que mereça alterar uma decisão sem esconder a incerteza que continua existindo.</strong></p>
+      </section>
+    </div>
+
+    <div class="status" id="status" aria-live="polite">Mostrando o mapa integral.</div>
+    <footer>Artefato exploratório · Iniciativa VIA — Vida Integrada e Autônoma · não representa manifestação institucional da USP nem dos professores mencionados.</footer>
+  </article>
+</main>
+<script>
+(() => {
+  const buttons=[...document.querySelectorAll('[data-lens]')];
+  const nodes=[...document.querySelectorAll('[data-groups]')];
+  const status=document.getElementById('status');
+  const messages={
+    all:'Mostrando o mapa integral.',
+    cozman:'Lente Cozman: imprecisão, robustez e representação da incerteza em primeiro plano.',
+    tiezzi:'Lente Tiezzi: genômica, escala computacional e o encontro improvável em primeiro plano.',
+    sebastiao:'Lente Sebastião: consequência clínica e valor decisório da informação em primeiro plano.',
+    corpo:'Lente corpo no mundo: intervenção, proveniência, agência e serendipidade em primeiro plano.'
+  };
+  function setLens(lens){
+    buttons.forEach(b=>b.classList.toggle('active',b.dataset.lens===lens));
+    nodes.forEach(n=>{
+      const groups=(n.dataset.groups||'').split(/\s+/);
+      n.classList.toggle('dim',lens!=='all'&&!groups.includes(lens));
+    });
+    status.textContent=messages[lens]||messages.all;
+  }
+  buttons.forEach(b=>b.addEventListener('click',()=>setLens(b.dataset.lens)));
+})();
+</script>
+</body>
+</html>
