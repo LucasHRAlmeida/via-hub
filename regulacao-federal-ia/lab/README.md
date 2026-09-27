@@ -17,6 +17,7 @@ O [EVAM Conversor](../evam/) recebe narrativa clínica livre, cria um envelope v
 - Apenas casos sintéticos.
 - Matching heurístico deliberadamente simples e visível.
 - Demonstra `abstention` quando falta dado crítico.
+- **Pilot A (TTL + fila):** freshness `fresh|stale|expired` em inputs sintéticos; abstention se `expired`; `daysInQueue` ≥ 20 força re-matching/escalação. O 2.º exemplo do set (`Sintético · 20 dias na fila`) é 100% anónimo — sem identificadores, sem desfecho clínico.
 - Exibe trilha de raciocínio separando fatos, regra dura, proxy de urgência e incerteza não modelada.
 - Não é sistema assistencial nem algoritmo clinicamente validado.
 

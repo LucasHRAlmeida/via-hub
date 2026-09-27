@@ -30,8 +30,16 @@ main{max-width:1180px;margin:auto;padding:0 20px 60px}.grid{display:grid;grid-te
 <div class="field"><label>Horas desde reconhecimento</label><input id="hrs" type="number" min="0" max="168" value="18"></div>
 <div class="field"><label>Intervenção necessária</label><select id="need"><option value="cpre">CPRE / drenagem biliar</option><option value="hemo">Hemodinâmica</option><option value="neuro">Neurointervenção</option></select></div>
 <div class="field"><label>Dado crítico ausente?</label><select id="missing"><option value="no">Não</option><option value="yes">Sim</option></select></div>
-<p class="hint">A V1.0 usa regras deliberadamente simples e visíveis. O objetivo é tornar o contrato computacional discutível — não sugerir que estes pesos sejam clinicamente validados.</p>
-<div class="actions"><button class="primary" onclick="run()">Recalcular matching</button><button class="secondary" onclick="preset()">Caso-âncora</button></div>
+<div class="field"><label>Freshness · MAP (TTL)</label><select id="mapFresh"><option value="fresh">fresh</option><option value="stale">stale</option><option value="expired">expired</option></select></div>
+<div class="field"><label>Freshness · Lactato (TTL)</label><select id="lacFresh"><option value="fresh">fresh</option><option value="stale">stale</option><option value="expired">expired</option></select></div>
+<div class="field"><label>Dias na fila (sintético)</label><input id="daysInQueue" type="number" min="0" max="365" value="0"></div>
+<p class="hint">Pilot A: TTL/freshness e dias na fila são demonstrativos e sintéticos. Abstention se qualquer input obrigatório estiver <code>expired</code>; fila ≥ 20 dias força re-matching / escalação. Pesos não são clinicamente validados.</p>
+<div class="actions">
+<button class="primary" onclick="run()">Recalcular matching</button>
+<button class="secondary" onclick="preset('anchor')">Caso-âncora</button>
+<button class="secondary" onclick="preset('queue20')">Sintético · 20 dias na fila</button>
+</div>
+<div id="queueBanner" class="callout" style="display:none;margin-top:14px;border-left-color:var(--red);background:#fdecec"></div>
 </div>
 <div class="panel">
 <div class="row"><h2>2 · Necessidade × capacidade × tempo</h2><span id="status" class="pill">calculando</span></div>
@@ -59,17 +67,82 @@ const hospitals=[
  {name:'Hospital Regional Beta',km:45,cpre:false,hemo:false,neuro:false,eta:1.1,transport:'terrestre'},
  {name:'Centro Terciário Gama',km:125,cpre:true,hemo:false,neuro:true,eta:7.5,transport:'terrestre avançado'}
 ];
+// Synthetic example set loaded by the Lab (Pilot A). No real patient identifiers / PHI.
+const EXAMPLES={
+ anchor:{
+  label:'Caso-âncora sintético',
+  map:58,lac:4.1,bil:12.9,hrs:18,need:'cpre',missing:'no',
+  mapFresh:'fresh',lacFresh:'fresh',daysInQueue:0
+ },
+ queue20:{
+  label:'Sintético · 20 dias na fila',
+  map:58,lac:4.1,bil:12.9,hrs:18,need:'cpre',missing:'no',
+  mapFresh:'stale',lacFresh:'stale',daysInQueue:20
+ }
+};
+const QUEUE_STALE_DAYS=20;
 function risk(){const m=+map.value,l=+lac.value,h=+hrs.value;let r=0;if(m<65)r+=28;if(m<55)r+=12;if(l>=4)r+=28;else if(l>=2)r+=12;if(h>12)r+=18;if(h>24)r+=12;return Math.min(100,r)}
 function can(h,n){return n==='cpre'?h.cpre:n==='hemo'?h.hemo:h.neuro}
+function expiredInputs(){
+  const out=[];
+  if(mapFresh.value==='expired') out.push('MAP');
+  if(lacFresh.value==='expired') out.push('Lactato');
+  return out;
+}
+function showQueueBanner(days){
+  const el=queueBanner;
+  if(days>=QUEUE_STALE_DAYS){
+    el.style.display='block';
+    el.innerHTML='<strong>Fila sintética estagnada (≥ '+QUEUE_STALE_DAYS+' dias).</strong> Re-matching obrigatório / escalação: o episódio permanece na fila sem capacidade resolutiva aplicada. Demonstração Pilot A — dados 100% sintéticos.';
+  }else{
+    el.style.display='none';
+    el.innerHTML='';
+  }
+}
 function run(){
  const n=need.value,r=risk(),miss=missing.value==='yes';
- if(miss){status.textContent='ABSTENTION';status.style.background='#6a3940';results.innerHTML='<div class="hospital"><strong>Insuficiente para recomendar</strong><div class="reason">Há dado crítico ausente. O motor interrompe o ranking e solicita completude mínima.</div></div>';audit.textContent='DECISÃO: ABSTENTION\nMOTIVO: variável crítica ausente\nAÇÃO: solicitar dado faltante antes do matching\nREGRA: nenhum score substitui informação mínima obrigatória';return}
+ const days=+daysInQueue.value||0;
+ const expired=expiredInputs();
+ showQueueBanner(days);
+
+ // Hard abstention: missing critical data (pre-existing rule).
+ if(miss){
+  status.textContent='ABSTENTION';status.style.background='#6a3940';
+  results.innerHTML='<div class="hospital"><strong>Insuficiente para recomendar</strong><div class="reason">Há dado crítico ausente. O motor interrompe o ranking e solicita completude mínima.</div></div>';
+  audit.textContent='DECISÃO: ABSTENTION\\nMOTIVO: variável crítica ausente\\nAÇÃO: solicitar dado faltante antes do matching\\nREGRA: nenhum score substitui informação mínima obrigatória\\ndaysInQueue='+days;
+  return;
+ }
+
+ // Pilot A TTL: abstention if any required clinical input freshness is expired.
+ if(expired.length){
+  status.textContent='ABSTENTION · TTL';status.style.background='#6a3940';
+  results.innerHTML='<div class="hospital"><strong>Insuficiente — dado expirado (TTL)</strong><div class="reason">Input(s) obrigatório(s) com freshness=expired: '+expired.join(', ')+'. Solicitar recoleta / reavaliação antes do matching.</div></div>';
+  audit.textContent='DECISÃO: ABSTENTION\\nMOTIVO: freshness expired em campo(s) crítico(s): '+expired.join(', ')+'\\nAÇÃO: recoleta ou reavaliação temporal antes do matching\\nTTL: Pilot A (demonstrativo)\\ndaysInQueue='+days+(days>=QUEUE_STALE_DAYS?'\\nFILA: ≥'+QUEUE_STALE_DAYS+' dias → re-matching/escalação sintética':'');
+  return;
+ }
+
+ // Pilot A queue: daysInQueue ≥ 20 forces re-match / escalation message (no destination ranking as settled).
+ if(days>=QUEUE_STALE_DAYS){
+  status.textContent='RE-MATCH / ESCALAÇÃO';status.style.background='#6a4a30';
+  results.innerHTML='<div class="hospital"><strong>Fila sintética ≥ '+QUEUE_STALE_DAYS+' dias</strong><div class="reason">O ranking anterior não permanece válido. Forçar re-matching e escalação humana. Capacidade dura continua a aplicar-se; nenhum destino é promovido automaticamente.</div></div>';
+  audit.textContent='DECISÃO: RE-MATCH / ESCALAÇÃO\\nMOTIVO: daysInQueue='+days+' (≥ '+QUEUE_STALE_DAYS+')\\nEXEMPLO: sintético «20 dias na fila» (Pilot A)\\nAÇÃO: reabrir matching; não tratar ranking prévio como resolutivo\\nREGRA DURA: capacidade executora continua obrigatória\\nTTL: MAP='+mapFresh.value+'; lactato='+lacFresh.value;
+  return;
+ }
+
  const ranked=hospitals.map(h=>{const capability=can(h,n)?55:-100;const time=Math.max(0,30-h.eta*4);const distance=Math.max(0,15-h.km/25);const urgency=r*.15;return {...h,score:Math.round(capability+time+distance+urgency)}}).sort((a,b)=>b.score-a.score);
  status.textContent='RANKING EXPERIMENTAL';status.style.background='#183c4c';
  results.innerHTML=ranked.map((h,i)=>`<div class="hospital ${i===0?'top':''}"><div class="row"><div><strong>${i+1}. ${h.name}</strong><div class="reason">${h.km} km · ETA intervenção ${h.eta} h · ${h.transport}</div></div><div class="score">${Math.max(0,h.score)}</div></div><div class="bar"><span style="width:${Math.max(0,Math.min(100,h.score))}%"></span></div><div class="reason">Capacidade requerida: <b>${can(h,n)?'SIM':'NÃO'}</b></div></div>`).join('');
- const top=ranked[0];audit.textContent=`FATOS\nMAP=${map.value} mmHg; lactato=${lac.value}; bilirrubina=${bil.value}; tempo=${hrs.value} h\nintervenção requerida=${n.toUpperCase()}\n\nREGRA DURA\nUnidade sem capacidade executora recebe penalização impeditiva.\n\nSINAL DE URGÊNCIA\nrisk proxy=${r}/100 (demonstrativo; não validado)\n\nMATCHING\n1º=${top.name}; capacidade=${can(top,n)}; ETA=${top.eta} h\n\nINCERTEZA NÃO MODELADA NA V1.0\ntrânsito, fila interna, indisponibilidade súbita, erro de registro, evolução durante transporte\n\nPRÓXIMA CAMADA C4AI\nsubstituir pesos heurísticos por representação formal + inferência sob incerteza + critérios explícitos de abstention.`
+ const top=ranked[0];
+ audit.textContent=`FATOS\\nMAP=${map.value} mmHg (${mapFresh.value}); lactato=${lac.value} (${lacFresh.value}); bilirrubina=${bil.value}; tempo=${hrs.value} h; daysInQueue=${days}\\nintervenção requerida=${n.toUpperCase()}\\n\\nREGRA DURA\\nUnidade sem capacidade executora recebe penalização impeditiva.\\n\\nSINAL DE URGÊNCIA\\nrisk proxy=${r}/100 (demonstrativo; não validado)\\n\\nMATCHING\\n1º=${top.name}; capacidade=${can(top,n)}; ETA=${top.eta} h\\n\\nINCERTEZA NÃO MODELADA NA V1.0\\ntrânsito, fila interna, indisponibilidade súbita, erro de registro\\n\\nPILOT A TTL\\nabstention se freshness=expired; fila ≥${QUEUE_STALE_DAYS}d força re-match\\n\\nPRÓXIMA CAMADA C4AI\\nsubstituir pesos heurísticos por representação formal + inferência sob incerteza + critérios explícitos de abstention.`;
 }
-function preset(){map.value=58;lac.value=4.1;bil.value=12.9;hrs.value=18;need.value='cpre';missing.value='no';run()}run();
+function preset(id){
+ const ex=EXAMPLES[id]||EXAMPLES.anchor;
+ map.value=ex.map;lac.value=ex.lac;bil.value=ex.bil;hrs.value=ex.hrs;
+ need.value=ex.need;missing.value=ex.missing;
+ mapFresh.value=ex.mapFresh;lacFresh.value=ex.lacFresh;daysInQueue.value=ex.daysInQueue;
+ run();
+}
+preset('anchor');
 </script>
 </body>
 </html>

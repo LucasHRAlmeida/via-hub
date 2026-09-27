@@ -1,4 +1,4 @@
-# EVAM Conversor — V1.0
+# EVAM Conversor — V1.1
 
 Conversor clínico estruturante do **VIA Federal Regulation Lab**. A V1.0 recebe narrativa clínica livre, sugere campos estruturados por heurísticas transparentes e produz:
 
@@ -6,6 +6,17 @@ Conversor clínico estruturante do **VIA Federal Regulation Lab**. A V1.0 recebe
 - envelope JSON com proveniência por campo;
 - JSON Schema Draft 2020-12 específico do template selecionado;
 - lista explícita de campos críticos ausentes.
+
+
+## Pilot A · TTL / freshness (V1.1)
+
+Campos clínicos críticos no catálogo podem declarar `maxAgeHours`. O envelope passa a carregar, na proveniência por campo, quando houver `observedAt`:
+
+- `observedAt` (ISO-8601 ou epoch)
+- `validUntil` (derivado de `observedAt + maxAgeHours`, se não informado)
+- `freshness`: `fresh` | `stale` | `expired`
+
+Heurísticas transparentes (não validadas): vitais ~2h; gases/temperatura ~4h; lactato/troponina ~6h; coagulação ~12h; labs de rotina ~24h. A UI de revisão mostra o selo de freshness quando presente; o fluxo existente permanece intacto.
 
 ## Posição na proposta federal
 
