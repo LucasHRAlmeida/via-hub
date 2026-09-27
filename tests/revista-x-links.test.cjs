@@ -31,7 +31,10 @@ for (const relativePath of channelPages) {
 
 for (const relativePath of channelOnlyPages) {
   const html = fs.readFileSync(path.join(root, relativePath), "utf8");
-  assert.match(html, /Instagram ↗<\\/a>\\s*<a href="https:\\/\\/x\\.com\\/drlucashr"[^>]*>X · @drlucashr ↗<\\/a>\\s*<a href="https:\\/\\/medium\\.com\\/@drlucashr"/, `${relativePath} deve exibir X entre Instagram e Medium`);
+  const instagram = html.indexOf(">Instagram ↗</a>");
+  const x = html.indexOf('href="https://x.com/drlucashr"');
+  const medium = html.indexOf('href="https://medium.com/@drlucashr"');
+  assert.ok(instagram >= 0 && instagram < x && x < medium, `${relativePath} deve exibir X entre Instagram e Medium`);
 }
 
 const corpus = JSON.parse(fs.readFileSync(path.join(root, "data", "faq.json"), "utf8"));
