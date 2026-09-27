@@ -12,4 +12,6 @@ HUMAN_GATE permanece para decisões substantivas ou mudanças de risco real: mer
 
 Objetivo operacional: minimizar intervenção do owner e o tempo entre a detecção do erro e um estado verificadamente corrigido, sem reduzir rastreabilidade.
 
+O mantenedor é médico e não deve receber como tarefa a edição manual de código, a regeneração de artefatos ou a aplicação de sugestões de review. Em mudanças com fonte canônica e saídas geradas, identificar a fonte, editá-la, regenerar todas as saídas e verificar ausência de divergência antes de declarar conclusão. Quando houver permissão de escrita no PR, findings objetivos do Codex/Copilot são itens de execução no próprio branch; comunicar apenas o resultado e eventual decisão substantiva pendente. Não acionar serviços ou créditos pagos adicionais para tentativas repetitivas sem necessidade demonstrada; registrar limites reais de acesso e custo quando conhecidos. Esta regra instrui agentes no repositório, sem alterar configurações de cobrança da plataforma.
+
 Para GitHub Copilot, ler também `.github/copilot-instructions.md` antes de qualquer ação.
