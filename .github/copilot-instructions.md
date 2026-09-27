@@ -20,6 +20,8 @@ Se o Copilot tiver escrita no branch/PR correspondente, deve aplicar o patch mí
 
 Se estiver em contexto estritamente read-only/review-only, comentar o finding e fornecer patch mínimo executável ao implementador. Nunca declarar correção aplicada sem ter produzido e verificado o estado correspondente.
 
+O mantenedor é médico: não devolver a ele edição de código, regeneração de arquivos ou aplicação manual de findings. Quando um arquivo publicado deriva de corpus ou gerador, alterar a fonte canônica, executar a geração e conferir os derivados e seus consumidores (por exemplo, HTML, JSON-LD e seed SQL). Antes de encerrar um PR com review objetivo, aplicar as correções possíveis no branch e verificar o resultado. Evitar novas chamadas que consumam créditos pagos sem necessidade técnica demonstrada; esta instrução não modifica cobrança ou limites da plataforma.
+
 O critério operacional é reduzir intervenção do owner e o tempo entre detecção e estado verificadamente corrigido, preservando rastreabilidade. HUMAN_GATE continua reservado a decisões substantivas ou risco real: merge, secrets, permissões, branch protection, repository settings, infraestrutura externa, irreversibilidade ou ambiguidade material.
 
 Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMAN_GATE (Dr Lucas HR Almeida). Consenso entre agentes não é decisão.
