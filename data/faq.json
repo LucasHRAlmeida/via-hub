@@ -168,7 +168,7 @@
       "id": "a-via-tem-newsletter",
       "category": "projetos",
       "question": "A VIA tem newsletter e canais oficiais?",
-      "answer": "Sim. A publicação editorial da iniciativa é o Substack VIA. Os demais canais oficiais são YouTube (@drlucashr), Instagram (@drlucashr), Medium (@drlucashr), GitHub (@LucasHRAlmeida), Doctoralia, canal e contato no WhatsApp. Todos pertencem à mesma pessoa e são os perfis declarados em sameAs nos dados estruturados de todas as páginas.",
+      "answer": "Sim. A publicação editorial da iniciativa é o Substack VIA. Os demais canais oficiais são YouTube (@drlucashr), Instagram (@drlucashr), X (@drlucashr), Medium (@drlucashr), GitHub (@LucasHRAlmeida), Doctoralia, canal e contato no WhatsApp. Todos pertencem à mesma pessoa e são os perfis declarados em sameAs nos dados estruturados de todas as páginas.",
       "link": { "href": "https://drlucashr.substack.com", "label": "Substack VIA", "external": true },
       "sources": ["llms.txt"]
     },
