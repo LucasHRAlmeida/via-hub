@@ -39,7 +39,7 @@ for (const relativePath of channelOnlyPages) {
 
 const corpus = JSON.parse(fs.readFileSync(path.join(root, "data", "faq.json"), "utf8"));
 const answer = corpus.faqs.find((item) => item.id === "a-via-tem-newsletter").answer;
-assert.match(answer, /Instagram \\(@drlucashr\\), X \\(@drlucashr\\), Medium \\(@drlucashr\\)/);
+assert.ok(answer.includes("Instagram (@drlucashr), X (@drlucashr), Medium (@drlucashr)"));
 const seed = fs.readFileSync(path.join(root, "data", "faq.seed.sql"), "utf8");
 assert.ok(seed.includes(answer), "seed deve refletir a resposta canônica");
 const sharedGraph = JSON.parse(fs.readFileSync(path.join(root, "data", "graph-nodes.json"), "utf8"));
