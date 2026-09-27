@@ -21,8 +21,11 @@ a{color:var(--navy)}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
 .mono{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}
 .hub-bar{background:var(--navy);color:#fff;font-size:12px}
+.hub-bar a{color:#fff;text-decoration:none}
 .hub-bar .wrap{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:10px 24px}
+.hub-tools{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
 .wordmark{font-weight:700;letter-spacing:.18em}
+.hub-link{font-size:10px;opacity:.88}
 .wordmark span{color:var(--teal)}
 .tag{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:2px;font-weight:500;display:inline-block}
 .tag.draft{background:var(--amber-wash);color:var(--amber);border:1px solid #e6d3b0}
@@ -167,7 +170,10 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 <body>
 <div class="hub-bar">
   <div class="wrap">
-    <div class="wordmark">VI<span>A</span> HUB</div>
+    <div class="hub-tools">
+      <a class="hub-link mono" href="../">← Voltar ao hub</a>
+      <a class="wordmark" href="../" aria-label="VIA HUB">VI<span>A</span> HUB</a>
+    </div>
     <span class="mono" style="opacity:.75;font-size:10px">Edição verificada · fontes primárias · 27.09.2026</span>
   </div>
 </div>

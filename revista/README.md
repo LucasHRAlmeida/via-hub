@@ -16,6 +16,7 @@ Antes de substituir a edição corrente, exportar a versão publicada em PDF e p
 - Tema recorrente não se torna editoria fixa: só permanece quando continua materialmente relevante na semana.
 - Alegações epidemiológicas, regulatórias e quantitativas devem apontar para fonte primária específica, com data e escopo.
 - A voz de marca e a paleta seguem o portal VIA — a fonte científica permanece separada da ferramenta que a apresenta.
+- Toda edição corrente deve expor no topo um elo de volta ao hub (`href="../"`); a revista não mantém fileira de canais no rodapé.
 
 ## Stack
 
