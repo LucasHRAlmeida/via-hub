@@ -169,3 +169,7 @@ h1 span { color: var(--cyan); }
   .step-card { box-shadow: none; }
 }
 
+.freshness-badge { margin-left: 8px; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; border-radius: 999px; padding: 2px 7px; font-weight: 700; vertical-align: middle; }
+.freshness-fresh { background: #daf3e5; color: #1f6b45; }
+.freshness-stale { background: #fff0cc; color: #8a5a10; }
+.freshness-expired { background: #f8d9d6; color: #8a2f2a; }

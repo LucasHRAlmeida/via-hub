@@ -119,6 +119,20 @@ function fieldInput(key, item, schema) {
   const origin = document.createElement("strong");
   origin.textContent = `${item.origin}: `;
   provenance.append(origin, document.createTextNode(item.excerpt || item.confidence || "não localizado"));
+
+  // Pilot A: show freshness when TTL provenance is present (does not break existing flow).
+  if (item.freshness) {
+    const badge = document.createElement("span");
+    badge.className = `freshness-badge freshness-${item.freshness}`;
+    badge.textContent = item.freshness;
+    badge.title = [
+      item.observedAt ? `observedAt: ${item.observedAt}` : null,
+      item.validUntil ? `validUntil: ${item.validUntil}` : null,
+      item.maxAgeHours != null ? `maxAgeHours: ${item.maxAgeHours}` : null,
+    ].filter(Boolean).join(" · ");
+    label.append(badge);
+  }
+
   wrapper.append(label, input, provenance);
   return wrapper;
 }

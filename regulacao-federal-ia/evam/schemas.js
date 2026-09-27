@@ -1,4 +1,4 @@
-export const EVAM_VERSION = "1.0.0";
+export const EVAM_VERSION = "1.1.0";
 
 export const FIELD_CATALOG = Object.freeze({
   age: { label: "Idade", type: "number", unit: "anos", group: "Identificação mínima" },
@@ -8,26 +8,26 @@ export const FIELD_CATALOG = Object.freeze({
   symptomOnset: { label: "Início dos sintomas", type: "datetime-local", group: "Linha do tempo" },
   lastKnownWell: { label: "Último momento bem (LKW)", type: "datetime-local", group: "Linha do tempo" },
   hoursSinceRecognition: { label: "Horas desde o reconhecimento", type: "number", unit: "h", step: "0.1", group: "Linha do tempo" },
-  sbp: { label: "Pressão sistólica", type: "number", unit: "mmHg", group: "Estado atual" },
-  dbp: { label: "Pressão diastólica", type: "number", unit: "mmHg", group: "Estado atual" },
-  map: { label: "Pressão arterial média", type: "number", unit: "mmHg", group: "Estado atual" },
-  heartRate: { label: "Frequência cardíaca", type: "number", unit: "bpm", group: "Estado atual" },
-  respiratoryRate: { label: "Frequência respiratória", type: "number", unit: "irpm", group: "Estado atual" },
-  spo2: { label: "SpO₂", type: "number", unit: "%", group: "Estado atual" },
-  temperature: { label: "Temperatura", type: "number", unit: "°C", step: "0.1", group: "Estado atual" },
-  gcs: { label: "Escala de Coma de Glasgow", type: "number", unit: "/15", group: "Estado atual" },
+  sbp: { label: "Pressão sistólica", type: "number", unit: "mmHg", group: "Estado atual", maxAgeHours: 2 },
+  dbp: { label: "Pressão diastólica", type: "number", unit: "mmHg", group: "Estado atual", maxAgeHours: 2 },
+  map: { label: "Pressão arterial média", type: "number", unit: "mmHg", group: "Estado atual", maxAgeHours: 2 },
+  heartRate: { label: "Frequência cardíaca", type: "number", unit: "bpm", group: "Estado atual", maxAgeHours: 2 },
+  respiratoryRate: { label: "Frequência respiratória", type: "number", unit: "irpm", group: "Estado atual", maxAgeHours: 2 },
+  spo2: { label: "SpO₂", type: "number", unit: "%", group: "Estado atual", maxAgeHours: 2 },
+  temperature: { label: "Temperatura", type: "number", unit: "°C", step: "0.1", group: "Estado atual", maxAgeHours: 4 },
+  gcs: { label: "Escala de Coma de Glasgow", type: "number", unit: "/15", group: "Estado atual", maxAgeHours: 2 },
   oxygenSupport: { label: "Suporte de oxigênio/ventilatório", type: "text", group: "Suporte atual" },
   vasopressor: { label: "Vasopressor", type: "text", group: "Suporte atual" },
-  lactate: { label: "Lactato", type: "number", unit: "mmol/L", step: "0.1", group: "Laboratório" },
-  creatinine: { label: "Creatinina", type: "number", unit: "mg/dL", step: "0.01", group: "Laboratório" },
-  bilirubin: { label: "Bilirrubina total", type: "number", unit: "mg/dL", step: "0.1", group: "Laboratório" },
-  platelets: { label: "Plaquetas", type: "number", unit: "/mm³", group: "Laboratório" },
-  inr: { label: "INR", type: "number", step: "0.01", group: "Laboratório" },
-  troponin: { label: "Troponina", type: "text", group: "Laboratório" },
-  ph: { label: "pH", type: "number", step: "0.01", group: "Laboratório" },
-  pao2: { label: "PaO₂", type: "number", unit: "mmHg", group: "Laboratório" },
-  fio2: { label: "FiO₂", type: "number", unit: "%", group: "Laboratório" },
-  nihss: { label: "NIHSS", type: "number", unit: "pontos", group: "Neurológico" },
+  lactate: { label: "Lactato", type: "number", unit: "mmol/L", step: "0.1", group: "Laboratório", maxAgeHours: 6 },
+  creatinine: { label: "Creatinina", type: "number", unit: "mg/dL", step: "0.01", group: "Laboratório", maxAgeHours: 24 },
+  bilirubin: { label: "Bilirrubina total", type: "number", unit: "mg/dL", step: "0.1", group: "Laboratório", maxAgeHours: 24 },
+  platelets: { label: "Plaquetas", type: "number", unit: "/mm³", group: "Laboratório", maxAgeHours: 24 },
+  inr: { label: "INR", type: "number", step: "0.01", group: "Laboratório", maxAgeHours: 12 },
+  troponin: { label: "Troponina", type: "text", group: "Laboratório", maxAgeHours: 6 },
+  ph: { label: "pH", type: "number", step: "0.01", group: "Laboratório", maxAgeHours: 4 },
+  pao2: { label: "PaO₂", type: "number", unit: "mmHg", group: "Laboratório", maxAgeHours: 4 },
+  fio2: { label: "FiO₂", type: "number", unit: "%", group: "Laboratório", maxAgeHours: 2 },
+  nihss: { label: "NIHSS", type: "number", unit: "pontos", group: "Neurológico", maxAgeHours: 2 },
   pupilExam: { label: "Pupilas", type: "text", group: "Neurológico" },
   focalDeficit: { label: "Déficit focal", type: "text", group: "Neurológico" },
   ecg: { label: "ECG", type: "textarea", group: "Exames-chave" },
@@ -124,4 +124,14 @@ export function getSchema(id) {
 
 export function getFieldDefinition(key) {
   return FIELD_CATALOG[key] ?? { label: key, type: "text", group: "Outros" };
+}
+
+/**
+ * Default TTL heuristics for Pilot A (transparent, non-validated).
+ * Vitals / neuro scores: ~2h. Blood gas / temp: ~4h. Lactate / troponin: ~6h.
+ * Coagulation: ~12h. Routine chemistry/hematology: ~24h.
+ * Fields without maxAgeHours do not receive automatic freshness.
+ */
+export function getFieldMaxAgeHours(key) {
+  return getFieldDefinition(key).maxAgeHours ?? null;
 }

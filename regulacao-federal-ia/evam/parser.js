@@ -1,4 +1,4 @@
-import { EVAM_VERSION, getFieldDefinition } from "./schemas.js";
+import { EVAM_VERSION, getFieldDefinition, getFieldMaxAgeHours } from "./schemas.js";
 
 const number = (value) => {
   const parsed = Number(String(value).replace(",", "."));
@@ -38,6 +38,84 @@ const yesNoText = (positive, negative = null) => (text) => {
   }
   return null;
 };
+
+
+/**
+ * Parse observedAt from ISO-8601 or epoch milliseconds/seconds string.
+ * Returns Date or null. Transparent heuristic — does not invent timestamps.
+ */
+export function parseObservedAt(value) {
+  if (value === null || typeof value === "undefined" || value === "") return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+  const raw = String(value).trim();
+  if (/^\d{10,13}$/.test(raw)) {
+    const n = Number(raw);
+    const ms = raw.length === 10 ? n * 1000 : n;
+    const date = new Date(ms);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/**
+ * Freshness bands (Pilot A):
+ * - fresh: age < 50% of maxAgeHours
+ * - stale: age >= 50% and < maxAgeHours
+ * - expired: age >= maxAgeHours
+ * Returns null when observedAt or maxAgeHours is unavailable.
+ */
+export function computeFreshness(observedAt, maxAgeHours, now = new Date()) {
+  const observed = parseObservedAt(observedAt);
+  const maxAge = Number(maxAgeHours);
+  if (!observed || !Number.isFinite(maxAge) || maxAge <= 0) return null;
+  const ageMs = now.getTime() - observed.getTime();
+  if (!Number.isFinite(ageMs) || ageMs < 0) return null;
+  const ageHours = ageMs / 3_600_000;
+  if (ageHours >= maxAge) return "expired";
+  if (ageHours >= maxAge * 0.5) return "stale";
+  return "fresh";
+}
+
+export function deriveValidUntil(observedAt, maxAgeHours) {
+  const observed = parseObservedAt(observedAt);
+  const maxAge = Number(maxAgeHours);
+  if (!observed || !Number.isFinite(maxAge) || maxAge <= 0) return null;
+  return new Date(observed.getTime() + maxAge * 3_600_000).toISOString();
+}
+
+/**
+ * Attach TTL provenance when the field has maxAgeHours and an observedAt
+ * (explicit on the field, or derived from hoursSinceRecognition for lab/vital fields).
+ * Heuristic: if hoursSinceRecognition is known and the field has a value, treat
+ * "estado atual / laboratório" as observed roughly that many hours ago.
+ */
+export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
+  const hours = Number(fields.hoursSinceRecognition?.value);
+  const derivedObserved = Number.isFinite(hours) && hours >= 0
+    ? new Date(now.getTime() - hours * 3_600_000).toISOString()
+    : null;
+
+  for (const [key, item] of Object.entries(fields)) {
+    if (!item || item.value === "" || item.value === null || typeof item.value === "undefined") continue;
+    const maxAge = getFieldMaxAgeHours(key);
+    if (maxAge === null) continue;
+
+    const observedAt = item.observedAt || derivedObserved;
+    if (!observedAt) continue;
+
+    const validUntil = item.validUntil || deriveValidUntil(observedAt, maxAge);
+    const freshness = computeFreshness(observedAt, maxAge, now);
+    fields[key] = {
+      ...item,
+      observedAt: parseObservedAt(observedAt)?.toISOString?.() ?? String(observedAt),
+      validUntil,
+      freshness,
+      maxAgeHours: maxAge,
+    };
+  }
+  return fields;
+}
 
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
@@ -175,6 +253,7 @@ export function extractNarrative(text, schema) {
     };
   }
 
+  enrichFieldFreshness(fields);
   return fields;
 }
 
@@ -190,14 +269,23 @@ export function buildEnvelope({ sourceText, schema, fields, includeSource = fals
   const data = {};
   const provenance = {};
 
+  // Ensure TTL/freshness is computed even when fields were edited in the UI.
+  enrichFieldFreshness(fields);
+
   for (const key of schema.fields) {
     const item = fields[key] ?? { value: "" };
     data[key] = item.value === "" ? null : item.value;
-    provenance[key] = {
+    const entry = {
       origin: item.origin ?? "revisão humana",
       confidence: item.confidence ?? "não informado",
       excerpt: item.excerpt || null,
     };
+    // Pilot A TTL: critical clinical fields may carry observedAt / validUntil / freshness.
+    if (item.observedAt) entry.observedAt = item.observedAt;
+    if (item.validUntil) entry.validUntil = item.validUntil;
+    if (item.freshness) entry.freshness = item.freshness;
+    if (item.maxAgeHours != null) entry.maxAgeHours = item.maxAgeHours;
+    provenance[key] = entry;
   }
 
   return {
@@ -272,7 +360,9 @@ export function formatRegulatoryText(envelope) {
       activeGroup = field.group;
       lines.push(activeGroup.toUpperCase());
     }
-    lines.push(`- ${field.label}: ${value}${field.unit ? ` ${field.unit}` : ""}`);
+    const fresh = envelope.provenance?.[key]?.freshness;
+    const freshNote = fresh ? ` [${fresh}]` : "";
+    lines.push(`- ${field.label}: ${value}${field.unit ? ` ${field.unit}` : ""}${freshNote}`);
   }
 
   lines.push("", "CAMPOS CRÍTICOS AUSENTES");
