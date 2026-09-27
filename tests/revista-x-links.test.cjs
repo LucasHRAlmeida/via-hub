@@ -13,6 +13,7 @@ const channelPages = [
   "via-economia-saude/index.html",
   "via-literacia-programacao-github/index.html"
 ];
+const channelOnlyPages = ["bem-estar-multissensorial/index.html"];
 
 for (const relativePath of channelPages) {
   const html = fs.readFileSync(path.join(root, relativePath), "utf8");
@@ -28,6 +29,20 @@ for (const relativePath of channelPages) {
   );
 }
 
+for (const relativePath of channelOnlyPages) {
+  const html = fs.readFileSync(path.join(root, relativePath), "utf8");
+  assert.match(html, /Instagram ↗<\\/a>\\s*<a href="https:\\/\\/x\\.com\\/drlucashr"[^>]*>X · @drlucashr ↗<\\/a>\\s*<a href="https:\\/\\/medium\\.com\\/@drlucashr"/, `${relativePath} deve exibir X entre Instagram e Medium`);
+}
+
+const corpus = JSON.parse(fs.readFileSync(path.join(root, "data", "faq.json"), "utf8"));
+const answer = corpus.faqs.find((item) => item.id === "a-via-tem-newsletter").answer;
+assert.match(answer, /Instagram \\(@drlucashr\\), X \\(@drlucashr\\), Medium \\(@drlucashr\\)/);
+const seed = fs.readFileSync(path.join(root, "data", "faq.seed.sql"), "utf8");
+assert.ok(seed.includes(answer), "seed deve refletir a resposta canônica");
+const sharedGraph = JSON.parse(fs.readFileSync(path.join(root, "data", "graph-nodes.json"), "utf8"));
+for (const node of sharedGraph.filter((item) => Array.isArray(item.sameAs))) {
+  assert.ok(node.sameAs.includes("https://x.com/drlucashr"), "identidade do FAQ deve declarar X em sameAs");
+}
 const faqHtml = fs.readFileSync(path.join(root, "faq", "index.html"), "utf8");
 assert.match(faqHtml, /Instagram \(@drlucashr\), X \(@drlucashr\), Medium \(@drlucashr\)/, "FAQ deve citar o canal oficial no X");
 
