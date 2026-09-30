@@ -1,0 +1,61 @@
+{
+  "version": "0.1.0",
+  "updated_at": "2026-09-30",
+  "status": "PROPOSTO",
+  "note": "Alicerce para atribuição pelo mantenedor. TTL padrão começa no aceite da missão; nenhum agendamento automático foi criado.",
+  "missions": [
+    {
+      "id": "VIA-SOB-001",
+      "objective": "Consolidar a tese e a arquitetura editorial",
+      "acceptance": "Entregar texto com alegações normativas, conceituais e empíricas identificadas, mantendo a proveniência do manifesto.",
+      "state": "ABERTA",
+      "responsible": null,
+      "accepted_at": null,
+      "ttl_check_seconds": 3600,
+      "next_check_at": null,
+      "automatic_check": false,
+      "artifact": null,
+      "evidence": []
+    },
+    {
+      "id": "VIA-SOB-002",
+      "objective": "Auditar cálculos quando forem recebidos",
+      "acceptance": "Reproduzir cada cálculo com fonte, unidade, fórmula, premissas e sensibilidade; manter dados ausentes como null.",
+      "state": "ABERTA",
+      "responsible": null,
+      "accepted_at": null,
+      "ttl_check_seconds": 3600,
+      "next_check_at": null,
+      "automatic_check": false,
+      "artifact": null,
+      "evidence": []
+    },
+    {
+      "id": "VIA-SOB-003",
+      "objective": "Declarar capacidades de cada vendor",
+      "acceptance": "Entregar uma contribuição com sessão, capacidades, evidências e lacunas verificadas. Atribuição pelo mantenedor.",
+      "state": "ABERTA",
+      "responsible": null,
+      "accepted_at": null,
+      "ttl_check_seconds": 3600,
+      "next_check_at": null,
+      "automatic_check": false,
+      "artifact": null,
+      "evidence": []
+    },
+    {
+      "id": "VIA-SOB-004",
+      "objective": "Revisar a navegação e a publicação",
+      "acceptance": "Verificar as duas portas, acessibilidade, rotas e conteúdo. Após merge autorizado, confirmar deploy e acesso pela navegação.",
+      "state": "ABERTA",
+      "responsible": null,
+      "accepted_at": null,
+      "ttl_check_seconds": 3600,
+      "next_check_at": null,
+      "automatic_check": false,
+      "artifact": null,
+      "evidence": []
+    }
+  ]
+}
+

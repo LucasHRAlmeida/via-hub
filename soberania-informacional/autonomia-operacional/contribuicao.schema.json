@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iniciativa-via.com/via-hub/soberania-informacional/autonomia-operacional/contribuicao.schema.json",
+  "title": "Contribuição mínima VIA",
+  "type": "object",
+  "required": [
+    "mission_id",
+    "vendor",
+    "objective",
+    "authorization",
+    "capabilities",
+    "artifact",
+    "epistemic_state",
+    "evidence",
+    "next_check"
+  ],
+  "properties": {
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vendor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorization": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "layer",
+          "operation",
+          "availability",
+          "evidence"
+        ],
+        "properties": {
+          "layer": {
+            "enum": [
+              "MODEL",
+              "TOOL",
+              "INTERFACE"
+            ]
+          },
+          "operation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "availability": {
+            "enum": [
+              "CONFIRMED",
+              "CONDITIONAL",
+              "UNAVAILABLE"
+            ]
+          },
+          "evidence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "availability": {
+                  "const": "CONFIRMED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "artifact": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "epistemic_state": {
+      "enum": [
+        "VERIFICADO",
+        "INFERIDO",
+        "PROPOSTO",
+        "EXECUTADO",
+        "LACUNA"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_check": {
+      "type": "object",
+      "required": [
+        "ttl_seconds",
+        "at",
+        "scheduled",
+        "reason"
+      ],
+      "properties": {
+        "ttl_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "scheduled": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "epistemic_state": {
+            "enum": [
+              "VERIFICADO",
+              "EXECUTADO"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "artifact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

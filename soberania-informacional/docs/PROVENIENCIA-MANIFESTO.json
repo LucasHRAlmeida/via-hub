@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "title": "Manifesto Institucional",
+  "author_declared": "Dr Lucas HR Almeida",
+  "document_date_declared": "2026-09-30",
+  "version_declared": "1.0.0 (Premium Release)",
+  "classification_declared": "Documento Público",
+  "origin": "Arquivo anexado pelo mantenedor nesta sessão em 2026-09-30.",
+  "preserved_file": "../soberania-cognitiva/manifesto-institucional.pdf",
+  "bytes": 83001,
+  "hash_algorithm": "SHA-256",
+  "hash": "d0944a58cc0378fabff75b5175282280b9590e507a40be7187b7052adb9402a9",
+  "preservation": "Cópia binária sem alteração.",
+  "custody_state": "VERIFICADO",
+  "claims_state": "NÃO CERTIFICADAS EM BLOCO",
+  "note": "A declaração VERIFICADO / SSoT pertence à fonte recebida. A preservação e o hash comprovam identidade do arquivo, não veracidade de todas as alegações nem ratificação institucional.",
+  "canonical_route_note": "O PDF declara /soberania-informacional. As páginas deste repositório usam /via-hub/soberania-informacional/. A fonte foi preservada sem corrigir seu endereço interno."
+}
+

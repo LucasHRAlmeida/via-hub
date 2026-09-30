@@ -22,6 +22,15 @@ Proteção de dados é, assim, uma condição material de autonomia: sem governa
 - Não constitui assessoria jurídica individual nem substitui a atuação da ANPD, do Judiciário ou de órgãos de defesa do consumidor.
 - Não confunde navegação privada com anonimato absoluto, nem proteção de dados com moralismo sobre comportamento individual.
 
+## Duas portas — alicerce em desenvolvimento
+
+- [Soberania cognitiva](soberania-cognitiva/): tese, manifesto preservado e agenda sobre linguagem, reflexão e agência.
+- [Autonomia operacional](autonomia-operacional/): contrato comum aos vendors, missões, entrada de contribuições e auditoria de cálculos.
+- [Escopo desta etapa](docs/ALICERCE.md).
+- [Proveniência do manifesto](docs/PROVENIENCIA-MANIFESTO.json).
+
+O alicerce é uma proposta versionada. Nenhum vendor foi acionado ou recebeu função por esta estrutura. O registro de missões não cria agendamento automático.
+
 ## Marco jurídico mínimo
 
 - A LGPD inclui dados referentes à vida sexual entre os **dados pessoais sensíveis** (art. 5º, II).
