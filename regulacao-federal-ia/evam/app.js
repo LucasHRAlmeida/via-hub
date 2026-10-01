@@ -170,6 +170,33 @@ function currentEnvelope() {
   });
 }
 
+function syncFreshnessBadges(envelope) {
+  if (!elements.reviewForm) return;
+  for (const input of elements.reviewForm.querySelectorAll("[name]")) {
+    const card = input.closest(".field-card");
+    const label = card?.querySelector(".field-label");
+    if (!label) continue;
+    const item = envelope.provenance?.[input.name];
+    const freshness = item?.freshness;
+    let badge = label.querySelector(".freshness-badge");
+    if (!freshness) {
+      badge?.remove();
+      continue;
+    }
+    if (!badge) {
+      badge = document.createElement("span");
+      label.append(badge);
+    }
+    badge.className = `freshness-badge freshness-${freshness}`;
+    badge.textContent = freshness;
+    badge.title = [
+      item.observedAt ? `observedAt: ${item.observedAt}` : null,
+      item.validUntil ? `validUntil: ${item.validUntil}` : null,
+      item.maxAgeHours != null ? `maxAgeHours: ${item.maxAgeHours}` : null,
+    ].filter(Boolean).join(" · ");
+  }
+}
+
 function refreshOutputs() {
   if (!state.fields) return;
   const schema = selectedSchema();
@@ -178,6 +205,7 @@ function refreshOutputs() {
   elements.reviewStatus.classList.toggle("incomplete", missing.length > 0);
 
   const envelope = currentEnvelope();
+  syncFreshnessBadges(envelope);
   if (state.format === "json") {
     elements.output.value = JSON.stringify(envelope, null, 2);
   } else if (state.format === "schema") {

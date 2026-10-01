@@ -67,4 +67,66 @@ test("explicit expired observedAt forces expired freshness", () => {
   };
   enrichFieldFreshness(fields, { now });
   assert.equal(fields.lactate.freshness, "expired");
+  assert.equal(fields.lactate.observedAt, "2026-09-20T12:00:00.000Z");
+});
+
+test("blank hoursSinceRecognition does not invent a fresh timestamp", () => {
+  const now = new Date("2026-09-27T12:00:00.000Z");
+  const fields = {
+    lactate: { value: 4.1, origin: "extração automática", confidence: "heurística", excerpt: "" },
+    map: { value: 58, origin: "extração automática", confidence: "heurística", excerpt: "" },
+    hoursSinceRecognition: { value: "" },
+  };
+  enrichFieldFreshness(fields, { now });
+  assert.equal(fields.lactate.freshness, undefined);
+  assert.equal(fields.lactate.observedAt, undefined);
+  assert.equal(fields.map.freshness, undefined);
+  assert.equal(fields.map.observedAt, undefined);
+});
+
+test("zero hours since recognition is an observation at now", () => {
+  const now = new Date("2026-09-27T12:00:00.000Z");
+  const fields = {
+    map: { value: 58, origin: "revisão humana", confidence: "manual", excerpt: "" },
+    hoursSinceRecognition: { value: 0 },
+  };
+  enrichFieldFreshness(fields, { now });
+  assert.equal(fields.map.freshness, "fresh");
+  assert.equal(fields.map.observedAt, now.toISOString());
+});
+
+test("narrative without a recognition interval does not mark vitals fresh", () => {
+  const schema = getSchema("acute-ischemic-stroke.neurology.v1");
+  const text = "Mulher, 67 anos. Último momento bem às 07:10. PA 178/96 mmHg, Glasgow 13, NIHSS 16.";
+  const fields = extractNarrative(text, schema);
+  assert.equal(fields.hoursSinceRecognition.value, "");
+  assert.equal(fields.sbp.value, 178);
+  assert.equal(fields.nihss.value, 16);
+  assert.equal(fields.sbp.freshness, undefined);
+  assert.equal(fields.nihss.freshness, undefined);
+  assert.equal(fields.sbp.observedAt, undefined);
+});
+
+test("changing hoursSinceRecognition recomputes derived freshness", () => {
+  const now = new Date("2026-09-27T12:00:00.000Z");
+  const fields = {
+    lactate: { value: 4.1, origin: "extração automática", confidence: "heurística", excerpt: "" },
+    map: { value: 58, origin: "extração automática", confidence: "heurística", excerpt: "" },
+    hoursSinceRecognition: { value: 18 },
+  };
+  enrichFieldFreshness(fields, { now });
+  assert.equal(fields.lactate.freshness, "expired");
+  assert.equal(fields.map.freshness, "expired");
+
+  fields.hoursSinceRecognition = { value: 0.5, origin: "revisão humana", confidence: "validado/editado manualmente", excerpt: "" };
+  enrichFieldFreshness(fields, { now });
+  assert.equal(fields.lactate.freshness, "fresh");
+  assert.equal(fields.map.freshness, "fresh");
+  assert.equal(fields.map.observedAt, "2026-09-27T11:30:00.000Z");
+
+  fields.hoursSinceRecognition.value = "";
+  enrichFieldFreshness(fields, { now });
+  assert.equal(fields.map.freshness, undefined);
+  assert.equal(fields.map.observedAt, undefined);
+  assert.equal(fields.lactate.validUntil, undefined);
 });
