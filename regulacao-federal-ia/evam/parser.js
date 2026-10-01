@@ -5,6 +5,16 @@ const number = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+/** Contagem de plaquetas: "92 mil" e "92.000" são 92000/mm³, não 92. */
+const plateletCount = (raw, match) => {
+  const text = String(raw ?? "").trim();
+  const scale = String(match?.[2] ?? "").toLowerCase();
+  const grouped = /^\d{1,3}(?:\.\d{3})+$/.test(text);
+  const value = grouped ? Number(text.replaceAll(".", "")) : number(text);
+  if (value === null) return null;
+  return scale === "mil" || scale === "k" ? value * 1000 : value;
+};
+
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 const excerptAround = (text, index, length) => {
@@ -206,8 +216,8 @@ const EXTRACTORS = Object.freeze({
     /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ], 1, number),
   platelets: (text) => matchOne(text, [
-    /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
-  ], 1, number),
+    /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d{1,3}(?:\.\d{3})+|\d+(?:[.,]\d+)?)\s*(mil|k)?\b/iu,
+  ], 1, plateletCount),
   inr: (text) => matchOne(text, [
     /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ], 1, number),
