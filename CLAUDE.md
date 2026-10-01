@@ -19,6 +19,8 @@ Registro técnico e sóbrio, adequado a um repositório público institucional. 
 
 ## Merge em `main`
 
-Não faça merge de PRs em `main`. Abra o PR, descreva o que mudou e o que foi validado, e aguarde decisão humana explícita do mantenedor.
+Abra o PR e descreva o que mudou e o que foi validado. A decisão de merge cabe ao mantenedor; o agente pode executá-la sob ordem humana expressa, vigente e pertinente à mudança, com as verificações exigidas satisfeitas. Não interpretar a tarefa de implementação como autorização automática para merge.
+
+A ordem dada na conversa de trabalho é válida. Registre no PR sua origem e escopo, sem pedir ao mantenedor que a repita em outra interface. HUMAN_GATE reserva a decisão, não proíbe execução delegada. Consolidar pendências e executar o trabalho autorizado sem devolver despachos técnicos ao mantenedor.
 
 Política completa: ver `CONTRIBUTING.md`.

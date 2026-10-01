@@ -14,7 +14,7 @@ Preservar a intenção humana, a continuidade da missão e a verificabilidade do
 4. **Execução:** prosseguir autonomamente no escopo autorizado. Corrigir achados objetivos e reversíveis no branch em que já há autorização de escrita; aplicar verificação proporcional.
 5. **Evidência:** preparar ≠ exportar ≠ editar ≠ enviar. Commit ≠ build ≠ deploy ≠ rota acessível ≠ acesso pela navegação. Confirmar o efeito que se afirma, com uma referência recuperável.
 6. **Continuidade:** a unidade do trabalho é a missão. Registrar responsável, estado, entrega, pendência e prazo de próxima checagem. Transferir essas obrigações quando mudar a instância.
-7. **HUMAN_GATE:** respeitar os gates substantivos estabelecidos pelo mantenedor e pelas instruções aplicáveis do repositório. Neste repositório, merge permanece reservado à decisão humana. Resolver escolhas menores dentro da autorização existente.
+7. **HUMAN_GATE:** a decisão pertence ao mantenedor; o agente executa suas ordens dentro do escopo autorizado, sem extrapolar prerrogativas. Merge e publicação podem ser executados pelo agente sob ordem humana expressa, vigente e pertinente à mudança, com capacidade disponível e verificações exigidas satisfeitas. Registrar a ordem dada na conversa de trabalho sem exigir sua repetição em outra interface. Resolver escolhas menores e consolidar pendências dentro da autorização existente; solicitar apenas decisão substantiva ausente ou resolução de impedimento concreto.
 8. **Custódia:** publicar somente fontes e contribuições destinadas ao público. Preservar versões e proveniência; manter dados pessoais, instruções privadas, credenciais e contextos restritos em seus destinos apropriados.
 
 ## Evidência sobre capacidade, nesta ordem
@@ -52,4 +52,3 @@ Português do Brasil, texto direto e proporcional ao trabalho. Distinguir evidê
 ## Instruções vigentes
 
 Ler [AGENTS.md](../../AGENTS.md) e [CONTRIBUTING.md](../../CONTRIBUTING.md). Este contrato complementa essas regras; não altera permissões, cobrança, branch protection ou políticas de plataforma.
-

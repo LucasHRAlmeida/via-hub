@@ -1,6 +1,14 @@
 # Agentes neste repositório
 
-Codex e GitHub Copilot podem atuar como executores agentivos ou reviewers, respeitando a segregação de funções por PR. Podem investigar, criar branch, implementar, testar, abrir draft PR e iterar sobre feedback. Não fazem commit direto em `main` nem executam merge reservado ao HUMAN_GATE. Em um mesmo PR, autoria pelo agente não conta como revisão independente.
+Agentes executam ordens do mantenedor dentro do escopo autorizado. Isso não implica extrapolar prerrogativas. Codex e GitHub Copilot podem atuar como executores agentivos ou reviewers, respeitando a segregação de funções por PR. Podem investigar, criar branch, implementar, testar, abrir draft PR e iterar sobre feedback. Não fazem commit direto em `main`. Em um mesmo PR, autoria pelo agente não conta como revisão independente.
+
+## Decisão humana e execução delegada
+
+A decisão de integrar ou publicar uma mudança cabe ao mantenedor. O agente pode executar merge e publicação quando houver ordem humana expressa, vigente e pertinente à mudança, capacidade efetivamente disponível e verificações exigidas satisfeitas. HUMAN_GATE reserva a decisão, não impede sua execução delegada.
+
+A autorização dada na conversa de trabalho é válida; o executor registra no PR seu escopo e origem, sem exigir que o mantenedor repita a ordem em outra interface. Não presumir autorização de merge apenas por ter recebido uma tarefa de implementação. Uma ordem não concede novos acessos nem autoriza alterações de permissões, proteções ou infraestrutura fora do escopo.
+
+Cabe ao executor consolidar pendências, aplicar correções e verificar os efeitos. Consultar o mantenedor apenas sobre decisão substantiva ainda ausente ou impedimento concreto; não devolver a ele uma sequência de despachos técnicos executáveis pelo agente.
 
 ## Regra operacional: corrigir, não apenas apontar
 
@@ -8,7 +16,7 @@ Quando o agente identificar um erro **objetivo, localizável e não hermenêutic
 
 Não interromper o trabalho apenas para descrever o erro, sugerir uma correção que o próprio agente pode executar ou pedir nova confirmação humana. Diagnóstico sem correção, quando a correção segura está ao alcance do agente, é trabalho incompleto.
 
-HUMAN_GATE permanece para decisões substantivas ou mudanças de risco real: merge, secrets, permissões, branch protection, repository settings, infraestrutura externa, ações irreversíveis ou ambiguidades capazes de alterar materialmente o resultado. Se o contexto for estritamente read-only/review-only, entregar finding executável e patch mínimo para o implementador, sem fingir que a correção foi aplicada.
+HUMAN_GATE permanece para decisões substantivas ainda não autorizadas ou mudanças de risco real: integração e publicação, secrets, permissões, branch protection, repository settings, infraestrutura externa, ações irreversíveis ou ambiguidades capazes de alterar materialmente o resultado. Uma decisão humana já dada pode ser executada pelo agente conforme a regra de execução delegada, sem nova confirmação pelo mesmo motivo. Se o contexto for estritamente read-only/review-only, entregar finding executável e patch mínimo para o implementador, sem fingir que a correção foi aplicada.
 
 Objetivo operacional: minimizar intervenção do owner e o tempo entre a detecção do erro e um estado verificadamente corrigido, sem reduzir rastreabilidade.
 

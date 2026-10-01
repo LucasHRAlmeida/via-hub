@@ -24,6 +24,5 @@ Completar essa etapa em ambiente com navegador, sob a missão VIA-SOB-004, antes
 ## Pendências de publicação
 
 - Revisão por outro autor quando aplicável.
-- Merge mediante decisão humana explícita, conforme AGENTS.md e CONTRIBUTING.md.
+- Decisão humana explícita de merge; sua execução pode ser delegada ao agente, conforme AGENTS.md e CONTRIBUTING.md.
 - Após merge: conferir deploy, respostas HTTP e acesso às duas portas a partir do módulo.
-

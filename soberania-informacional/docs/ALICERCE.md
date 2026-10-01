@@ -51,6 +51,5 @@ URLs previstas:
 - https://iniciativa-via.com/via-hub/soberania-informacional/autonomia-operacional/
 
 O deploy depende do merge autorizado e da publicação existente do repositório.
-[AGENTS.md](../../AGENTS.md) e [CONTRIBUTING.md](../../CONTRIBUTING.md) reservam merge à decisão humana explícita.
+[AGENTS.md](../../AGENTS.md) e [CONTRIBUTING.md](../../CONTRIBUTING.md) reservam a decisão de merge ao mantenedor e permitem sua execução pelo agente sob ordem humana expressa, vigente e pertinente à mudança. O executor registra a ordem e consolida a verificação, sem exigir despachos repetidos do mantenedor.
 Após o merge, o responsável por VIA-SOB-004 verifica publicação, resposta das rotas e acesso a partir do módulo; um commit não basta como prova de deploy.
-
