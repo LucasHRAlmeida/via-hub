@@ -17,6 +17,38 @@ test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
   assert.match(output, /lactato 4,1/);
 });
 
+test("hemorragia negada não é registrada como presente", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const cases = [
+    ["Sangramento ativo em pelve.", /^Sim — /],
+    ["Hemorragia ativa em pelve.", /^Sim — /],
+    ["Hemorragia não controlada.", /^Sim — /],
+    ["Choque hemorrágico.", /^Sim — /],
+    ["Sem hemorragia ativa.", /^Não — /],
+    ["Sem sangramento ativo.", /^Não — /],
+    ["Sem hemorragia importante.", /^Não — /],
+    ["Sem choque hemorrágico, estável.", /^Não — /],
+  ];
+  for (const [text, expected] of cases) {
+    assert.match(extractNarrative(text, schema).hemorrhage.value, expected, text);
+  }
+});
+
+test("FiO2 fracionária não é truncada para o inteiro à esquerda", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const cases = [
+    ["FiO2 100%", 100],
+    ["FiO2 50%", 50],
+    ["FiO2 0,5", 50],
+    ["FiO2 1,0", 100],
+    ["FiO2 0.6", 60],
+    ["FiO2 0,21", 21],
+  ];
+  for (const [text, expected] of cases) {
+    assert.equal(extractNarrative(text, schema).fio2.value, expected, text);
+  }
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";

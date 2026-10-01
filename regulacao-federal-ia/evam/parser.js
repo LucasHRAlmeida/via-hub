@@ -5,6 +5,18 @@ const number = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+/**
+ * FiO₂ no catálogo é percentual. "100%" permanece 100.
+ * Fração ≤ 1 sem sinal de % ("0,5", "1,0") converte para 50 e 100.
+ */
+const fio2Percent = (raw, match) => {
+  const value = number(raw);
+  if (value === null) return null;
+  const explicitPercent = match?.[2] === "%";
+  if (!explicitPercent && value <= 1) return Math.round(value * 100);
+  return value;
+};
+
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 const excerptAround = (text, index, length) => {
@@ -187,8 +199,8 @@ const EXTRACTORS = Object.freeze({
     /\bpao2\s*[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ], 1, number),
   fio2: (text) => matchOne(text, [
-    /\bfio2\s*[:=]?\s*(\d{1,3})\s*%?/iu,
-  ], 1, number),
+    /\bfio2\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(%)?/iu,
+  ], 1, fio2Percent),
   nihss: (text) => matchOne(text, [
     /\bnihss\s*[:=]?\s*(\d{1,2})\b/iu,
   ], 1, number),
@@ -209,10 +221,11 @@ const EXTRACTORS = Object.freeze({
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
   hemorrhage: yesNoText([
-    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b/iu,
-    /\bchoque\s+hemorr[aá]gico\b/iu,
+    /(?<!\bsem\s+)\b(?:hemorragia|sangramento)\s+(?:ativ[oa]|importante|maci[cç][oa]|n[aã]o\s+controlad[oa])\b/iu,
+    /(?<!\bsem\s+)\bchoque\s+hemorr[aá]gico\b/iu,
   ], [
-    /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
+    /\bsem\s+(?:hemorragia|sangramento)\s+(?:ativ[oa]|importante|maci[cç][oa]|n[aã]o\s+controlad[oa])\b/iu,
+    /\bsem\s+choque\s+hemorr[aá]gico\b/iu,
   ]),
 });
 
