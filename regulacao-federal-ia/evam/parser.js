@@ -117,10 +117,14 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
   return fields;
 }
 
+// Negação na mesma oração ("sem", "não", "negou") não pode ser cortada do valor.
+const NOT_NEGATED = String.raw`(?<!\b(?:sem|s\/|n[aã]o|nega(?:m|ndo)?|negou)(?:\s+[^\s.;,]+){0,4}\s+)`;
+const notNegated = (body) => new RegExp(NOT_NEGATED + body, "iu");
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
-    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
-    /\b(\d{1,3})\s*anos?\b/iu,
+    /\b(?:idade|paciente(?:\s+(?:de|com))?|mulher|homem)(?:\s+de)?\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
+    /(?<!\b(?:há|ha|desde)(?:\s+[^\s.;,\d]+){0,3}\s)\b(\d{1,3})\s*anos?\b/iu,
   ], 1, number),
   sex: (text) => matchOne(text, [
     /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
@@ -157,16 +161,16 @@ const EXTRACTORS = Object.freeze({
     /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
   ], 1, number),
   oxygenSupport: (text) => matchOne(text, [
-    /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
+    notNegated(String.raw`\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})`),
   ]),
   vasopressor: (text) => matchOne(text, [
-    /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
+    notNegated(String.raw`\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})`),
   ]),
   lactate: (text) => matchOne(text, [
-    /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+    /(?<!\bringer\s+)\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*(?:ml|cc)\b)\s*(?:mmol\/?l)?\b/iu,
   ], 1, number),
   creatinine: (text) => matchOne(text, [
-    /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+    /(?<!\b(?:clearance|depura[cç][aã]o|cl)\s+d[ae]\s+)\b(?:creatinina|cr)(?:\s+s[eé]rica)?\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*ml\s*\/\s*min\b)\s*(?:mg\/?dl)?\b/iu,
   ], 1, number),
   bilirubin: (text) => matchOne(text, [
     /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
@@ -196,7 +200,7 @@ const EXTRACTORS = Object.freeze({
     /\b(pupilas?[^\n.;]{0,90})/iu,
   ]),
   focalDeficit: (text) => matchOne(text, [
-    /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
+    notNegated(String.raw`\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})`),
   ]),
   ecg: (text) => matchOne(text, [
     /\b(ecg[^\n]{0,180})/iu,
@@ -206,7 +210,7 @@ const EXTRACTORS = Object.freeze({
     /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
-    /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
+    notNegated(String.raw`\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})`),
   ]),
   hemorrhage: yesNoText([
     /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b/iu,
