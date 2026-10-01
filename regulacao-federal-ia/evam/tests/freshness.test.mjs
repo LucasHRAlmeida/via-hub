@@ -53,6 +53,30 @@ test("envelope provenance carries freshness when hoursSinceRecognition known", (
   assert.ok(envelope.provenance.map.freshness);
 });
 
+test("reconhecimento explícito prevalece sobre «há» incidental no TTL", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const text = "Antibiótico iniciado há 2 horas. Sepse reconhecida há 20 horas. Mulher, 70 anos. PAM 58. Lactato 5,0 mmol/L.";
+  const fields = extractNarrative(text, schema);
+  assert.equal(fields.hoursSinceRecognition.value, 20);
+  assert.equal(fields.lactate.value, 5);
+  assert.equal(fields.lactate.freshness, "expired");
+  assert.equal(fields.map.freshness, "expired");
+
+  const nounForm = extractNarrative(
+    "Dor há 1 hora. Reconhecimento de colangite com sepse há 18 horas. PAM 58. Lactato 4,1.",
+    schema,
+  );
+  assert.equal(nounForm.hoursSinceRecognition.value, 18);
+  assert.equal(nounForm.lactate.freshness, "expired");
+});
+
+test("«há» genérico permanece quando não há reconhecimento explícito", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const text = "Homem, 62 anos. Dor torácica iniciada há 3 horas. PA 92/58 mmHg.";
+  const fields = extractNarrative(text, schema);
+  assert.equal(fields.hoursSinceRecognition.value, 3);
+});
+
 test("explicit expired observedAt forces expired freshness", () => {
   const now = new Date("2026-09-27T12:00:00.000Z");
   const fields = {
