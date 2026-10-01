@@ -15,6 +15,8 @@ O portal é servido pelo GitHub Pages sob o domínio próprio `iniciativa-via.co
 - VIA Economia & Saúde: <https://iniciativa-via.com/via-hub/via-economia-saude/>
 - Bem-Estar Multissensorial: <https://iniciativa-via.com/via-hub/bem-estar-multissensorial/>
 - VIA Soberania Informacional: <https://iniciativa-via.com/via-hub/soberania-informacional/>
+- Soberania cognitiva (alicerce): <https://iniciativa-via.com/via-hub/soberania-informacional/soberania-cognitiva/>
+- Autonomia operacional (alicerce): <https://iniciativa-via.com/via-hub/soberania-informacional/autonomia-operacional/>
 - Regulação Federal de IA em Saúde: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/>
 - EVAM Conversor: <https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/>
 - Saúde na Última Semana — Revista Eletrônica VIA: <https://iniciativa-via.com/via-hub/revista/>

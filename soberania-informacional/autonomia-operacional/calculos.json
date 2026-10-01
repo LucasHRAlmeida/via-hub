@@ -1,0 +1,30 @@
+{
+  "version": "0.1.0",
+  "status": "LACUNA",
+  "scope": "Cálculos que sustentem alegações empíricas da tese de soberania cognitiva.",
+  "inspected_material": [
+    "Manifesto Institucional.pdf recebido em 2026-09-30",
+    "Briefing operacional fornecido pelo mantenedor nesta sessão"
+  ],
+  "finding": "Os materiais recebidos não contêm valores, fórmulas ou resultados quantitativos auditáveis. Este registro não é conclusão sobre outros artefatos do ecossistema.",
+  "audits": [],
+  "template": {
+    "id": null,
+    "claim": null,
+    "source": null,
+    "source_date": null,
+    "inputs": [],
+    "formula": null,
+    "units": null,
+    "assumptions": [],
+    "reported_result": null,
+    "recomputed_result": null,
+    "tolerance": null,
+    "sensitivity": null,
+    "limitations": [],
+    "reviewer": null,
+    "evidence": [],
+    "epistemic_state": "LACUNA"
+  }
+}
+

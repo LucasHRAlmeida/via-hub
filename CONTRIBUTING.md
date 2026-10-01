@@ -24,6 +24,7 @@ Ver `CLAUDE.md` na raiz do repositório para a instrução operacional completa,
 
 ### Merge em `main`
 
-- PRs abertos por agente não são mergeados automaticamente.
-- Merge requer decisão humana explícita do mantenedor, registrada no próprio PR.
+- PRs abertos por agente não autorizam, por si, seu merge.
+- Merge requer decisão humana explícita do mantenedor. O agente pode executá-la quando a ordem vigente abranger a mudança e as verificações exigidas estiverem satisfeitas.
+- A ordem pode ser dada na conversa de trabalho. O executor registra sua origem e escopo no PR, sem solicitar que o mantenedor a repita em outra interface. HUMAN_GATE reserva a decisão humana e admite execução delegada.
 - Branch protection formal em `main` (revisão obrigatória antes de merge) é recomendada e está pendente de configuração em Settings → Branches.

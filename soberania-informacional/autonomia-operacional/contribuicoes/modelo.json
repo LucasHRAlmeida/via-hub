@@ -1,0 +1,18 @@
+{
+  "mission_id": "PREENCHER",
+  "vendor": "PREENCHER",
+  "objective": "PREENCHER",
+  "authorization": "PREENCHER: ordem e limites já autorizados",
+  "capabilities": [],
+  "artifact": null,
+  "epistemic_state": "PROPOSTO",
+  "evidence": [],
+  "next_check": {
+    "ttl_seconds": 3600,
+    "at": null,
+    "scheduled": false,
+    "reason": "Modelo não aceito: preencher o instante da próxima checagem ao assumir a missão."
+  },
+  "notes": "Modelo vazio. Não é contribuição executada. Campos adicionais são permitidos."
+}
+

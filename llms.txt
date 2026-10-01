@@ -35,6 +35,8 @@ Site: https://iniciativa-via.com/via-hub/ · Código aberto: https://github.com/
 
 - [Regulação Federal IA](https://iniciativa-via.com/via-hub/regulacao-federal-ia/): proposta conceitual de inteligência federativa para orquestrar transferências críticas entre estados do SUS, a partir de um caso-sentinela e de lições de segurança aeronáutica.
 - [VIA Soberania Informacional](https://iniciativa-via.com/via-hub/soberania-informacional/): frente de literacia e defesa da autonomia diante de coleta opaca, perfilamento e uso de dados. Não realiza análise jurídica formal.
+- [Soberania cognitiva](https://iniciativa-via.com/via-hub/soberania-informacional/soberania-cognitiva/): alicerce proposto com manifesto recebido preservado, proveniência e agenda de investigação. Custódia da fonte não certifica todas as suas alegações.
+- [Autonomia operacional](https://iniciativa-via.com/via-hub/soberania-informacional/autonomia-operacional/): contrato operacional comum aos vendors, missões com TTL e entrada de contribuições. A estrutura não concede acesso nem aciona agentes ou agendamentos.
 - [VIA Literacia — Programação, Git e GitHub](https://iniciativa-via.com/via-hub/via-literacia-programacao-github/): trilha introdutória em Python conectada a um projeto versionado com Git e integrado por pull request.
 - [VIA Economia & Saúde](https://iniciativa-via.com/via-hub/via-economia-saude/): trilha interativa sobre caixa, valor de referência, ponto de equilíbrio e reserva na prática de profissionais de saúde, com simuladores locais.
 
@@ -77,4 +79,4 @@ Contato clínico: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180
 - [Doctoralia](https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras): verificação profissional pública — não é agenda.
 - [Canal no WhatsApp](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v): canal de divulgação.
 
-Última atualização: 2026-09-18
+Última atualização: 2026-09-30
