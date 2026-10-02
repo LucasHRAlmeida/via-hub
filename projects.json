@@ -39,14 +39,14 @@
       "status": "estável",
       "statusKey": "stable",
       "featured": true,
-      "description": "Plataforma interativa sobre os 14 Hallmarks do câncer, vias de sinalização, genes-chave e terapias-alvo, com quiz e relatório de desempenho.",
+      "description": "Plataforma interativa sobre os 14 Hallmarks do câncer, vias de sinalização, genes-chave e terapias-alvo, com quiz e relatório de desempenho. Aula de LPA embutida nesta página: paradigma molecular, não conduta.",
       "tags": [
         "14 hallmarks",
         "quiz comentado",
         "JSON/CSV",
         "relatório em PDF"
       ],
-      "url": "https://lucashralmeida.github.io/ensino-gamificado/",
+      "url": "https://iniciativa-via.com/via-hub/oncologia-molecular/",
       "repo": "https://github.com/LucasHRAlmeida/ensino-gamificado",
       "en": {
         "name": "Oncology Signaling Pathways",
@@ -59,7 +59,9 @@
           "JSON/CSV",
           "PDF report"
         ]
-      }
+      },
+      "app": "https://lucashralmeida.github.io/ensino-gamificado/",
+      "lecture": "https://youtu.be/AB3jC-i5gdk"
     },
     {
       "id": "escala-movel-evidencia",
