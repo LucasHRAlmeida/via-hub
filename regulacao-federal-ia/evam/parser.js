@@ -39,6 +39,16 @@ const yesNoText = (positive, negative = null) => (text) => {
   return null;
 };
 
+// "tempo: N" may carry dias or minutos. A bare number, or h/horas, stays in hours.
+const hoursValue = (raw, match) => {
+  const value = number(raw);
+  if (value === null) return null;
+  const unit = String(match?.[2] ?? "").toLowerCase();
+  if (unit.startsWith("d")) return value * 24;
+  if (unit.startsWith("min")) return Math.round((value / 60) * 100) / 100;
+  return value;
+};
+
 
 /**
  * Parse observedAt from ISO-8601 or epoch milliseconds/seconds string.
@@ -128,8 +138,8 @@ const EXTRACTORS = Object.freeze({
   ]),
   hoursSinceRecognition: (text) => matchOne(text, [
     /\b(?:há|ha|desde|reconhecid[ao]\s+há)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
-  ], 1, number),
+    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)(?:\s*(h|horas?|d|dias?|min(?:utos?)?))?\b/iu,
+  ], 1, hoursValue),
   sbp: (text) => matchOne(text, [
     /\b(?:pa|press[aã]o\s+arterial)\s*[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
     /\bpas\s*[:=]?\s*(\d{2,3})\b/iu,
