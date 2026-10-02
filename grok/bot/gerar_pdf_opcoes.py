@@ -28,6 +28,7 @@ from reportlab.platypus import (
 
 AQUI = Path(__file__).resolve().parent
 SAIDA = AQUI / "opcoes-grok-bot.pdf"
+SAIDA_TABELA = AQUI / "tabela-custos-grok-bot.pdf"  # página única enviada à impressora
 DATA_REFERENCIA = "outubro de 2026"
 DATA_REVISAO = "02/10/2026"  # data da coleta de preços
 
@@ -47,7 +48,9 @@ WASH = colors.HexColor("#f3f7f9")
 # ---------------------------------------------------------------------------
 # Premissas de preço (USD). Fontes listadas na seção final do PDF.
 # ---------------------------------------------------------------------------
-TAXA_BRL = 5.50  # premissa de conversão US$ 1 = R$ 5,50 (não é cotação oficial)
+TAXA_BRL = 5.23  # US$ 1 = R$ 5,23, cotação de compra OEB em 02/10/2026 (referência datada)
+FONTE_CAMBIO = "OEB, cotação de compra"
+IOF = 0.035  # compras no exterior com cartão (Decreto 12.499/2025); pode mudar por decreto
 
 # xAI, por 1 milhão de tokens, prompts < 200k tokens
 XAI = {
@@ -81,6 +84,19 @@ CPU_MS_VERCEL = 50  # premissa: CPU ativa por invocação na Vercel
 # WhatsApp Business Platform (Brasil), mensagem de serviço a partir de 01/10/2026
 WA_GRATIS_SERVICO = 1000  # por número comercial, por mês (fonte oficial Meta)
 WA_SERVICO_USD = 0.0068  # R$ 0,035 em conta BRL — valor de fontes secundárias (ver texto)
+
+# Impressão por voz (Alexa), preços em R$ coletados em jun–out/2026 (ver relatório de pesquisa)
+XAI_RECARGA_MIN_USD = 5.00  # mínimo da recarga automática (docs.x.ai/console/billing)
+XAI_CREDITO_N2_USD = 25.00
+ECHO_POP = 379.00
+EPSON_L1250 = 849.00
+ECHO_SHOW_5 = 849.00
+EPSON_L3250 = 1018.72
+PAPEL_RESMA = 30.00  # estimativa, não verificada
+PAPEL_FOLHAS = 500
+TINTA_T544_PRECO = 50.29
+TINTA_T544_PAGINAS = 4500
+PAGINAS_MES = 30
 
 # GitHub App: revisão de PR
 GH_EVENTOS = 300
@@ -124,8 +140,16 @@ def usd(v, casas=2):
     return f"US$\u00a0{_num(v, casas)}"
 
 
+def usd_para_brl(v):
+    return v * TAXA_BRL * (1 + IOF)
+
+
+def reais(v, casas=2):
+    return f"R$\u00a0{_num(v, casas)}"
+
+
 def brl(v, casas=2):
-    return f"R$\u00a0{_num(v * TAXA_BRL, casas)}"
+    return reais(usd_para_brl(v), casas)
 
 
 def inteiro(v):
@@ -160,6 +184,8 @@ E = {
     "cab": ParagraphStyle("cab", fontName="VIA-Bold", fontSize=8, leading=10.4, textColor=colors.white),
     "h1": ParagraphStyle("h1", fontName="VIA-Serif-Bold", fontSize=15, leading=19, textColor=NAVY_950, spaceBefore=6, spaceAfter=7),
     "h2": ParagraphStyle("h2", fontName="VIA-Bold", fontSize=11, leading=14.5, textColor=NAVY_900, spaceBefore=8, spaceAfter=4),
+    "h1_compacto": ParagraphStyle("h1_compacto", fontName="VIA-Serif-Bold", fontSize=14, leading=17, textColor=NAVY_950, spaceAfter=4),
+    "h2_compacto": ParagraphStyle("h2_compacto", fontName="VIA-Bold", fontSize=10, leading=13, textColor=NAVY_900, spaceBefore=4, spaceAfter=2),
     "kicker": ParagraphStyle("kicker", fontName="VIA-Bold", fontSize=8, leading=10, textColor=TEAL_500, spaceAfter=4),
     "titulo": ParagraphStyle("titulo", fontName="VIA-Serif-Bold", fontSize=24, leading=29, textColor=NAVY_950, spaceAfter=8),
     "subtitulo": ParagraphStyle("subtitulo", fontName="VIA", fontSize=11.5, leading=16, textColor=MUTED, spaceAfter=12),
@@ -176,7 +202,7 @@ def bullets(itens):
     return [Paragraph(t, E["bullet"], bulletText="•") for t in itens]
 
 
-def tabela(linhas, larguras, cab_cor=NAVY_900, zebra=True, negrito_primeira_col=False):
+def tabela(linhas, larguras, cab_cor=NAVY_900, zebra=True, negrito_primeira_col=False, pad=4):
     dados = []
     for i, linha in enumerate(linhas):
         if i == 0:
@@ -192,8 +218,8 @@ def tabela(linhas, larguras, cab_cor=NAVY_900, zebra=True, negrito_primeira_col=
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE),
         ("BOX", (0, 0), (-1, -1), 0.6, LINE),
-        ("TOPPADDING", (0, 0), (-1, -1), 4),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), pad),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), pad),
         ("LEFTPADDING", (0, 0), (-1, -1), 5),
         ("RIGHTPADDING", (0, 0), (-1, -1), 5),
     ]
@@ -260,7 +286,8 @@ def capa_e_resumo():
             Spacer(1, 4),
             p(f"<b>Ordem de grandeza.</b> Com o modelo recomendado (grok-4.6), uma mensagem típica custa cerca de "
               f"{usd(c46, 5)} ({brl(c46, 4)}); com grok-4.3, {usd(c43, 5)}. Dez mil mensagens por mês com grok-4.6 e "
-              f"Workers pago somam aproximadamente {usd(rec_10k)} ({brl(rec_10k)}).", "destaque"),
+              f"Workers pago somam aproximadamente {usd(rec_10k)} ({brl(rec_10k)}). Valores em reais a "
+              f"US$\u00a01 = R$\u00a0{_num(TAXA_BRL, 2)} ({DATA_REVISAO}) com IOF de {_num(IOF * 100, 1)}%.", "destaque"),
         ]),
         Spacer(1, 6),
         p("O que este documento responde", "h2"),
@@ -269,6 +296,7 @@ def capa_e_resumo():
             "Força do impacto e ganho potencial de qualidade, em escala de 1 a 5, com justificativa.",
             "Preço por token dos modelos Grok e das plataformas de hospedagem, com fontes oficiais.",
             "Custo mensal estimado em 1.000, 10.000 e 100.000 mensagens, com e sem busca na web.",
+            "Como imprimir a tabela de custos por comando de voz (Alexa), com orçamento em três níveis.",
             "Riscos de conformidade (LGPD, dados de saúde, termos do WhatsApp) e próximos passos.",
         ]),
         Spacer(1, 6),
@@ -406,28 +434,92 @@ def detalhes_plataformas():
     return out
 
 
-def precos_xai():
-    linhas = [["Modelo", "Entrada", "Entrada em cache", "Saída", "Contexto", "Observação"]]
-    obs = {
-        "grok-4.6": "Recomendado pela xAI para tudo, exceto mídia",
-        "grok-4.5": "Geração anterior",
-        "grok-4.3": "Mais barato; contexto maior",
-        "grok-4.20": "Variantes com e sem raciocínio",
-        "grok-build-0.1": "Voltado a código",
-    }
+def tabela_imprimivel(avulsa=False):
+    c46 = custo_tokens("grok-4.6")
+    c46c = custo_tokens("grok-4.6", cache=TOK_CACHE)
+    c43 = custo_tokens("grok-4.3")
+    ws = FERRAMENTA_WEB_SEARCH
+
+    precos = [["Modelo", "Entrada", "Entrada em cache", "Saída", "Contexto", "Mensagem típica"]]
     for m, v in XAI.items():
-        linhas.append([m, usd(v["entrada"]), usd(v["cache"]), usd(v["saida"]), v["contexto"], obs[m]])
-    out = [
-        Spacer(1, 4),
-        p("3. Quanto custa: preço por token", "h1"),
-        p("Preços da xAI em dólares por <b>1 milhão de tokens</b>, para prompts abaixo de 200 mil tokens. Um token "
-          "equivale, em média, a cerca de três quartos de uma palavra em inglês; em português, a proporção é um pouco "
-          "menor."),
-        tabela(linhas, [26 * mm, 22 * mm, 26 * mm, 22 * mm, 18 * mm, 56 * mm], negrito_primeira_col=True),
-        p(f"grok-4.6 com prompts a partir de 200 mil tokens: {usd(XAI_46_LONGO['entrada'])} entrada, "
-          f"{usd(XAI_46_LONGO['cache'])} cache, {usd(XAI_46_LONGO['saida'])} saída. A Batch API (processamento não "
-          "imediato) tem desconto.", "pequeno"),
-        Spacer(1, 4),
+        unit = custo_tokens(m)
+        precos.append([m, usd(v["entrada"]), usd(v["cache"]), usd(v["saida"]), v["contexto"],
+                       f"{usd(unit, 5)}<br/>{brl(unit, 4)}"])
+
+    linhas_modelo = [
+        ("grok-4.6", c46),
+        ("grok-4.6 + web search", c46 + ws),
+        (f"grok-4.6 com cache ({inteiro(TOK_CACHE)} tokens)", c46c),
+        ("grok-4.3", c43),
+        ("grok-4.3 + web search", c43 + ws),
+    ]
+    t1 = [["Modelo e ferramentas", "Por mensagem"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]]
+    for nome, unit in linhas_modelo:
+        t1.append([nome, usd(unit, 5)] + [f"{usd(unit * v)}<br/>{brl(unit * v)}" for v in VOLUMES])
+
+    tot = [["Total mensal (tokens + hospedagem + canal)"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]]
+    for nome, f in combinacoes_totais():
+        tot.append([nome] + [f"<b>{usd(f(v))}</b><br/>{brl(f(v))}" for v in VOLUMES])
+
+    kicker = "GROK BOT · TABELA DE CUSTOS" if avulsa else "3. TABELA DE CUSTOS · PÁGINA PARA IMPRESSÃO"
+    out = [] if avulsa else [PageBreak()]
+    out += [
+        p(kicker, "kicker"),
+        p("Custos da API xAI (Grok) e cenários mensais", "h1_compacto"),
+        caixa([
+            p(f"<b>Referência: {DATA_REVISAO}.</b> Câmbio US$\u00a01 = R$\u00a0{_num(TAXA_BRL, 2)} ({FONTE_CAMBIO}). "
+              f"Valores em R$ incluem IOF de {_num(IOF * 100, 1)}% sobre pagamento em dólar com cartão. "
+              f"Mensagem típica: {inteiro(TOK_ENTRADA)} tokens de entrada e {inteiro(TOK_SAIDA)} de saída. "
+              f"Web search: 1 chamada por mensagem ({usd(ws, 3)}). Cache: {inteiro(TOK_CACHE)} dos "
+              f"{inteiro(TOK_ENTRADA)} tokens de entrada. Hospedagem: Cloudflare Workers Paid "
+              f"({usd(WORKERS_PAID)}/mês) ou Vercel Pro ({usd(VERCEL_PRO)}/mês).", "celula"),
+        ], fundo=WASH, borda=NAVY_700),
+        Spacer(1, 2),
+        p("Preço por 1 milhão de tokens (xAI, prompts abaixo de 200 mil tokens)", "h2_compacto"),
+        tabela(precos, [28 * mm, 22 * mm, 28 * mm, 22 * mm, 20 * mm, 50 * mm], negrito_primeira_col=True, pad=2.2),
+        Spacer(1, 2),
+        p("Custo de tokens por mês", "h2_compacto"),
+        tabela(t1, [46 * mm, 22 * mm, 34 * mm, 34 * mm, 34 * mm], negrito_primeira_col=True, pad=2.2),
+        Spacer(1, 2),
+        p("Total mensal estimado", "h2_compacto"),
+        tabela(tot, [68 * mm, 34 * mm, 34 * mm, 34 * mm], cab_cor=GREEN_500, negrito_primeira_col=True, pad=2.2),
+        Spacer(1, 3),
+        p(f"* WhatsApp: {inteiro(WA_GRATIS_SERVICO)} mensagens de serviço grátis por mês por número e "
+          f"{usd(WA_SERVICO_USD, 4)} por mensagem excedente (valor de fontes secundárias, não verificado no rate card "
+          "oficial; sem taxa de intermediário). Fontes: docs.x.ai/developers/pricing; "
+          "developers.cloudflare.com/workers/platform/pricing; vercel.com/pricing; Meta, WhatsApp Business Platform "
+          "pricing. Preços mudam; revalidar antes de contratar.", "pequeno"),
+    ]
+    if not avulsa:
+        out.append(PageBreak())
+    return out
+
+
+def combinacoes_totais():
+    c46 = custo_tokens("grok-4.6")
+    c43 = custo_tokens("grok-4.3")
+    ws = FERRAMENTA_WEB_SEARCH
+    return [
+        ("Site + Workers Paid + grok-4.6", lambda v: v * c46 + custo_workers(v)),
+        ("Site + Workers Paid + grok-4.6 + web search", lambda v: v * (c46 + ws) + custo_workers(v)),
+        ("Site + Workers Paid + grok-4.3", lambda v: v * c43 + custo_workers(v)),
+        ("Site + Vercel Pro + grok-4.6", lambda v: v * c46 + custo_vercel(v)),
+        ("WhatsApp + Workers Paid + grok-4.6*", lambda v: v * c46 + custo_workers(v) + custo_whatsapp(v)),
+        ("Telegram + Workers Paid + grok-4.6", lambda v: v * c46 + custo_workers(v)),
+    ]
+
+
+def custos_complementares():
+    hosp = [["Hospedagem e canal (somar ao custo de tokens)"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]]
+    hosp.append(["Cloudflare Workers Free (até 100 mil req/dia)"] + [usd(0) for _ in VOLUMES])
+    hosp.append(["Cloudflare Workers Paid (recomendado)"] + [usd(custo_workers(v)) for v in VOLUMES])
+    hosp.append(["Vercel Pro, 1 assento"] + [usd(custo_vercel(v)) for v in VOLUMES])
+    hosp.append(["Telegram Bot API"] + [usd(0) for _ in VOLUMES])
+    hosp.append(["WhatsApp, mensagens de serviço"] + [usd(custo_whatsapp(v)) for v in VOLUMES])
+    hosp.append(["GitHub Pages (interface)"] + [usd(0) for _ in VOLUMES])
+    gh_unit = custo_tokens("grok-4.6", GH_TOK_ENTRADA, GH_TOK_SAIDA)
+    return [
+        p("4. Detalhes de custo", "h1"),
         p("Ferramentas executadas no servidor da xAI", "h2"),
         tabela([
             ["Ferramenta", "Preço", "Por chamada", "Uso típico no bot"],
@@ -435,7 +527,18 @@ def precos_xai():
             ["attachment_search", "US$ 10,00 / 1.000", usd(FERRAMENTA_ATTACHMENT, 4), "Buscar dentro de arquivos anexados"],
             ["collections_search (RAG)", "US$ 2,50 / 1.000", usd(FERRAMENTA_COLLECTIONS, 4), "Responder com base nos documentos da VIA"],
         ], [52 * mm, 30 * mm, 26 * mm, 62 * mm], cab_cor=NAVY_700),
-        Spacer(1, 6),
+        p(f"grok-4.6 com prompts a partir de 200 mil tokens: {usd(XAI_46_LONGO['entrada'])} entrada, "
+          f"{usd(XAI_46_LONGO['cache'])} cache, {usd(XAI_46_LONGO['saida'])} saída. A Batch API (processamento não "
+          "imediato) tem desconto. Um token equivale, em média, a cerca de três quartos de uma palavra em inglês; em "
+          "português, a proporção é um pouco menor.", "pequeno"),
+        Spacer(1, 4),
+        p("Custo de hospedagem e canal", "h2"),
+        tabela(hosp, [68 * mm, 34 * mm, 34 * mm, 34 * mm], cab_cor=NAVY_700, negrito_primeira_col=True),
+        p(f"Premissas: Workers com {CPU_MS_WORKER} ms de CPU por requisição; Vercel com {CPU_MS_VERCEL} ms de CPU ativa "
+          f"em gru1 — o uso estimado ({usd(uso_vercel(100_000))} em 100 mil mensagens) fica dentro do crédito de US$ 20 "
+          "do plano Pro. WhatsApp: uma resposta do bot por mensagem do usuário; taxa da Twilio ou de outro "
+          "intermediário não verificada. Em conta WhatsApp faturada em reais (R$ 0,035 por mensagem) não há IOF.", "pequeno"),
+        Spacer(1, 4),
         p("Controle de custo na prática", "h2"),
         *bullets([
             "Cada resposta da xAI informa o custo real da requisição no campo <font face='VIA-Bold'>usage.cost_in_usd_ticks</font>; "
@@ -445,90 +548,158 @@ def precos_xai():
             "por milhão no grok-4.6).",
             "Limitar o tamanho das respostas e o número de chamadas de ferramenta por mensagem.",
         ]),
-    ]
-    return out
-
-
-def cenarios():
-    c46 = custo_tokens("grok-4.6")
-    c46c = custo_tokens("grok-4.6", cache=TOK_CACHE)
-    c43 = custo_tokens("grok-4.3")
-    ws = FERRAMENTA_WEB_SEARCH
-    linhas_modelo = [
-        ("grok-4.6", c46),
-        ("grok-4.6 + web search", c46 + ws),
-        (f"grok-4.6 com cache ({inteiro(TOK_CACHE)} tokens)", c46c),
-        ("grok-4.3", c43),
-        ("grok-4.3 + web search", c43 + ws),
-    ]
-    cab = ["Modelo e ferramentas", "Por mensagem"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]
-    t1 = [cab]
-    for nome, unit in linhas_modelo:
-        t1.append([nome, usd(unit, 5)] + [f"{usd(unit * v)}<br/>{brl(unit * v)}" for v in VOLUMES])
-
-    hosp = [["Hospedagem e canal (somar ao custo de tokens)"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]]
-    hosp.append(["Cloudflare Workers Free (até 100 mil req/dia)"] + [usd(0) for _ in VOLUMES])
-    hosp.append(["Cloudflare Workers Paid (recomendado)"] + [usd(custo_workers(v)) for v in VOLUMES])
-    hosp.append(["Vercel Pro, 1 assento"] + [usd(custo_vercel(v)) for v in VOLUMES])
-    hosp.append(["Telegram Bot API"] + [usd(0) for _ in VOLUMES])
-    hosp.append(["WhatsApp, mensagens de serviço*"] + [usd(custo_whatsapp(v)) for v in VOLUMES])
-    hosp.append(["GitHub Pages (interface)"] + [usd(0) for _ in VOLUMES])
-
-    tot = [["Total mensal estimado"] + [f"{inteiro(v)} msg/mês" for v in VOLUMES]]
-    combos = [
-        ("Site + Workers Paid + grok-4.6", lambda v: v * c46 + custo_workers(v)),
-        ("Site + Workers Paid + grok-4.6 + web search", lambda v: v * (c46 + ws) + custo_workers(v)),
-        ("Site + Workers Paid + grok-4.3", lambda v: v * c43 + custo_workers(v)),
-        ("Site + Vercel Pro + grok-4.6", lambda v: v * c46 + custo_vercel(v)),
-        ("WhatsApp + Workers Paid + grok-4.6*", lambda v: v * c46 + custo_workers(v) + custo_whatsapp(v)),
-        ("Telegram + Workers Paid + grok-4.6", lambda v: v * c46 + custo_workers(v)),
-    ]
-    for nome, f in combos:
-        tot.append([nome] + [f"<b>{usd(f(v))}</b><br/>{brl(f(v))}" for v in VOLUMES])
-
-    gh_unit = custo_tokens("grok-4.6", GH_TOK_ENTRADA, GH_TOK_SAIDA)
-
-    out = [
-        PageBreak(),
-        p("4. Quanto custa: cenários mensais", "h1"),
-        caixa([
-            p("<b>Premissas.</b> Mensagem típica com "
-              f"{inteiro(TOK_ENTRADA)} tokens de entrada (instruções do bot, histórico e pergunta) e "
-              f"{inteiro(TOK_SAIDA)} tokens de saída. Web search: 1 chamada por mensagem ({usd(ws, 3)}). "
-              f"Linha com cache: {inteiro(TOK_CACHE)} dos {inteiro(TOK_ENTRADA)} tokens de entrada cobrados como cache. "
-              f"Conversão: <b>US$\u00a01 = R$\u00a0{_num(TAXA_BRL, 2)}</b> (premissa arredondada, não cotação oficial; impostos "
-              "sobre serviços digitais e IOF do cartão não incluídos). Workers: "
-              f"{CPU_MS_WORKER} ms de CPU por requisição; Vercel: {CPU_MS_VERCEL} ms de CPU ativa em gru1.", "destaque"),
-        ], fundo=WASH, borda=NAVY_700),
-        Spacer(1, 6),
-        p("Custo de tokens (xAI)", "h2"),
-        tabela(t1, [46 * mm, 22 * mm, 34 * mm, 34 * mm, 34 * mm], negrito_primeira_col=True),
-        Spacer(1, 6),
-        p("Custo de hospedagem e canal", "h2"),
-        tabela(hosp, [68 * mm, 34 * mm, 34 * mm, 34 * mm], cab_cor=NAVY_700, negrito_primeira_col=True),
-        p(f"* WhatsApp: {inteiro(WA_GRATIS_SERVICO)} mensagens de serviço grátis por mês e {usd(WA_SERVICO_USD, 4)} por "
-          "mensagem excedente (valor de fontes secundárias; não inclui taxa de Twilio ou outro intermediário, não "
-          "verificada). Considera uma resposta do bot por mensagem do usuário. Na Vercel, o uso estimado "
-          f"({usd(uso_vercel(100_000))} em 100 mil mensagens) fica dentro do crédito de US$ 20 do plano Pro.", "pequeno"),
-        Spacer(1, 4),
-        KeepTogether([
-            p("Total mensal (tokens + hospedagem + canal)", "h2"),
-            tabela(tot, [68 * mm, 34 * mm, 34 * mm, 34 * mm], cab_cor=GREEN_500, negrito_primeira_col=True),
-        ]),
-        Spacer(1, 6),
         p("GitHub App (opção B): referência separada", "h2"),
         p(f"Revisões de pull request usam contexto maior. Premissa: {inteiro(GH_EVENTOS)} eventos/mês, "
           f"{inteiro(GH_TOK_ENTRADA)} tokens de entrada e {inteiro(GH_TOK_SAIDA)} de saída cada, com grok-4.6: "
           f"{usd(gh_unit, 3)} por evento, cerca de <b>{usd(gh_unit * GH_EVENTOS)}/mês</b> "
           f"({brl(gh_unit * GH_EVENTOS)}), mais a hospedagem do webhook (Workers Free ou Paid)."),
     ]
-    return out
+
+
+def custo_pagina():
+    return TINTA_T544_PRECO / TINTA_T544_PAGINAS + PAPEL_RESMA / PAPEL_FOLHAS
+
+
+def niveis_alexa():
+    credito_min = usd_para_brl(XAI_RECARGA_MIN_USD)
+    credito_n2 = usd_para_brl(XAI_CREDITO_N2_USD)
+    papel_mes = PAGINAS_MES * custo_pagina()
+    api_43 = usd_para_brl(1000 * custo_tokens("grok-4.3"))
+    api_46 = usd_para_brl(1000 * custo_tokens("grok-4.6"))
+    n0 = credito_min
+    n1 = credito_min + ECHO_POP + EPSON_L1250 + PAPEL_RESMA
+    n2 = credito_n2 + ECHO_SHOW_5 + EPSON_L3250 + PAPEL_RESMA
+    return {
+        "credito_min": credito_min, "credito_n2": credito_n2, "papel_mes": papel_mes,
+        "api_43": api_43, "api_46": api_46, "n0": n0, "n1": n1, "n2": n2,
+        "m0": api_43, "m1": api_43 + papel_mes, "m2_43": api_43 + papel_mes, "m2_46": api_46 + papel_mes,
+    }
+
+
+def alexa():
+    n = niveis_alexa()
+    orcamento = [
+        ["Nível", "Composição", "Investimento inicial", "Custo mensal estimado"],
+        ["0 — Indispensável",
+         f"Créditos xAI pré-pagos (recarga mínima de {usd(XAI_RECARGA_MIN_USD, 0)}); contas gratuitas da Cloudflare "
+         "(Workers Free), Amazon Developer (skill hospedada pela Amazon) e Resend; domínio, celular e internet já existentes.",
+         f"<b>≈ {reais(n['n0'])}</b>", f"≈ {reais(n['m0'])} (1.000 mensagens com grok-4.3)"],
+        ["1 — Mínimo viável",
+         f"Nível 0 + Echo Pop (≈ {reais(ECHO_POP, 0)}) + Epson EcoTank L1250 com Email Print "
+         f"(≈ {reais(EPSON_L1250, 0)}) + papel A4 (≈ {reais(PAPEL_RESMA, 0)}).",
+         f"<b>≈ {reais(n['n1'], 0)}</b>", f"≈ {reais(n['m1'])} (API + {inteiro(PAGINAS_MES)} páginas a "
+                                           f"≈ {reais(custo_pagina())})"],
+        ["2 — Confortável",
+         f"Echo Show 5, 3ª geração (≈ {reais(ECHO_SHOW_5, 0)}) + Epson EcoTank L3250 multifuncional "
+         f"(≈ {reais(EPSON_L3250, 0)}) + papel + {usd(XAI_CREDITO_N2_USD, 0)} em créditos xAI "
+         f"(≈ {reais(n['credito_n2'])}).",
+         f"<b>≈ {reais(n['n2'], 0)}</b>", f"≈ {reais(n['m2_43'])}, ou ≈ {reais(n['m2_46'])} com grok-4.6"],
+    ]
+    itens = [
+        ["Item", "Preço", "Fonte e data", "Situação"],
+        ["Créditos xAI, recarga automática mínima", f"{usd(XAI_RECARGA_MIN_USD)} ≈ {reais(n['credito_min'])}",
+         "docs.x.ai/console/billing", "Verificado; mínimo da compra manual não verificado"],
+        ["Echo Pop", reais(ECHO_POP), "Amazon.com.br, preço de tabela jun–jul/2026 (mínimo visto R$ 340,20)",
+         "Preço de hoje não verificado"],
+        ["Epson EcoTank L1250 (Wi-Fi, Email Print)", reais(EPSON_L1250), "Carrefour.com.br, 02/10/2026 (faixa R$ 799–949)",
+         "Verificado por busca"],
+        ["Papel A4, 500 folhas", reais(PAPEL_RESMA), "—", "Estimativa, não verificado"],
+        ["Echo Show 5 (3ª geração)", reais(ECHO_SHOW_5), "Amazon.com.br, set/2026 (Buscapé: R$ 641,79)", "Verificado por busca"],
+        ["Epson EcoTank L3250 (multifuncional)", reais(EPSON_L3250), "Amazon.com.br, set/2026 (Kalunga e Nagem: R$ 1.099)",
+         "Verificado por busca"],
+        ["Tinta Epson T544 preta, 65 ml", reais(TINTA_T544_PRECO), f"Dec Distribuidora; rendimento de "
+         f"{inteiro(TINTA_T544_PAGINAS)} páginas", f"≈ {reais(TINTA_T544_PRECO / TINTA_T544_PAGINAS, 3)} por página"],
+    ]
+    fluxo = [
+        "O mantenedor diz: “Alexa, imprima a tabela do Grok Bot”.",
+        "Uma rotina do app Alexa reconhece a frase e abre a skill privada “Grok Bot” (pt-BR, uso próprio, estado "
+        "“In Development”, sem certificação nem publicação na loja).",
+        "A skill, hospedada gratuitamente pela Amazon (Alexa-hosted), descarta o LaunchRequest de verificação periódica "
+        "(usuário <font face='VIA-Bold'>alexa-lambda-availability</font>) e chama o Worker com um token de baixo privilégio.",
+        "O Worker na Cloudflare confere o token e o limite diário de impressões (destino fixo, sem parâmetros livres).",
+        "O Worker envia pelo Resend, a partir de um subdomínio de iniciativa-via.com, a página de custos "
+        "(<font face='VIA-Bold'>tabela-custos-grok-bot.pdf</font>) ao endereço Epson Email Print da impressora.",
+        "O Epson Connect aceita apenas remetentes da lista de aprovados e envia o trabalho à impressora; se ela estiver "
+        "desligada, o trabalho fica guardado por até 72 horas.",
+        "A página sai em cerca de 1 a 3 minutos (estimativa; a fila da Epson não tem tempo garantido).",
+        "A Alexa confirma o envio por voz (não a impressão). Num Echo Show, a tabela também aparece na tela.",
+    ]
+    papeis = [
+        ["Etapa", "O agente faz", "Depende do mantenedor"],
+        ["Código da skill (modelo pt-BR, filtro da verificação periódica)", "Sim", "—"],
+        ["Código do Worker (token, limite diário, envio pelo Resend) e testes", "Sim", "—"],
+        ["Conta Amazon Developer, com a mesma conta Amazon do Echo", "—", "Criar (grátis) e aceitar os termos"],
+        ["Criar a skill no console e ativar o teste em “Development”", "Prepara o pacote para o ASK CLI", "Login e aceite"],
+        ["Conta Resend e registros DNS do subdomínio", "Gera a lista exata de registros",
+         "Criar a conta; incluir os registros ou conceder token Cloudflare restrito a DNS"],
+        ["Publicar o Worker e cadastrar os secrets", "Sim, com acesso autorizado", "Autorizar o acesso, se ainda não houver"],
+        ["Comprar e instalar impressora e Echo no Wi-Fi", "—", "Sim"],
+        ["Ativar Epson Connect e lista de remetentes aprovados", "Escreve o passo a passo", "Sim (conta Epson)"],
+        ["Informar o e-mail da impressora ao Worker (secret)", "—", "Sim"],
+        ["Criar a rotina no app Alexa", "Escreve o passo a passo", "Sim (cerca de 2 minutos)"],
+    ]
+    return [
+        PageBreak(),
+        p("5. Imprimir a tabela por comando de voz (Alexa)", "h1"),
+        p("Objetivo: dizer “Alexa, imprima a tabela do Grok Bot” e receber em papel a página de custos (seção 3). "
+          "Caminho recomendado: <b>skill privada em pt-BR hospedada pela Amazon → Worker na Cloudflare com token e limite "
+          "diário → Resend → Epson Email Print com lista de remetentes aprovados</b>. Custo fixo de nuvem zero, sem "
+          "certificação e sem validar a assinatura da Alexa num endpoint próprio."),
+        caixa([
+            p("<b>Achados críticos</b>", "destaque"),
+            *bullets([
+                "A impressão nativa da Alexa só imprime modelos prontos (listas, jogos, papel pautado); não imprime PDF "
+                "externo e não oferece API para skills. A skill “Epson Printer” para Alexa foi descontinuada em 31/03/2025.",
+                "Impressoras HP lançadas após o outono de 2020 não têm ePrint (impressão por e-mail); a HP DeskJet Ink "
+                "Advantage 2874, a mais barata nas lojas, não serve. A Epson é o único fabricante com Email Print "
+                "verificado e ativo no Brasil.",
+                "A Amazon envia periodicamente um LaunchRequest de verificação (usuário alexa-lambda-availability) às "
+                "skills hospedadas por ela. Sem filtro, a impressora imprime sozinha.",
+                f"A recarga automática mínima de créditos xAI é {usd(XAI_RECARGA_MIN_USD, 0)}; o mínimo da compra manual "
+                f"não está na página consultada (não verificado; versão anterior citava {usd(XAI_CREDITO_N2_USD, 0)}). "
+                "Créditos pré-pagos não são reembolsáveis.",
+                "A integração nativa Alexa–IFTTT foi encerrada em 31/10/2023; não usar.",
+            ]),
+        ]),
+        Spacer(1, 5),
+        p(f"Orçamento em três níveis (referência {DATA_REVISAO}; itens em dólar com IOF de {_num(IOF * 100, 1)}%)", "h2"),
+        tabela(orcamento, [27 * mm, 75 * mm, 26 * mm, 42 * mm], negrito_primeira_col=True),
+        p(f"Custo mensal considera Workers Free. Se o proxy do Grok Bot usar Workers Paid, somar "
+          f"≈ {reais(usd_para_brl(WORKERS_PAID))}/mês. Alexa+ não é necessária. Custo por página em preto: tinta "
+          f"≈ {reais(TINTA_T544_PRECO / TINTA_T544_PAGINAS, 3)} + papel ≈ {reais(PAPEL_RESMA / PAPEL_FOLHAS)} = "
+          f"≈ {reais(custo_pagina())}.", "pequeno"),
+        Spacer(1, 3),
+        p("Itens e preços de referência", "h2"),
+        tabela(itens, [46 * mm, 30 * mm, 56 * mm, 38 * mm], cab_cor=NAVY_700, negrito_primeira_col=True),
+        p("Preços de varejo variam com promoções; conferir na data da compra.", "pequeno"),
+        Spacer(1, 4),
+        KeepTogether([
+            p("Fluxo recomendado", "h2"),
+            *[Paragraph(t, E["bullet"], bulletText=f"{i}.") for i, t in enumerate(fluxo, 1)],
+        ]),
+        Spacer(1, 4),
+        p("Quem faz o quê", "h2"),
+        tabela(papeis, [72 * mm, 44 * mm, 54 * mm], negrito_primeira_col=True),
+        Spacer(1, 4),
+        p("Limites e pontos não verificados", "h2"),
+        *bullets([
+            "Que a ação personalizada de uma rotina abra uma skill em desenvolvimento é provável, mas não verificado. "
+            "Alternativa: “Alexa, peça ao Grok Bot para imprimir a tabela”.",
+            "Compatibilidade da Alexa+ (acesso antecipado no Brasil desde 18/06/2026) com skills em desenvolvimento em "
+            "pt-BR: não verificada.",
+            "Custo do Epson Connect: não anunciado (não verificado formalmente). Impressão por e-mail de Canon e Brother "
+            "no Brasil: não verificada.",
+            "Variante: se o proxy já estiver no Workers Paid, o Cloudflare Email Service (beta) pode substituir o Resend; "
+            "no plano gratuito ele só envia a endereços verificados, o que a impressora não consegue fazer.",
+            "Risco de spam no e-mail da impressora: mitigado pela lista de remetentes aprovados e pelo sigilo do endereço.",
+        ]),
+    ]
 
 
 def riscos():
     return [
-        Spacer(1, 4),
-        p("5. Riscos e conformidade", "h1"),
+        PageBreak(),
+        p("6. Riscos e conformidade", "h1"),
         p("Dados de saúde e LGPD", "h2"),
         *bullets([
             "Dados de saúde são <b>dados pessoais sensíveis</b> (LGPD, art. 5º, II, e art. 11). O bot <b>não deve receber "
@@ -569,7 +740,7 @@ def riscos():
 
 def proximos_passos():
     return [
-        p("6. Próximos passos", "h1"),
+        p("7. Próximos passos", "h1"),
         p("O que depende do mantenedor", "h2"),
         tabela([
             ["#", "Decisão ou ação", "Por que só o mantenedor pode fazer"],
@@ -582,6 +753,8 @@ def proximos_passos():
              "Decisão de orçamento e de conteúdo."],
             ["5", "Se escolher Cloudflare: criar conta ou autorizar acesso do agente; se WhatsApp: conta Meta Business "
                   "verificada e número dedicado.", "Contas de terceiros e infraestrutura externa (HUMAN_GATE)."],
+            ["6", "Opcional, impressão por voz: escolher o nível de orçamento (seção 5), comprar os aparelhos e criar as "
+                  "contas Amazon Developer, Epson Connect e Resend.", "Compra de equipamento e contas pessoais."],
         ], [8 * mm, 98 * mm, 64 * mm], negrito_primeira_col=True),
         Spacer(1, 6),
         p("O que o agente executa depois das decisões", "h2"),
@@ -612,6 +785,17 @@ def fontes():
         "clickmassa.com.br) que reproduzem o rate card oficial de 01/10/2026 — conferir no rate card da Meta.",
         "Telegram — Bots FAQ: core.telegram.org/bots/faq (API gratuita, limites de envio).",
         "LGPD — Lei nº 13.709/2018, arts. 5º, 11 e 33.",
+        "Câmbio: OEB, cotação de compra de 02/10/2026 (US$ 1 = R$ 5,23); Agência Brasil, dólar à vista R$ 5,224 em "
+        "01/10/2026. IOF de 3,5% em compras no exterior: Decreto nº 12.499/2025.",
+        "Alexa Skills Kit: developer.amazon.com/en-US/docs/alexa — Test and Submit Your Skill; Hosted Skills Usage Limits; "
+        "Create and Manage Alexa-Hosted Skills (verificação alexa-lambda-availability); Integrate Custom Task with Routines.",
+        "Impressão nativa da Alexa: Amazon Forum (out/2024) e TechCrunch (10/09/2020). Skill Epson Printer descontinuada: "
+        "epson.com/Support/voice. IFTTT: help.ifttt.com/hc/en-us/articles/19823288619419.",
+        "Epson Connect / Email Print: epson.com.br/epson-connect-impressao-wireless; manuais L1250 e L3250. HP ePrint: "
+        "support.hp.com/us-en/document/ish_2060244-1929404-16.",
+        "Resend: resend.com/pricing. Cloudflare Email Service: developers.cloudflare.com/email-service. Créditos xAI: "
+        "docs.x.ai/console/billing.",
+        "Preços de varejo: Amazon.com.br, Carrefour.com.br, Buscapé, Kalunga, Nagem e Dec Distribuidora (jun–out/2026).",
     ]
     return [
         Spacer(1, 6),
@@ -619,7 +803,9 @@ def fontes():
         *[Paragraph(t, E["pequeno"], bulletText="•") for t in itens],
         Spacer(1, 4),
         p("<b>Não verificado nesta revisão:</b> taxa por mensagem da Twilio para WhatsApp; rate card oficial da Meta em "
-          "arquivo (valor em reais obtido de fontes secundárias); cotação do dólar (usada como premissa). Preços mudam; "
+          "arquivo (valor em reais obtido de fontes secundárias); mínimo da compra manual de créditos xAI; preço atual do Echo "
+          "Pop; preço do papel; custo do Epson Connect; abertura de skill em desenvolvimento por rotina; compatibilidade "
+          "da Alexa+. O câmbio é referência datada e oscila; o IOF pode mudar por decreto. Preços mudam; "
           f"revalidar antes de contratar. Preços coletados em {DATA_REVISAO} por agente de IA a partir "
           "de grok/bot/gerar_pdf_opcoes.py.", "pequeno"),
     ]
@@ -639,10 +825,26 @@ def main():
         lang="pt-BR",
     )
     historia = []
-    for parte in (capa_e_resumo, opcoes, detalhes_plataformas, precos_xai, cenarios, riscos, proximos_passos, fontes):
+    for parte in (capa_e_resumo, opcoes, detalhes_plataformas, tabela_imprimivel, custos_complementares, alexa, riscos,
+                  proximos_passos, fontes):
         historia.extend(parte())
     doc.build(historia, onFirstPage=rodape, onLaterPages=rodape)
     print(f"PDF gerado: {SAIDA}")
+
+    avulso = SimpleDocTemplate(
+        str(SAIDA_TABELA),
+        pagesize=A4,
+        leftMargin=20 * mm,
+        rightMargin=20 * mm,
+        topMargin=16 * mm,
+        bottomMargin=20 * mm,
+        title="Grok Bot — tabela de custos",
+        author="Iniciativa VIA",
+        subject="Custos da API xAI e cenários mensais",
+        lang="pt-BR",
+    )
+    avulso.build(tabela_imprimivel(avulsa=True), onFirstPage=rodape, onLaterPages=rodape)
+    print(f"PDF gerado: {SAIDA_TABELA}")
 
 
 if __name__ == "__main__":
