@@ -121,11 +121,14 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
  * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
  * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
  * resultado elevado. Só lê o valor sintaticamente ligado à menção (não varre
- * outros analitos na mesma oração). Ponto/vírgula entre dígitos não fecha o trecho.
+ * outros analitos na mesma oração). O ponto entre dígitos não fecha o trecho.
+ * A vírgula pode separar o nome do resultado e permanece na cauda; o valor lido
+ * é o do início, não um ng/L posterior (BNP, CK-MB).
  */
 function extractTroponin(text) {
-  // Cauda: permite [.,] só entre dígitos; vírgula/ponto de oração encerram.
-  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:[^\n.,;]|[.,](?=\d)){0,40})/giu;
+  // Cauda: ponto de oração encerra; vírgula e ponto entre dígitos permanecem.
+  // A próxima menção de troponina fica de fora, para a dosagem seriada competir.
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:(?!\b(?:\d+\s*[ªa]\s+)?(?:troponina|trop)\b)[^\n.;]|[.](?=\d)){0,80})/giu;
   let best = null;
 
   for (const match of text.matchAll(expression)) {
@@ -145,12 +148,17 @@ function extractTroponin(text) {
 }
 
 function parseTroponinMention(negation, keyword, tail) {
+  // "Troponina I", "Troponina (T)" e "ultrassensível" qualificam o ensaio.
   // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
-  const rest = String(tail).replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
+  let rest = String(tail).replace(
+    /^(?:[\s-]+\(?(?:ultrassens[ií]vel|de\s+alta\s+sensibilidade|us|hs|tni|tnt|i|t)\b\)?)+/iu,
+    "",
+  );
+  rest = rest.replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
-  const quantified = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
-  const qualitative = rest.match(/^\s*[:=]?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
-  const bareNumber = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu);
+  const quantified = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  const qualitative = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
+  const bareNumber = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\b/iu);
 
   if (negation) {
     if (quantified) {
