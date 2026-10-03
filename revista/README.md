@@ -9,6 +9,12 @@ Revista web semanal de **saúde pública, ciência, cuidado e tecnologia** da In
 
 Antes de substituir a edição corrente, exportar a versão publicada em PDF e preservá-la em `revista/arquivo/AAAA-MM-DD.pdf`. O PDF é o registro fechado da edição; `/revista/` permanece reservado ao número corrente. Não manter rotas temáticas antigas ou redirecionamentos concorrentes.
 
+A edição candidata também acompanha o branch como `revista/edicao-AAAA-MM-DD.pdf`. Os dois PDFs devem ser A4, pesquisáveis e inspecionados visualmente antes do PR. O renderizador versionado é executado assim:
+
+```bash
+python scripts/revista/render_pdf.py revista/edicao-AAAA-MM-DD.md revista/edicao-AAAA-MM-DD.pdf
+```
+
 ## Escopo e limitações
 
 - Curadoria **educativa e editorial**, voltada à compreensão de fatos e decisões informadas.
