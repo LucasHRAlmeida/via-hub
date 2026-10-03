@@ -120,14 +120,16 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
 /**
  * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
  * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
- * resultado elevado.
+ * resultado elevado. Só lê o valor sintaticamente ligado à menção (não varre
+ * outros analitos na mesma oração). Ponto/vírgula entre dígitos não fecha o trecho.
  */
 function extractTroponin(text) {
-  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?((?:troponina|trop)\b[^\n.;]{0,70})/giu;
+  // Cauda: permite [.,] só entre dígitos; vírgula/ponto de oração encerram.
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:[^\n.,;]|[.,](?=\d)){0,40})/giu;
   let best = null;
 
   for (const match of text.matchAll(expression)) {
-    const parsed = parseTroponinMention(match[1] || "", match[2]);
+    const parsed = parseTroponinMention(match[1] || "", match[2], match[3] || "");
     if (!parsed) continue;
     if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
       best = { ...parsed, index: match.index, length: match[0].length };
@@ -142,38 +144,36 @@ function extractTroponin(text) {
   };
 }
 
-function parseTroponinMention(negation, body) {
-  const head = body.match(/^(troponina|trop)\b/iu);
-  if (!head) return null;
-  const tail = body.slice(head[0].length);
-  const numbers = [...tail.matchAll(/(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/giu)];
-  const tailForPolarity = tail.replace(/\bn[aã]o\s+elevad[ao]s?\b/giu, " ");
-  const positive = tailForPolarity.match(/\b(positiva|elevada)\b/iu);
-  const negative = tail.match(/\b(negativa|normal)\b/iu);
-  const immediate = tail.match(/^\s*([:=]\s*)?(\d+(?:[.,]\d+)?)\b/iu);
+function parseTroponinMention(negation, keyword, tail) {
+  // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
+  const rest = String(tail).replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
+  const quantified = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  const qualitative = rest.match(/^\s*[:=]?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
+  const bareNumber = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu);
 
   if (negation) {
-    if (numbers.length) {
-      const last = numbers[numbers.length - 1];
-      return { rank: 0, value: clean(`${negation} ${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+    if (quantified) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
     }
-    const word = negative?.[1] || positive?.[1];
-    return { rank: 0, value: clean(word ? `${negation} ${head[0]} ${word}` : `${negation} ${head[0]}`) };
+    if (qualitative) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${qualitative[1]}`) };
+    }
+    return { rank: 0, value: clean(`${negation} ${keyword}`) };
   }
 
-  if (numbers.length) {
-    const last = numbers[numbers.length - 1];
-    return { rank: 3, value: clean(`${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+  if (quantified) {
+    return { rank: 3, value: clean(`${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
   }
 
-  if (positive) return { rank: 2, value: clean(`${head[0]} ${positive[1]}`) };
-  if (negative) return { rank: 1, value: clean(`${head[0]} ${negative[1]}`) };
+  if (qualitative) {
+    const token = qualitative[1];
+    const rank = /^(positiva|elevada)/iu.test(token) ? 2 : 1;
+    return { rank, value: clean(`${keyword} ${token}`) };
+  }
 
-  if (immediate) return { rank: 3, value: clean(`${head[0]} ${immediate[2]}`) };
-
-  if (/\bn[aã]o\s+elevad/iu.test(tail)) {
-    return { rank: 1, value: clean(`${head[0]} não elevada`) };
+  if (bareNumber) {
+    return { rank: 3, value: clean(`${keyword} ${bareNumber[1]}`) };
   }
 
   return null;
@@ -210,8 +210,9 @@ const EXTRACTORS = Object.freeze({
     /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
   ], 1, number),
   spo2: (text) => matchOne(text, [
-    // O número imediatamente seguido de L, L/min ou litros é fluxo, não saturação.
-    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
+    // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
+    // de "10 L/min" para SpO₂=1.
+    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
   ], 1, number),
   temperature: (text) => matchOne(text, [
     /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,

@@ -22,6 +22,8 @@ test("SpO2 não grava fluxo de oxigênio como saturação", () => {
   assert.equal(extractNarrative("SpO2 93% em cateter nasal 3 L/min.", schema).spo2.value, 93);
   assert.equal(extractNarrative("Saturação de O2 88% em máscara com reservatório 10 L/min.", schema).spo2.value, 88);
   assert.equal(extractNarrative("Saturação de O2 3 L/min.", schema).spo2.value, "");
+  assert.equal(extractNarrative("Saturação de O2 10 L/min. SpO2 96%.", schema).spo2.value, 96);
+  assert.equal(extractNarrative("Saturação de O2 15 L/min.", schema).spo2.value, "");
   assert.equal(extractNarrative("Saturação de O2: 2 litros/min. SpO2 96%.", schema).spo2.value, 96);
   assert.equal(extractNarrative("Sat 97%.", schema).spo2.value, 97);
 });
@@ -51,6 +53,13 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.match(extractNarrative("Troponina elevada.", schema).troponin.value, /elevada/i);
   assert.match(extractNarrative("Trop positiva.", schema).troponin.value, /positiva/i);
   assert.match(extractNarrative("Troponina: negativa.", schema).troponin.value, /negativa/i);
+
+  // Decimal com ponto e valor ligado só à menção (não herda BNP/CK-MB).
+  assert.match(extractNarrative("Troponina 0.35 ng/mL.", schema).troponin.value, /0\.35/);
+  assert.match(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /negativa/i);
+  assert.doesNotMatch(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /420/);
+  assert.match(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /normal/i);
+  assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
 test("extrai variáveis básicas do caso-âncora sintético", () => {
