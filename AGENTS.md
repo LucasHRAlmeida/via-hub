@@ -23,3 +23,11 @@ Objetivo operacional: minimizar intervenção do owner e o tempo entre a detecç
 O mantenedor é médico e não deve receber como tarefa a edição manual de código, a regeneração de artefatos ou a aplicação de sugestões de review. Em mudanças com fonte canônica e saídas geradas, identificar a fonte, editá-la, regenerar todas as saídas e verificar ausência de divergência antes de declarar conclusão. Quando houver permissão de escrita no PR, findings objetivos do Codex/Copilot são itens de execução no próprio branch; comunicar apenas o resultado e eventual decisão substantiva pendente. Não acionar serviços ou créditos pagos adicionais para tentativas repetitivas sem necessidade demonstrada; registrar limites reais de acesso e custo quando conhecidos. Esta regra instrui agentes no repositório, sem alterar configurações de cobrança da plataforma.
 
 Para GitHub Copilot, ler também `.github/copilot-instructions.md` antes de qualquer ação.
+
+## Ambiente local
+
+O hub é um site estático: não há build nem dependências de pacote. A pré-visualização documentada em `README.md` usa `python -m http.server 8000`. Nesta imagem o executável do sistema é `python3`; o `install` do ambiente de Cloud Agent cria o alias `python` em `/usr/local/bin` e expõe o Node do nvm em `/usr/local/bin`, porque shells de login não interativos não carregam `~/.bashrc`.
+
+As verificações do workflow `.github/workflows/testes.yml` são o contrato de teste. O conversor em `regulacao-federal-ia/evam` não declara dependências npm; `npm test` apenas executa o test runner do Node.
+
+O script `start` do ambiente sobe `python3 -m http.server 8000 --bind 0.0.0.0` a partir de `/workspace` e termina sem erro se a porta já estiver em uso.
