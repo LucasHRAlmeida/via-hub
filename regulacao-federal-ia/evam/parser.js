@@ -117,6 +117,68 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
   return fields;
 }
 
+/**
+ * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
+ * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
+ * resultado elevado.
+ */
+function extractTroponin(text) {
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?((?:troponina|trop)\b[^\n.;]{0,70})/giu;
+  let best = null;
+
+  for (const match of text.matchAll(expression)) {
+    const parsed = parseTroponinMention(match[1] || "", match[2]);
+    if (!parsed) continue;
+    if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
+      best = { ...parsed, index: match.index, length: match[0].length };
+    }
+  }
+
+  if (!best) return null;
+  return {
+    value: best.value,
+    excerpt: excerptAround(text, best.index, best.length),
+    confidence: "heurística",
+  };
+}
+
+function parseTroponinMention(negation, body) {
+  const head = body.match(/^(troponina|trop)\b/iu);
+  if (!head) return null;
+  const tail = body.slice(head[0].length);
+  const numbers = [...tail.matchAll(/(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/giu)];
+  const tailForPolarity = tail.replace(/\bn[aã]o\s+elevad[ao]s?\b/giu, " ");
+  const positive = tailForPolarity.match(/\b(positiva|elevada)\b/iu);
+  const negative = tail.match(/\b(negativa|normal)\b/iu);
+  const immediate = tail.match(/^\s*([:=]\s*)?(\d+(?:[.,]\d+)?)\b/iu);
+  const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
+
+  if (negation) {
+    if (numbers.length) {
+      const last = numbers[numbers.length - 1];
+      return { rank: 0, value: clean(`${negation} ${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+    }
+    const word = negative?.[1] || positive?.[1];
+    return { rank: 0, value: clean(word ? `${negation} ${head[0]} ${word}` : `${negation} ${head[0]}`) };
+  }
+
+  if (numbers.length) {
+    const last = numbers[numbers.length - 1];
+    return { rank: 3, value: clean(`${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+  }
+
+  if (positive) return { rank: 2, value: clean(`${head[0]} ${positive[1]}`) };
+  if (negative) return { rank: 1, value: clean(`${head[0]} ${negative[1]}`) };
+
+  if (immediate) return { rank: 3, value: clean(`${head[0]} ${immediate[2]}`) };
+
+  if (/\bn[aã]o\s+elevad/iu.test(tail)) {
+    return { rank: 1, value: clean(`${head[0]} não elevada`) };
+  }
+
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -148,7 +210,8 @@ const EXTRACTORS = Object.freeze({
     /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
   ], 1, number),
   spo2: (text) => matchOne(text, [
-    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})\s*%?/iu,
+    // O número imediatamente seguido de L, L/min ou litros é fluxo, não saturação.
+    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
   ], 1, number),
   temperature: (text) => matchOne(text, [
     /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
@@ -177,9 +240,7 @@ const EXTRACTORS = Object.freeze({
   inr: (text) => matchOne(text, [
     /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ], 1, number),
-  troponin: (text) => matchOne(text, [
-    /\b((?:troponina|trop)\s*[:=]?\s*(?:positiva|negativa|normal|elevada|\d+(?:[.,]\d+)?(?:\s*ng\/?l)?))/iu,
-  ]),
+  troponin: extractTroponin,
   ph: (text) => matchOne(text, [
     /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ], 1, number),
