@@ -188,8 +188,12 @@ const EXTRACTORS = Object.freeze({
     /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
     /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/iu,
   ]),
+  // Explicit recognition must win over an earlier incidental "há N horas"
+  // (antibiotic duration, pain onset). Otherwise derived TTL observedAt follows
+  // the wrong interval and an expired lactate can be stamped fresh.
   hoursSinceRecognition: (text) => matchOne(text, [
-    /\b(?:há|ha|desde|reconhecid[ao]\s+há)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
   sbp: (text) => matchOne(text, [
