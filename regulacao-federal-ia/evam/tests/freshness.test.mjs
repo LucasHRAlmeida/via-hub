@@ -53,6 +53,38 @@ test("envelope provenance carries freshness when hoursSinceRecognition known", (
   assert.ok(envelope.provenance.map.freshness);
 });
 
+test("tempo em dias ou minutos não é gravado como horas", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const days = extractNarrative(
+    "Tempo: 2 dias. Mulher, 70 anos. PAM 70. Lactato 2,0 mmol/L.",
+    schema,
+  );
+  assert.equal(days.hoursSinceRecognition.value, 48);
+  assert.equal(days.lactate.freshness, "expired");
+  assert.equal(days.map.freshness, "expired");
+
+  const minutes = extractNarrative(
+    "Tempo: 20 minutos. Mulher, 70 anos. PAM 88. Lactato 1,1 mmol/L.",
+    schema,
+  );
+  assert.equal(minutes.hoursSinceRecognition.value, 0.33);
+  assert.equal(minutes.lactate.freshness, "fresh");
+  assert.equal(minutes.map.freshness, "fresh");
+
+  const labeledHours = extractNarrative(
+    "Tempo: 18 h. Mulher, 70 anos. PAM 58. Lactato 4,1 mmol/L.",
+    schema,
+  );
+  assert.equal(labeledHours.hoursSinceRecognition.value, 18);
+  assert.equal(labeledHours.lactate.freshness, "expired");
+
+  const relative = extractNarrative(
+    "Reconhecido há 18 horas. Mulher, 81 anos. PAM 58. Lactato 4,1 mmol/L.",
+    schema,
+  );
+  assert.equal(relative.hoursSinceRecognition.value, 18);
+});
+
 test("explicit expired observedAt forces expired freshness", () => {
   const now = new Date("2026-09-27T12:00:00.000Z");
   const fields = {
