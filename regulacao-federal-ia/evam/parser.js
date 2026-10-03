@@ -153,9 +153,28 @@ const EXTRACTORS = Object.freeze({
   temperature: (text) => matchOne(text, [
     /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
   ], 1, number),
-  gcs: (text) => matchOne(text, [
-    /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ], 1, number),
+  gcs: (text) => {
+    // "4+5+6=15" is the component sum, not a total of 4. A bare total ("8", "8/15", "15 (4+5+6)") stays on the single-number pattern.
+    const summed = /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})\s*\+\s*(\d{1,2})\s*\+\s*(\d{1,2})(?:\s*=\s*(\d{1,2}))?\b/iu.exec(text);
+    if (summed) {
+      const parts = [summed[1], summed[2], summed[3]].map(number);
+      if (parts.every((part) => part !== null && part >= 1 && part <= 6)) {
+        const stated = summed[4] == null ? null : number(summed[4]);
+        const arithmetic = parts[0] + parts[1] + parts[2];
+        const total = stated !== null && stated >= 3 && stated <= 15 ? stated : arithmetic;
+        if (total >= 3 && total <= 15) {
+          return {
+            value: total,
+            excerpt: excerptAround(text, summed.index, summed[0].length),
+            confidence: "heurística",
+          };
+        }
+      }
+    }
+    return matchOne(text, [
+      /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
+    ], 1, number);
+  },
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
@@ -180,9 +199,35 @@ const EXTRACTORS = Object.freeze({
   troponin: (text) => matchOne(text, [
     /\b((?:troponina|trop)\s*[:=]?\s*(?:positiva|negativa|normal|elevada|\d+(?:[.,]\d+)?(?:\s*ng\/?l)?))/iu,
   ]),
-  ph: (text) => matchOne(text, [
-    /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
-  ], 1, number),
+  ph: (text) => {
+    // Urine or gastric pH (often ~6) must not occupy the blood-gas field when an arterial value is also present.
+    const expression = /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/giu;
+    const candidates = [];
+    let match;
+    while ((match = expression.exec(text))) {
+      const value = number(match[1]);
+      if (value === null) continue;
+      const tail = text.slice(match.index + match[0].length, match.index + match[0].length + 24);
+      const head = text.slice(Math.max(0, match.index - 18), match.index);
+      const clause = `${head.split(/[,.;\n]/).pop() ?? ""} ${tail.split(/[,.;\n]/)[0] ?? ""}`;
+      const nonArterial = /urina|urin[aá]r|g[aá]stric|vaginal|salivar/iu.test(clause);
+      candidates.push({
+        value,
+        index: match.index,
+        length: match[0].length,
+        nonArterial,
+        arterialRange: value >= 6.5 && value <= 8,
+      });
+    }
+    const chosen = candidates.find((item) => !item.nonArterial && item.arterialRange)
+      ?? candidates.find((item) => !item.nonArterial);
+    if (!chosen) return null;
+    return {
+      value: chosen.value,
+      excerpt: excerptAround(text, chosen.index, chosen.length),
+      confidence: "heurística",
+    };
+  },
   pao2: (text) => matchOne(text, [
     /\bpao2\s*[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ], 1, number),
@@ -192,9 +237,31 @@ const EXTRACTORS = Object.freeze({
   nihss: (text) => matchOne(text, [
     /\bnihss\s*[:=]?\s*(\d{1,2})\b/iu,
   ], 1, number),
-  pupilExam: (text) => matchOne(text, [
-    /\b(pupilas?[^\n.;]{0,90})/iu,
-  ]),
+  pupilExam: (text) => {
+    // A leading "pupilar"/"pupilas." must not hide a later described exam (anisocoria, midríase arreativa).
+    const expression = /\bpupilas?\b[^\n.;]{0,90}/giu;
+    const descriptor = /isoc[oó]r|anisoc|fotorreag|midr[ií]|mi[oó]t|arreativ|reagente|puntiform|disc[oó]r/iu;
+    const matches = [];
+    let match;
+    while ((match = expression.exec(text))) {
+      const value = clean(match[0]);
+      if (!value || /^pupilas?$/iu.test(value)) continue;
+      matches.push({
+        value,
+        index: match.index,
+        length: match[0].length,
+        described: descriptor.test(value),
+      });
+    }
+    const described = matches.filter((item) => item.described);
+    const chosen = described.length ? described[described.length - 1] : matches[matches.length - 1];
+    if (!chosen) return null;
+    return {
+      value: chosen.value,
+      excerpt: excerptAround(text, chosen.index, chosen.length),
+      confidence: "heurística",
+    };
+  },
   focalDeficit: (text) => matchOne(text, [
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
