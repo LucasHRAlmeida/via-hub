@@ -49,6 +49,47 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("glasgow em componentes grava o total, não o primeiro número", () => {
+  const schema = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  assert.equal(extractNarrative("Homem, 58 anos. Glasgow 4+5+6=15. Pupilas isocóricas.", schema).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow: 2 + 2 + 5 = 9.", schema).gcs.value, 9);
+  assert.equal(extractNarrative("GCS 1+1+2.", schema).gcs.value, 4);
+  assert.equal(extractNarrative("Glasgow 8/15.", schema).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15 (4+5+6).", schema).gcs.value, 15);
+  assert.equal(extractNarrative("ECGLA: 3+4+6=13.", schema).gcs.value, 13);
+});
+
+test("menção pupilar fraca não apaga o exame descrito depois", () => {
+  const schema = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const hidden = extractNarrative(
+    "Reflexo pupilar presente. Pupilas em midríase bilateral arreativa.",
+    schema,
+  );
+  assert.match(hidden.pupilExam.value, /midr[ií]ase/i);
+  const pending = extractNarrative(
+    "Pupilas a examinar. Pupilas anisocóricas, esquerda arreativa.",
+    schema,
+  );
+  assert.match(pending.pupilExam.value, /anisoc/i);
+  const normal = extractNarrative("Pupilas isocóricas e fotorreagentes.", schema);
+  assert.match(normal.pupilExam.value, /isocóric/i);
+  const bare = extractNarrative("Sem alteração de pupilas.", schema);
+  assert.equal(bare.pupilExam.value, "");
+});
+
+test("pH urinário não ocupa o campo da gasometria", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const mixed = extractNarrative(
+    "pH 6,0 na urina; gasometria com pH 7,40, PaO2 90, FiO2 21%.",
+    schema,
+  );
+  assert.equal(mixed.ph.value, 7.4);
+  assert.equal(extractNarrative("EAS: pH 6,0 na urina.", schema).ph.value, "");
+  assert.equal(extractNarrative("Gasometria: pH 7,21, PaO2 52.", schema).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 7,22. Urina com pH 5,5.", schema).ph.value, 7.22);
+  assert.equal(extractNarrative("pH 7,20, PaO2 60. Urina clara.", schema).ph.value, 7.2);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
