@@ -28,6 +28,6 @@ Para GitHub Copilot, ler também `.github/copilot-instructions.md` antes de qual
 
 O hub é um site estático: não há build nem dependências de pacote. A pré-visualização documentada em `README.md` usa `python -m http.server 8000`. Nesta imagem o executável do sistema é `python3`; o `install` do ambiente de Cloud Agent cria o alias `python` em `/usr/local/bin` e expõe o Node do nvm em `/usr/local/bin`, porque shells de login não interativos não carregam `~/.bashrc`.
 
-As verificações do workflow `.github/workflows/testes.yml` são o contrato de teste. O conversor em `regulacao-federal-ia/evam` não declara dependências npm; `npm test` apenas executa o test runner do Node.
+As verificações do workflow `.github/workflows/testes.yml` são o contrato de teste geral. Em mudanças que tocam `scripts/revista/**`, `revista/edicao-*.md` ou `.github/workflows/revista-promote.yml`, o job `validate` de `.github/workflows/revista-promote.yml` também faz parte do contrato: regenera a edição corrente e falha se `revista/index.html` ficar divergente. O conversor em `regulacao-federal-ia/evam` não declara dependências npm; `npm test` apenas executa o test runner do Node.
 
 O script `start` do ambiente sobe `python3 -m http.server 8000 --bind 0.0.0.0` a partir de `/workspace` e termina sem erro se a porta já estiver em uso.
