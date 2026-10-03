@@ -44,7 +44,7 @@ main{max-width:1180px;margin:auto;padding:0 20px 60px}.grid{display:grid;grid-te
 <div id="queueBanner" class="callout" style="display:none;margin-top:14px;border-left-color:var(--red);background:#fdecec"></div>
 </div>
 <div class="panel">
-<div class="row"><h2>2 · Necessidade × capacidade × tempo</h2><span id="status" class="pill">calculando</span></div>
+<div class="row"><h2>2 · Necessidade × capacidade × tempo</h2><span id="matchStatus" class="pill">calculando</span></div>
 <div id="results" class="result"></div>
 </div>
 </section>
@@ -196,8 +196,8 @@ function run() {
   showQueueBanner(days, escalateDays, syn.label);
 
   if (miss) {
-    status.textContent = "ABSTENTION";
-    status.style.background = "#6a3940";
+    matchStatus.textContent = "ABSTENTION";
+    matchStatus.style.background = "#6a3940";
     results.innerHTML =
       '<div class="hospital"><strong>Insuficiente para recomendar</strong>' +
       '<div class="reason">Há dado crítico ausente. O motor interrompe o ranking e solicita completude mínima.</div></div>';
@@ -212,8 +212,8 @@ function run() {
   }
 
   if (expired.length) {
-    status.textContent = "ABSTENTION · TTL";
-    status.style.background = "#6a3940";
+    matchStatus.textContent = "ABSTENTION · TTL";
+    matchStatus.style.background = "#6a3940";
     results.innerHTML =
       '<div class="hospital"><strong>Insuficiente — dado expirado (TTL)</strong>' +
       '<div class="reason">Input(s) obrigatório(s) com freshness=expired: ' + expired.join(", ") +
@@ -229,8 +229,8 @@ function run() {
   }
 
   if (days >= escalateDays) {
-    status.textContent = "RE-MATCH / ESCALAÇÃO";
-    status.style.background = "#6a4a30";
+    matchStatus.textContent = "RE-MATCH / ESCALAÇÃO";
+    matchStatus.style.background = "#6a4a30";
     const extremeNote = days >= 20
       ? " Este valor (" + days + " d) é extremo absurdo didático para sepse biliar — ilustra estagnação absurda, não define limiar."
       : "";
@@ -255,8 +255,8 @@ function run() {
     })
     .sort((a, b) => b.total - a.total);
 
-  status.textContent = "RANKING EXPERIMENTAL";
-  status.style.background = "#183c4c";
+  matchStatus.textContent = "RANKING EXPERIMENTAL";
+  matchStatus.style.background = "#183c4c";
   results.innerHTML = ranked.map((h, i) => {
     const display = Math.max(0, h.total);
     const hard = h.capable ? "SIM" : "NÃO (penalidade impeditiva)";
