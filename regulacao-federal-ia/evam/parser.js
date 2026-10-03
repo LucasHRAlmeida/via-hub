@@ -119,15 +119,18 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
 
 /**
  * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
- * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
- * resultado elevado.
+ * uma negativa anterior. "sem/não/negou" imediatamente antes do termo preserva
+ * a negação. O horário da coleta ("3 horas", "1 h") não é resultado. Adjetivo
+ * de outro achado ("ECG normal", "PA elevada") e ng/L de outro exame não entram.
  */
 function extractTroponin(text) {
-  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?((?:troponina|trop)\b[^\n.;]{0,70})/giu;
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b/giu;
   let best = null;
 
   for (const match of text.matchAll(expression)) {
-    const parsed = parseTroponinMention(match[1] || "", match[2]);
+    const keywordEnd = match.index + match[0].length;
+    const clause = troponinClause(text.slice(keywordEnd, keywordEnd + 80));
+    const parsed = parseTroponinMention(match[1] || "", match[2], clause);
     if (!parsed) continue;
     if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
       best = { ...parsed, index: match.index, length: match[0].length };
@@ -142,39 +145,50 @@ function extractTroponin(text) {
   };
 }
 
-function parseTroponinMention(negation, body) {
-  const head = body.match(/^(troponina|trop)\b/iu);
-  if (!head) return null;
-  const tail = body.slice(head[0].length);
-  const numbers = [...tail.matchAll(/(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/giu)];
-  const tailForPolarity = tail.replace(/\bn[aã]o\s+elevad[ao]s?\b/giu, " ");
-  const positive = tailForPolarity.match(/\b(positiva|elevada)\b/iu);
-  const negative = tail.match(/\b(negativa|normal)\b/iu);
-  const immediate = tail.match(/^\s*([:=]\s*)?(\d+(?:[.,]\d+)?)\b/iu);
+function troponinClause(afterKeyword) {
+  const sentence = afterKeyword.split(/[\n.;]/u)[0];
+  const nextMention = sentence.search(/\b(?:\d+\s*[ªa]\s+)?(?:troponina|trop)\b/iu);
+  const untilNext = nextMention === -1 ? sentence : sentence.slice(0, nextMention);
+  const parts = untilNext.split(/,(?!\d)/u);
+  let clause = parts[0] ?? "";
+  for (let index = 1; index < parts.length; index += 1) {
+    const part = parts[index];
+    if (!/^\s*(?:depois|controle|ent[aã]o|e|seguido(?:\s+de)?|curva)?\s*\d/iu.test(part)) break;
+    clause += `,${part}`;
+  }
+  return clause;
+}
+
+function parseTroponinMention(negation, keyword, clause) {
+  const numbers = [...clause.matchAll(/(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/giu)];
+  const polarity = clause.match(/^\s*(?:[:=]\s*)?(?:de\s+(?:[A-Za-zÀ-ú]{3,}\s*[:\-–—]?\s*)?)?(?:\d+\s*(?:hrs|hr|hs|horas?|h|mins|minutos?|min)\b\s*[:\-–—]?\s*)?(n[aã]o\s+elevad[ao]s?|positiva|elevada|negativa|normal)\b/iu);
+  const timeThenValue = clause.match(/^\s*(?:[:=]\s*)?(?:de\s+|em\s+)?\d+\s*(?:hrs|hr|hs|horas?|h|mins|minutos?|min)\b\s*[:\-–—]\s*(\d+(?:[.,]\d+)?)\b/iu);
+  const immediate = clause.match(/^\s*(?:[:=]\s*)?(\d+(?:[.,]\d+)?)(?!\s*(?:hrs|hr|hs|horas?|h|mins|minutos?|min)\b)/iu);
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
 
   if (negation) {
     if (numbers.length) {
       const last = numbers[numbers.length - 1];
-      return { rank: 0, value: clean(`${negation} ${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+      return { rank: 0, value: clean(`${negation} ${keyword} ${last[1]} ${unitOf(last[2])}`) };
     }
-    const word = negative?.[1] || positive?.[1];
-    return { rank: 0, value: clean(word ? `${negation} ${head[0]} ${word}` : `${negation} ${head[0]}`) };
+    if (polarity) return { rank: 0, value: clean(`${negation} ${keyword} ${polarity[1]}`) };
+    return { rank: 0, value: clean(`${negation} ${keyword}`) };
   }
 
   if (numbers.length) {
     const last = numbers[numbers.length - 1];
-    return { rank: 3, value: clean(`${head[0]} ${last[1]} ${unitOf(last[2])}`) };
+    return { rank: 3, value: clean(`${keyword} ${last[1]} ${unitOf(last[2])}`) };
   }
 
-  if (positive) return { rank: 2, value: clean(`${head[0]} ${positive[1]}`) };
-  if (negative) return { rank: 1, value: clean(`${head[0]} ${negative[1]}`) };
-
-  if (immediate) return { rank: 3, value: clean(`${head[0]} ${immediate[2]}`) };
-
-  if (/\bn[aã]o\s+elevad/iu.test(tail)) {
-    return { rank: 1, value: clean(`${head[0]} não elevada`) };
+  if (polarity) {
+    const word = polarity[1];
+    if (/^n[aã]o\s+elevad/iu.test(word)) return { rank: 1, value: clean(`${keyword} não elevada`) };
+    if (/^(?:positiva|elevada)$/iu.test(word)) return { rank: 2, value: clean(`${keyword} ${word}`) };
+    return { rank: 1, value: clean(`${keyword} ${word}`) };
   }
+
+  if (timeThenValue) return { rank: 3, value: clean(`${keyword} ${timeThenValue[1]}`) };
+  if (immediate) return { rank: 3, value: clean(`${keyword} ${immediate[1]}`) };
 
   return null;
 }

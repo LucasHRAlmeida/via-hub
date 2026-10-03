@@ -51,6 +51,34 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.match(extractNarrative("Troponina elevada.", schema).troponin.value, /elevada/i);
   assert.match(extractNarrative("Trop positiva.", schema).troponin.value, /positiva/i);
   assert.match(extractNarrative("Troponina: negativa.", schema).troponin.value, /negativa/i);
+  assert.match(extractNarrative("Troponina de admissão negativa.", schema).troponin.value, /negativa/i);
+  assert.match(extractNarrative("2ª troponina: 3 horas positiva.", schema).troponin.value, /positiva/i);
+  assert.match(extractNarrative("Troponina de 3 horas: positiva.", schema).troponin.value, /positiva/i);
+  assert.equal(extractNarrative("Troponina 42.", schema).troponin.value, "Troponina 42");
+
+  const timed = extractNarrative("Troponina 18 ng/L. 2ª troponina: 3 horas.", schema);
+  assert.match(timed.troponin.value, /18/);
+  assert.match(timed.troponin.value, /ng\/L/);
+  assert.doesNotMatch(timed.troponin.value, /\b3\b/);
+
+  const scheduled = extractNarrative(
+    "Troponina 350 ng/L na admissão. Programada 2ª troponina: 1 hora.",
+    schema,
+  );
+  assert.match(scheduled.troponin.value, /350/);
+  assert.doesNotMatch(scheduled.troponin.value, /\b1\b/);
+  assert.equal(extractNarrative("Troponina: 3 horas.", schema).troponin.value, "");
+
+  assert.equal(extractNarrative("Troponina solicitada, ECG normal.", schema).troponin.value, "");
+  assert.equal(extractNarrative("Troponina solicitada, PA elevada.", schema).troponin.value, "");
+
+  const bnp = extractNarrative("Troponina negativa, NT-proBNP 1800 ng/L.", schema);
+  assert.match(bnp.troponin.value, /negativa/i);
+  assert.doesNotMatch(bnp.troponin.value, /1800/);
+
+  const curve = extractNarrative("Troponina 18 ng/L, depois 350 ng/L.", schema);
+  assert.match(curve.troponin.value, /350/);
+  assert.doesNotMatch(curve.troponin.value, /\b18\b/);
 });
 
 test("extrai variáveis básicas do caso-âncora sintético", () => {
