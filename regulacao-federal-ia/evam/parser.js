@@ -193,11 +193,12 @@ const EXTRACTORS = Object.freeze({
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
   sbp: (text) => matchOne(text, [
-    /\b(?:pa|press[aã]o\s+arterial)\s*[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
+    // "PA 03/10" é pronto atendimento + data (dia 01–31). Sistólica real parte de 40 mmHg.
+    /\b(?:pa|press[aã]o\s+arterial)\s*[:=]?\s*([4-9]\d|\d{3})\s*[x/]\s*\d{2,3}\b/iu,
     /\bpas\s*[:=]?\s*(\d{2,3})\b/iu,
   ], 1, number),
   dbp: (text) => matchOne(text, [
-    /\b(?:pa|press[aã]o\s+arterial)\s*[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
+    /\b(?:pa|press[aã]o\s+arterial)\s*[:=]?\s*(?:[4-9]\d|\d{3})\s*[x/]\s*(\d{2,3})\b/iu,
     /\bpad\s*[:=]?\s*(\d{2,3})\b/iu,
   ], 1, number),
   map: (text) => matchOne(text, [
@@ -249,7 +250,8 @@ const EXTRACTORS = Object.freeze({
     /\bpao2\s*[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ], 1, number),
   fio2: (text) => matchOne(text, [
-    /\bfio2\s*[:=]?\s*(\d{1,3})\s*%?/iu,
+    // PaO2/FiO2 (relação P/F) não é a fração inspirada. A FiO₂ real, se houver, continua válida.
+    /(?<!p(?:a)?o\s*2\s*\/\s*)\bfio2\s*[:=]?\s*(\d{1,3})\s*%?/iu,
   ], 1, number),
   nihss: (text) => matchOne(text, [
     /\bnihss\s*[:=]?\s*(\d{1,2})\b/iu,
@@ -265,7 +267,8 @@ const EXTRACTORS = Object.freeze({
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
+    // "tc" solto é tomografia. TCE e TCLE continuam a palavra e não podem ocultar o exame.
+    /\b((?:tc(?![a-z])|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
