@@ -17,6 +17,51 @@ test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
   assert.match(output, /lactato 4,1/);
 });
 
+test("SpO2 não grava fluxo de oxigênio como saturação", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  assert.equal(extractNarrative("SpO2 93% em cateter nasal 3 L/min.", schema).spo2.value, 93);
+  assert.equal(extractNarrative("Saturação de O2 88% em máscara com reservatório 10 L/min.", schema).spo2.value, 88);
+  assert.equal(extractNarrative("Saturação de O2 3 L/min.", schema).spo2.value, "");
+  assert.equal(extractNarrative("Saturação de O2 10 L/min. SpO2 96%.", schema).spo2.value, 96);
+  assert.equal(extractNarrative("Saturação de O2 15 L/min.", schema).spo2.value, "");
+  assert.equal(extractNarrative("Saturação de O2: 2 litros/min. SpO2 96%.", schema).spo2.value, 96);
+  assert.equal(extractNarrative("Sat 97%.", schema).spo2.value, 97);
+});
+
+test("troponina seriada e negada não grava a primeira leitura invertida", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const serial = extractNarrative(
+    "Homem, 62 anos. Troponina negativa na admissão. Troponina de 3 horas: 420 ng/L.",
+    schema,
+  );
+  assert.match(serial.troponin.value, /420/);
+  assert.doesNotMatch(serial.troponin.value, /negativa/i);
+
+  const rising = extractNarrative("Troponina 18 ng/L. Controle troponina 350 ng/L.", schema);
+  assert.match(rising.troponin.value, /350/);
+  assert.doesNotMatch(rising.troponin.value, /\b18\b/);
+
+  const second = extractNarrative("1ª troponina negativa, 2ª troponina positiva.", schema);
+  assert.match(second.troponin.value, /positiva/i);
+  assert.doesNotMatch(second.troponin.value, /negativa/i);
+
+  const negated = extractNarrative("Sem troponina elevada.", schema);
+  assert.match(negated.troponin.value, /\bsem\b/i);
+  assert.doesNotMatch(negated.troponin.value, /^troponina elevada$/i);
+
+  assert.match(extractNarrative("Troponina não elevada.", schema).troponin.value, /não elevada/i);
+  assert.match(extractNarrative("Troponina elevada.", schema).troponin.value, /elevada/i);
+  assert.match(extractNarrative("Trop positiva.", schema).troponin.value, /positiva/i);
+  assert.match(extractNarrative("Troponina: negativa.", schema).troponin.value, /negativa/i);
+
+  // Decimal com ponto e valor ligado só à menção (não herda BNP/CK-MB).
+  assert.match(extractNarrative("Troponina 0.35 ng/mL.", schema).troponin.value, /0\.35/);
+  assert.match(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /negativa/i);
+  assert.doesNotMatch(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /420/);
+  assert.match(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /normal/i);
+  assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";

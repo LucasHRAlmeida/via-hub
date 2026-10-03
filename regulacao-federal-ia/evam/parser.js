@@ -117,6 +117,68 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
   return fields;
 }
 
+/**
+ * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
+ * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
+ * resultado elevado. Só lê o valor sintaticamente ligado à menção (não varre
+ * outros analitos na mesma oração). Ponto/vírgula entre dígitos não fecha o trecho.
+ */
+function extractTroponin(text) {
+  // Cauda: permite [.,] só entre dígitos; vírgula/ponto de oração encerram.
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:[^\n.,;]|[.,](?=\d)){0,40})/giu;
+  let best = null;
+
+  for (const match of text.matchAll(expression)) {
+    const parsed = parseTroponinMention(match[1] || "", match[2], match[3] || "");
+    if (!parsed) continue;
+    if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
+      best = { ...parsed, index: match.index, length: match[0].length };
+    }
+  }
+
+  if (!best) return null;
+  return {
+    value: best.value,
+    excerpt: excerptAround(text, best.index, best.length),
+    confidence: "heurística",
+  };
+}
+
+function parseTroponinMention(negation, keyword, tail) {
+  // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
+  const rest = String(tail).replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
+  const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
+  const quantified = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  const qualitative = rest.match(/^\s*[:=]?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
+  const bareNumber = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu);
+
+  if (negation) {
+    if (quantified) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
+    }
+    if (qualitative) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${qualitative[1]}`) };
+    }
+    return { rank: 0, value: clean(`${negation} ${keyword}`) };
+  }
+
+  if (quantified) {
+    return { rank: 3, value: clean(`${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
+  }
+
+  if (qualitative) {
+    const token = qualitative[1];
+    const rank = /^(positiva|elevada)/iu.test(token) ? 2 : 1;
+    return { rank, value: clean(`${keyword} ${token}`) };
+  }
+
+  if (bareNumber) {
+    return { rank: 3, value: clean(`${keyword} ${bareNumber[1]}`) };
+  }
+
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -148,7 +210,9 @@ const EXTRACTORS = Object.freeze({
     /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
   ], 1, number),
   spo2: (text) => matchOne(text, [
-    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})\s*%?/iu,
+    // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
+    // de "10 L/min" para SpO₂=1.
+    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
   ], 1, number),
   temperature: (text) => matchOne(text, [
     /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
@@ -177,9 +241,7 @@ const EXTRACTORS = Object.freeze({
   inr: (text) => matchOne(text, [
     /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ], 1, number),
-  troponin: (text) => matchOne(text, [
-    /\b((?:troponina|trop)\s*[:=]?\s*(?:positiva|negativa|normal|elevada|\d+(?:[.,]\d+)?(?:\s*ng\/?l)?))/iu,
-  ]),
+  troponin: extractTroponin,
   ph: (text) => matchOne(text, [
     /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ], 1, number),
