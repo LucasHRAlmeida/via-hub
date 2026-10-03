@@ -5,6 +5,16 @@ const number = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+/** Contagem de plaquetas: "92 mil" e "92.000" são 92000/mm³, não 92. */
+const plateletCount = (raw, match) => {
+  const text = String(raw ?? "").trim();
+  const scale = String(match?.[2] ?? "").toLowerCase();
+  const grouped = /^\d{1,3}(?:\.\d{3})+$/.test(text);
+  const value = grouped ? Number(text.replaceAll(".", "")) : number(text);
+  if (value === null) return null;
+  return scale === "mil" || scale === "k" ? value * 1000 : value;
+};
+
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 const excerptAround = (text, index, length) => {
@@ -85,26 +95,59 @@ export function deriveValidUntil(observedAt, maxAgeHours) {
 }
 
 /**
+ * Hours since recognition, or null when the field is blank.
+ * Number("") === 0 in JavaScript; a missing interval must not become "observed now".
+ */
+function recognitionAgeHours(fields) {
+  const raw = fields.hoursSinceRecognition?.value;
+  if (raw === null || typeof raw === "undefined") return null;
+  if (typeof raw === "string" && raw.trim() === "") return null;
+  const hours = Number(raw);
+  if (!Number.isFinite(hours) || hours < 0) return null;
+  return hours;
+}
+
+function withoutDerivedFreshness(item) {
+  const next = { ...item };
+  delete next.observedAt;
+  delete next.validUntil;
+  delete next.freshness;
+  delete next.maxAgeHours;
+  delete next.observedAtSource;
+  return next;
+}
+
+/**
  * Attach TTL provenance when the field has maxAgeHours and an observedAt
  * (explicit on the field, or derived from hoursSinceRecognition for lab/vital fields).
  * Heuristic: if hoursSinceRecognition is known and the field has a value, treat
  * "estado atual / laboratório" as observed roughly that many hours ago.
+ * A blank interval does not invent a timestamp. Derived timestamps are recomputed
+ * when the interval changes; an explicit observedAt is left untouched.
  */
 export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
-  const hours = Number(fields.hoursSinceRecognition?.value);
-  const derivedObserved = Number.isFinite(hours) && hours >= 0
-    ? new Date(now.getTime() - hours * 3_600_000).toISOString()
-    : null;
+  const hours = recognitionAgeHours(fields);
+  const derivedObserved = hours === null
+    ? null
+    : new Date(now.getTime() - hours * 3_600_000).toISOString();
 
   for (const [key, item] of Object.entries(fields)) {
     if (!item || item.value === "" || item.value === null || typeof item.value === "undefined") continue;
     const maxAge = getFieldMaxAgeHours(key);
     if (maxAge === null) continue;
 
-    const observedAt = item.observedAt || derivedObserved;
-    if (!observedAt) continue;
+    const explicit = item.observedAtSource === "explicit"
+      || (item.observedAt != null && item.observedAt !== "" && item.observedAtSource !== "derived");
+    const observedAt = explicit ? item.observedAt : derivedObserved;
 
-    const validUntil = item.validUntil || deriveValidUntil(observedAt, maxAge);
+    if (!observedAt) {
+      if (item.observedAtSource === "derived") fields[key] = withoutDerivedFreshness(item);
+      continue;
+    }
+
+    const validUntil = explicit && item.validUntil
+      ? item.validUntil
+      : deriveValidUntil(observedAt, maxAge);
     const freshness = computeFreshness(observedAt, maxAge, now);
     fields[key] = {
       ...item,
@@ -112,6 +155,7 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
       validUntil,
       freshness,
       maxAgeHours: maxAge,
+      observedAtSource: explicit ? "explicit" : "derived",
     };
   }
   return fields;
@@ -172,8 +216,8 @@ const EXTRACTORS = Object.freeze({
     /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ], 1, number),
   platelets: (text) => matchOne(text, [
-    /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
-  ], 1, number),
+    /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d{1,3}(?:\.\d{3})+|\d+(?:[.,]\d+)?)\s*(mil|k)?\b/iu,
+  ], 1, plateletCount),
   inr: (text) => matchOne(text, [
     /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ], 1, number),

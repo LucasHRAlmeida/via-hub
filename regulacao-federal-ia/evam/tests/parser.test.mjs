@@ -17,6 +17,20 @@ test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
   assert.match(output, /lactato 4,1/);
 });
 
+test("plaquetas em milhar não são truncadas para dezenas", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const cases = [
+    ["plaquetas 92 mil", 92000],
+    ["plaq 150 mil/mm³", 150000],
+    ["plaquetas 92.000/mm³", 92000],
+    ["plaquetas 92000", 92000],
+    ["plaquetas 92,5 mil", 92500],
+  ];
+  for (const [text, expected] of cases) {
+    assert.equal(extractNarrative(text, schema).platelets.value, expected, text);
+  }
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
