@@ -297,38 +297,6 @@
       }
     },
     {
-      "id": "bem-estar-multissensorial",
-      "name": "Bem-Estar Multissensorial",
-      "kicker": "Bem-estar · autocuidado",
-      "categories": [
-        "saude-publica"
-      ],
-      "status": "publicado",
-      "statusKey": "stable",
-      "featured": false,
-      "description": "Guia interativo que combina música, cores e aromas para seis estados de espírito, com referências comentadas e modo de uso. Intervenções inócuas de bem-estar; não substitui intervenção clínica.",
-      "tags": [
-        "cromoterapia",
-        "aromaterapia",
-        "playlists",
-        "6 estados"
-      ],
-      "url": "https://iniciativa-via.com/via-hub/bem-estar-multissensorial/",
-      "repo": "https://github.com/LucasHRAlmeida/via-hub/tree/main/bem-estar-multissensorial",
-      "en": {
-        "name": "Multisensory Well-Being",
-        "kicker": "Well-being · self-care",
-        "status": "published",
-        "description": "Interactive guide that combines music, colors and aromas for six mood states, with annotated references and a usage mode. Harmless well-being interventions; not a substitute for clinical care.",
-        "tags": [
-          "chromotherapy",
-          "aromatherapy",
-          "playlists",
-          "6 states"
-        ]
-      }
-    },
-    {
       "id": "soberania-informacional",
       "name": "VIA Soberania Informacional",
       "kicker": "Direitos digitais · proteção de dados",
