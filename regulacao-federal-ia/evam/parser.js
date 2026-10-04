@@ -207,7 +207,8 @@ const EXTRACTORS = Object.freeze({
     /\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
   ], 1, number),
   respiratoryRate: (text) => matchOne(text, [
-    /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
+    // "Fr 1/3" e "Fr 2 costelas/ossos/arcos/dedos" são fratura. "18/min" permanece FR.
+    /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})(?!\s*\/\s*\d)(?!\s+(?:ossos|arcos|costelas?|dedos?)\b)\s*(?:irpm|rpm)?\b/iu,
   ], 1, number),
   spo2: (text) => matchOne(text, [
     // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
