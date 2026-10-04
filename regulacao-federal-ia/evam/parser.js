@@ -127,13 +127,34 @@ function extractTroponin(text) {
   // Cauda: permite [.,] só entre dígitos; vírgula/ponto de oração encerram.
   const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:[^\n.,;]|[.,](?=\d)){0,40})/giu;
   let best = null;
+  const consider = (parsed, index, length) => {
+    if (!parsed) return;
+    if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && index > best.index)) {
+      best = { ...parsed, index, length };
+    }
+  };
 
   for (const match of text.matchAll(expression)) {
-    const parsed = parseTroponinMention(match[1] || "", match[2], match[3] || "");
-    if (!parsed) continue;
-    if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
-      best = { ...parsed, index: match.index, length: match[0].length };
-    }
+    consider(parseTroponinMention(match[1] || "", match[2], match[3] || ""), match.index, match[0].length);
+  }
+
+  // "1ª troponina 12 ng/L e 2ª 450 ng/L" — a 2ª amostra não repete o analito.
+  // Só na mesma frase, para não herdar ng/L de outro exame depois do ponto.
+  const shorthand = /\b([1-4]\s*[ªa])\s+(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/giu;
+  for (const match of text.matchAll(shorthand)) {
+    const sentenceStart = Math.max(text.lastIndexOf(".", match.index), text.lastIndexOf("\n", match.index)) + 1;
+    const endCandidates = [text.indexOf(".", match.index), text.indexOf("\n", match.index)].filter((index) => index >= 0);
+    const sentenceEnd = endCandidates.length ? Math.min(...endCandidates) : text.length;
+    const sentence = text.slice(sentenceStart, sentenceEnd);
+    if (!/\b(?:troponina|trop)\b/iu.test(sentence)) continue;
+    if (/\b(?:bnp|nt-probnp|ck-?mb|mioglobina)\b/iu.test(sentence)) continue;
+    const prefix = sentence.slice(0, match.index - sentenceStart);
+    const negation = prefix.match(/(?:^|[^\p{L}\p{N}])(sem|n[aã]o|negou(?:\s+que)?)\s+$/iu);
+    const unit = /m/i.test(match[3]) ? "ng/mL" : "ng/L";
+    const value = negation
+      ? clean(`${negation[1]} troponina ${match[2]} ${unit}`)
+      : clean(`troponina ${match[2]} ${unit}`);
+    consider({ rank: negation ? 0 : 3, value }, match.index, match[0].length);
   }
 
   if (!best) return null;
@@ -144,15 +165,26 @@ function extractTroponin(text) {
   };
 }
 
+function parseTroponinCurve(rest) {
+  // "12 → 450 ng/L", "12/450 ng/L", "12 ng/L -> 450 ng/L": o último ponto da curva.
+  const match = String(rest).match(/^\s*[:=]?\s*((?:\d+(?:[.,]\d+)?(?:\s*ng\s*\/?\s*m?l)?\s*(?:→|->|=>|–|—|\/)\s*)+)(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  if (!match) return null;
+  return { value: match[2], unit: match[3] };
+}
+
 function parseTroponinMention(negation, keyword, tail) {
   // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
   const rest = String(tail).replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
+  const curve = parseTroponinCurve(rest);
   const quantified = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
   const qualitative = rest.match(/^\s*[:=]?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
   const bareNumber = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu);
 
   if (negation) {
+    if (curve) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${curve.value} ${unitOf(curve.unit)}`) };
+    }
     if (quantified) {
       return { rank: 0, value: clean(`${negation} ${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
     }
@@ -160,6 +192,10 @@ function parseTroponinMention(negation, keyword, tail) {
       return { rank: 0, value: clean(`${negation} ${keyword} ${qualitative[1]}`) };
     }
     return { rank: 0, value: clean(`${negation} ${keyword}`) };
+  }
+
+  if (curve) {
+    return { rank: 3, value: clean(`${keyword} ${curve.value} ${unitOf(curve.unit)}`) };
   }
 
   if (quantified) {

@@ -62,6 +62,42 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("curva de troponina guarda o último valor e não o basal", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+
+  const arrow = extractNarrative("Homem, 62 anos. PA 90/60, SpO2 95%. ECG com supra de ST. Troponina 12 → 450 ng/L.", schema);
+  assert.match(arrow.troponin.value, /450/);
+  assert.doesNotMatch(arrow.troponin.value, /\b12\b/);
+
+  const slash = extractNarrative("Troponina 12/450 ng/L.", schema);
+  assert.match(slash.troponin.value, /450/);
+  assert.doesNotMatch(slash.troponin.value, /\b12\b/);
+
+  const bothUnits = extractNarrative("Troponina: 12 ng/L -> 450 ng/L.", schema);
+  assert.match(bothUnits.troponin.value, /450/);
+  assert.doesNotMatch(bothUnits.troponin.value, /\b12\b/);
+
+  const three = extractNarrative("Troponina 12 → 40 → 450 ng/L.", schema);
+  assert.match(three.troponin.value, /450/);
+  assert.doesNotMatch(three.troponin.value, /\b12\b/);
+
+  const ordinal = extractNarrative("1ª troponina 12 ng/L e 2ª 450 ng/L.", schema);
+  assert.match(ordinal.troponin.value, /450/);
+  assert.doesNotMatch(ordinal.troponin.value, /\b12\b/);
+
+  const reference = extractNarrative("Troponina 450 ng/L (VR < 14 ng/L).", schema);
+  assert.match(reference.troponin.value, /450/);
+  assert.doesNotMatch(reference.troponin.value, /\b14\b/);
+
+  const otherAssay = extractNarrative("Troponina negativa. 2ª dosagem de CK-MB 35 ng/mL.", schema);
+  assert.match(otherAssay.troponin.value, /negativa/i);
+  assert.doesNotMatch(otherAssay.troponin.value, /35/);
+
+  const negated = extractNarrative("Sem troponina 12 → 450 ng/L.", schema);
+  assert.match(negated.troponin.value, /\bsem\b/i);
+  assert.doesNotMatch(negated.troponin.value, /^troponina 450/i);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
