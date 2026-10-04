@@ -104,3 +104,28 @@ test("resumo formatado explicita campos críticos e governança", () => {
   assert.match(text, /Lactato: 4.1 mmol\/L/);
 });
 
+test("data do pronto atendimento não vira pressão arterial média", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const dated = extractNarrative(
+    "Mulher, 81 anos. Admitida no PAM 03/10. Sepse biliar. PAM 64 mmHg. Lactato 4,1. BT 12,9.",
+    schema,
+  );
+  assert.equal(dated.map.value, 64);
+
+  const withYear = extractNarrative(
+    "Entrada no PAM 12/10/2026. Pressão arterial média 58 mmHg. Lactato 3,2.",
+    schema,
+  );
+  assert.equal(withYear.map.value, 58);
+
+  const dateOnly = extractNarrative("Veio ao PAM 03/10/2026. Sem registro de pressão arterial média.", schema);
+  assert.equal(dateOnly.map.value, "");
+
+  const spaced = extractNarrative("PAM 03 / 10. PAM 47 mmHg.", schema);
+  assert.equal(spaced.map.value, 47);
+
+  assert.equal(extractNarrative("PAM 40 mmHg em choque.", schema).map.value, 40);
+  assert.equal(extractNarrative("PAM=58.", schema).map.value, 58);
+  assert.equal(extractNarrative("pressão arterial média 72 mmHg.", schema).map.value, 72);
+});
+
