@@ -224,6 +224,12 @@ const CSS_BEGIN = '/* REVISTA_AUTOMATION_STYLES:START */';
 const CSS_END = '/* REVISTA_AUTOMATION_STYLES:END */';
 const cssBlock = `\n    ${CSS_BEGIN}\n${automationCss}    ${CSS_END}\n`;
 
+// A promoção publica o número antes de qualquer reabertura de fontes primárias,
+// então este é o único estado que o gerador pode afirmar. A barra do hub e o
+// selo do cabeçalho saem daqui para não divergirem entre si nem entre edições.
+const STATUS_LABEL = 'Edição em revisão';
+const STATUS_PATTERN = 'Edição (?:verificada|em revisão)';
+
 // Toda classe emitida pelo gerador precisa existir na folha de estilo da página.
 // Sem esta checagem o corpo volta a sair sem o quadro, como HTML válido e sem forma.
 function assertStyledMarkup(doc) {
@@ -245,6 +251,9 @@ function assertCurrent(doc) {
     ['PANORAMA markers', doc.includes('PANORAMA:START') && doc.includes('PANORAMA:END')],
     ['main content', doc.includes('<main id="conteudo">') && doc.includes('</main>')],
     ['marcadores de estilo', doc.includes(CSS_BEGIN) && doc.includes(CSS_END)],
+    [`barra do hub com "${STATUS_LABEL}" em ${editionId}`, doc.includes(`${STATUS_LABEL} · fontes primárias · ${editionId}`)],
+    [`selo do cabeçalho com "${STATUS_LABEL}"`, doc.includes(`<span class="tag n">${STATUS_LABEL}</span>`)],
+    ['status sem rótulo divergente', [...doc.matchAll(new RegExp(STATUS_PATTERN, 'g'))].every((m) => m[0] === STATUS_LABEL)],
   ];
   const failed = checks.filter(([,ok]) => !ok).map(([name]) => name);
   if (failed.length) throw new Error(`QA falhou: ${failed.join('; ')}`);
@@ -266,7 +275,8 @@ html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="de
 html = html.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="Saúde na Última Semana — ${editionId} · VIA">`);
 html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${escapeHtml(conciseDescription)}">`);
 html = html.replace(/("description"\s*:\s*)"[^"]*"/, `$1${JSON.stringify(conciseDescription)}`);
-html = html.replace(/Edição verificada · fontes primárias · \d{2}\.\d{2}\.\d{4}/, `Edição em revisão · fontes primárias · ${editionId}`);
+html = html.replace(new RegExp(`${STATUS_PATTERN} · fontes primárias · \\d{2}\\.\\d{2}\\.\\d{4}`), `${STATUS_LABEL} · fontes primárias · ${editionId}`);
+html = html.replace(new RegExp(`(<span class="tag n">)${STATUS_PATTERN}(</span>)`), `$1${STATUS_LABEL}$2`);
 html = html.replace(/<h2>[^<]*<\/h2>\s*<p>[^<]*<\/p>\s*<\/div>\s*<div class="meta mono">\s*<span><b>Edição de [^<]*<\/b><\/span>\s*<span><b>Semana<\/b>[^<]*<\/span>/,
   `<h2>${escapeHtml(cleanHeading(sections[0]?.heading || 'Edição semanal'))}</h2>\n      <p>${inline(criterion)}</p>\n    </div>\n    <div class="meta mono">\n      <span><b>${escapeHtml(editionHuman)}</b></span>\n      <span><b>Semana</b> ${escapeHtml(weekHuman.replace(/^Semana de\s*/i, ''))}</span>`);
 html = html.replace(/Revista Eletrônica VIA · Saúde na Última Semana · edição de \d{2}\.\d{2}\.\d{4}\./,

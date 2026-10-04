@@ -23,6 +23,7 @@ python scripts/revista/render_pdf.py revista/edicao-AAAA-MM-DD.md revista/edicao
 - Alegações epidemiológicas, regulatórias e quantitativas devem apontar para fonte primária específica, com data e escopo.
 - A voz de marca e a paleta seguem o portal VIA — a fonte científica permanece separada da ferramenta que a apresenta.
 - Toda edição corrente deve expor no topo um elo de volta ao hub (`href="../"`); a revista não mantém fileira de canais no rodapé.
+- O estado de revisão da edição corrente é único e pertence ao gerador: `promote.mjs` escreve a mesma frase na barra do hub e no selo do cabeçalho a cada promoção. Como a promoção publica o número antes de qualquer reabertura de fontes primárias, a frase emitida é «Edição em revisão»; afirmar verificação exige um ato editorial posterior, não o ciclo de promoção. O QA (`promote.mjs --check`) falha se os dois rótulos divergirem.
 - O corpo da edição é gerado por `scripts/revista/promote.mjs` e reaproveita o quadro já existente da página — `.wrap` para a largura, `nav.index` com `.sec-card` para o índice, `article.casa` com `.casa-inner` para cada bloco editorial. O bloco de estilo do gerador fica delimitado por `/* REVISTA_AUTOMATION_STYLES:START */` e `/* REVISTA_AUTOMATION_STYLES:END */` e é reescrito a cada promoção. O QA (`promote.mjs --check`) falha se alguma classe emitida no `<main>` não tiver regra na folha de estilo da página.
 
 ## Stack
