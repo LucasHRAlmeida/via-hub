@@ -114,11 +114,24 @@ const summary = sections[0].heading.toLowerCase().includes('90 segundos') ? sect
 const cleanHeading = (heading) => heading.replace(/^\d+\.\s*/, '').trim();
 const editorialSectionPattern = /^(ações práticas(?: desta semana)?|o que a via leva desta semana|método editorial)$/i;
 
+// As manchetes editoriais usam travessão entre tema e título ("Prescrição — O digital…").
+// O cartão de índice separa os dois; o texto permanece exatamente o da fonte.
+const splitHeading = (clean) => {
+  const i = clean.indexOf(' — ');
+  if (i < 0) return { theme: '', title: clean };
+  return { theme: clean.slice(0, i).trim(), title: clean.slice(i + 3).trim() };
+};
+
 const toc = sections.map((s, i) => {
   const clean = cleanHeading(s.heading);
+  const { theme, title } = splitHeading(clean);
   const id = slugify(clean);
   const num = String(i + 1).padStart(2, '0');
-  return `<li><a href="#${id}"><b>${num}</b><span>${escapeHtml(clean)}</span></a></li>`;
+  const kicker = theme ? `${num} · ${theme}` : num;
+  return `      <a class="sec-card" href="#${id}">
+        <span class="num mono">${escapeHtml(kicker)}</span>
+        <h3>${escapeHtml(title)}</h3>
+      </a>`;
 }).join('\n');
 
 const topicNames = sections
@@ -130,10 +143,19 @@ const aboutJson = topicNames.map((name) => `          {\n            "@type": "M
 
 const sectionHtml = sections.map((s, i) => {
   const clean = cleanHeading(s.heading);
+  const { theme } = splitHeading(clean);
   const id = slugify(clean);
   const num = String(i + 1).padStart(2, '0');
-  const cls = i % 2 === 0 ? 'focus' : 'topics';
-  return `    <section class="${cls} section" id="${id}" aria-labelledby="${id}-titulo">\n      <div class="shell">\n        <div class="section-heading">\n          <p class="section-kicker">${num} · Nesta edição</p>\n          <h2 id="${id}-titulo">${escapeHtml(clean)}</h2>\n        </div>\n        <div class="article-prose">\n${renderBody(s.body)}\n        </div>\n      </div>\n    </section>`;
+  const kicker = theme ? `${num} · ${theme}` : `${num} · Nesta edição`;
+  return `  <article class="casa" id="${id}" aria-labelledby="${id}-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">${escapeHtml(kicker)}</span>
+      <h2 id="${id}-titulo">${escapeHtml(clean)}</h2>
+      <div class="article-prose">
+${renderBody(s.body)}
+      </div>
+    </div>
+  </article>`;
 }).join('\n');
 
 const datePt = (() => {
@@ -141,9 +163,79 @@ const datePt = (() => {
   return new Intl.DateTimeFormat('pt-BR', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' }).format(new Date(Date.UTC(y,m-1,d)));
 })();
 const editionId = edition.split('-').reverse().join('.');
-const main = `  <main id="conteudo">\n    <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">\n      <div class="shell">\n        <!-- PANORAMA:START (bloco gerado automaticamente — não remova os marcadores) -->\n        <div class="panorama-head" data-updated="${edition}">\n          <div class="section-heading">\n            <p class="section-kicker">Em 90 segundos</p>\n            <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>\n          </div>\n          <span class="update-pill">Atualizado em ${datePt}</span>\n        </div>\n        <div class="issue-bar">\n          <span class="issue-id">Edição ${editionId} · Ano I</span>\n          <span class="issue-id">Fonte editorial versionada em Markdown</span>\n        </div>\n        ${summary ? `<div class="edition-summary article-prose">${renderBody(summary.body)}</div>` : ''}\n        <ul class="toc">${toc}</ul>\n        <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e literatura científica na data acima. Confira a fonte primária antes de agir ou compartilhar.</p>\n        <!-- PANORAMA:END -->\n      </div>\n    </section>\n${sectionHtml}\n  </main>`;
+const summaryHtml = summary
+  ? `    <div class="edition-summary article-prose">\n${renderBody(summary.body)}\n    </div>\n`
+  : '';
 
-const automationCss = `\n    /* REVISTA_AUTOMATION_STYLES */\n    .shell{max-width:var(--max);margin:0 auto;padding:0 24px}\n    .section{padding:38px 0;border-top:1px solid var(--rule)}\n    .section:nth-of-type(even){background:var(--wash)}\n    .panorama{border-top:0;background:var(--white)!important}\n    .panorama-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:12px}\n    .section-heading h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(26px,3.2vw,38px);font-weight:500;line-height:1.14;color:var(--navy);margin:5px 0 18px}\n    .section-kicker{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-text)}\n    .update-pill,.issue-id{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2)}\n    .issue-bar{display:flex;justify-content:space-between;gap:16px;padding:10px 0 18px;border-top:2px solid var(--navy)}\n    .article-prose{max-width:860px;color:var(--ink);font-size:16px;line-height:1.72}\n    .article-prose p{margin:0 0 18px}\n    .article-prose h3{margin:28px 0 10px;color:var(--navy);font-size:1.05rem;letter-spacing:-.01em}\n    .article-prose ul{margin:0 0 22px;padding-left:1.25rem}\n    .article-prose li{margin:8px 0}\n    .article-prose a{color:var(--teal-text);overflow-wrap:anywhere}\n    .article-prose .source-line{margin-top:26px;padding-top:16px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink2)}\n    .edition-summary{margin:0 0 26px}\n    .toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;list-style:none;margin:24px 0;padding:0}\n    .toc a{display:flex;gap:12px;height:100%;padding:14px;border:1px solid var(--rule);background:var(--wash);text-decoration:none;color:var(--navy)}\n    .toc b{color:var(--teal-text);font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:11px}\n    .toc span{font-size:14px;line-height:1.32}\n    .panorama-disclaimer{font-size:12px;color:var(--ink2);margin-top:16px}\n    @media (max-width:720px){.toc{grid-template-columns:1fr}.panorama-head,.issue-bar{align-items:flex-start;flex-direction:column}}\n    @media print{.section{padding:20px 0}.toc{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.toc a{padding:9px}.article-prose{font-size:10.5pt;line-height:1.48}.article-prose h3{break-after:avoid}.source-line{font-size:9pt!important}.panorama-disclaimer{font-size:8.5pt}}\n`;
+// O corpo entra no mesmo quadro do cabeçalho e da entrada do site: .wrap define a largura,
+// nav.index + .sec-card o índice, article.casa + .casa-inner cada bloco editorial.
+const main = `<main id="conteudo">
+<div class="wrap">
+  <section class="panorama" aria-labelledby="panorama-titulo">
+    <!-- PANORAMA:START (bloco gerado automaticamente — não remova os marcadores) -->
+    <div class="panorama-head" data-updated="${edition}">
+      <div>
+        <span class="section-kicker mono">Em 90 segundos</span>
+        <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>
+      </div>
+      <span class="update-pill mono">Atualizado em ${datePt}</span>
+    </div>
+    <div class="issue-bar mono">
+      <span>Edição ${editionId} · Ano I</span>
+      <span>Fonte editorial versionada em Markdown</span>
+    </div>
+${summaryHtml}    <nav class="index toc" aria-label="Nesta edição">
+${toc}
+    </nav>
+    <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e literatura científica na data acima. Confira a fonte primária antes de agir ou compartilhar.</p>
+    <!-- PANORAMA:END -->
+  </section>
+${sectionHtml}
+</div>
+</main>`;
+
+// Complementa a folha de estilo da página sem duplicá-la: .wrap, nav.index, .sec-card,
+// article.casa e .casa-inner já existem e definem largura, ritmo e tipografia da edição.
+// Aqui ficam só as peças que o gerador introduz, escritas com as variáveis do próprio tema.
+const automationCss = `    .panorama{padding:26px 0 10px}
+    .panorama-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 24px}
+    .panorama-head h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(24px,2.9vw,32px);font-weight:500;line-height:1.14;color:var(--navy);margin:6px 0 0}
+    .section-kicker{display:block;font-size:10px;color:var(--teal-text);font-weight:500}
+    .update-pill{font-size:10px;color:var(--ink2)}
+    .issue-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:16px;padding-top:10px;border-top:2px solid var(--navy);font-size:10px;color:var(--ink2)}
+    .edition-summary{margin-top:20px}
+    .toc .num{display:block;font-size:10px;color:var(--teal-text)}
+    .panorama-disclaimer{max-width:860px;font-size:12px;color:var(--ink2);margin:0 0 6px}
+    article.casa .section-kicker{margin-bottom:2px}
+    article.casa h2{margin-top:4px}
+    .article-prose{max-width:860px;color:var(--ink)}
+    .article-prose p{margin:0 0 12px;font-size:16px}
+    .article-prose h3{margin:22px 0 8px;font-size:12px;color:var(--navy)}
+    .article-prose ul{margin:0 0 16px;padding-left:1.2rem}
+    .article-prose li{margin:8px 0;font-size:16px}
+    .article-prose blockquote{margin:16px 0;padding:12px 14px;background:var(--wash);border-left:3px solid var(--navy);font-size:15px}
+    .article-prose a{color:var(--teal-text);overflow-wrap:anywhere}
+    .article-prose .source-line{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink2)}
+    @media (max-width:860px){.panorama-head{align-items:flex-start}}
+    @media print{.panorama{padding:14px 0 6px}.article-prose p,.article-prose li{font-size:10.5pt}.article-prose h3{break-after:avoid}.article-prose .source-line{font-size:9pt}.panorama-disclaimer{font-size:8.5pt}}
+`;
+
+const CSS_BEGIN = '/* REVISTA_AUTOMATION_STYLES:START */';
+const CSS_END = '/* REVISTA_AUTOMATION_STYLES:END */';
+const cssBlock = `\n    ${CSS_BEGIN}\n${automationCss}    ${CSS_END}\n`;
+
+// Toda classe emitida pelo gerador precisa existir na folha de estilo da página.
+// Sem esta checagem o corpo volta a sair sem o quadro, como HTML válido e sem forma.
+function assertStyledMarkup(doc) {
+  const style = (doc.match(/<style>([\s\S]*?)<\/style>/) || [,''])[1];
+  const body = (doc.match(/<main id="conteudo">[\s\S]*?<\/main>/) || [''])[0];
+  const used = new Set();
+  for (const m of body.matchAll(/\sclass="([^"]+)"/g)) {
+    for (const name of m[1].trim().split(/\s+/)) used.add(name);
+  }
+  const orphans = [...used].filter((name) => !new RegExp(`\\.${name}(?![\\w-])`).test(style));
+  if (orphans.length) throw new Error(`QA falhou: classes sem estilo na página: ${orphans.join(', ')}`);
+}
 
 function assertCurrent(doc) {
   const checks = [
@@ -152,9 +244,11 @@ function assertCurrent(doc) {
     [`hero ${editionHuman}`, doc.includes(editionHuman)],
     ['PANORAMA markers', doc.includes('PANORAMA:START') && doc.includes('PANORAMA:END')],
     ['main content', doc.includes('<main id="conteudo">') && doc.includes('</main>')],
+    ['marcadores de estilo', doc.includes(CSS_BEGIN) && doc.includes(CSS_END)],
   ];
   const failed = checks.filter(([,ok]) => !ok).map(([name]) => name);
   if (failed.length) throw new Error(`QA falhou: ${failed.join('; ')}`);
+  assertStyledMarkup(doc);
   if (!fs.existsSync(sourcePath)) throw new Error('QA falhou: fonte Markdown ausente.');
 }
 
@@ -180,7 +274,13 @@ html = html.replace(/Revista Eletrônica VIA · Saúde na Última Semana · edi�
 html = html.replace(/"dateModified"\s*:\s*"\d{4}-\d{2}-\d{2}"/g, `"dateModified": "${edition}"`);
 html = html.replace(/"lastReviewed"\s*:\s*"\d{4}-\d{2}-\d{2}"/g, `"lastReviewed": "${edition}"`);
 html = html.replace(/"about"\s*:\s*\[[\s\S]*?\],\s*"specialty"/, `"about": [\n${aboutJson}\n        ],\n        "specialty"`);
-if (!html.includes('REVISTA_AUTOMATION_STYLES')) html = html.replace('</style>', `${automationCss}\n  </style>`);
+html = html.replace(/[ \t]*\/\* REVISTA_AUTOMATION_STYLES \*\/[\s\S]*?(?=<\/style>)/, '');
+if (html.includes(CSS_BEGIN) && html.includes(CSS_END)) {
+  const region = new RegExp(`[ \\t]*${CSS_BEGIN.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s\\S]*?${CSS_END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n?`);
+  html = html.replace(region, () => cssBlock.replace(/^\n/, ''));
+} else {
+  html = html.replace('</style>', () => `${cssBlock}  </style>`);
+}
 
 fs.writeFileSync(indexPath, html);
 assertCurrent(html);
