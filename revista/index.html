@@ -129,17 +129,30 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 @media print{article.casa{padding:18px 0 22px}.grid-4{grid-template-columns:1fr 1fr;gap:8px}}
 
 
-    /* REVISTA_AUTOMATION_STYLES */
-    .article-prose{max-width:860px;color:var(--ink);font-size:16px;line-height:1.78}
-    .article-prose p{margin:0 0 18px}
-    .article-prose h3{margin:32px 0 12px;color:var(--navy-950);font-size:1.22rem;letter-spacing:-.02em}
-    .article-prose ul{margin:0 0 22px;padding-left:1.25rem}
-    .article-prose li{margin:8px 0}
-    .article-prose blockquote{margin:22px 0;padding:18px 20px;border-left:3px solid var(--teal-500);background:var(--mist-100);color:var(--navy-900);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
-    .article-prose a{color:var(--teal-600);overflow-wrap:anywhere}
-    .article-prose .source-line{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
-    .edition-summary{margin:0 0 30px}
 
+    /* REVISTA_AUTOMATION_STYLES:START */
+    .panorama{padding:26px 0 10px}
+    .panorama-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 24px}
+    .panorama-head h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(24px,2.9vw,32px);font-weight:500;line-height:1.14;color:var(--navy);margin:6px 0 0}
+    .section-kicker{display:block;font-size:10px;color:var(--teal-text);font-weight:500}
+    .update-pill{font-size:10px;color:var(--ink2)}
+    .issue-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:16px;padding-top:10px;border-top:2px solid var(--navy);font-size:10px;color:var(--ink2)}
+    .edition-summary{margin-top:20px}
+    .toc .num{display:block;font-size:10px;color:var(--teal-text)}
+    .panorama-disclaimer{max-width:860px;font-size:12px;color:var(--ink2);margin:0 0 6px}
+    article.casa .section-kicker{margin-bottom:2px}
+    article.casa h2{margin-top:4px}
+    .article-prose{max-width:860px;color:var(--ink)}
+    .article-prose p{margin:0 0 12px;font-size:16px}
+    .article-prose h3{margin:22px 0 8px;font-size:12px;color:var(--navy)}
+    .article-prose ul{margin:0 0 16px;padding-left:1.2rem}
+    .article-prose li{margin:8px 0;font-size:16px}
+    .article-prose blockquote{margin:16px 0;padding:12px 14px;background:var(--wash);border-left:3px solid var(--navy);font-size:15px}
+    .article-prose a{color:var(--teal-text);overflow-wrap:anywhere}
+    .article-prose .source-line{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink2)}
+    @media (max-width:860px){.panorama-head{align-items:flex-start}}
+    @media print{.panorama{padding:14px 0 6px}.article-prose p,.article-prose li{font-size:10.5pt}.article-prose h3{break-after:avoid}.article-prose .source-line{font-size:9pt}.panorama-disclaimer{font-size:8.5pt}}
+    /* REVISTA_AUTOMATION_STYLES:END */
   </style>
 
 <script type="application/ld+json">
@@ -212,38 +225,57 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 </header>
 
 <main id="conteudo">
-    <section class="panorama section" id="panorama" aria-labelledby="panorama-titulo">
-      <div class="shell">
-        <!-- PANORAMA:START (bloco gerado automaticamente — não remova os marcadores) -->
-        <div class="panorama-head" data-updated="2026-10-04">
-          <div class="section-heading">
-            <p class="section-kicker">Em 90 segundos</p>
-            <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>
-          </div>
-          <span class="update-pill">Atualizado em 4 de outubro de 2026</span>
-        </div>
-        <div class="issue-bar">
-          <span class="issue-id">Edição 04.10.2026 · Ano I</span>
-          <span class="issue-id">Fonte editorial versionada em Markdown</span>
-        </div>
-        <div class="edition-summary article-prose"><ul><li>Em 30/09, o Sistema Nacional de Controle de Receituários (SNCR) abriu a emissão eletrônica integrada de notificações A, B e B2, além das destinadas a retinoides sistêmicos e talidomida. A via eletrônica é uma possibilidade; o papel continua válido.</li><li>O prazo até 29/10 vale apenas para a coexistência de receitas brancas eletrônicas integradas e não integradas ao SNCR. Ele não deve ser transplantado para as notificações A e B.</li><li>A Universidade Aberta do SUS (UNA-SUS) abriu a estratégia formativa do Combo APS: cinco cursos iniciais de 10 horas e materiais para incorporar equipamentos ao trabalho das Unidades Básicas de Saúde (UBS). Equipamento sem fluxo, treinamento e retaguarda não produz resolutividade por decreto.</li><li>Em 30/09 entrou em vigor a Portaria GM/MS nº 11.685/2026, que atualiza procedimentos hemoterápicos. Em 02/10, Hemobrás e Tiantan Bio anunciaram cooperação para registro, fornecimento e transferência de tecnologia de imunoglobulina. Norma e acordo abrem trabalho de implementação; ainda não demonstram produto nacional disponível.</li><li>Ministério da Saúde e Fiocruz assinaram memorando para um segundo laboratório modular de células CAR-T, no Ceará. É infraestrutura de desenvolvimento e produção em implantação — não oferta assistencial já disponível.</li></ul></div>
-        <ul class="toc"><li><a href="#prescricao-o-digital-nao-encurta-o-cuidado"><b>01</b><span>Prescrição — O digital não encurta o cuidado</span></a></li>
-<li><a href="#atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda"><b>02</b><span>Atenção primária — Tecnologia só entra quando o trabalho muda</span></a></li>
-<li><a href="#hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move"><b>03</b><span>Hemoterapia — A norma mudou; a cadeia produtiva também se move</span></a></li>
-<li><a href="#terapias-avancadas-o-laboratorio-vem-antes-do-acesso"><b>04</b><span>Terapias avançadas — O laboratório vem antes do acesso</span></a></li>
-<li><a href="#o-que-a-via-leva-desta-semana"><b>05</b><span>O que a VIA leva desta semana</span></a></li>
-<li><a href="#metodo-editorial"><b>06</b><span>Método editorial</span></a></li></ul>
-        <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e literatura científica na data acima. Confira a fonte primária antes de agir ou compartilhar.</p>
-        <!-- PANORAMA:END -->
+<div class="wrap">
+  <section class="panorama" aria-labelledby="panorama-titulo">
+    <!-- PANORAMA:START (bloco gerado automaticamente — não remova os marcadores) -->
+    <div class="panorama-head" data-updated="2026-10-04">
+      <div>
+        <span class="section-kicker mono">Em 90 segundos</span>
+        <h2 id="panorama-titulo">O que mudou na saúde nesta semana</h2>
       </div>
-    </section>
-    <section class="focus section" id="prescricao-o-digital-nao-encurta-o-cuidado" aria-labelledby="prescricao-o-digital-nao-encurta-o-cuidado-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">01 · Nesta edição</p>
-          <h2 id="prescricao-o-digital-nao-encurta-o-cuidado-titulo">Prescrição — O digital não encurta o cuidado</h2>
-        </div>
-        <div class="article-prose">
+      <span class="update-pill mono">Atualizado em 4 de outubro de 2026</span>
+    </div>
+    <div class="issue-bar mono">
+      <span>Edição 04.10.2026 · Ano I</span>
+      <span>Fonte editorial versionada em Markdown</span>
+    </div>
+    <div class="edition-summary article-prose">
+<ul><li>Em 30/09, o Sistema Nacional de Controle de Receituários (SNCR) abriu a emissão eletrônica integrada de notificações A, B e B2, além das destinadas a retinoides sistêmicos e talidomida. A via eletrônica é uma possibilidade; o papel continua válido.</li><li>O prazo até 29/10 vale apenas para a coexistência de receitas brancas eletrônicas integradas e não integradas ao SNCR. Ele não deve ser transplantado para as notificações A e B.</li><li>A Universidade Aberta do SUS (UNA-SUS) abriu a estratégia formativa do Combo APS: cinco cursos iniciais de 10 horas e materiais para incorporar equipamentos ao trabalho das Unidades Básicas de Saúde (UBS). Equipamento sem fluxo, treinamento e retaguarda não produz resolutividade por decreto.</li><li>Em 30/09 entrou em vigor a Portaria GM/MS nº 11.685/2026, que atualiza procedimentos hemoterápicos. Em 02/10, Hemobrás e Tiantan Bio anunciaram cooperação para registro, fornecimento e transferência de tecnologia de imunoglobulina. Norma e acordo abrem trabalho de implementação; ainda não demonstram produto nacional disponível.</li><li>Ministério da Saúde e Fiocruz assinaram memorando para um segundo laboratório modular de células CAR-T, no Ceará. É infraestrutura de desenvolvimento e produção em implantação — não oferta assistencial já disponível.</li></ul>
+    </div>
+    <nav class="index toc" aria-label="Nesta edição">
+      <a class="sec-card" href="#prescricao-o-digital-nao-encurta-o-cuidado">
+        <span class="num mono">01 · Prescrição</span>
+        <h3>O digital não encurta o cuidado</h3>
+      </a>
+      <a class="sec-card" href="#atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda">
+        <span class="num mono">02 · Atenção primária</span>
+        <h3>Tecnologia só entra quando o trabalho muda</h3>
+      </a>
+      <a class="sec-card" href="#hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move">
+        <span class="num mono">03 · Hemoterapia</span>
+        <h3>A norma mudou; a cadeia produtiva também se move</h3>
+      </a>
+      <a class="sec-card" href="#terapias-avancadas-o-laboratorio-vem-antes-do-acesso">
+        <span class="num mono">04 · Terapias avançadas</span>
+        <h3>O laboratório vem antes do acesso</h3>
+      </a>
+      <a class="sec-card" href="#o-que-a-via-leva-desta-semana">
+        <span class="num mono">05</span>
+        <h3>O que a VIA leva desta semana</h3>
+      </a>
+      <a class="sec-card" href="#metodo-editorial">
+        <span class="num mono">06</span>
+        <h3>Método editorial</h3>
+      </a>
+    </nav>
+    <p class="panorama-disclaimer">Revista editorial de utilidade pública, compilada de fontes oficiais e literatura científica na data acima. Confira a fonte primária antes de agir ou compartilhar.</p>
+    <!-- PANORAMA:END -->
+  </section>
+  <article class="casa" id="prescricao-o-digital-nao-encurta-o-cuidado" aria-labelledby="prescricao-o-digital-nao-encurta-o-cuidado-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">01 · Prescrição</span>
+      <h2 id="prescricao-o-digital-nao-encurta-o-cuidado-titulo">Prescrição — O digital não encurta o cuidado</h2>
+      <div class="article-prose">
 <h3>O que mudou</h3>
 <p>Desde <strong>30 de setembro de 2026</strong>, sistemas de prescrição integrados ao <strong>Sistema Nacional de Controle de Receituários (SNCR)</strong> podem emitir eletronicamente Notificações de Receita A, B e B2, notificações para retinoides de uso sistêmico e talidomida, além de Receitas de Controle Especial e Receitas Sujeitas à Retenção.</p>
 <p>O profissional continua usando seu sistema de prescrição. Para as notificações numeradas, permanece necessária a numeração concedida pela Vigilância Sanitária local; a faixa eletrônica é distinta da física. A farmácia pode consultar a autenticidade, confirmar dados do prescritor e registrar a utilização. O SNCR controla o receituário; o <strong>Sistema Nacional de Gerenciamento de Produtos Controlados (SNGPC)</strong> continua responsável pela escrituração e pela movimentação dos medicamentos.</p>
@@ -256,16 +288,14 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 <h3>Até onde a evidência permite concluir</h3>
 <p>Até <strong>29 de outubro</strong>, podem coexistir receitas brancas eletrônicas integradas e não integradas ao SNCR; a partir de <strong>30/10</strong>, se uma receita branca for eletrônica, deverá estar integrada. Esse período de transição é das receitas brancas — não das notificações A, B e B2. A integração comercial anunciada por fornecedores deve ser confirmada no sistema efetivamente usado; anúncio de empresa não substitui teste operacional nem orientação da Anvisa.</p>
 <p class="source-line"><strong>Fontes primárias e contexto:</strong> <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/inicio-de-nova-etapa-do-sncr-o-que-muda-a-partir-de-30-de-setembro" target="_blank" rel="noopener noreferrer">Anvisa — início da nova etapa do SNCR, publicado em 21/09/2026; efeitos a partir de 30/09/2026</a>; <a href="https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados/sncr" target="_blank" rel="noopener noreferrer">Anvisa — portal do SNCR, consulta em 02/10/2026</a>; <a href="https://anvisalegis.datalegis.net/action/ActionDatalegis.php?acao=abrirTextoAto&amp;codTipo=&amp;cod_menu=9434&amp;cod_modulo=310&amp;desItem=&amp;desItemFim=&amp;numeroAto=00001000&amp;orgao=RDC%2FDC%2FANVISA%2FMS&amp;pesquisa=true&amp;seqAto=000&amp;tipo=RDC&amp;valorAno=2025" target="_blank" rel="noopener noreferrer">RDC nº 1.000/2025 — texto consolidado</a>; <a href="https://doi.org/10.3390/healthcare12131280" target="_blank" rel="noopener noreferrer">Farghali e Borycki — revisão de escopo, Healthcare, 26/06/2024</a>.</p>
-        </div>
       </div>
-    </section>
-    <section class="topics section" id="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda" aria-labelledby="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">02 · Nesta edição</p>
-          <h2 id="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda-titulo">Atenção primária — Tecnologia só entra quando o trabalho muda</h2>
-        </div>
-        <div class="article-prose">
+    </div>
+  </article>
+  <article class="casa" id="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda" aria-labelledby="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">02 · Atenção primária</span>
+      <h2 id="atencao-primaria-tecnologia-so-entra-quando-o-trabalho-muda-titulo">Atenção primária — Tecnologia só entra quando o trabalho muda</h2>
+      <div class="article-prose">
 <h3>O que mudou</h3>
 <p>Em <strong>30 de setembro</strong>, o Ministério da Saúde e a <strong>Universidade Aberta do SUS (UNA-SUS)</strong> disponibilizaram a estratégia formativa do Combo APS para profissionais e gestores do Sistema Único de Saúde. O conjunto reúne <strong>17 ou 18 equipamentos</strong>, conforme a configuração da unidade, para condições prevalentes nos territórios. A plataforma começou com <strong>cinco cursos autoinstrucionais de 10 horas</strong> sobre tecnologia biofotônica e prevê guias, procedimentos operacionais padrão e manuais para os demais equipamentos.</p>
 <h3>Por que importa</h3>
@@ -275,16 +305,14 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 <h3>Até onde a evidência permite concluir</h3>
 <p>A abertura da formação é verificável; impacto sobre acesso, diagnóstico, encaminhamentos ou desfechos ainda não foi demonstrado por essa comunicação. Parte dos materiais será disponibilizada progressivamente.</p>
 <p class="source-line"><strong>Fontes primárias:</strong> <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-disponibiliza-formacao-para-uso-de-combo-de-equipamentos-para-ubs" target="_blank" rel="noopener noreferrer">Ministério da Saúde — estratégia formativa, 30/09/2026, atualizada em 01/10/2026</a>; <a href="https://www.unasus.gov.br/especial/combo-aps" target="_blank" rel="noopener noreferrer">UNA-SUS — página da Estratégia Formativa Combo de Equipamentos para UBS, consulta em 02/10/2026</a>.</p>
-        </div>
       </div>
-    </section>
-    <section class="focus section" id="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move" aria-labelledby="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">03 · Nesta edição</p>
-          <h2 id="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move-titulo">Hemoterapia — A norma mudou; a cadeia produtiva também se move</h2>
-        </div>
-        <div class="article-prose">
+    </div>
+  </article>
+  <article class="casa" id="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move" aria-labelledby="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">03 · Hemoterapia</span>
+      <h2 id="hemoterapia-a-norma-mudou-a-cadeia-produtiva-tambem-se-move-titulo">Hemoterapia — A norma mudou; a cadeia produtiva também se move</h2>
+      <div class="article-prose">
 <h3>O que mudou</h3>
 <p>Entrou em vigor em <strong>30 de setembro de 2026</strong> a <strong>Portaria GM/MS nº 11.685/2026</strong>, que altera a Portaria de Consolidação GM/MS nº 5/2017 e redefine regulamentos técnicos para sangue e procedimentos hemoterápicos no Sistema Nacional de Sangue, Componentes e Derivados.</p>
 <p>Em <strong>2 de outubro</strong>, Hemobrás e Tiantan Bio firmaram acordo de cooperação que prevê apoio ao registro brasileiro de imunoglobulina humana intravenosa, fornecimento do medicamento, licenciamento e transferência de tecnologia. O anúncio informa que condições de fornecimento e transferência ainda serão definidas em acordos específicos e dependerão das exigências da Anvisa.</p>
@@ -295,16 +323,14 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 <h3>Até onde a evidência permite concluir</h3>
 <p>A entrada em vigor é fato normativo; a cooperação de 2 de outubro é um compromisso institucional. Nenhum dos dois fatos demonstra, por si, melhoria de qualidade, segurança, abastecimento ou desfecho clínico. O anúncio não informa produto registrado, produção nacional iniciada nem prazo de disponibilidade ao paciente.</p>
 <p class="source-line"><strong>Fontes primárias:</strong> <a href="https://www.in.gov.br/web/dou/-/portaria-gm/ms-n-11.685-de-2-de-julho-de-2026-716746858" target="_blank" rel="noopener noreferrer">Portaria GM/MS nº 11.685/2026 — DOU, publicada em 03/07/2026; vigência em 30/09/2026</a>; <a href="https://www.gov.br/anvisa/pt-br/centraisdeconteudo/publicacoes/sangue-tecidos-celulas-e-orgaos/notas-tecnicas/vigentes/nota-tecnica-42-2026-gstco" target="_blank" rel="noopener noreferrer">Anvisa — Nota Técnica nº 42/2026 e orientação de transição, 16/07/2026</a>; <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/ministerio-da-saude-atualiza-procedimentos-hemoterapicos-e-anvisa-orienta-periodo-de-transicao" target="_blank" rel="noopener noreferrer">Anvisa — síntese regulatória, 16/07/2026</a>; <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/outubro/brasil-firma-acordo-para-ampliar-producao-de-imunoglobulina-medicamento-para-doencas-do-sangue" target="_blank" rel="noopener noreferrer">Ministério da Saúde — acordo Hemobrás–Tiantan Bio, publicado em 02/10/2026 às 13h38; escopo de registro, fornecimento e transferência de tecnologia</a>.</p>
-        </div>
       </div>
-    </section>
-    <section class="topics section" id="terapias-avancadas-o-laboratorio-vem-antes-do-acesso" aria-labelledby="terapias-avancadas-o-laboratorio-vem-antes-do-acesso-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">04 · Nesta edição</p>
-          <h2 id="terapias-avancadas-o-laboratorio-vem-antes-do-acesso-titulo">Terapias avançadas — O laboratório vem antes do acesso</h2>
-        </div>
-        <div class="article-prose">
+    </div>
+  </article>
+  <article class="casa" id="terapias-avancadas-o-laboratorio-vem-antes-do-acesso" aria-labelledby="terapias-avancadas-o-laboratorio-vem-antes-do-acesso-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">04 · Terapias avançadas</span>
+      <h2 id="terapias-avancadas-o-laboratorio-vem-antes-do-acesso-titulo">Terapias avançadas — O laboratório vem antes do acesso</h2>
+      <div class="article-prose">
 <h3>O que mudou</h3>
 <p>Em <strong>29 de setembro</strong>, Ministério da Saúde, Fiocruz, Secretaria da Saúde do Ceará, HU Brasil e Universidade Federal do Ceará assinaram memorando para criar, no Ceará, o segundo laboratório modular brasileiro dedicado ao desenvolvimento e à produção de células <strong>CAR-T</strong> — linfócitos T do próprio paciente modificados em laboratório para reconhecer alvos tumorais.</p>
 <p>O plano integra uma estratégia de produção descentralizada. A primeira unidade modular foi instalada em maio em Bio-Manguinhos/Fiocruz, no Rio de Janeiro; a expansão prevê desenvolvimento tecnológico, produção de vetor lentiviral e estudos clínicos em parceria com o Instituto Nacional de Câncer.</p>
@@ -315,35 +341,32 @@ article.casa .source-line{margin-top:18px;padding-top:14px;border-top:1px solid 
 <h3>Até onde a evidência permite concluir</h3>
 <p>Houve assinatura de memorando e anúncio de implantação. Isso não equivale a laboratório operacional, ensaio aberto, registro sanitário, incorporação ou tratamento disponível. A indicação inicial mencionada — leucemias e linfomas — permanece uma expectativa do programa.</p>
 <p class="source-line"><strong>Fonte primária institucional:</strong> <a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/setembro/ministerio-da-saude-e-fiocruz-investem-em-laboratorio-no-ceara-para-terapia-contra-o-cancer" target="_blank" rel="noopener noreferrer">Ministério da Saúde — memorando para laboratório CAR-T no Ceará, publicado em 29/09/2026 e atualizado em 30/09/2026</a>.</p>
-        </div>
       </div>
-    </section>
-    <section class="focus section" id="o-que-a-via-leva-desta-semana" aria-labelledby="o-que-a-via-leva-desta-semana-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">05 · Nesta edição</p>
-          <h2 id="o-que-a-via-leva-desta-semana-titulo">O que a VIA leva desta semana</h2>
-        </div>
-        <div class="article-prose">
+    </div>
+  </article>
+  <article class="casa" id="o-que-a-via-leva-desta-semana" aria-labelledby="o-que-a-via-leva-desta-semana-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">05 · Nesta edição</span>
+      <h2 id="o-que-a-via-leva-desta-semana-titulo">O que a VIA leva desta semana</h2>
+      <div class="article-prose">
 <ul><li>Digitalizar a receita melhora o traço documental; não substitui decisão clínica, conferência nem vínculo.</li><li>Prazo regulatório tem sujeito: a transição até 29/10 é das receitas brancas eletrônicas, não das notificações A e B.</li><li>Equipamento entregue é insumo. Capacidade assistencial exige gente treinada, fluxo, manutenção, registro e retaguarda.</li><li>Norma em vigor e acordo assinado não provam implementação uniforme nem produto disponível.</li><li>Laboratório anunciado não é terapia disponível.</li></ul>
 <p>O fio da semana é a distância entre <strong>habilitar</strong> e <strong>realizar</strong>. O SNCR habilita uma nova via; a formação habilita o uso de equipamentos; a Portaria reorganiza a regra; acordos industriais e memorandos habilitam capacidade futura. Em todos os casos, a pergunta seguinte é a mesma: o circuito consegue transformar possibilidade em cuidado seguro?</p>
-        </div>
       </div>
-    </section>
-    <section class="topics section" id="metodo-editorial" aria-labelledby="metodo-editorial-titulo">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">06 · Nesta edição</p>
-          <h2 id="metodo-editorial-titulo">Método editorial</h2>
-        </div>
-        <div class="article-prose">
+    </div>
+  </article>
+  <article class="casa" id="metodo-editorial" aria-labelledby="metodo-editorial-titulo">
+    <div class="casa-inner">
+      <span class="section-kicker mono">06 · Nesta edição</span>
+      <h2 id="metodo-editorial-titulo">Método editorial</h2>
+      <div class="article-prose">
 <p>Recorte principal: fatos com efeito ou anúncio material entre 28/09 e 03/10/2026, preparados antecipadamente para a edição de 04/10. Fontes oficiais foram abertas no registro específico; literatura foi usada apenas para contextualizar a segurança da prescrição eletrônica. A revisão de 2024 não foi apresentada como fato novo. Comunicação comercial privada sobre integração de plataforma foi excluída como evidência; a edição orienta confirmação operacional com o fornecedor e a Anvisa.</p>
 <p>Material educativo. Não substitui avaliação clínica individual, protocolo assistencial, norma sanitária nem fonte epidemiológica em tempo real. Não é bula, laudo, autorização de uso ou confirmação de integração de software. Conduta parte de prescrição, contexto e vínculo clínico.</p>
 <p><strong>Dr Lucas HR Almeida</strong> Editorial · Médico generalista (FMRP-USP) CRM-SP 226836 · CRM-MG 109752</p>
-        </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </article>
+</div>
+</main>
 
 <footer class="site">
   <div class="wrap">
