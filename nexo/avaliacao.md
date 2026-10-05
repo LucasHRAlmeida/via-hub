@@ -1,6 +1,6 @@
 # AVALIAÇÃO — matriz de coerência sem backend
 
-A fundação Nexo é estática; a avaliação também é. Nenhum item abaixo require servidor, conta ou envio de mensagem.
+A fundação Nexo é estática; a avaliação também é. Nenhum item abaixo requer servidor, conta ou envio de mensagem.
 
 ## Matriz mínima (toda resposta-modelo futura deve passar)
 

@@ -20,18 +20,37 @@ assert.equal(contrato.nome, "Nexo");
 assert.match(contrato.versao, /^\d+\.\d+\.\d+$/);
 assert.equal(contrato.estagio, "fundacao-estatica");
 
+assert.equal(contrato.raias.length, 3, "o contrato declara exatamente tres raias");
+const raiaIds = contrato.raias.map((raia) => raia.id);
+assert.equal(new Set(raiaIds).size, raiaIds.length, "ids de raia duplicados no contrato");
 const raias = new Map(contrato.raias.map((raia) => [raia.id, raia]));
 for (const id of ["informacao-saude", "posicionamento-tecnico-filosofico", "modelo-cuidado"]) {
   assert.ok(raias.has(id), `raia ausente no contrato: ${id}`);
   assert.ok(raias.get(id).limites.length > 0, `raia sem limites: ${id}`);
 }
+assert.ok(!raias.get("informacao-saude").fontes.includes("nivel-0-corpus-git"), "raia de informacao em saude nao usa o corpus interno como evidencia clinica");
 
+for (const campo of ["trechoCitado", "parafraseIndicada"]) {
+  assert.ok(contrato.registroMinimoFonte.includes(campo), `registro minimo sem o campo: ${campo}`);
+}
+
+assert.equal(contrato.privacidade.escopo, "fundacao-estatica");
 assert.equal(contrato.privacidade.capturaDadosPessoais, false);
 assert.equal(contrato.adaptadorWhatsApp.status, "diferido");
 assert.ok(contrato.adaptadorWhatsApp.requerDecisaoMantenedor.length > 0, "adaptador sem pendencias declaradas");
 
 const forbidden = ["sk_", "xoxb-", "AKIA", "-----BEGIN PRIVATE KEY-----", "whatsapp_token", "META_APP_SECRET"];
-const scanned = [...requiredDocs.map((doc) => path.join(nexoDir, doc)), path.join(nexoDir, "contrato-nexo.json"), adr];
+const scanned = [adr];
+const walk = (directory) => {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    if (entry.name === ".git" || entry.name === "node_modules") continue;
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) walk(fullPath);
+    else scanned.push(fullPath);
+  }
+};
+walk(nexoDir);
+assert.ok(scanned.length > requiredDocs.length + 1, "varredura de segredos nao cobre o diretorio nexo");
 for (const file of scanned) {
   const content = fs.readFileSync(file, "utf8");
   for (const secret of forbidden) {
