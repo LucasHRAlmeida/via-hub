@@ -62,6 +62,27 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("intervalo de evolução não entra como idade", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const ranged = extractNarrative(
+    "Paciente com 2 a 3 dias de dor em hipocôndrio direito. Mulher, 81 anos. PA 80/45.",
+    schema,
+  );
+  assert.equal(ranged.age.value, 81);
+  assert.equal(ranged.sex.value.toLowerCase(), "mulher");
+
+  assert.equal(
+    extractNarrative("Paciente, 3 a 4 horas de sintomas. Homem, 54 anos.", schema).age.value,
+    54,
+  );
+  assert.equal(extractNarrative("Paciente com 2 a 3 dias de evolução.", schema).age.value, "");
+
+  assert.equal(extractNarrative("Paciente 81 a.", schema).age.value, 81);
+  assert.equal(extractNarrative("Paciente com 81 a, PA 80/45.", schema).age.value, 81);
+  assert.equal(extractNarrative("Idade: 81 a.", schema).age.value, 81);
+  assert.equal(extractNarrative("Homem, 62 a. PA 90/60.", schema).age.value, 62);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
