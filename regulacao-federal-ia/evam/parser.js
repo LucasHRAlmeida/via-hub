@@ -201,7 +201,8 @@ const EXTRACTORS = Object.freeze({
     /\bpad\s*[:=]?\s*(\d{2,3})\b/iu,
   ], 1, number),
   map: (text) => matchOne(text, [
-    /\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*[:=]?\s*(\d{2,3})\b/iu,
+    // "PAM 03/10" é pronto atendimento + data. A barra do calendário não é mmHg.
+    /\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*[:=]?\s*(\d{2,3})\b(?!\s*\/\s*\d)/iu,
   ], 1, number),
   heartRate: (text) => matchOne(text, [
     /\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
