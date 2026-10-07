@@ -94,6 +94,62 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("angiotensina não oculta a tomografia nem a angioTC", () => {
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const separated = extractNarrative(
+    "Mulher, 67 anos. Hipertensa em uso de bloqueador do receptor da angiotensina.\nTC de crânio sem hemorragia; angioTC sugere oclusão de grande vaso.",
+    stroke,
+  );
+  assert.match(separated.imaging.value, /oclusão de grande vaso/i);
+  assert.doesNotMatch(separated.imaging.value, /angiotensina/i);
+
+  const sameLine = extractNarrative(
+    "Sistema renina-angiotensina bloqueado. TC de crânio sem hemorragia.",
+    stroke,
+  );
+  assert.match(sameLine.imaging.value, /sem hemorragia/i);
+  assert.doesNotMatch(sameLine.imaging.value, /angiotensina/i);
+
+  const angioOnly = extractNarrative("AngioTC sugere oclusão de M1.", stroke);
+  assert.match(angioOnly.imaging.value, /oclusão de M1/i);
+
+  const angiografia = extractNarrative("Angiografia coronariana com oclusão de DA.", getSchema("acute-coronary-syndrome.cardiology.v1"));
+  assert.match(angiografia.imaging.value, /oclusão de DA/i);
+
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  assert.match(extractNarrative("TC evidencia dilatação biliar.", sepsis).imaging.value, /dilatação biliar/i);
+  assert.match(extractNarrative("ColangioRM com cálculo em colédoco.", sepsis).imaging.value, /cálculo em colédoco/i);
+});
+
+test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const separated = extractNarrative(
+    "Homem, 62 anos. ECGLA 14.\nECG: supradesnivelamento de ST em parede anterior. Troponina 450 ng/L.",
+    schema,
+  );
+  assert.equal(separated.gcs.value, 14);
+  assert.match(separated.ecg.value, /supradesnivelamento de ST/i);
+  assert.doesNotMatch(separated.ecg.value, /ECGLA/i);
+  assert.match(separated.troponin.value, /450/);
+
+  const ecgl = extractNarrative(
+    "ECGL 15.\nEletrocardiograma: ritmo sinusal, sem supradesnivelamento.",
+    schema,
+  );
+  assert.match(ecgl.ecg.value, /ritmo sinusal/i);
+  assert.doesNotMatch(ecgl.ecg.value, /ECGL\b/);
+
+  const sameLine = extractNarrative("ECGLA 14. ECG: supradesnivelamento de ST em V2-V4.", schema);
+  assert.equal(sameLine.gcs.value, 14);
+  assert.match(sameLine.ecg.value, /supradesnivelamento de ST/i);
+
+  const plain = extractNarrative("ECG: supradesnivelamento de ST em parede anterior.", schema);
+  assert.match(plain.ecg.value, /supradesnivelamento de ST/i);
+
+  const plural = extractNarrative("ECGs seriados com supradesnivelamento anterior.", schema);
+  assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

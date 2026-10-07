@@ -261,11 +261,13 @@ const EXTRACTORS = Object.freeze({
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
   ecg: (text) => matchOne(text, [
-    /\b(ecg[^\n]{0,180})/iu,
+    // ECGL/ECGLA é Glasgow, não o traçado. O eletrocardiograma posterior continua válido.
+    /\b(ecg(?!l(?:a)?\b)[^\n]{0,180})/iu,
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
+    // "angiotensina" não é exame. AngioTC, angiografia e a tomografia posterior continuam válidas.
+    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
