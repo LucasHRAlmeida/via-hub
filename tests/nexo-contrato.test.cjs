@@ -5,7 +5,7 @@ const path = require("node:path");
 const root = path.join(__dirname, "..");
 const nexoDir = path.join(root, "nexo");
 
-const requiredDocs = ["README.md", "CURADORIA.md", "VOZ_AUTORAL.md", "avaliacao.md"];
+const requiredDocs = ["README.md", "CURADORIA.md", "VOZ_AUTORAL.md", "avaliacao.md", "SSOT_OPERACAO.md"];
 for (const doc of requiredDocs) {
   assert.ok(fs.existsSync(path.join(nexoDir, doc)), `nexo/${doc} ausente`);
 }

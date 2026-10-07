@@ -1,8 +1,8 @@
 # Nexo — fundação versionada do agente VIA para WhatsApp Business
 
-Estágio: fundação estática em curadoria. Não é um bot em operação.
+Este repositório contém a fundação estática e auditável do Nexo. O mantenedor informa que o assistente já está ativo no WhatsApp Business via assistente de empresas da Meta; essa integração e sua configuração não são verificadas nem sincronizadas por este repositório.
 
-O Nexo é o nome do agente da Iniciativa VIA previsto para operar embarcado no WhatsApp Business. Este diretório versiona a fundação auditável desse agente: contrato legível por máquina (`contrato-nexo.json`), regras de curadoria (`CURADORIA.md`), guia de voz autoral (`VOZ_AUTORAL.md`) e protocolo de avaliação (`avaliacao.md`). Nenhum arquivo aqui envia mensagens, recebe webhooks ou captura dados pessoais.
+O Nexo é o assistente da Iniciativa VIA. Este diretório versiona seu contrato legível por máquina (`contrato-nexo.json`), regras de curadoria (`CURADORIA.md`), guia de voz autoral (`VOZ_AUTORAL.md`), protocolo de avaliação (`avaliacao.md`) e fonte única de instruções operacionais (`SSOT_OPERACAO.md`). Os arquivos deste repositório não enviam mensagens nem recebem webhooks.
 
 ## O que esta fundação entrega
 
@@ -23,6 +23,7 @@ O Nexo é o nome do agente da Iniciativa VIA previsto para operar embarcado no W
 - `CURADORIA.md` — como curar, citar, versionar e aposentar fontes.
 - `VOZ_AUTORAL.md` — registro de voz do fundador como cidadão, médico e fundador da Iniciativa.
 - `avaliacao.md` — matriz de coerência entre frentes e protocolo de verificação sem backend.
+- `SSOT_OPERACAO.md` — instruções canônicas para fornecer manualmente ao assistente externo da Meta.
 - `../docs/decisoes/0002-nexo-fundacao.md` — decisão arquitetural que fixa este escopo.
 
 ## Verificação
