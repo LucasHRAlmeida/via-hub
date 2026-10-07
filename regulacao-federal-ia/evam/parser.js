@@ -246,7 +246,8 @@ function parseTroponinMention(negation, keyword, tail) {
  * a tomografia, a ressonância ou o ultrassom que vêm depois.
  */
 function extractImaging(text) {
-  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)/giu;
+  // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
+  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
   const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
   const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
 
@@ -360,7 +361,8 @@ const EXTRACTORS = Object.freeze({
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
   ecg: (text) => matchOne(text, [
-    /\b(ecg[^\n]{0,180})/iu,
+    // ECGL/ECGLA é Glasgow, não o traçado. O eletrocardiograma posterior continua válido.
+    /\b(ecg(?!l(?:a)?\b)[^\n]{0,180})/iu,
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: extractImaging,
