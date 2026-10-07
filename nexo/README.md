@@ -31,4 +31,4 @@ O Nexo é o nome do agente da Iniciativa VIA previsto para operar embarcado no W
 node tests/nexo-contrato.test.cjs
 ```
 
-O teste valida o contrato JSON, a presença dos documentos e a ausência de segredos versionados. As verificações gerais do repositório continuam em `.github/workflows/testes.yml`.
+O teste valida invariantes selecionados do contrato e a presença dos documentos. Também procura seis padrões literais de possíveis segredos em `nexo/` e no ADR 0002; essa varredura não é um detector geral de segredos nem verifica a integridade editorial dos documentos. As verificações gerais do repositório continuam em `.github/workflows/testes.yml`.

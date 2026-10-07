@@ -28,9 +28,16 @@ for (const id of ["informacao-saude", "posicionamento-tecnico-filosofico", "mode
   assert.ok(raias.has(id), `raia ausente no contrato: ${id}`);
   assert.ok(raias.get(id).limites.length > 0, `raia sem limites: ${id}`);
 }
-assert.ok(!raias.get("informacao-saude").fontes.includes("nivel-0-corpus-git"), "raia de informacao em saude nao usa o corpus interno como evidencia clinica");
+assert.deepEqual(
+  raias.get("informacao-saude").fontes,
+  ["nivel-1-diretrizes-sociedades-brasileiras", "nivel-2-literatura-e-agencias"],
+  "fontes clinicas devem manter os niveis 1 e 2, nesta ordem"
+);
 
-for (const campo of ["trechoCitado", "parafraseIndicada"]) {
+for (const campo of [
+  "entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta",
+  "referenciaPublica", "trechoCitado", "parafraseIndicada"
+]) {
   assert.ok(contrato.registroMinimoFonte.includes(campo), `registro minimo sem o campo: ${campo}`);
 }
 
