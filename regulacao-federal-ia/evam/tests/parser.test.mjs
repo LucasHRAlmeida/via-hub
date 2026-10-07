@@ -94,6 +94,27 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("queda de exame não vira mecanismo de trauma", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const mechanism = (text) => extractNarrative(text, schema).injuryMechanism.value;
+
+  assert.match(mechanism("Queda do hematócrito de 12 para 7. Colisão carro contra poste."), /colis[aã]o carro contra poste/i);
+  assert.doesNotMatch(mechanism("Queda do hematócrito de 12 para 7. Colisão carro contra poste."), /hemat[oó]crito/i);
+  assert.match(mechanism("Queda da Hb de 3 g. Colisão frontal."), /colis[aã]o frontal/i);
+  assert.match(mechanism("Queda de 2 g/dL da hemoglobina. Atropelamento por automóvel."), /atropelamento/i);
+  assert.match(mechanism("Queda da saturação para 80%. Ferimento por arma de fogo."), /ferimento por arma de fogo/i);
+  assert.match(mechanism("Queda do estado geral. Capotamento."), /capotamento/i);
+  assert.match(mechanism("Queda da PA para 70 mmHg. Trauma contuso em abdome."), /trauma contuso/i);
+  assert.equal(mechanism("Queda do Ht de 12 para 8, sem descrição de mecanismo."), "");
+
+  assert.match(mechanism("Queda da própria altura."), /queda da própria altura/i);
+  assert.match(mechanism("Queda de nível, cerca de 3 metros."), /queda de n[ií]vel/i);
+  assert.match(mechanism("Queda de 3 metros."), /queda de 3 metros/i);
+  assert.match(mechanism("Queda da escada."), /queda da escada/i);
+  assert.match(mechanism("Queda do telhado."), /queda do telhado/i);
+  assert.match(mechanism("Colisão automobilística de alta energia há 2 horas."), /colis[aã]o automobilística de alta energia há 2 horas/i);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
