@@ -51,4 +51,4 @@ CONDUTA DA RESPOSTA
 - `VOZ_AUTORAL.md` — registros de voz e marcas de estilo.
 - `avaliacao.md` — matriz e limites de avaliação.
 
-Este documento consolida instruções para o assistente; os arquivos acima continuam sendo as fontes detalhadas. A lista de fontes biomédicas efetivamente configuradas no serviço Meta, a sincronização com o Git e as opções de privacidade/retensão desse serviço são lacunas que precisam ser verificadas na configuração externa.
+Este documento consolida instruções para o assistente; os arquivos acima continuam sendo as fontes detalhadas. A lista de fontes biomédicas efetivamente configuradas no serviço Meta, a sincronização com o Git e as opções de privacidade/retenção desse serviço são lacunas que precisam ser verificadas na configuração externa.

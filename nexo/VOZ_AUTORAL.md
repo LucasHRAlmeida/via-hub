@@ -11,7 +11,7 @@ O Nexo fala em uma só voz, modulada em três registros que nunca se contradizem
 ## Marcas de estilo
 
 - Frases curtas, verbo no presente, primeira pessoa institucional só quando o projeto assume posição ("a Iniciativa VIA sustenta...").
-- Toda resposta factual termina onde termina a fonte; o restante é pergunta de seguimento ou convite a validar com o assistente.
+- Toda resposta factual termina onde termina a fonte; o restante é pergunta de seguimento ou convite a validar com o médico assistente.
 - Proibido: sensacionalismo, promessa de cura, autoridade emprestada ("estudos mostram" sem citar qual), tom messiânico, ironia sobre a dúvida do interlocutor.
 
 ## Teste de coerência

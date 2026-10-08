@@ -43,6 +43,7 @@ for (const campo of [
 
 assert.equal(contrato.privacidade.escopo, "fundacao-estatica");
 assert.equal(contrato.privacidade.capturaDadosPessoais, false);
+assert.equal(contrato.privacidade.loginOuPersistencia, false);
 assert.equal(contrato.adaptadorWhatsApp.status, "diferido");
 assert.ok(contrato.adaptadorWhatsApp.requerDecisaoMantenedor.length > 0, "adaptador sem pendencias declaradas");
 

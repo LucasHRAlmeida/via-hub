@@ -17,4 +17,4 @@ Operação no WhatsApp Business: conta, número, provedor, webhook, templates Me
 - O Nexo nasce herdando os invariantes do ADR 0001: fonte separada da ferramenta, estágio e limites declarados, software como argumento verificável.
 - Curadoria clínica só com fonte registrada (entidade, edição/versão, datas, referência pública); sem fonte, abstinência declarada.
 - Nenhum dado pessoal é pedido, capturado ou persistido por esta fundação.
-- A ativação do canal WhatsApp volta como proposta própria quando o mantenedor ordenar, com os segredos e a infraestrutura resolvidos fora do repositório.
+- O mantenedor informa que o canal WhatsApp já está ativo externamente; este repositório não verifica essa configuração. A implementação do adaptador próprio fica diferida para proposta quando o mantenedor ordenar, com os segredos e a infraestrutura resolvidos fora do repositório.
