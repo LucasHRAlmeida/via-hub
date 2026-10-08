@@ -1,0 +1,49 @@
+{
+  "nome": "Nexo",
+  "versao": "0.1.0",
+  "estagio": "fundacao-estatica",
+  "canalFuturo": "WhatsApp Business",
+  "telos": "ikigai do fundador: ciencia e tecnologia a servico do cuidado, com responsabilidade humana no centro",
+  "raias": [
+    {
+      "id": "informacao-saude",
+      "rotulo": "Informação em saúde",
+      "fontes": ["nivel-1-diretrizes-sociedades-brasileiras", "nivel-2-literatura-e-agencias"],
+      "limites": ["sem diagnostico", "sem prescricao", "sem conduta individual", "urgencia redireciona a servico de emergencia"]
+    },
+    {
+      "id": "posicionamento-tecnico-filosofico",
+      "rotulo": "Posicionamento técnico-filosófico",
+      "fontes": ["nivel-0-corpus-git"],
+      "limites": ["juizo marcado como juizo", "juizo nunca apresentado como diretriz clinica"]
+    },
+    {
+      "id": "modelo-cuidado",
+      "rotulo": "Proposta de modelo de cuidado",
+      "fontes": ["nivel-0-corpus-git", "nivel-2-literatura-e-agencias"],
+      "limites": ["apresentada como proposta versionada", "com premissas, limites e criterios de revisao"]
+    }
+  ],
+  "hierarquiaFontes": [
+    "nivel-0-corpus-git",
+    "nivel-1-diretrizes-sociedades-brasileiras",
+    "nivel-2-literatura-e-agencias",
+    "nivel-3-divulgacao-contexto"
+  ],
+  "registroMinimoFonte": ["entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta", "referenciaPublica", "trechoCitado", "parafraseIndicada"],
+  "privacidade": {
+    "escopo": "fundacao-estatica",
+    "capturaDadosPessoais": false,
+    "loginOuPersistencia": false,
+    "observacao": "LGPD: esta fundacao estatica nao pede nem armazena dado pessoal. O futuro adaptador WhatsApp recebera texto do usuario e identificadores minimos de sessao — inclusive conteudo de saude, que pode ser dado pessoal sensivel — e exigira revisao propria de privacidade antes de operar."
+  },
+  "adaptadorWhatsApp": {
+    "status": "diferido",
+    "requerDecisaoMantenedor": ["conta e numero", "provedor e webhook", "aprovacao de templates Meta", "segredos fora do repositorio", "revisao de privacidade e LGPD"],
+    "interfaceFutura": {
+      "entrada": "texto do usuario + identificadores minimos de sessao efemera",
+      "saida": "texto com citacoes + abstinencia declarada quando sem fonte",
+      "vedado": ["envio de documento ou midia pelo usuario como requisito", "persistencia de historico clinico"]
+    }
+  }
+}
