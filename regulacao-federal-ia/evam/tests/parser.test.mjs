@@ -74,6 +74,40 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
 });
 
+test("bilirrubinas totais não perdem para um BT anterior", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  assert.equal(extractNarrative("Bilirrubinas totais: 12,9 mg/dL.", schema).bilirubin.value, 12.9);
+  assert.equal(extractNarrative("Bilirrubina total 12,9 mg/dL.", schema).bilirubin.value, 12.9);
+  assert.equal(extractNarrative("BT 12,9 mg/dL.", schema).bilirubin.value, 12.9);
+
+  const evolved = extractNarrative(
+    "Internação prévia com BT 1,2. Agora icterícia. Bilirrubinas totais 18,4 mg/dL.",
+    schema,
+  );
+  assert.equal(evolved.bilirubin.value, 18.4);
+  const evolvedEnvelope = buildEnvelope({
+    sourceText: "Internação prévia com BT 1,2. Agora icterícia. Bilirrubinas totais 18,4 mg/dL.",
+    schema,
+    fields: evolved,
+  });
+  assert.equal(evolvedEnvelope.data.bilirubin, 18.4);
+  assert.equal(evolvedEnvelope.missingCritical.includes("bilirubin"), false);
+
+  assert.equal(
+    extractNarrative("Bilirrubina total 12,9 mg/dL. BT 1,2 de controle antigo.", schema).bilirubin.value,
+    12.9,
+  );
+  assert.equal(
+    extractNarrative("BT 12,9. BT 1,2 citada depois.", schema).bilirubin.value,
+    12.9,
+  );
+  assert.equal(
+    extractNarrative("Bilirrubina direta 8,1 mg/dL. Bilirrubinas totais 12,9 mg/dL.", schema).bilirubin.value,
+    12.9,
+  );
+  assert.equal(extractNarrative("Bilirrubina direta 8,1 mg/dL.", schema).bilirubin.value, "");
+});
+
 test("envelope declara abstention sem fabricar completude", () => {
   const schema = getSchema("acute-ischemic-stroke.neurology.v1");
   const fields = extractNarrative("Paciente 70 anos, NIHSS 16.", schema);

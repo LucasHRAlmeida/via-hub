@@ -179,6 +179,36 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * O laudo escreve "bilirrubina total" ou "bilirrubinas totais".
+ * Um BT nu anterior (ingresso, valor prévio) não pode ocupar o campo
+ * quando o total explícito vem depois — o primeiro total explícito prevalece.
+ */
+function extractBilirubin(text) {
+  const expression = /\b(bilirrubinas?\s+tota(?:l|is)|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/giu;
+  let bare = null;
+  let explicit = null;
+
+  for (const match of text.matchAll(expression)) {
+    const value = number(match[2]);
+    if (value === null) continue;
+    const hit = { value, index: match.index, length: match[0].length };
+    if (/^bt$/iu.test(match[1])) {
+      if (!bare) bare = hit;
+    } else if (!explicit) {
+      explicit = hit;
+    }
+  }
+
+  const best = explicit || bare;
+  if (!best) return null;
+  return {
+    value: best.value,
+    excerpt: excerptAround(text, best.index, best.length),
+    confidence: "heurística",
+  };
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -232,9 +262,7 @@ const EXTRACTORS = Object.freeze({
   creatinine: (text) => matchOne(text, [
     /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ], 1, number),
-  bilirubin: (text) => matchOne(text, [
-    /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
-  ], 1, number),
+  bilirubin: extractBilirubin,
   platelets: (text) => matchOne(text, [
     /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
   ], 1, number),
