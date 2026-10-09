@@ -69,10 +69,15 @@ h1,h2,h3,p,blockquote{margin:0}a{color:inherit;text-underline-offset:.2em}a:focu
 .channel-emoji{font-family:"VIA Channel Emoji",sans-serif;font-weight:400}
 .channel-button{display:inline-block;max-width:100%;margin-top:12px;padding:10px 16px;background:var(--accent-color);color:#fcf9f2;border-radius:3px;text-decoration:none;font-weight:700}.channel-button:hover{text-decoration:underline}.channel-button:focus-visible{outline-color:var(--text-color)}
 .signature{padding-top:24px;border-top:1px solid var(--border-color);font-size:15px;color:#444}.signature p+p{margin-top:8px}
+.signature-grid{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:24px;align-items:center}
+.business-contact{font:12px/1.5 var(--sans);text-align:center}.business-contact h3{margin-bottom:6px;font-size:14px;color:var(--text-color)}
+.business-qr{display:block;width:160px;height:160px;max-width:100%;margin:12px auto 8px}.qr-link{display:inline-block;max-width:100%}.business-link{display:block;font-weight:700;color:var(--accent-color)}.business-contact .qr-caption{margin-top:8px;font-size:11px;color:#555}
 .author-photo{display:block;width:96px;height:120px;margin:0 auto 16px;object-fit:cover;object-position:center 25%;border-radius:2px}.signature .slogan{margin-top:16px;font-style:italic}
 @media screen and (max-width:640px){body{padding:0;font-size:18px}.edition-nav{margin:0;padding:16px 24px;font-size:11px}.magazine-container{box-shadow:none}.page{min-height:auto;padding:36px 24px}.cover-page{min-height:620px;min-height:90svh;padding:48px 24px}.page-header{flex-wrap:wrap;margin-bottom:28px;font-size:10px;letter-spacing:1px}.page-footer{flex-wrap:wrap;font-size:10px}.content-block p{text-align:left}.principles-grid{grid-template-columns:1fr;gap:12px}.index-link{gap:12px}}
 @page{size:A4;margin:16mm}
 @media print{body{padding:0;background:none;font-size:12pt;print-color-adjust:exact;-webkit-print-color-adjust:exact}.edition-nav,.skip-link{display:none}.magazine-container{max-width:none;box-shadow:none}.page{display:flex;min-height:265mm;padding:0;border:0;break-after:page;page-break-after:always}.page:not(.cover-page){padding:0 6mm}.page:last-child{break-after:auto;page-break-after:auto}.cover-page{padding:18mm 10mm}.cover-title{font-size:64pt}.cover-subtitle{font-size:19pt}.article-title{font-size:23pt}.page-header{margin-bottom:10mm}.page-footer{margin-top:10mm}.content-block p{orphans:3;widows:3}h2,h3,.chapter-label{break-after:avoid}.index-item,.signature{break-inside:avoid}.index-link{text-decoration:none}.editorial-note{font-size:11pt}.closing-text{font-size:14pt;line-height:1.5;margin-bottom:5mm}.closing-text p+p{margin-top:3mm}.channel-invitation{margin-bottom:5mm;padding:4mm;font-size:9pt}.channel-button{margin-top:2mm;padding:2mm 4mm}.signature{padding-top:4mm;font-size:10pt}.author-photo{width:24mm;height:30mm;margin-bottom:4mm}}
+@media screen and (max-width:640px){.signature-grid{grid-template-columns:1fr;gap:24px}.business-contact{max-width:260px;margin:0 auto}}
+@media print{.signature-grid{grid-template-columns:minmax(0,1fr) 40mm;gap:6mm}.business-contact{font-size:9pt}.business-contact h3{font-size:10pt}.business-qr{width:36mm;height:36mm;margin:2mm auto}.business-contact .qr-caption{font-size:8pt}}
 </style>
 </head>
 <body>
@@ -156,13 +161,21 @@ h1,h2,h3,p,blockquote{margin:0}a{color:inherit;text-underline-offset:.2em}a:focu
 <p>Acompanhe as próximas publicações pelo canal da VIA no WhatsApp.</p>
 <a class="channel-button" href="https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v">Seguir o canal no WhatsApp</a>
 </aside>
-<div class="signature">
+<div class="signature signature-grid">
+<div class="signature-details">
 <img class="author-photo" src="../assets/dr-lucas-hr.jpg" alt="Dr Lucas HR Almeida" width="96" height="120" loading="lazy">
 <p><strong>Editorial — Dr Lucas HR Almeida</strong></p>
 <p>Iniciativa VIA — Vida Integrada e Autônoma</p>
 <p><a href="https://iniciativa-via.com/">Página VIA</a></p>
-<p><a href="https://wa.me/5535984410983">WhatsApp Business Iniciativa VIA</a></p>
 <p class="slogan">Ciência e Tecnologia a serviço do Cuidado.</p>
+</div>
+<aside class="business-contact" aria-labelledby="business-title">
+<h3 id="business-title">WhatsApp Business</h3>
+<p>Dr Lucas HR | VIA</p>
+<a class="qr-link" href="https://wa.me/message/AFWK5RO4256SG1"><img class="business-qr" src="../assets/qr-whatsapp-business-via.svg" width="160" height="160" alt="QR para iniciar uma conversa no WhatsApp Business de Dr Lucas HR | VIA" loading="lazy"></a>
+<a class="business-link" href="https://wa.me/message/AFWK5RO4256SG1">Iniciar conversa</a>
+<p class="qr-caption">Escaneie o QR ou toque no link.</p>
+</aside>
 </div>
 </div><footer class="page-footer"><span>REVISTA VIA &bull; Nº 001</span><span>6</span></footer>
 </section>
