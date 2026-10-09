@@ -5,6 +5,14 @@ const number = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+// Alternativas capturam o mesmo número ("de"/sítio ou valor imediato).
+const firstCapturedNumber = (_value, match) => {
+  for (let index = 1; index < match.length; index += 1) {
+    if (match[index] !== undefined) return number(match[index]);
+  }
+  return null;
+};
+
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 const excerptAround = (text, index, length) => {
@@ -201,25 +209,26 @@ const EXTRACTORS = Object.freeze({
     /\bpad\s*[:=]?\s*(\d{2,3})\b/iu,
   ], 1, number),
   map: (text) => matchOne(text, [
-    /\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*[:=]?\s*(\d{2,3})\b/iu,
-  ], 1, number),
+    // Meta ("para/meta/manter/alvo PAM 65") não é a pressão aferida.
+    /(?<!para\s)(?<!meta\s)(?<!meta\s+de\s)(?<!manter\s)(?<!alvo\s)(?<!alvo\s+de\s)\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:de\s*[:=]?\s*(\d{2,3})(?!\s*\/\s*\d)|[:=]?\s*(\d{2,3}))\b/iu,
+  ], 1, firstCapturedNumber),
   heartRate: (text) => matchOne(text, [
-    /\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
-  ], 1, number),
+    /\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:de\s*[:=]?\s*(\d{2,3})(?!\s*\/\s*\d)|[:=]?\s*(\d{2,3}))\s*(?:bpm)?\b/iu,
+  ], 1, firstCapturedNumber),
   respiratoryRate: (text) => matchOne(text, [
-    /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
-  ], 1, number),
+    /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*(?:de\s*[:=]?\s*(\d{1,2})(?!\s*\/\s*\d)|[:=]?\s*(\d{1,2}))\s*(?:irpm|rpm)?\b/iu,
+  ], 1, firstCapturedNumber),
   spo2: (text) => matchOne(text, [
     // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
-    // de "10 L/min" para SpO₂=1.
-    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
-  ], 1, number),
+    // de "10 L/min" para SpO₂=1. "Saturação de 88%" não é "de O2".
+    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:de\s*[:=]?\s*(\d{1,3})(?!\d)(?!\s*\/\s*\d)(?!\s*l(?:pm|itros?)?\b)|[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b))\s*%?/iu,
+  ], 1, firstCapturedNumber),
   temperature: (text) => matchOne(text, [
-    /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
-  ], 1, number),
+    /\b(?:temp(?:eratura)?|tax)\s*(?:(?:axilar|retal|oral|timp[aâ]nica|de)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)(?!\s*\/\s*\d)|[:=]?\s*(\d{2}(?:[.,]\d)?))\s*(?:°?c)?\b/iu,
+  ], 1, firstCapturedNumber),
   gcs: (text) => matchOne(text, [
-    /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ], 1, number),
+    /\b(?:glasgow|ecgla|gcs)\s*(?:de\s*[:=]?\s*(\d{1,2})(?!\s*\+)(?:\s*\/\s*15)?|[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?)\b/iu,
+  ], 1, firstCapturedNumber),
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
@@ -227,33 +236,33 @@ const EXTRACTORS = Object.freeze({
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
   lactate: (text) => matchOne(text, [
-    /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
-  ], 1, number),
+    /\blactato\s*(?:de\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*ml\b)(?!\s*mg\b)|[:=]?\s*(\d+(?:[.,]\d+)?))\s*(?:mmol\/?l)?\b|\blac\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+  ], 1, firstCapturedNumber),
   creatinine: (text) => matchOne(text, [
-    /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
-  ], 1, number),
+    /\b(?:creatinina|cr)\s*(?:de\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*ml\b)|[:=]?\s*(\d+(?:[.,]\d+)?))\s*(?:mg\/?dl)?\b/iu,
+  ], 1, firstCapturedNumber),
   bilirubin: (text) => matchOne(text, [
-    /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
-  ], 1, number),
+    /\b(?:bilirrubina\s+total|bt)\s*(?:de\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*\/\s*\d)|[:=]?\s*(\d+(?:[.,]\d+)?))\s*(?:mg\/?dl)?\b/iu,
+  ], 1, firstCapturedNumber),
   platelets: (text) => matchOne(text, [
     /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
   ], 1, number),
   inr: (text) => matchOne(text, [
-    /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
-  ], 1, number),
+    /\binr\s*(?:de\s*(?:hoje\s+)?[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*(?:[-–—]|a)\s*\d)|[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*(?:[-–—]|a)\s*\d))\b/iu,
+  ], 1, firstCapturedNumber),
   troponin: extractTroponin,
   ph: (text) => matchOne(text, [
     /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ], 1, number),
   pao2: (text) => matchOne(text, [
-    /\bpao2\s*[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
-  ], 1, number),
+    /\bpao2\s*(?:de\s*[:=]?\s*(\d{2,3})(?!\s*\/\s*\d)|[:=]?\s*(\d{2,3}))\s*(?:mmhg)?\b/iu,
+  ], 1, firstCapturedNumber),
   fio2: (text) => matchOne(text, [
     /\bfio2\s*[:=]?\s*(\d{1,3})\s*%?/iu,
   ], 1, number),
   nihss: (text) => matchOne(text, [
-    /\bnihss\s*[:=]?\s*(\d{1,2})\b/iu,
-  ], 1, number),
+    /\bnihss\s*(?:de\s*[:=]?\s*(\d{1,2})(?!\s*\/\s*\d)|[:=]?\s*(\d{1,2}))\b/iu,
+  ], 1, firstCapturedNumber),
   pupilExam: (text) => matchOne(text, [
     /\b(pupilas?[^\n.;]{0,90})/iu,
   ]),
