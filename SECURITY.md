@@ -16,7 +16,7 @@ Isso reduz a superfície de ataque, mas não a elimina. São relevantes para est
 Prefira, nesta ordem:
 
 1. **Issue pública** — para falhas sem risco imediato de exploração: <https://github.com/LucasHRAlmeida/via-hub/issues/new>
-2. **Contato direto** — para qualquer coisa que não deva ser pública antes da correção: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180196)
+2. **Contato direto** — para qualquer coisa que não deva ser pública antes da correção: [WhatsApp Business +55 35 98441-0983](https://wa.me/5535984410983)
 
 Ao relatar, ajuda muito incluir: a URL afetada, os passos para reproduzir, o navegador utilizado e o impacto que você observou.
 

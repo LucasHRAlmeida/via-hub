@@ -53,7 +53,7 @@ Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando poss�
 - [YouTube — Lucas HR (MD)](https://www.youtube.com/@drlucashr): canal em vídeo.
 - [X — @drlucashr](https://x.com/drlucashr): presença e divulgação no X.
 - [GitHub — @LucasHRAlmeida](https://github.com/LucasHRAlmeida): código-fonte de todas as ferramentas.
-- [WhatsApp Business](https://wa.me/5516996180196): contacto direto e única agenda clínica.
+- [WhatsApp Business](https://wa.me/5535984410983): contacto direto e única agenda clínica.
 
 ## Como citar e usar este conteúdo
 
@@ -69,7 +69,7 @@ Todos pertencem à mesma pessoa — Dr Lucas HR Almeida — e usam, quando poss�
 - [Créditos (humans.txt)](https://iniciativa-via.com/via-hub/humans.txt)
 - [Contato de segurança (security.txt)](https://iniciativa-via.com/via-hub/.well-known/security.txt)
 
-Contato clínico: [WhatsApp Business +55 16 99618-0196](https://wa.me/5516996180196) · [Propor parceria](https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml)
+Contato clínico: [WhatsApp Business +55 35 98441-0983](https://wa.me/5535984410983) · [Propor parceria](https://github.com/LucasHRAlmeida/via-hub/issues/new?template=parceria.yml)
 
 ## Optional
 

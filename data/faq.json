@@ -35,8 +35,8 @@
       "id": "como-entrar-em-contato",
       "category": "autor",
       "question": "Como entrar em contato com Dr Lucas HR Almeida?",
-      "answer": "O contato direto é feito pelo WhatsApp Business +55 16 99618-0196. A agenda clínica é conduzida exclusivamente por esse canal; o perfil na Doctoralia é registro profissional público, não canal de agendamento. Propostas de parceria institucional devem ser abertas como issue no repositório público do via-hub, o que mantém o registro auditável.",
-      "link": { "href": "https://wa.me/5516996180196", "label": "WhatsApp Business", "external": true },
+      "answer": "O contato direto é feito pelo WhatsApp Business +55 35 98441-0983. A agenda clínica é conduzida exclusivamente por esse canal; o perfil na Doctoralia é registro profissional público, não canal de agendamento. Propostas de parceria institucional devem ser abertas como issue no repositório público do via-hub, o que mantém o registro auditável.",
+      "link": { "href": "https://wa.me/5535984410983", "label": "WhatsApp Business", "external": true },
       "sources": ["llms.txt", "/sobre/"]
     },
     {

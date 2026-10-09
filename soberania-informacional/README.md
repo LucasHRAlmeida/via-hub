@@ -63,7 +63,7 @@ Um cidadão não substitui a instituição fiscalizadora. Mas pode tornar visív
 
 CRM-SP: 226836 | CRM-MG: 109752
 
-[WhatsApp Business: +55 16 99618-0196](https://wa.me/5516996180196)
+[WhatsApp Business: +55 35 98441-0983](https://wa.me/5535984410983)
 
 **Iniciativa VIA — Vida Integrada e Autônoma**
 
