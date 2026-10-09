@@ -62,6 +62,36 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("medida atual com preposição, sítio ou meta não cede o campo ao basal", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  assert.equal(extractNarrative("Noradrenalina para PAM 65. PAM 52 mmHg.", sepsis).map.value, 52);
+  assert.equal(extractNarrative("meta de PAM 65. PAM 52 mmHg.", sepsis).map.value, 52);
+  assert.equal(extractNarrative("PAM 65 mmHg.", sepsis).map.value, 65);
+  assert.equal(extractNarrative("Frequência cardíaca de 140 bpm em FA. FC 70 no ECG antigo.", sepsis).heartRate.value, 140);
+  assert.equal(extractNarrative("FC 118.", sepsis).heartRate.value, 118);
+  assert.equal(extractNarrative("Frequência respiratória de 32 irpm. FR 16 basal.", sepsis).respiratoryRate.value, 32);
+  assert.equal(extractNarrative("Lactato de 4,1 mmol/L. Lac 1,2 na admissão.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato de 500 mL.", sepsis).lactate.value, "");
+  assert.equal(extractNarrative("Bilirrubina total de 8,4 mg/dL. BT 1,1 basal.", sepsis).bilirubin.value, 8.4);
+  assert.equal(extractNarrative("Tax axilar 39,2°C. Tax 36,5 na admissão.", sepsis).temperature.value, 39.2);
+  assert.equal(extractNarrative("Creatinina de 4,8 mg/dL. Cr 1,0 prévia.", sepsis).creatinine.value, 4.8);
+  assert.equal(extractNarrative("Creatinina de 90 mL/min.", sepsis).creatinine.value, "");
+  assert.equal(extractNarrative("Varfarina, alvo INR 2-3. INR de hoje 6,2.", sepsis).inr.value, 6.2);
+  assert.equal(extractNarrative("alvo INR 2-3.", sepsis).inr.value, "");
+  assert.equal(extractNarrative("INR 2,3.", sepsis).inr.value, 2.3);
+  assert.equal(extractNarrative("Saturação de 88% em máscara. SpO2 97% basal.", respiratory).spo2.value, 88);
+  assert.equal(extractNarrative("Glasgow de 8. GCS 15 na entrada.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow de 8/15.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow de 4+5+6=15.", trauma).gcs.value, "");
+  assert.equal(extractNarrative("NIHSS de 18. NIHSS 2 há uma semana.", stroke).nihss.value, 18);
+  assert.equal(extractNarrative("PaO2 de 55 mmHg. PaO2 90 na admissão.", respiratory).pao2.value, 55);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
