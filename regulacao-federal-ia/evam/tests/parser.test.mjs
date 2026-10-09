@@ -74,6 +74,78 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
 });
 
+test("menção negativa de exame não oculta a imagem feita", () => {
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const biliary = getSchema("sepsis-biliary.emergency-gastro.v1");
+
+  const mri = extractNarrative(
+    "Sem TC prévia.\nRM de crânio com oclusão de M1 e mismatch.",
+    stroke,
+  );
+  assert.match(mri.imaging.value, /oclusão de M1/i);
+  assert.doesNotMatch(mri.imaging.value, /TC prévia/i);
+  const mriEnvelope = buildEnvelope({
+    sourceText: "Sem TC prévia.\nRM de crânio com oclusão de M1 e mismatch.",
+    schema: stroke,
+    fields: mri,
+  });
+  assert.equal(mriEnvelope.missingCritical.includes("imaging"), false);
+
+  const absentCt = extractNarrative("Não há TC.\nRM de crânio com isquemia em ACM.", stroke);
+  assert.match(absentCt.imaging.value, /isquemia em ACM/i);
+  assert.doesNotMatch(absentCt.imaging.value, /\bTC\b/);
+
+  const notPerformed = extractNarrative(
+    "Não realizou TC na origem.\nRM de crânio com oclusão de M1.",
+    stroke,
+  );
+  assert.match(notPerformed.imaging.value, /oclusão de M1/i);
+  assert.doesNotMatch(notPerformed.imaging.value, /origem/i);
+
+  const notDoneSentence = extractNarrative(
+    "Não foi feita TC.\nUSG com cálculo em colédoco.",
+    biliary,
+  );
+  assert.match(notDoneSentence.imaging.value, /cálculo em colédoco/i);
+
+  const unavailable = extractNarrative(
+    "RM não disponível.\nTC de crânio: hematoma subdural.",
+    stroke,
+  );
+  assert.match(unavailable.imaging.value, /hematoma subdural/i);
+  assert.doesNotMatch(unavailable.imaging.value, /não disponível/i);
+
+  const notDone = extractNarrative(
+    "TC não realizada.\nUltrassom de abdome com líquido livre e colédoco de 14 mm.",
+    biliary,
+  );
+  assert.match(notDone.imaging.value, /colédoco de 14 mm/i);
+  assert.doesNotMatch(notDone.imaging.value, /não realizada/i);
+
+  const headed = extractNarrative(
+    "TC: não realizada.\nUltrassom de abdome com líquido livre.",
+    biliary,
+  );
+  assert.match(headed.imaging.value, /líquido livre/i);
+
+  const sameLine = extractNarrative("Sem TC. Ultrassom com cálculo em colédoco.", biliary);
+  assert.match(sameLine.imaging.value, /cálculo em colédoco/i);
+  assert.doesNotMatch(sameLine.imaging.value, /^TC\b/);
+
+  assert.equal(extractNarrative("Sem TC prévia.", stroke).imaging.value, "");
+  assert.equal(extractNarrative("TC não realizada.", biliary).imaging.value, "");
+
+  assert.match(extractNarrative("TC de crânio sem hemorragia.", stroke).imaging.value, /sem hemorragia/i);
+  assert.match(extractNarrative("TC sem contraste, sem hemorragia.", stroke).imaging.value, /sem contraste/i);
+  assert.match(extractNarrative("sem contraste. TC de crânio sem hemorragia.", stroke).imaging.value, /sem hemorragia/i);
+  assert.match(extractNarrative("TC evidencia dilatação biliar.", biliary).imaging.value, /dilatação biliar/i);
+  assert.match(extractNarrative("AngioTC sugere oclusão de M1.", stroke).imaging.value, /oclusão de M1/i);
+  assert.match(extractNarrative("Angiografia coronariana com oclusão de DA.", getSchema("acute-coronary-syndrome.cardiology.v1")).imaging.value, /oclusão de DA/i);
+  assert.match(extractNarrative("ColangioRM com cálculo em colédoco.", biliary).imaging.value, /cálculo em colédoco/i);
+  assert.match(extractNarrative("USG com cálculo em colédoco.", biliary).imaging.value, /cálculo em colédoco/i);
+  assert.match(extractNarrative("Tomografia de abdome com líquido livre.", biliary).imaging.value, /líquido livre/i);
+});
+
 test("envelope declara abstention sem fabricar completude", () => {
   const schema = getSchema("acute-ischemic-stroke.neurology.v1");
   const fields = extractNarrative("Paciente 70 anos, NIHSS 16.", schema);

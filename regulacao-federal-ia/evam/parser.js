@@ -179,6 +179,39 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * A primeira menção só entra se o exame foi feito.
+ * "Sem TC", "Não há TC", "Não realizou TC" e "TC não realizada" não ocultam
+ * a tomografia, a ressonância ou o ultrassom que vêm depois.
+ */
+function extractImaging(text) {
+  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)/giu;
+  const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
+  const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
+
+  for (const match of text.matchAll(keyword)) {
+    const start = match.index;
+    const before = text.slice(Math.max(0, start - 48), start);
+    if (negatedBefore.test(before)) continue;
+    const after = text.slice(start + match[0].length, start + match[0].length + 48);
+    if (negatedAfter.test(after)) continue;
+
+    const lineEnd = text.indexOf("\n", start);
+    const limit = start + match[0].length + 220;
+    const end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    const value = clean(text.slice(start, end));
+    if (!value) continue;
+
+    return {
+      value,
+      excerpt: excerptAround(text, start, end - start),
+      confidence: "heurística",
+    };
+  }
+
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -264,9 +297,7 @@ const EXTRACTORS = Object.freeze({
     /\b(ecg[^\n]{0,180})/iu,
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
-  imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
-  ]),
+  imaging: extractImaging,
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
