@@ -271,10 +271,15 @@ const EXTRACTORS = Object.freeze({
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
   hemorrhage: yesNoText([
-    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b/iu,
-    /\bchoque\s+hemorr[aá]gico\b/iu,
+    // "negado/negada" depois do achado, ou "nega/negou" imediatamente antes, não é hemorragia presente.
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)/iu,
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)/iu,
   ], [
     /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o)\b/iu,
+    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\s*,?\s*negad[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+choque\s+hemorr[aá]gico\b/iu,
+    /\bchoque\s+hemorr[aá]gico\s*,?\s*negad[oa]\b/iu,
   ]),
 });
 

@@ -62,6 +62,38 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("hemorragia negada depois do achado não entra como presente", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const absent = [
+    "Sangramento ativo negado.",
+    "Sangramento ativo, negado pelo paciente.",
+    "Nega sangramento ativo.",
+    "Negou sangramento importante.",
+    "Nega-se choque hemorrágico.",
+    "Choque hemorrágico negado.",
+  ];
+  for (const text of absent) {
+    assert.match(extractNarrative(text, schema).hemorrhage.value, /^Não — /i, text);
+  }
+
+  assert.match(
+    extractNarrative("Sangramento ativo em pelve.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Choque hemorrágico.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Nega sangramento ativo na cena. Sangramento ativo em pelve na admissão.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Sangramento não controlado.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
