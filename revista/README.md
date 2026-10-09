@@ -11,13 +11,24 @@ Revista web semanal de **saúde pública, ciência, cuidado e tecnologia** da In
 
 Página: `especial-2026-10-04.html`; PDF correspondente: `especial-2026-10-04.pdf`.
 A diagramação ampliada tem seis páginas A4, sumário navegável e colofão assinado
-por Dr Lucas HR Almeida. O texto é o HTML revisado fornecido pelo mantenedor
-na conversa de implantação. 04/10/2026 é a referência editorial; 08/10/2026
-é a publicação da edição ampliada. A versão curta anterior permanece no
-histórico Git e em `arquivo/especial-2026-10-04-versao-curta.pdf`.
+por Dr Lucas HR Almeida. A revisão de 09/10/2026 aplica a avaliação editorial
+fornecida pelo mantenedor: explicita o percurso praça → instituições → decisão,
+define «corte», delimita as alegações sobre plataformas e substitui o monólogo
+por «A pausa é de quem decide». 04/10/2026 é a referência editorial;
+08/10/2026 é a publicação da edição ampliada. A versão curta anterior permanece
+no histórico Git e em `arquivo/especial-2026-10-04-versao-curta.pdf`; a edição
+ampliada anterior foi preservada, sem regeneração, em
+`arquivo/especial-2026-10-04-revisao-2026-10-08.pdf`.
+
+O canal de acompanhamento é [🩺 VIA - Dr Lucas HR](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v),
+exposto na navegação web e no fecho em HTML e PDF. O contato Business permanece
+em `https://wa.me/5535984410983`. A autocrítica e o escopo da revisão estão em
+`revisao-especial-2026-10-09.md`; autoria não equivale a revisão independente.
 
 As fontes Cinzel, Newsreader e Plus Jakarta Sans são servidas localmente em
-`assets/fonts/parar/`, com licenças SIL Open Font License. O retrato é o ativo
+`assets/fonts/parar/`, com licenças SIL Open Font License. O glifo do canal usa
+um subconjunto de Noto Emoji, renomeado VIA Channel Emoji, com a licença original.
+O retrato é o ativo
 `assets/dr-lucas-hr.jpg`; o WhatsApp e o slogan seguem os dados desta página.
 O conteúdo e os metadados são HTML estático, sem JavaScript de execução.
 
