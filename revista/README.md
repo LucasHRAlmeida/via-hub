@@ -7,6 +7,21 @@ Revista web semanal de **saúde pública, ciência, cuidado e tecnologia** da In
 - Página publicada: <https://iniciativa-via.com/via-hub/revista/>
 ## Arquivo das edições
 
+### Especial nº 001 — PARAR
+
+Página: `especial-2026-10-04.html`; PDF correspondente: `especial-2026-10-04.pdf`.
+A diagramação ampliada tem seis páginas A4, sumário navegável e colofão assinado
+por Dr Lucas HR Almeida. O texto é o HTML revisado fornecido pelo mantenedor
+na conversa de implantação. 04/10/2026 é a referência editorial; 08/10/2026
+é a publicação da edição ampliada. A versão curta anterior permanece no
+histórico Git e em `arquivo/especial-2026-10-04-versao-curta.pdf`.
+
+As fontes Cinzel, Newsreader e Plus Jakarta Sans são servidas localmente em
+`assets/fonts/parar/`, com licenças SIL Open Font License. O retrato é o ativo
+`assets/dr-lucas-hr.jpg`; o WhatsApp e o slogan seguem os dados desta página.
+O conteúdo e os metadados são HTML estático, sem JavaScript de execução.
+
+
 Antes de substituir a edição corrente, exportar a versão publicada em PDF e preservá-la em `revista/arquivo/AAAA-MM-DD.pdf`. O PDF é o registro fechado da edição; `/revista/` permanece reservado ao número corrente. Não manter rotas temáticas antigas ou redirecionamentos concorrentes.
 
 A edição candidata também acompanha o branch como `revista/edicao-AAAA-MM-DD.pdf`. Os dois PDFs devem ser A4, pesquisáveis e inspecionados visualmente antes do PR. O renderizador versionado é executado assim:
