@@ -179,6 +179,73 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * O número colado ao rótulo às vezes é a data (03/10) ou a hora (22h),
+ * e o valor real vem em seguida. Dia/mês 1–12 não é o sinal.
+ * "15/15" e "8/15" continuam leitura de escala: 15 não é mês.
+ */
+function readMeasurement(tail, { pattern, rejectFlow = false } = {}) {
+  let rest = String(tail).replace(/^\s*[:=]?\s*/u, "");
+  const dated = rest.match(/^\d{1,2}\s*\/\s*(?:1[0-2]|0[1-9]|[1-9](?!\d))(?:\s*\/\s*\d{2,4})?\s*/u);
+  if (dated) {
+    rest = rest.slice(dated[0].length).replace(/^\s*[:=]?\s*/u, "");
+    const clock = rest.match(/^(?:\d{1,2}\s*h(?:oras?)?(?:\s*\d{1,2})?|\d{1,2}:\d{2})\s*[:=.-]?\s*/iu);
+    if (clock) rest = rest.slice(clock[0].length);
+  } else {
+    const clockThenValue = rest.match(/^(?:\d{1,2}\s*h(?:oras?)?(?:\s*\d{1,2})?|\d{1,2}:\d{2})\s*[:=.-]?\s*(?=\d)/iu);
+    if (clockThenValue) rest = rest.slice(clockThenValue[0].length);
+  }
+  if (rejectFlow && /^(\d{1,3})(?!\d)\s*l(?:pm|itros?)?\b/iu.test(rest)) return null;
+  const match = rest.match(pattern);
+  if (!match) return null;
+  return number(match[1]);
+}
+
+function extractLabeledMeasurement(text, label, options) {
+  const expression = new RegExp(String.raw`\b(?:${label})`, "giu");
+  for (const match of text.matchAll(expression)) {
+    const tail = text.slice(match.index + match[0].length, match.index + match[0].length + 56);
+    const value = readMeasurement(tail, options);
+    if (value === null) continue;
+    return {
+      value,
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+    };
+  }
+  return null;
+}
+
+/**
+ * "ECG não realizado" e "Não há ECG" não ocupam o campo.
+ * O traçado da linha seguinte permanece. "ECG sem supra" é exame feito.
+ */
+function extractEcg(text) {
+  const keyword = /\b(?:ecg|eletrocardiograma)\b/giu;
+  const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
+  const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
+
+  for (const match of text.matchAll(keyword)) {
+    const start = match.index;
+    const before = text.slice(Math.max(0, start - 48), start);
+    if (negatedBefore.test(before)) continue;
+    const after = text.slice(start + match[0].length, start + match[0].length + 48);
+    if (negatedAfter.test(after)) continue;
+
+    const lineEnd = text.indexOf("\n", start);
+    const limit = start + match[0].length + 180;
+    const end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    const value = clean(text.slice(start, end));
+    if (!value) continue;
+    return {
+      value,
+      excerpt: excerptAround(text, start, end - start),
+      confidence: "heurística",
+    };
+  }
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -203,23 +270,24 @@ const EXTRACTORS = Object.freeze({
   map: (text) => matchOne(text, [
     /\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*[:=]?\s*(\d{2,3})\b/iu,
   ], 1, number),
-  heartRate: (text) => matchOne(text, [
-    /\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
-  ], 1, number),
-  respiratoryRate: (text) => matchOne(text, [
-    /\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
-  ], 1, number),
-  spo2: (text) => matchOne(text, [
-    // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
-    // de "10 L/min" para SpO₂=1.
-    /\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
-  ], 1, number),
-  temperature: (text) => matchOne(text, [
-    /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
-  ], 1, number),
-  gcs: (text) => matchOne(text, [
-    /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ], 1, number),
+  heartRate: (text) => extractLabeledMeasurement(text, "frequ[eê]ncia\\s+card[ií]aca|fc", {
+    pattern: /^(\d{2,3})(?!\d)/u,
+  }),
+  respiratoryRate: (text) => extractLabeledMeasurement(text, "frequ[eê]ncia\\s+respirat[oó]ria|fr", {
+    pattern: /^(\d{1,2})(?!\d)/u,
+  }),
+  // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
+  // de "10 L/min" para SpO₂=1.
+  spo2: (text) => extractLabeledMeasurement(text, "spo2|sat(?:ura[cç][aã]o)?(?:\\s+de\\s+o2)?", {
+    pattern: /^(\d{1,3})(?!\d)/u,
+    rejectFlow: true,
+  }),
+  temperature: (text) => extractLabeledMeasurement(text, "temp(?:eratura)?|tax", {
+    pattern: /^(\d{2}(?:[.,]\d)?)(?!\d)/u,
+  }),
+  gcs: (text) => extractLabeledMeasurement(text, "glasgow|ecgla|gcs", {
+    pattern: /^(\d{1,2})(?!\d)/u,
+  }),
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
@@ -245,25 +313,22 @@ const EXTRACTORS = Object.freeze({
   ph: (text) => matchOne(text, [
     /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ], 1, number),
-  pao2: (text) => matchOne(text, [
-    /\bpao2\s*[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
-  ], 1, number),
+  pao2: (text) => extractLabeledMeasurement(text, "pao2", {
+    pattern: /^(\d{2,3})(?!\d)/u,
+  }),
   fio2: (text) => matchOne(text, [
     /\bfio2\s*[:=]?\s*(\d{1,3})\s*%?/iu,
   ], 1, number),
-  nihss: (text) => matchOne(text, [
-    /\bnihss\s*[:=]?\s*(\d{1,2})\b/iu,
-  ], 1, number),
+  nihss: (text) => extractLabeledMeasurement(text, "nihss", {
+    pattern: /^(\d{1,2})(?!\d)/u,
+  }),
   pupilExam: (text) => matchOne(text, [
     /\b(pupilas?[^\n.;]{0,90})/iu,
   ]),
   focalDeficit: (text) => matchOne(text, [
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
-  ecg: (text) => matchOne(text, [
-    /\b(ecg[^\n]{0,180})/iu,
-    /\b(eletrocardiograma[^\n]{0,180})/iu,
-  ]),
+  ecg: extractEcg,
   imaging: (text) => matchOne(text, [
     /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
