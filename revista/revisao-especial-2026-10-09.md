@@ -56,3 +56,16 @@ larguras de celular, tablet e desktop. Executar os testes exigidos pelo workflow
 `testes.yml` e aguardar CI antes do merge. Após o deploy, comparar os arquivos
 servidos no domínio com os arquivos integrados. Os resultados e as referências
 de execução serão registrados no PR; este documento não antecipa seu sucesso.
+
+## Complemento: QR do WhatsApp Business/Nexo
+
+Após a ordem «execute», que encerra o hold, o convite de conversa ganha um QR
+estilizado para `https://wa.me/message/AFWK5RO4256SG1`. O titular esclareceu que
+esse contato é seu e que o Nexo é a entrada do funil. O convite utiliza o nome
+visível do WhatsApp Business, sem presumir que um adaptador automatizado esteja
+implantado. O canal de acompanhamento mantém seu próprio link.
+
+A autocrítica deste complemento concentra-se no destino e na leitura: margem de
+quatro módulos, alto contraste, correção de erros H e marca central pequena;
+decodificação independente do ativo, da página e do PDF. A assinatura e o QR
+ficam lado a lado em impressão e empilhados no celular, mantendo seis páginas.

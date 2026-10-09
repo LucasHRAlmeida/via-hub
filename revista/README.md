@@ -21,9 +21,21 @@ ampliada anterior foi preservada, sem regeneração, em
 `arquivo/especial-2026-10-04-revisao-2026-10-08.pdf`.
 
 O canal de acompanhamento é [🩺 VIA - Dr Lucas HR](https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v),
-exposto na navegação web e no fecho em HTML e PDF. O contato Business permanece
-em `https://wa.me/5535984410983`. A autocrítica e o escopo da revisão estão em
+exposto na navegação web e no fecho em HTML e PDF. O QR e o convite de conversa
+usam `https://wa.me/message/AFWK5RO4256SG1`, link fornecido pelo mantenedor para
+seu WhatsApp Business/Nexo. O canal e a conversa têm convites separados.
+A autocrítica e o escopo da revisão estão em
 `revisao-especial-2026-10-09.md`; autoria não equivale a revisão independente.
+
+O QR vetorial é `assets/qr-whatsapp-business-via.svg`; sua versão PNG de divulgação
+é `assets/qr-whatsapp-business-via.png`. A fonte reproduzível é
+`scripts/generate-whatsapp-qr.py` (Python, `qrcode==8.2` e `fontTools`): correção de
+erros H, margem de quatro módulos, módulos suavizados e marca VIA em traçados da
+fonte local. O PNG é uma renderização do SVG. A decodificação deve reproduzir o
+link exato, inclusive no QR renderizado da página e do PDF.
+
+Antes da inclusão do QR, o PDF editorial de 09/10 foi preservado sem alteração em
+`arquivo/especial-2026-10-04-revisao-2026-10-09-editorial.pdf`.
 
 As fontes Cinzel, Newsreader e Plus Jakarta Sans são servidas localmente em
 `assets/fonts/parar/`, com licenças SIL Open Font License. O glifo do canal usa
