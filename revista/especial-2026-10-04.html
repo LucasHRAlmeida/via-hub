@@ -38,7 +38,7 @@
 *{box-sizing:border-box}html{scroll-padding-top:24px}body{margin:0;padding:40px 16px;background:#e5e0d3;color:var(--text-color);font-family:var(--serif);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
 h1,h2,h3,p,blockquote{margin:0}a{color:inherit;text-underline-offset:.2em}a:focus-visible{outline:3px solid var(--accent-color);outline-offset:5px}
 .skip-link{position:absolute;top:0;left:16px;transform:translateY(-120%);padding:12px;background:var(--bg-color);z-index:1}.skip-link:focus{transform:translateY(0)}
-.edition-nav{max-width:900px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:12px 24px;font:12px/1.5 var(--sans)}.edition-nav a{padding:5px 0}
+.edition-nav{max-width:900px;margin:0 auto 18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font:600 12px/1.5 var(--sans)}.edition-nav a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 12px;background:var(--bg-color);border:1px solid var(--border-color);border-radius:4px;text-align:center;text-decoration:none}.edition-nav a:hover{background:var(--card-bg);border-color:var(--accent-color)}
 .magazine-container{width:100%;max-width:900px;margin:0 auto;background:var(--bg-color);box-shadow:0 20px 40px rgb(0 0 0 / 15%)}
 .page{min-height:1050px;padding:60px 70px;display:flex;flex-direction:column;border-bottom:1px solid var(--border-color)}.page:last-child{border-bottom:0}
 .page-header,.page-footer{display:flex;justify-content:space-between;gap:16px;font-family:var(--sans);font-size:11px;color:#555}
@@ -83,7 +83,7 @@ h1,h2,h3,p,blockquote{margin:0}a{color:inherit;text-underline-offset:.2em}a:focu
 <body>
 <a class="skip-link" href="#sumario">Ir ao sumário</a>
 <nav class="edition-nav" aria-label="Navegação da Revista VIA">
-<a href="../">← Voltar ao hub</a><a href="./">Edição ordinária</a><a href="especial-2026-10-04.pdf">Baixar edição em PDF</a><a href="https://whatsapp.com/channel/0029Vb4Ped05q08h0Uc7PY3v">Canal VIA no WhatsApp</a>
+<a href="../">← Voltar ao hub</a><a href="./">Edição ordinária</a><a href="especial-2026-10-04.pdf">Abrir PDF</a>
 </nav>
 <main class="magazine-container">
 <section class="page cover-page" aria-labelledby="cover-title">
