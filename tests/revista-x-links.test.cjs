@@ -53,6 +53,9 @@ const revistaHtml = fs.readFileSync(path.join(root, "revista", "index.html"), "u
 assert.match(revistaHtml, /href="\.\.\/">← Voltar ao hub<\/a>/, "revista deve ter elo de volta ao hub no topo");
 assert.match(revistaHtml, /<a class="wordmark" href="\.\.\/" aria-label="VIA HUB">VI<span>A<\/span> HUB<\/a>/, "wordmark da revista deve apontar para o hub");
 assert.doesNotMatch(revistaHtml, /https:\/\/x\.com\/drlucashr/, "revista não deve listar o canal X");
+const specialEdition = fs.readFileSync(path.join(root, "revista", "especial-2026-10-04.html"), "utf8");
+assert.match(specialEdition, /href="https:\/\/whatsapp\.com\/channel\/0029Vb4Ped05q08h0Uc7PY3v"[^>]*>Canal VIA no WhatsApp/, "edição especial deve encaminhar ao canal oficial");
+assert.match(specialEdition, /Dr Lucas HR Almeida — Iniciativa VIA · <a href="https:\/\/iniciativa-via\.com\/via-hub\/revista\/especial-2026-10-04\.html">/, "edição especial deve exibir atribuição e URL canônica");
 
 const revistaReadme = fs.readFileSync(path.join(root, "revista", "README.md"), "utf8");
 assert.match(revistaReadme, /Toda edição corrente deve expor no topo um elo de volta ao hub \(`href="\.\.\/"`\); a revista não mantém fileira de canais no rodapé\./, "README da revista deve registrar a invariante editorial");

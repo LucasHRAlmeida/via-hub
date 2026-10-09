@@ -54,6 +54,7 @@ for (const source of htmlFiles) {
 }
 
 const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+assert.match(sitemap, /<loc>https:\/\/iniciativa-via\.com\/via-hub\/revista\/especial-2026-10-04\.html<\/loc>/, "sitemap deve descobrir a edição especial publicada");
 for (const [, url] of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
   const target = resolveRoute(root, url);
   assert.ok(target, `sitemap usa URL fora do escopo do checkout: ${url}`);

@@ -25,6 +25,10 @@ Site: https://iniciativa-via.com/via-hub/ · Código aberto: https://github.com/
 - [Bem-Estar Multissensorial](https://iniciativa-via.com/via-hub/bem-estar-multissensorial/): guia interativo que combina música, cores e aromas em seis estados de espírito, com referências comentadas. Intervenções inócuas de bem-estar; não substitui intervenção clínica.
 - [VIA MENTE — MBRP-8](https://iniciativa-via.com/via-hub/via-mente-mbrp/): roteiro psicoeducacional de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias e registro local de progresso.
 
+## Edição editorial especial
+
+- [4 de outubro de 2026 — Parar](https://iniciativa-via.com/via-hub/revista/especial-2026-10-04.html): editorial sobre democracia, limites do poder e responsabilidade na decisão.
+
 ## Educação médica e calibração de juízo clínico
 
 - [Mentoria Sincronismo Híbrido](https://iniciativa-via.com/via-hub/mentoria-sincronismo-hibrido/): calibração de juízo clínico em regime híbrido — sessões síncronas densas e estrutura assíncrona de templates e feedback. Oferta paga, cohort fechada ou 1:1.
