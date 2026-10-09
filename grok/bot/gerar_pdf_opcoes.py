@@ -331,7 +331,7 @@ OPCOES = [
     ("D. Vercel (Functions + AI SDK / AI Gateway)", "Servidor alternativo; pode também hospedar uma interface Next.js própria.",
      "Interface de chat mais rica (streaming, histórico) com o AI SDK; equipe já habituada a Next.js.", 3, 3,
      "Mesmo resultado funcional do Workers, com custo fixo maior (Pro US$ 20/assento); Hobby não admite uso comercial."),
-    ("E. WhatsApp Business", "Conversa no WhatsApp, no número institucional +55 16 99618-0196 (via Cloud API da Meta ou Twilio).",
+    ("E. WhatsApp Business", "Conversa no WhatsApp, no número institucional +55 35 98441-0983 (via Cloud API da Meta ou Twilio).",
      "Atendimento institucional a quem não navega em sites: dúvidas frequentes, agenda, encaminhamento a humano.", 5, 4,
      "Maior alcance no Brasil, mas com custo por mensagem, aprovação da Meta e restrição a assistentes de uso geral."),
     ("F. Telegram", "Conversa em bot do Telegram, criado via @BotFather; webhook no Worker.",

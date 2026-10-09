@@ -282,7 +282,7 @@ const I18N = {
     "fundador.portfolio": "Portfólio público",
     "fundador.alt": "Selo pessoal LA 31 de Dr Lucas HR Almeida",
     "footer.identity": "Dr Lucas HR Almeida — Médico Generalista (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
-    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.whatsapp": "WhatsApp Business: +55 35 98441-0983",
     "footer.initiative": "Iniciativa VIA — Vida Integrada e Autônoma",
     "footer.tagline": "Ciência e Tecnologia a serviço do Cuidado.",
     "footer.code": "Código e versões ↗",
@@ -421,7 +421,7 @@ const I18N = {
     "fundador.portfolio": "Public portfolio",
     "fundador.alt": "Personal seal LA 31 of Dr Lucas HR Almeida",
     "footer.identity": "Dr Lucas HR Almeida — General Practitioner (FMRP-USP)\nCRM-SP: 226836 | CRM-MG: 109752",
-    "footer.whatsapp": "WhatsApp Business: +55 16 99618-0196",
+    "footer.whatsapp": "WhatsApp Business: +55 35 98441-0983",
     "footer.initiative": "VIA Initiative — Integrated and Autonomous Life",
     "footer.tagline": "Science and Technology in service of Care.",
     "footer.code": "Code and versions ↗",
@@ -646,7 +646,7 @@ function applyLang(lang) {
     footerPs[0].append(document.createTextNode(idLines[1] || ""));
     footerPs[0].append(document.createElement("br"));
     const wa = document.createElement("a");
-    wa.href = "https://wa.me/5516996180196";
+    wa.href = "https://wa.me/5535984410983";
     wa.target = "_blank";
     wa.rel = "noopener noreferrer";
     wa.textContent = t["footer.whatsapp"];

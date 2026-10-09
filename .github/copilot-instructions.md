@@ -33,7 +33,7 @@ Responda em português do Brasil. Tom técnico e sóbrio. Autoridade final: HUMA
 1. **Dois publicadores, uma entidade.** `LucasHRAlmeida.github.io` = raiz de `iniciativa-via.com`. `via-hub` = portfólio em `/via-hub/`. Não duplicar fonte (HTML, JSON, sitemap, copy) de um no outro. Não reintroduzir `docs/site-raiz/`.
 2. **Não capturar o utilizador.** Client-side. Sem servidor de app, sem login, sem PII. Flag de cookie de tracking, formulário que envie dado pessoal, phone-home.
 3. **Saúde = educativo.** Preservar o aviso. Não tratar números como vigilância ao vivo. Não aconselhar clinicamente em nome da VIA. Não assinar com CRM. CRM-SP 226836 / CRM-MG 109752 são factos, não ornamento.
-4. **Não usurpar a voz.** Não reescrever lead, biografia, slogan, posicionamento. Canal clínico único: `https://wa.me/5516996180196`. Doctoralia verifica; não agenda.
+4. **Não usurpar a voz.** Não reescrever lead, biografia, slogan, posicionamento. Canal clínico único: `https://wa.me/5535984410983`. Doctoralia verifica; não agenda.
 5. **Identidade git ≠ UI.** Não usar a identidade pessoal do mantenedor em commit de agente. Não pôr marca de vendor no HTML, footer ou JSON-LD.
 6. **Episteme.** Observado / inferido / proposto. Sem HTTP, SHA ou fonte fabricados. LACUNA quando não verificou. Persona de sessão não é efeito público.
 7. **Rotas.** Cada href interno e cada `<loc>` tem de resolver 200 no URL canónico do repo. Não inventar caminho. Preferir destino canónico a stub de redirect.
