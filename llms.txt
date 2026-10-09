@@ -21,8 +21,6 @@ Site: https://iniciativa-via.com/via-hub/ · Código aberto: https://github.com/
 
 ## Saúde pública e educação em saúde
 
-Edição especial cívica: [PARAR — Revista VIA, nº 001](https://iniciativa-via.com/via-hub/revista/especial-2026-10-04.html). Editorial sobre democracia, limites do poder e responsabilidade na decisão. Referência editorial: 04/10/2026. Edição ampliada: 08/10/2026. Conteúdo de posicionamento autoral; distinto da edição ordinária de saúde.
-
 - [Saúde na Última Semana — Revista Eletrônica VIA](https://iniciativa-via.com/via-hub/revista/): curadoria semanal de saúde pública, ciência, cuidado e tecnologia. Seleciona temas pela relevância da semana, vincula alegações factuais a fontes primárias e explicita implicações práticas e limites. Material educativo; não é triagem, diagnóstico nem fonte de dados epidemiológicos em tempo real.
 - [Bem-Estar Multissensorial](https://iniciativa-via.com/via-hub/bem-estar-multissensorial/): guia interativo que combina música, cores e aromas em seis estados de espírito, com referências comentadas. Intervenções inócuas de bem-estar; não substitui intervenção clínica.
 - [VIA MENTE — MBRP-8](https://iniciativa-via.com/via-hub/via-mente-mbrp/): roteiro psicoeducacional de 8 semanas baseado em Mindfulness-Based Relapse Prevention, com práticas diárias e registro local de progresso.
