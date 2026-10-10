@@ -94,6 +94,31 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("curva laboratorial grava o valor atual, não o basal", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  assert.equal(extractNarrative("Lactato 1,1 → 5,4 mmol/L.", sepsis).lactate.value, 5.4);
+  assert.equal(extractNarrative("Lactato 1,8 -> 3,0 -> 6,2 mmol/L.", sepsis).lactate.value, 6.2);
+  assert.equal(extractNarrative("Lactato 1,1 mmol/L → 5,4 mmol/L.", sepsis).lactate.value, 5.4);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L. Lac 1,2 na admissão.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1 para 2 horas.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1 > 2,0.", sepsis).lactate.value, 4.1);
+
+  assert.equal(extractNarrative("Creatinina 0,8 → 4,2 mg/dL.", sepsis).creatinine.value, 4.2);
+  assert.equal(extractNarrative("Creatinina 1,2 mg/dL para 3,8 mg/dL.", sepsis).creatinine.value, 3.8);
+  assert.equal(extractNarrative("Cr 1,0 na admissão → 3,2 mg/dL.", sepsis).creatinine.value, 3.2);
+  assert.equal(extractNarrative("Creatinina 1,2 (VR 0,7-1,3).", sepsis).creatinine.value, 1.2);
+
+  assert.equal(extractNarrative("Bilirrubina total 2,0 → 14,6 mg/dL.", sepsis).bilirubin.value, 14.6);
+  assert.equal(extractNarrative("BT 1,2 para 18,4.", sepsis).bilirubin.value, 18.4);
+
+  assert.equal(extractNarrative("Plaquetas 180 → 42 mil.", sepsis).platelets.value, 42);
+  assert.equal(extractNarrative("INR 1,0 → 1,8 → 4,2.", trauma).inr.value, 4.2);
+  assert.equal(extractNarrative("INR 1,4.", trauma).inr.value, 1.4);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

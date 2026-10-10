@@ -179,6 +179,30 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * Curva na mesma menção ("1,1 → 5,4", "1,2 mg/dL para 3,8"): o número colado
+ * ao rótulo é o basal e o valor atual é o último. "para 2 horas" continua
+ * sendo prazo, não resultado. ">" isolado também marca corte de referência
+ * ("4,1 > 2,0"), então não conta como curva. Hífen de intervalo tampouco.
+ */
+function preferLatestTrend(raw, match) {
+  const source = match?.input ?? "";
+  const numberAt = source.indexOf(String(raw), match?.index ?? 0);
+  if (numberAt < 0) return number(raw);
+
+  const step = /\s*(?:mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k)?\s*(?:na\s+admiss[aã]o|basal|pr[eé]vi[oa]|inicial|de\s+entrada)?\s*(?:→|->|=>|\bpara\b)\s*(\d+(?:[.,]\d+)?)(?!\s*(?:h|horas?|min(?:utos)?|dias?)\b)/yiu;
+  let end = numberAt + String(raw).length;
+  let latest = raw;
+  while (end <= source.length) {
+    step.lastIndex = end;
+    const next = step.exec(source);
+    if (!next) break;
+    latest = next[1];
+    end = next.index + next[0].length;
+  }
+  return number(latest);
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -228,19 +252,19 @@ const EXTRACTORS = Object.freeze({
   ]),
   lactate: (text) => matchOne(text, [
     /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
-  ], 1, number),
+  ], 1, preferLatestTrend),
   creatinine: (text) => matchOne(text, [
     /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
-  ], 1, number),
+  ], 1, preferLatestTrend),
   bilirubin: (text) => matchOne(text, [
     /\b(?:bilirrubina\s+total|bt)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
-  ], 1, number),
+  ], 1, preferLatestTrend),
   platelets: (text) => matchOne(text, [
     /\b(?:plaquetas?|plaq)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
-  ], 1, number),
+  ], 1, preferLatestTrend),
   inr: (text) => matchOne(text, [
     /\binr\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
-  ], 1, number),
+  ], 1, preferLatestTrend),
   troponin: extractTroponin,
   ph: (text) => matchOne(text, [
     /\bph\s*[:=]?\s*(\d[.,]\d{1,3})\b/iu,
