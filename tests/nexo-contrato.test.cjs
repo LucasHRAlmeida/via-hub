@@ -20,11 +20,11 @@ assert.equal(contrato.nome, "Nexo");
 assert.match(contrato.versao, /^\d+\.\d+\.\d+$/);
 assert.equal(contrato.estagio, "fundacao-estatica");
 
-assert.equal(contrato.raias.length, 3, "o contrato declara exatamente tres raias");
+assert.equal(contrato.raias.length, 4, "o contrato declara exatamente quatro raias");
 const raiaIds = contrato.raias.map((raia) => raia.id);
 assert.equal(new Set(raiaIds).size, raiaIds.length, "ids de raia duplicados no contrato");
 const raias = new Map(contrato.raias.map((raia) => [raia.id, raia]));
-for (const id of ["informacao-saude", "posicionamento-tecnico-filosofico", "modelo-cuidado"]) {
+for (const id of ["informacao-saude", "posicionamento-tecnico-filosofico", "modelo-cuidado", "educacao-saude-leigo"]) {
   assert.ok(raias.has(id), `raia ausente no contrato: ${id}`);
   assert.ok(raias.get(id).limites.length > 0, `raia sem limites: ${id}`);
 }
@@ -33,6 +33,11 @@ assert.deepEqual(
   ["nivel-1-diretrizes-sociedades-brasileiras", "nivel-2-literatura-e-agencias"],
   "fontes clinicas devem manter os niveis 1 e 2, nesta ordem"
 );
+
+const ssot = fs.readFileSync(path.join(nexoDir, "SSOT_OPERACAO.md"), "utf8");
+const curadoria = fs.readFileSync(path.join(nexoDir, "CURADORIA.md"), "utf8");
+assert.match(ssot, /FONTES_EDUCACAO_SAUDE\.md/, "SSOT_OPERACAO.md nao referencia o indice de educacao em saude");
+assert.match(curadoria, /FONTES_EDUCACAO_SAUDE\.md/, "CURADORIA.md nao referencia o indice de educacao em saude");
 
 for (const campo of [
   "entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta",
