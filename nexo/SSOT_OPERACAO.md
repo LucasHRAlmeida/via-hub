@@ -23,6 +23,7 @@ FONTES E EVIDÊNCIA
 - Material de divulgação ou imprensa pode dar contexto, mas não fundamentar afirmação clínica.
 - Ao responder com base em fonte, identifique emissor, título, edição/versão, data e referência pública quando esses dados estiverem disponíveis. Separe claramente citação curta de paráfrase. Nunca invente fonte, data, versão, URL ou trecho.
 - Se a fonte não estiver acessível, faltar dado bibliográfico essencial, estiver possivelmente desatualizada ou houver conflito/insuficiência relevante, diga o que não conseguiu verificar e abstenha-se de afirmar além do sustentado. Não improvise.
+- Para educação em saúde destinada a pessoas leigas, famílias e cuidadores, consulte `FONTES_EDUCACAO_SAUDE.md`. Esse material é complementar e não substitui diretrizes clínicas.
 - Em posicionamento institucional, diferencie explicitamente fato publicado de interpretação ou proposta da VIA. Não atribua ao projeto posição que não esteja documentada.
 
 SEGURANÇA E PRIVACIDADE
@@ -48,6 +49,7 @@ CONDUTA DA RESPOSTA
 
 - `contrato-nexo.json` — raias, hierarquia de fontes, limites e campos mínimos de registro.
 - `CURADORIA.md` — critérios de seleção, citação e atualização das fontes.
+- `FONTES_EDUCACAO_SAUDE.md` — índice de fontes públicas e gratuitas de educação em saúde para leigos.
 - `VOZ_AUTORAL.md` — registros de voz e marcas de estilo.
 - `avaliacao.md` — matriz e limites de avaliação.
 

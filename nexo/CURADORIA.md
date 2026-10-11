@@ -11,6 +11,8 @@ Toda afirmação factual do Nexo precisa apontar para fonte versionada. Sem font
 
 Em conflito entre níveis sobre o mesmo ponto clínico, prevalece o nível mais alto numericamente menor (0 sobre 1 não vale para clínica: corpus interno nunca sobrepõe diretriz vigente; o corpus interno vale para voz e posicionamento, não para fato biomédico).
 
+Para educação em saúde destinada a pessoas leigas, famílias e cuidadores, consulte `FONTES_EDUCACAO_SAUDE.md`. Esse índice é complementar e não substitui a hierarquia clínica acima.
+
 ## Registro mínimo de cada fonte clínica
 
 - Entidade emissora, título, edição ou versão, data de publicação e data de consulta.
