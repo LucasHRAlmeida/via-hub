@@ -434,7 +434,7 @@
     @media (max-width: 900px) {
       .hero-layout, .outcome-layout, .trail-head, .resources-grid { grid-template-columns: 1fr; gap: 42px; }
       .learning-layout { grid-template-columns: 1fr; }
-      .progress-panel { position: static; }
+      .progress-panel { position: static; top: auto; bottom: auto; inset: auto; z-index: auto; width: 100%; transform: none; margin: 0 0 24px; }
       .module-nav { grid-template-columns: repeat(2, 1fr); }
       .hero-card { max-width: 580px; }
     }
@@ -447,7 +447,9 @@
       .module { padding: 25px 20px; border-radius: 18px; }
       .module-top { display: grid; }
       .complete { width: fit-content; }
-      .module-nav { grid-template-columns: 1fr; }
+      .progress-panel { padding: 16px; }
+      .module-nav { grid-template-columns: 1fr; gap: 0; padding: 8px 0; }
+      .module-nav a { padding: 5px 4px; font-size: 10.5px; line-height: 1.3; }
       .module table { display: block; overflow-x: auto; }
       .flow div:not(:last-child)::after { content: "↓"; right: 50%; bottom: -17px; }
       .footer-layout { grid-template-columns: 1fr; gap: 22px; }
