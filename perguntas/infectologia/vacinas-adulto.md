@@ -11,8 +11,8 @@ fontes:
   - entidade: "Ministério da Saúde"
     sigla: "MS"
     papel_epistemico: "orientacao_publica"
-    titulo: "Calendário Nacional de Vacinação 2026 — Adulto (25 a 59 anos)"
-    url: "https://www.gov.br/saude/pt-br/vacinacao/arquivos/calendario-nacional-de-vacinacao-adulto"
+    titulo: "Calendário Técnico Nacional de Vacinação — Adulto (2026)"
+    referenciaPublica: "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-adulto"
     url_geral: "https://www.gov.br/saude/pt-br/vacinacao/calendario"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
@@ -26,6 +26,6 @@ fontes:
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
-  sintese: "Para adultos de 25 a 59 anos, o Calendário Nacional de Vacinação 2026 inclui, conforme histórico vacinal, hepatite B, dT (difteria e tétano), tríplice viral, varicela, febre amarela e pneumocócica 20-valente, entre outras. A atualização vacinal deve ser feita em unidade de saúde, levando o cartão de vacinas."
+  sintese: "Para adultos de 25 a 59 anos, o calendário prevê hepatite B e dT conforme o histórico vacinal, febre amarela conforme a recomendação para área ou deslocamento e tríplice viral conforme idade e situação vacinal. Varicela e pneumocócica 20-valente têm indicações específicas e não são rotina universal nessa faixa etária. A unidade de saúde orienta a atualização com base no cartão de vacinas."
   encerramento: "em_sinais_de_urgencia_buscar_servico_de_emergencia"
 ```

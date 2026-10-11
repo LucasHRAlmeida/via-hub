@@ -12,7 +12,7 @@ fontes:
     sigla: "SBC"
     papel_epistemico: "diretriz_clinica"
     titulo: "Diretriz Brasileira de Hipertensão Arterial — 2025"
-    url: "https://abccardiol.org/article/diretriz-brasileira-de-hipertensao-arterial-2025/"
+    referenciaPublica: "https://abccardiol.org/article/diretriz-brasileira-de-hipertensao-arterial-2025/"
     url_leigos: "https://www.portal.cardiol.br/diretrizes-clinicas-para-leigos"
     idioma: "pt-BR"
     acesso: "publico_gratuito"

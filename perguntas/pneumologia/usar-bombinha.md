@@ -12,7 +12,7 @@ fontes:
     sigla: "CFF"
     papel_epistemico: "orientacao_publica"
     titulo: "Três recomendações para o uso da bombinha"
-    url: "https://www.cff.org.br/userfiles/Tr%C3%AAs%20recomenda%C3%A7%C3%B5es%20para%20o%20uso%20da%20bombinha.pdf"
+    referenciaPublica: "https://www.cff.org.br/userfiles/Tr%C3%AAs%20recomenda%C3%A7%C3%B5es%20para%20o%20uso%20da%20bombinha.pdf"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "publicacao_web"

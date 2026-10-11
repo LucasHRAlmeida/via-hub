@@ -12,7 +12,7 @@ fontes:
     sigla: "SBD"
     papel_epistemico: "diretriz_clinica"
     titulo: "Diretriz da SBD 2026 — Metas de controle glicêmico"
-    url: "https://diretriz.diabetes.org.br/metas-de-controle-glicemico/"
+    referenciaPublica: "https://diretriz.diabetes.org.br/metas-de-controle-glicemico/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2026"

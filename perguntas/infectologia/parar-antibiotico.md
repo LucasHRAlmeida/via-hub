@@ -12,7 +12,7 @@ fontes:
     sigla: "MS/BVS"
     papel_epistemico: "orientacao_publica"
     titulo: "Uso de antibióticos — orientações"
-    url: "https://bvsms.saude.gov.br/uso-correto-de-antibioticos/"
+    referenciaPublica: "https://bvsms.saude.gov.br/uso-correto-de-antibioticos/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "publicacao_web"

@@ -12,7 +12,7 @@ fontes:
     sigla: "MS"
     papel_epistemico: "orientacao_publica"
     titulo: "Calendário Nacional de Vacinação — Criança"
-    url: "https://www.gov.br/saude/pt-br/vacinacao/arquivos/calendario-nacional-de-vacinacao-crianca/view"
+    referenciaPublica: "https://www.gov.br/saude/pt-br/vacinacao/arquivos/calendario-nacional-de-vacinacao-crianca/view"
     url_geral: "https://www.gov.br/saude/pt-br/vacinacao/calendario"
     idioma: "pt-BR"
     acesso: "publico_gratuito"

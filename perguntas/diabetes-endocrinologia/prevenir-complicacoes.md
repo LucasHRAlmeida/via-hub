@@ -12,7 +12,7 @@ fontes:
     sigla: "SBD"
     papel_epistemico: "diretriz_clinica"
     titulo: "Diretriz da SBD 2026 — Complicações"
-    url: "https://diretriz.diabetes.org.br/category/complicacoes/"
+    referenciaPublica: "https://diretriz.diabetes.org.br/category/complicacoes/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2026"

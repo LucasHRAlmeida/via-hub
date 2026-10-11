@@ -12,7 +12,7 @@ fontes:
     sigla: "SBPT"
     papel_epistemico: "orientacao_publica"
     titulo: "Falta de ar — Espaço Saúde Respiratória"
-    url: "https://sbpt.org.br/portal/espaco-saude-respiratoria-falta-de-ar/"
+    referenciaPublica: "https://sbpt.org.br/portal/espaco-saude-respiratoria-falta-de-ar/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "publicacao_web"

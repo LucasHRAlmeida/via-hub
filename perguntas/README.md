@@ -17,7 +17,7 @@ Cada especialidade possui um arquivo `ESCOPO.md` com:
 - Fonte pendente de verificação não é fonte elegível para citação.
 - Material educativo não substitui diretriz clínica.
 - Prioridade para fontes em português e contexto do SUS.
-- Toda ficha registra data de consulta, data de revalidação e próximo vencimento.
+- Toda ficha cuja fonte foi verificada registra data de consulta, data de revalidação e próximo vencimento.
 
 ## Especialidades neste lote
 

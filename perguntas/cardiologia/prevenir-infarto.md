@@ -12,7 +12,7 @@ fontes:
     sigla: "SBC"
     papel_epistemico: "diretriz_clinica"
     titulo: "Atualização da Diretriz de Prevenção Cardiovascular da Sociedade Brasileira de Cardiologia — 2019"
-    url: "https://abccardiol.org/wp-content/uploads/articles_xml/0066-782X-abc-113-04-0787/0066-782X-abc-113-04-0787-pt.x33445.pdf"
+    referenciaPublica: "https://abccardiol.org/wp-content/uploads/articles_xml/0066-782X-abc-113-04-0787/0066-782X-abc-113-04-0787-pt.x33445.pdf"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2019"

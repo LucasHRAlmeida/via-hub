@@ -12,7 +12,7 @@ fontes:
     sigla: "MS/BVS"
     papel_epistemico: "orientacao_publica"
     titulo: "Dia Mundial da Sepse — sinais de alerta"
-    url: "https://bvsms.saude.gov.br/13-9-dia-mundial-da-sepse-4/"
+    referenciaPublica: "https://bvsms.saude.gov.br/13-9-dia-mundial-da-sepse-4/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "publicacao_web"

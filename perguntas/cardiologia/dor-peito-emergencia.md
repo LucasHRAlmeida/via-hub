@@ -12,7 +12,7 @@ fontes:
     sigla: "SBC"
     papel_epistemico: "diretriz_clinica"
     titulo: "Diretriz Brasileira de Atendimento à Dor Torácica na Unidade de Emergência — 2025"
-    url: "https://abccardiol.org/wp-content/uploads/articles_xml/0066-782X-abc-122-09-e20250620/0066-782X-abc-122-09-e20250620.x66747.pdf"
+    referenciaPublica: "https://abccardiol.org/wp-content/uploads/articles_xml/0066-782X-abc-122-09-e20250620/0066-782X-abc-122-09-e20250620.x66747.pdf"
     url_leigos: "https://www.portal.cardiol.br/diretrizes-clinicas-para-leigos"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
