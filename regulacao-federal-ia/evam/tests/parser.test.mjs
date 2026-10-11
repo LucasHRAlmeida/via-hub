@@ -94,6 +94,31 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("glasgow em barras grava a soma dos componentes, não o primeiro número", () => {
+  const schema = getSchema("acute-ischemic-stroke.neurology.v1");
+  const fields = extractNarrative("Homem, 58 anos. Glasgow 4/5/6. Pupilas isocóricas.", schema);
+  assert.equal(fields.gcs.value, 15);
+  const envelope = buildEnvelope({ sourceText: "", schema, fields });
+  assert.equal(envelope.data.gcs, 15);
+  assert.ok(!envelope.missingCritical.includes("gcs"));
+
+  assert.equal(extractNarrative("GCS: 2/2/5.", schema).gcs.value, 9);
+  assert.equal(extractNarrative("Glasgow 1/1/2.", schema).gcs.value, 4);
+  assert.equal(extractNarrative("ECGLA 3/4/6.", schema).gcs.value, 13);
+  assert.equal(extractNarrative("Glasgow 4 / 5 / 6.", schema).gcs.value, 15);
+  assert.equal(extractNarrative("GCS 4/1T/6.", schema).gcs.value, 11);
+  assert.equal(extractNarrative("GCS 2/2/5. Glasgow prévio 15.", schema).gcs.value, 9);
+
+  assert.equal(extractNarrative("Glasgow 8/15.", schema).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 4/15.", schema).gcs.value, 4);
+  assert.equal(extractNarrative("Glasgow 15/15.", schema).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow 15 (4/5/6).", schema).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow 13. GCS prévio 4/5/6.", schema).gcs.value, 13);
+  assert.equal(extractNarrative("Glasgow 14.", schema).gcs.value, 14);
+  assert.equal(extractNarrative("Glasgow 11.", schema).gcs.value, 11);
+  assert.equal(extractNarrative("Glasgow 9.", schema).gcs.value, 9);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
