@@ -372,7 +372,7 @@
     .reset-button { width: 100%; margin-top: 15px; padding: 8px; border: 0; color: var(--muted); background: transparent; font-size: 10px; font-weight: 750; cursor: pointer; }
     .reset-button:hover { color: var(--navy-900); }
 
-    .module-stack { display: grid; gap: 18px; }
+    .module-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
     .module { padding: 36px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: white; box-shadow: 0 12px 30px rgba(5,38,63,.04); }
     .module-top { display: flex; justify-content: space-between; gap: 25px; align-items: flex-start; padding-bottom: 25px; border-bottom: 1px solid var(--line); }
     .module-index { display: inline-flex; margin-bottom: 12px; color: var(--teal-500); font-size: 10px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
@@ -432,8 +432,8 @@
     .toast.is-visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 900px) {
-      .hero-layout, .outcome-layout, .trail-head, .resources-grid { grid-template-columns: 1fr; gap: 42px; }
-      .learning-layout { grid-template-columns: 1fr; }
+      .hero-layout, .outcome-layout, .trail-head, .resources-grid { grid-template-columns: minmax(0, 1fr); gap: 42px; }
+      .learning-layout { grid-template-columns: minmax(0, 1fr); }
       .progress-panel { position: static; top: auto; bottom: auto; inset: auto; z-index: auto; width: 100%; transform: none; margin: 0 0 24px; }
       .module-nav { grid-template-columns: repeat(2, 1fr); }
       .hero-card { max-width: 580px; }
@@ -443,7 +443,7 @@
       .header-label, .header-links a:first-child { display: none; }
       .hero { padding: 75px 0 64px; }
       .hero h1 { font-size: clamp(2.75rem, 15vw, 4rem); }
-      .hero-facts, .flow, .outcome-grid, .reference-grid, .rubric { grid-template-columns: 1fr; }
+      .hero-facts, .flow, .outcome-grid, .reference-grid, .rubric { grid-template-columns: minmax(0, 1fr); }
       .module { padding: 25px 20px; border-radius: 18px; }
       .module-top { display: grid; }
       .complete { width: fit-content; }
@@ -452,7 +452,7 @@
       .module-nav a { padding: 5px 4px; font-size: 10.5px; line-height: 1.3; }
       .module table { display: block; overflow-x: auto; }
       .flow div:not(:last-child)::after { content: "↓"; right: 50%; bottom: -17px; }
-      .footer-layout { grid-template-columns: 1fr; gap: 22px; }
+      .footer-layout { grid-template-columns: minmax(0, 1fr); gap: 22px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
