@@ -279,11 +279,14 @@ const EXTRACTORS = Object.freeze({
 });
 
 export function redactDirectIdentifiers(text) {
+  // NNNN-NNNN sem país, DDD entre parênteses ou nono dígito é faixa
+  // (1000-2000 mL, 0800-1600, 2019-2024), não telefone.
+  const phone = /(?<![\d])(?:\+55[\s-]*)?(?:\(?\d{2}\)?[\s-]*)?9\s*\d{4}[-\s]?\d{4}\b|\+\s?55[\s-]*\(?\d{2}\)?[\s-]*\d{4}[-\s]?\d{4}\b|\(\d{2}\)[\s-]*\d{4}[-\s]?\d{4}\b/g;
   return String(text ?? "")
     .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g, "[CPF REDIGIDO]")
     .replace(/\b\d{15}\b/g, "[CNS REDIGIDO]")
     .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/giu, "[E-MAIL REDIGIDO]")
-    .replace(/(?:\+?55\s*)?(?:\(?\d{2}\)?\s*)?(?:9\s*)?\d{4}[-\s]?\d{4}\b/g, "[TELEFONE REDIGIDO]");
+    .replace(phone, "[TELEFONE REDIGIDO]");
 }
 
 export function extractNarrative(text, schema) {
