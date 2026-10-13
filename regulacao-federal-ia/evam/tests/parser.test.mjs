@@ -28,6 +28,26 @@ test("SpO2 não grava fluxo de oxigênio como saturação", () => {
   assert.equal(extractNarrative("Sat 97%.", schema).spo2.value, 97);
 });
 
+test("suporte de oxigênio grava a modalidade atual, não a anterior", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const support = (text) => extractNarrative(text, schema).oxygenSupport.value;
+
+  assert.match(support("SpO2 82% em máscara com reservatório. Evoluiu para ventilação mecânica."), /ventilação mecânica/i);
+  assert.doesNotMatch(support("SpO2 82% em máscara com reservatório. Evoluiu para ventilação mecânica."), /máscara/i);
+  assert.match(support("Máscara com reservatório. Evoluiu para intubação orotraqueal."), /intuba/i);
+  assert.match(support("Em ventilação mecânica. Iniciou em cateter nasal."), /ventilação mecânica/i);
+  assert.doesNotMatch(support("Em ventilação mecânica. Iniciou em cateter nasal."), /cateter/i);
+  assert.match(support("IOT às 10h. Extubado para máscara com reservatório."), /máscara com reservatório/i);
+  assert.match(support("Em ventilação mecânica. Sem VNI prévia."), /ventilação mecânica/i);
+  assert.doesNotMatch(support("Em ventilação mecânica. Sem VNI prévia."), /\bvni\b/i);
+  assert.match(support("VNI; agora ventilação mecânica."), /ventilação mecânica/i);
+  assert.match(support("Atualmente em cateter nasal. Ventilação mecânica prévia."), /cateter nasal/i);
+  assert.match(support("SpO2 93% em cateter nasal 3 L/min."), /cateter nasal 3 L\/min/i);
+  assert.match(support("i.o.t. desde a admissão."), /i\.o\.t\./i);
+  assert.match(support("Máscara com reservatório. Mantido em cânula nasal."), /cânula nasal/i);
+  assert.equal(support("Sem ventilação mecânica."), "");
+});
+
 test("troponina seriada e negada não grava a primeira leitura invertida", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const serial = extractNarrative(

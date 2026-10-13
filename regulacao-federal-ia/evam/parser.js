@@ -179,6 +179,91 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+const OXYGEN_MODALITY = /\b(?:ventila[cç][aã]o\s+mec[aâ]nica|intuba(?:ção|cao|do|da)s?|i\.?o\.?t\.?|vni|cpap|bipap|alto\s+fluxo|cnaf|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|cateter\s+nasal|c[aâ]nula\s+nasal)(?![\p{L}])/giu;
+const OXYGEN_NEGATION = /(?:\b(?:sem|s\/|n[aã]o|nega(?:m|ndo)?|negou)(?:\s+[^\s.;,]+){0,4}\s+)$/iu;
+const OXYGEN_CURRENT = /\b(?:agora|atualmente|evoluiu\s+para|evoluindo\s+para|extubad[oa]\s+para|desmamad[oa]\s+para|mantid[oa]\s+em|segue\s+em)\b/giu;
+const OXYGEN_PAST = /\b(?:esteve\s+em|iniciou\s+(?:em|com)|na\s+origem|prévi[oa]|na\s+admiss[aã]o|hist[oó]ria\s+de|admitid[oa]\s+em)\b/giu;
+const OXYGEN_PAST_AFTER = /^\s*(?:prévi[oa]\b|na\s+origem\b|na\s+admiss[aã]o\b|de\s+origem\b)/iu;
+
+function lastPatternIndex(text, expression) {
+  expression.lastIndex = 0;
+  let last = -1;
+  for (const match of text.matchAll(expression)) last = match.index;
+  return last;
+}
+
+function oxygenAcuity(keyword) {
+  const normalized = keyword.toLowerCase();
+  if (/ventila|intuba|^i\.?o\.?t\.?$/.test(normalized)) return 4;
+  if (/^(?:vni|cpap|bipap)$/.test(normalized)) return 3;
+  if (/^(?:alto fluxo|cnaf)$/.test(normalized)) return 2;
+  if (/reservat|venturi/.test(normalized)) return 1;
+  return 0;
+}
+
+function oxygenRole(before, after) {
+  const currentAt = lastPatternIndex(before, OXYGEN_CURRENT);
+  const pastAt = lastPatternIndex(before, OXYGEN_PAST);
+  if (OXYGEN_PAST_AFTER.test(after) && currentAt < 0) return "past";
+  if (currentAt < 0 && pastAt < 0) return "unmarked";
+  return currentAt > pastAt ? "current" : "past";
+}
+
+/**
+ * A primeira modalidade não pode ocultar a atual. Negação imediata fica de fora.
+ * Menção histórica não substitui outra. "Agora", "evoluiu para", "extubado para"
+ * e "mantido em" marcam o suporte presente. Sem marcador, prevalece o maior
+ * suporte e, no empate, o mais recente — uma escalada posterior ainda vence
+ * um marcador de presente mais antigo.
+ */
+function selectOxygenMention(mentions) {
+  let selected = null;
+  for (const mention of mentions) {
+    if (!selected || selected.role === "past") {
+      selected = mention;
+      continue;
+    }
+    if (mention.role === "past") continue;
+    if (mention.role === "current" || mention.acuity > selected.acuity) {
+      selected = mention;
+      continue;
+    }
+    if (selected.role !== "current" && mention.acuity === selected.acuity) {
+      selected = mention;
+    }
+  }
+  return selected;
+}
+
+function extractOxygenSupport(text) {
+  const mentions = [];
+  OXYGEN_MODALITY.lastIndex = 0;
+  for (const match of text.matchAll(OXYGEN_MODALITY)) {
+    const before = text.slice(Math.max(0, match.index - 120), match.index);
+    const sentenceBreak = Math.max(before.lastIndexOf("."), before.lastIndexOf(";"), before.lastIndexOf("\n"));
+    const clause = sentenceBreak >= 0 ? before.slice(sentenceBreak + 1) : before;
+    if (OXYGEN_NEGATION.test(clause)) continue;
+    const after = text.slice(match.index + match[0].length).match(/^[^\n.;]{0,48}/u)?.[0] ?? "";
+    mentions.push({
+      index: match.index,
+      keyword: match[0],
+      acuity: oxygenAcuity(match[0]),
+      role: oxygenRole(clause, after),
+    });
+  }
+
+  const selected = selectOxygenMention(mentions);
+  if (!selected) return null;
+  // A cauda começa depois da modalidade: o ponto de "i.o.t." não pode truncar o valor.
+  const tail = text.slice(selected.index + selected.keyword.length).match(/^[^\n.;]{0,80}/u)?.[0] ?? "";
+  const clause = `${selected.keyword}${tail}`;
+  return {
+    value: clean(clause),
+    excerpt: excerptAround(text, selected.index, clause.length),
+    confidence: "heurística",
+  };
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -220,9 +305,7 @@ const EXTRACTORS = Object.freeze({
   gcs: (text) => matchOne(text, [
     /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
   ], 1, number),
-  oxygenSupport: (text) => matchOne(text, [
-    /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
-  ]),
+  oxygenSupport: extractOxygenSupport,
   vasopressor: (text) => matchOne(text, [
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
