@@ -252,18 +252,77 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --stone-50: #fafaf9;
-            --stone-100: #f5f5f4;
-            --slate-900: #0f172a;
-            --gold-600: #d97706;
+            --via-navy-900: #062a47;
+            --via-navy-700: #0c3e67;
+            --via-navy-600: #12527f;
+            --via-navy-500: #196793;
+            --via-teal: #19A6C9;
+            --via-green: #2EAF53;
+            --via-ink: #16232E;
+            --via-muted: #4A5A68;
+            --via-line: #D6DEE5;
+            --via-wash: #F2F6F9;
+            --via-on-dark-muted: #B9CBD7;
+            --via-on-dark-accent: #9edce8;
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--stone-50);
-            color: var(--slate-900);
+            background-color: var(--via-wash);
+            color: var(--via-ink);
             scroll-behavior: smooth;
         }
         .serif { font-family: 'Playfair Display', serif; }
+        .text-indigo-600 { color: var(--via-navy-600) !important; }
+        .text-indigo-700 { color: var(--via-navy-700) !important; }
+        .text-indigo-900 { color: var(--via-navy-900) !important; }
+        .text-indigo-400 { color: var(--via-teal) !important; }
+        .text-slate-900 { color: var(--via-ink) !important; }
+        .text-slate-600, .text-slate-500, .text-slate-400 { color: var(--via-muted) !important; }
+        .bg-slate-900, .bg-stone-900 { background-color: var(--via-navy-900) !important; }
+        .bg-stone-50, .bg-stone-100, .bg-indigo-50 { background-color: var(--via-wash) !important; }
+        .border-stone-100, .border-stone-200, .border-slate-200, .border-slate-300, .border-indigo-100 { border-color: var(--via-line) !important; }
+        .border-slate-700 { border-color: var(--via-navy-600) !important; }
+        .bg-indigo-500 { background-color: var(--via-teal) !important; }
+        .hover\:text-indigo-600:hover { color: var(--via-teal) !important; }
+        .hover\:bg-slate-900:hover { background-color: var(--via-navy-900) !important; }
+        .hover\:bg-indigo-700:hover { background-color: var(--via-navy-600) !important; }
+        .hover\:border-indigo-500:hover { border-color: var(--via-teal) !important; }
+        .bg-slate-900 .text-slate-400, .bg-stone-900 .text-slate-400 { color: var(--via-on-dark-muted) !important; }
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--via-teal);
+            border-radius: 0.5rem;
+            color: var(--via-navy-700);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .home-link:hover, .home-link:focus-visible { background-color: var(--via-navy-700); color: #fff; }
+        .home-link:focus-visible, .nav-print:focus-visible, .contact-details a:focus-visible {
+            outline: 3px solid var(--via-teal);
+            outline-offset: 3px;
+        }
+        .nav-title { font-size: clamp(0.85rem, 2.8vw, 1.25rem); }
+        .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .nav-print { white-space: nowrap; }
+        .contact-details { display: grid; gap: 0.5rem; }
+        .contact-item { margin: 0; color: var(--via-muted); font-size: 0.875rem; line-height: 1.5; }
+        .contact-item a { color: inherit; text-decoration: underline; text-decoration-color: var(--via-teal); text-underline-offset: 0.2em; }
+        .who-responds {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+        .who-responds img { width: 5rem; height: 5rem; border-radius: 50%; object-fit: cover; }
+        .who-responds h3 { margin: 0 0 0.35rem; color: var(--via-ink); font-weight: 700; }
+        .who-responds p { margin: 0; color: var(--via-muted); font-size: 0.875rem; line-height: 1.5; }
         .chart-container {
             position: relative;
             width: 100%;
@@ -276,14 +335,16 @@
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(15, 23, 42, 0.1);
+            border: 1px solid var(--via-line);
         }
-        .step-active { border-left: 4px solid var(--slate-900); padding-left: 1rem; }
+        .step-active { border-left: 4px solid var(--via-navy-700); padding-left: 1rem; }
         .traffic-light {
             transition: all 0.3s ease;
         }
         @media (max-width: 640px) {
             .chart-container { height: 250px; }
+            .nav-print { display: none; }
+            .who-responds { align-items: flex-start; }
         }
     </style>
 </head>
@@ -292,14 +353,17 @@
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <span class="font-bold tracking-tighter text-xl uppercase italic">Regulação Federal <span class="text-indigo-600">IA</span></span>
+            <span class="nav-title font-bold tracking-tighter uppercase italic">Regulação Federal <span class="text-indigo-600">IA</span></span>
             <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
                 <a href="#diagnostico" class="hover:text-indigo-600">O Estol</a>
                 <a href="#metfora" class="hover:text-indigo-600">A Metáfora</a>
                 <a href="#solucao" class="hover:text-indigo-600">IA Federativa</a>
                 <a href="#episteme" class="hover:text-indigo-600">Episteme</a>
             </div>
-            <button onclick="window.print()" class="text-xs border border-slate-900 px-4 py-1 hover:bg-slate-900 hover:text-white transition">IMPRIMIR BRIEFING</button>
+            <div class="nav-actions">
+                <a class="home-link" href="https://iniciativa-via.com/via-hub/" aria-label="Voltar à Home do VIA Hub">← Home VIA Hub</a>
+                <button onclick="window.print()" class="nav-print text-xs border border-slate-900 px-4 py-1 hover:bg-slate-900 hover:text-white transition">IMPRIMIR BRIEFING</button>
+            </div>
         </div>
     </nav>
 
@@ -308,9 +372,9 @@
         <p class="text-indigo-600 font-semibold tracking-widest mb-4 uppercase text-xs">Proposta de Governança Sistêmica</p>
         <h1 class="serif text-5xl md:text-7xl mb-6 leading-tight">A Arquitetura da <br><span class="italic font-light">Decisão Complexa</span> em Saúde</h1>
         <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-slate-500 text-sm">
-            <span>Dr. Lucas HR (FMRP-USP)</span>
+            <span>Dr Lucas HR Almeida (FMRP-USP)</span>
             <span class="hidden md:inline">•</span>
-            <span>Coordenação de Inteligência Logística</span>
+            <span>Equipe de IA conduzida sob a coordenação de Dr Lucas HR Almeida</span>
             <span class="hidden md:inline">•</span>
             <span>Fevereiro 2025</span>
         </div>
@@ -520,10 +584,20 @@
                 <p class="text-sm text-slate-500 italic">"Cuidar significa reconhecer que a saúde não habita a paragem absoluta e esterilizada, mas o equilíbrio dinâmico e intrépido perante o iminente risco da vida."</p>
             </div>
             <div class="text-right">
-                <p class="font-bold text-slate-900">Dr Lucas HR — Médico Generalista (FMRP-USP)</p>
-                <p class="text-xs text-slate-400 mt-2">CRM-SP: 226836 | CRM-MG: 109752</p>
-                <p class="text-xs text-slate-400 mt-2"><a href="https://wa.me/5535984410983" target="_blank" rel="noopener noreferrer">WhatsApp Business: +55 35 98441-0983</a></p>
-                <p class="text-xs text-slate-400 mt-2">lucas.henrique.almeida@alumni.usp.br</p>
+                <section id="quem-responde" class="who-responds" aria-labelledby="quem-responde-title">
+                    <img src="../assets/dr-lucas-hr.jpg" alt="Retrato de Dr Lucas HR Almeida" width="900" height="1200" loading="lazy">
+                    <div>
+                        <h3 id="quem-responde-title">Quem responde</h3>
+                        <p>Dr Lucas HR Almeida</p>
+                        <p>Médico generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752 · Fundador da Iniciativa VIA</p>
+                    </div>
+                </section>
+                <div class="contact-details" aria-label="Contatos">
+                    <p class="contact-item"><a href="#quem-responde" aria-label="Dr Lucas HR Almeida, responsável pela página">Dr Lucas HR Almeida</a></p>
+                    <p class="contact-item">CRM-SP 226836 · CRM-MG 109752</p>
+                    <p class="contact-item"><a href="https://wa.me/5535984410983" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Business: +55 35 98441-0983">WhatsApp Business +55 35 98441-0983</a></p>
+                    <p class="contact-item"><a href="mailto:drlucashr@iniciativa-via.com" aria-label="E-mail drlucashr@iniciativa-via.com">drlucashr@iniciativa-via.com</a></p>
+                </div>
                 <p class="text-xs text-slate-400 mt-3"><strong>Iniciativa VIA — Vida Integrada e Autônoma</strong><br>Ciência e Tecnologia a serviço do Cuidado.</p>
             </div>
         </div>
@@ -531,6 +605,7 @@
 
     <script>
         // Data for comparison chart
+        const chartTokens = getComputedStyle(document.documentElement);
         const ctx = document.getElementById('impactChart').getContext('2d');
         const impactChart = new Chart(ctx, {
             type: 'bar',
@@ -540,14 +615,14 @@
                     label: 'Tempo de Resposta (Horas)',
                     data: [144, 4, 6],
                     backgroundColor: [
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(79, 70, 229, 0.8)',
-                        'rgba(34, 197, 94, 0.2)'
+                        chartTokens.getPropertyValue('--via-teal').trim(),
+                        chartTokens.getPropertyValue('--via-navy-600').trim(),
+                        chartTokens.getPropertyValue('--via-green').trim()
                     ],
                     borderColor: [
-                        '#ef4444',
-                        '#4f46e5',
-                        '#22c55e'
+                        chartTokens.getPropertyValue('--via-teal').trim(),
+                        chartTokens.getPropertyValue('--via-navy-600').trim(),
+                        chartTokens.getPropertyValue('--via-green').trim()
                     ],
                     borderWidth: 1
                 }]
@@ -607,17 +682,17 @@
     </script>
 
 <!-- via-crosslink -->
-<aside style="font-family:Inter,-apple-system,'Segoe UI',sans-serif;background:#051f34;color:rgba(255,255,255,.7);padding:26px 22px;text-align:center;line-height:1.7;font-size:12.5px">
+<aside style="font-family:Inter,-apple-system,'Segoe UI',sans-serif;background:var(--via-navy-900);color:rgba(255,255,255,.7);padding:26px 22px;text-align:center;line-height:1.7;font-size:12.5px">
   <div style="max-width:820px;margin:0 auto">
     <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
-      <a href="https://drlucashr.substack.com" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Substack ↗</a>
-      <a href="https://www.youtube.com/@drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">YouTube ↗</a>
-      <a href="https://www.instagram.com/drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Instagram ↗</a>
-      <a href="https://x.com/drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">X · @drlucashr ↗</a>
-      <a href="https://medium.com/@drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Medium ↗</a>
-      <a href="https://github.com/LucasHRAlmeida" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">GitHub ↗</a>
-      <a href="https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Doctoralia ↗</a>
-      <a href="https://wa.me/5535984410983" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:#9edce8;text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">WhatsApp ↗</a>
+      <a href="https://drlucashr.substack.com" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Substack ↗</a>
+      <a href="https://www.youtube.com/@drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">YouTube ↗</a>
+      <a href="https://www.instagram.com/drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Instagram ↗</a>
+      <a href="https://x.com/drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">X · @drlucashr ↗</a>
+      <a href="https://medium.com/@drlucashr" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Medium ↗</a>
+      <a href="https://github.com/LucasHRAlmeida" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">GitHub ↗</a>
+      <a href="https://www.doctoralia.com.br/lucas-h-r-almeida/generalista/lavras" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">Doctoralia ↗</a>
+      <a href="https://wa.me/5535984410983" target="_blank" rel="noopener noreferrer me" style="display:inline-block;color:var(--via-on-dark-accent);text-decoration:none;font-weight:700;padding:5px 11px;border:1px solid rgba(158,220,232,.32);border-radius:999px;font-size:11.5px;white-space:nowrap">WhatsApp ↗</a>
     </div>
     <div><strong style="color:#fff">Dr Lucas HR Almeida</strong> — Médico Generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752</div>
     <div style="opacity:.8">Iniciativa VIA — Vida Integrada e Autônoma · Ciência e Tecnologia a serviço do Cuidado.</div>
