@@ -265,7 +265,8 @@ const EXTRACTORS = Object.freeze({
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
+    // "ecografia" e "US" são ultrassom. Sem \b depois de "us", "uso" ocuparia o campo.
+    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|ecografia|usg|us\b|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,

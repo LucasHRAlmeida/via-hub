@@ -74,6 +74,48 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
 });
 
+test("ecografia e US não cedem o campo à tomografia posterior", () => {
+  const biliary = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  const sameLine = extractNarrative(
+    "Ecografia abdominal: cálculo em colédoco. TC de abdome sem alterações.",
+    biliary,
+  );
+  assert.match(sameLine.imaging.value, /^ecografia abdominal: cálculo em colédoco/i);
+
+  const nextLine = extractNarrative(
+    "Ecografia abdominal: cálculo em colédoco.\nTC de abdome sem alterações.",
+    biliary,
+  );
+  assert.match(nextLine.imaging.value, /cálculo em colédoco/i);
+  assert.doesNotMatch(nextLine.imaging.value, /sem alterações/i);
+
+  const us = extractNarrative(
+    "US de abdome com líquido livre.\nTC de abdome sem alterações.",
+    biliary,
+  );
+  assert.match(us.imaging.value, /^US de abdome com líquido livre/i);
+  assert.doesNotMatch(us.imaging.value, /sem alterações/i);
+
+  assert.match(
+    extractNarrative("USG com cálculo em colédoco.", biliary).imaging.value,
+    /cálculo em colédoco/i,
+  );
+  assert.match(
+    extractNarrative("Ultrassom de abdome com dilatação de via biliar.", biliary).imaging.value,
+    /dilatação de via biliar/i,
+  );
+
+  const medication = extractNarrative("Uso de noradrenalina. TC de crânio com hematoma.", stroke);
+  assert.match(medication.imaging.value, /hematoma/i);
+  assert.doesNotMatch(medication.imaging.value, /^uso/i);
+
+  const echo = extractNarrative("Ecocardiograma com FE 40%. TC de crânio com hematoma.", stroke);
+  assert.match(echo.imaging.value, /hematoma/i);
+  assert.doesNotMatch(echo.imaging.value, /FE 40%/i);
+});
+
 test("envelope declara abstention sem fabricar completude", () => {
   const schema = getSchema("acute-ischemic-stroke.neurology.v1");
   const fields = extractNarrative("Paciente 70 anos, NIHSS 16.", schema);
