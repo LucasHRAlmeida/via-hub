@@ -179,6 +179,31 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * "Queda" de exame ou sinal (hematócrito, hemoglobina, saturação, estado geral)
+ * não é mecanismo de trauma e não pode esconder a colisão ou o atropelamento seguintes.
+ */
+const PHYSIOLOGIC_DROP = /^queda\s+(?:d[eoa]s?\s+(?:(?:o|a|os|as)\s+)?(?:hemat[oó]crito|hemoglobina|\bhb\b|\bht\b|satura[cç][aã]o|press[aã]o|estado\s+geral|d[eé]bito(?:\s+urin[aá]rio)?|plaquetas?|leuc[oó]citos|n[ií]vel\s+de\s+consci[eê]ncia|\bspo2\b|\bpa\b|\bpas\b|\bpad\b|\bpam\b|\bfc\b)|de\s+\d+(?:[.,]\d+)?\s*(?:g\s*\/\s*dl|pontos?|mmhg|%))/iu;
+
+function extractInjuryMechanism(text) {
+  const expression = /\b(colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))/giu;
+  for (const match of text.matchAll(expression)) {
+    if (/^queda$/iu.test(match[1]) && PHYSIOLOGIC_DROP.test(text.slice(match.index))) continue;
+    const limit = Math.min(text.length, match.index + match[0].length + 120);
+    let end = match.index;
+    while (end < limit && !/[\n.;]/.test(text[end])) end += 1;
+    const raw = text.slice(match.index, end);
+    const value = clean(raw);
+    if (!value) continue;
+    return {
+      value,
+      excerpt: excerptAround(text, match.index, raw.length),
+      confidence: "heurística",
+    };
+  }
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -267,9 +292,7 @@ const EXTRACTORS = Object.freeze({
   imaging: (text) => matchOne(text, [
     /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
-  injuryMechanism: (text) => matchOne(text, [
-    /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
-  ]),
+  injuryMechanism: extractInjuryMechanism,
   hemorrhage: yesNoText([
     /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b/iu,
     /\bchoque\s+hemorr[aá]gico\b/iu,
