@@ -179,6 +179,28 @@ function parseTroponinMention(negation, keyword, tail) {
   return null;
 }
 
+/**
+ * O catálogo guarda lactato em mmol/L. Um valor explícito em mg/dL
+ * (faixa habitual ~4–20) não pode ocupar esse campo: 18 mg/dL viraria
+ * 18 mmol/L e ainda esconderia um mmol/L posterior. Sem conversão —
+ * o campo fica para revisão humana quando só existe mg/dL.
+ */
+function extractLactate(text) {
+  const expression = /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?:\s*(mmol\s*\/?\s*l|mg\s*\/?\s*dl))?\b/giu;
+  for (const match of text.matchAll(expression)) {
+    const unit = (match[2] || "").replace(/\s+/g, "").toLowerCase();
+    if (unit.startsWith("mg")) continue;
+    const value = number(match[1]);
+    if (value === null) continue;
+    return {
+      value,
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+    };
+  }
+  return null;
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
@@ -226,9 +248,7 @@ const EXTRACTORS = Object.freeze({
   vasopressor: (text) => matchOne(text, [
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
-  lactate: (text) => matchOne(text, [
-    /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
-  ], 1, number),
+  lactate: extractLactate,
   creatinine: (text) => matchOne(text, [
     /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ], 1, number),

@@ -62,6 +62,14 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("lactato em mg/dL não é gravado como mmol/L", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  assert.equal(extractNarrative("Lactato 18 mg/dL.", schema).lactate.value, "");
+  assert.equal(extractNarrative("Lactato 18 mg/dL. Lactato 2,1 mmol/L.", schema).lactate.value, 2.1);
+  assert.equal(extractNarrative("Lac 4,1 mmol/L.", schema).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1.", schema).lactate.value, 4.1);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
