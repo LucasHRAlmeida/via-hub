@@ -94,6 +94,64 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("resposta motora do Glasgow não ocupa o campo de imagem", () => {
+  const schema = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const hidden = extractNarrative(
+    "AO 4, RV 5, RM 6.\nTC de crânio: hematoma subdural com desvio de linha média.",
+    schema,
+  );
+  assert.match(hidden.imaging.value, /TC de crânio/i);
+  assert.doesNotMatch(hidden.imaging.value, /^RM\s*6/i);
+
+  const sameLine = extractNarrative("Glasgow RM6. TC de crânio com HSD.", schema);
+  assert.match(sameLine.imaging.value, /TC de crânio/i);
+
+  const scored = extractNarrative("RM: 5.\nTomografia de crânio sem hemorragia.", schema);
+  assert.match(scored.imaging.value, /Tomografia de crânio/i);
+
+  const onlyMotor = extractNarrative("AO 4, RV 5, RM 6.", schema);
+  assert.equal(onlyMotor.imaging.value, "");
+
+  const requested = extractNarrative("Solicitada RM.\nTC de crânio: hematoma subdural agudo.", schema);
+  assert.match(requested.imaging.value, /TC de crânio/i);
+  assert.doesNotMatch(requested.imaging.value, /^RM\.?$/i);
+
+  assert.match(extractNarrative("RM de crânio sem lesão aguda.", schema).imaging.value, /RM de crânio/i);
+  assert.match(extractNarrative("RM 3T de encéfalo sem hemorragia.", schema).imaging.value, /RM 3T/i);
+  assert.match(extractNarrative("RM 1,5 Tesla de coluna.", schema).imaging.value, /RM 1,5/);
+});
+
+test("idade e sexo do acompanhante não substituem o paciente", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const fields = extractNarrative("Acompanhante mulher, 40 anos. Paciente homem, 71 anos.", schema);
+  assert.equal(fields.age.value, 71);
+  assert.equal(fields.sex.value.toLowerCase(), "homem");
+
+  const spouse = extractNarrative("Acompanhante: esposa, 40 anos. Paciente mulher, 66 anos.", schema);
+  assert.equal(spouse.age.value, 66);
+  assert.equal(spouse.sex.value.toLowerCase(), "mulher");
+
+  const onlyPatient = extractNarrative("Mulher, 81 anos.", schema);
+  assert.equal(onlyPatient.age.value, 81);
+  assert.equal(onlyPatient.sex.value.toLowerCase(), "mulher");
+
+  assert.equal(extractNarrative("Pai, 45 anos, vítima de colisão.", schema).age.value, 45);
+  assert.equal(extractNarrative("Acompanhante saiu. Idade: 71 anos.", schema).age.value, 71);
+  assert.equal(extractNarrative("Sexo: masculino. Acompanhante mulher, 40 anos.", schema).sex.value, "masculino");
+});
+
+test("laceração em centímetros não entra como lactato", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const fields = extractNarrative("Lac 4 cm em couro cabeludo. Lactato 1,8 mmol/L.", schema);
+  assert.equal(fields.lactate.value, 1.8);
+
+  const millimeters = extractNarrative("Lac 12 mm no couro cabeludo. Lactato 5,2 mmol/L.", schema);
+  assert.equal(millimeters.lactate.value, 5.2);
+
+  assert.equal(extractNarrative("Lac 4,2.", schema).lactate.value, 4.2);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L.", schema).lactate.value, 4.1);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

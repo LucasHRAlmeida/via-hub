@@ -39,6 +39,59 @@ const yesNoText = (positive, negative = null) => (text) => {
   return null;
 };
 
+// "Acompanhante mulher, 40 anos" não é a idade nem o sexo do paciente.
+// A cláusula corta em ponto, ponto-e-vírgula ou quebra de linha, para não
+// descartar "Idade: 71" numa frase seguinte.
+const isCompanionMention = (text, index) => {
+  const window = text.slice(Math.max(0, index - 80), index);
+  const clause = window.split(/[.;\n]/u).pop() ?? "";
+  if (!/\bacompanhante\b/iu.test(clause)) return false;
+  if (/\bpaciente\b/iu.test(clause)) return false;
+  return !/^paciente\b/iu.test(text.slice(index, index + 12));
+};
+
+const extractAge = (text) => {
+  const expressions = [
+    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/giu,
+    /\b(\d{1,3})\s*anos?\b/giu,
+  ];
+  for (const expression of expressions) {
+    for (const match of text.matchAll(expression)) {
+      if (isCompanionMention(text, match.index)) continue;
+      const value = number(match[1]);
+      if (value === null || value === "") continue;
+      return {
+        value,
+        excerpt: excerptAround(text, match.index, match[0].length),
+        confidence: "heurística",
+      };
+    }
+  }
+  return null;
+};
+
+const extractSex = (text) => {
+  const explicit = /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu;
+  const explicitMatch = explicit.exec(text);
+  if (explicitMatch) {
+    return {
+      value: clean(explicitMatch[1]),
+      excerpt: excerptAround(text, explicitMatch.index, explicitMatch[0].length),
+      confidence: "heurística",
+    };
+  }
+  const expression = /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/giu;
+  for (const match of text.matchAll(expression)) {
+    if (isCompanionMention(text, match.index)) continue;
+    return {
+      value: clean(match[1]),
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+    };
+  }
+  return null;
+};
+
 
 /**
  * Parse observedAt from ISO-8601 or epoch milliseconds/seconds string.
@@ -180,14 +233,8 @@ function parseTroponinMention(negation, keyword, tail) {
 }
 
 const EXTRACTORS = Object.freeze({
-  age: (text) => matchOne(text, [
-    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
-    /\b(\d{1,3})\s*anos?\b/iu,
-  ], 1, number),
-  sex: (text) => matchOne(text, [
-    /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
-    /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/iu,
-  ]),
+  age: extractAge,
+  sex: extractSex,
   hoursSinceRecognition: (text) => matchOne(text, [
     /\b(?:há|ha|desde|reconhecid[ao]\s+há)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
@@ -227,7 +274,8 @@ const EXTRACTORS = Object.freeze({
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
   lactate: (text) => matchOne(text, [
-    /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+    // "Lac 4 cm" é medida de ferimento, não lactato. mmol não cai no lookahead (mm\b).
+    /\b(?:lactato|lac)\s*[:=]?\s*(\d+(?:[.,]\d+)?)(?!\s*(?:cm|mm)\b)\s*(?:mmol\/?l)?\b/iu,
   ], 1, number),
   creatinine: (text) => matchOne(text, [
     /\b(?:creatinina|cr)\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
@@ -265,7 +313,10 @@ const EXTRACTORS = Object.freeze({
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
+    // "RM 6" / "RM: 5" é resposta motora do Glasgow, não ressonância.
+    // "RM." sozinho na linha também não é laudo: não pode esconder a TC seguinte.
+    // "RM 3T", "RM 1,5 Tesla" e "RM de crânio…" continuam exame.
+    /\b((?:tc|tomografia|rm(?!\s*[:=]?\s*[1-6](?!\d)(?![.,]\d)(?!\s*t(?:esla)?\b))(?![.:]?\s*(?:\n|$))|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
