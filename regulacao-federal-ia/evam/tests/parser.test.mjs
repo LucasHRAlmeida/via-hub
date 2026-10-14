@@ -62,6 +62,98 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("data e hora do registro não entram como sinal vital", () => {
+  const acs = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const neuro = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+
+  const stamped = extractNarrative(
+    "Homem, 62 anos. FC 03/10 22h: 128 bpm. PA 90/60. SpO2 03/10: 88%. Tax 03/10 08h: 39,2. Glasgow 03/10. Glasgow 8. NIHSS 03/10 07h: 18. FR 03/10. FR 28 irpm. PaO2 03/10: 60 mmHg.",
+    acs,
+  );
+  assert.equal(stamped.heartRate.value, 128);
+  assert.equal(extractNarrative("Homem, 62 anos. FC 03/10. PA 90/60.", acs).heartRate.value, "");
+  assert.equal(extractNarrative("Homem, 62 anos. FC 22h: 104 bpm.", acs).heartRate.value, 104);
+  assert.equal(extractNarrative("Homem, 62 anos. Frequência cardíaca 104 bpm.", acs).heartRate.value, 104);
+  assert.equal(extractNarrative("Homem, 62 anos. FC 118.", sepsis).heartRate.value, 118);
+
+  assert.equal(extractNarrative("Mulher, 81 anos. Tax 03/10 08h: 39,2 °C.", sepsis).temperature.value, 39.2);
+  assert.equal(extractNarrative("Mulher, 81 anos. Temperatura 36,5.", sepsis).temperature.value, 36.5);
+  assert.equal(extractNarrative("Mulher, 81 anos. Tax 03/10.", sepsis).temperature.value, "");
+
+  assert.equal(extractNarrative("Mulher, 67 anos. NIHSS 03/10 07h: 18.", stroke).nihss.value, 18);
+  assert.equal(extractNarrative("Paciente 70 anos, NIHSS 16.", stroke).nihss.value, 16);
+  assert.equal(extractNarrative("NIHSS 0.", stroke).nihss.value, 0);
+
+  assert.equal(extractNarrative("Homem, 58 anos. Glasgow 03/10. Glasgow 8.", neuro).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15/15.", neuro).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow 8/15.", neuro).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 3.", neuro).gcs.value, 3);
+  assert.equal(extractNarrative("ECGLA 14.", neuro).gcs.value, 14);
+
+  assert.equal(extractNarrative("Homem, 34 anos. FR 03/10. FR 28 irpm.", trauma).respiratoryRate.value, 28);
+  assert.equal(extractNarrative("FR 26 irpm.", trauma).respiratoryRate.value, 26);
+  assert.equal(extractNarrative("FR 12 horas de evolução, sem nova medida.", trauma).respiratoryRate.value, 12);
+
+  assert.equal(extractNarrative("SpO2 03/10: 88%.", respiratory).spo2.value, 88);
+  assert.equal(extractNarrative("PaO2 03/10: 60 mmHg. FiO2 100%.", respiratory).pao2.value, 60);
+  assert.equal(extractNarrative("PaO2 52 mmHg.", respiratory).pao2.value, 52);
+});
+
+test("menção negativa de ECG não oculta o traçado", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+
+  const later = extractNarrative(
+    "Homem, 62 anos. ECG não realizado na origem.\nECG: supradesnivelamento de ST em parede anterior.\nTroponina 450 ng/L.",
+    schema,
+  );
+  assert.match(later.ecg.value, /supradesnivelamento de ST/i);
+  assert.doesNotMatch(later.ecg.value, /não realizado/i);
+  const envelope = buildEnvelope({
+    sourceText: "Homem, 62 anos. ECG não realizado na origem.\nECG: supradesnivelamento de ST em parede anterior.",
+    schema,
+    fields: later,
+  });
+  assert.equal(envelope.missingCritical.includes("ecg"), false);
+  assert.match(envelope.data.ecg, /supradesnivelamento de ST/i);
+
+  const absent = extractNarrative(
+    "Não há ECG da unidade de origem.\nECG: infradesnivelamento de ST em V4-V6.",
+    schema,
+  );
+  assert.match(absent.ecg.value, /infradesnivelamento/i);
+  assert.doesNotMatch(absent.ecg.value, /unidade de origem/i);
+
+  const notDone = extractNarrative(
+    "Eletrocardiograma não realizado na UPA.\nEletrocardiograma: bloqueio de ramo esquerdo novo.",
+    schema,
+  );
+  assert.match(notDone.ecg.value, /bloqueio de ramo esquerdo/i);
+  assert.doesNotMatch(notDone.ecg.value, /não realizado/i);
+
+  const sameLine = extractNarrative(
+    "Sem ECG prévio. ECG: supradesnivelamento de ST em V2-V4.",
+    schema,
+  );
+  assert.match(sameLine.ecg.value, /supradesnivelamento de ST/i);
+  assert.doesNotMatch(sameLine.ecg.value, /prévio/i);
+
+  assert.match(
+    extractNarrative("ECG: supradesnivelamento de ST em parede anterior.", schema).ecg.value,
+    /supradesnivelamento de ST/i,
+  );
+  assert.match(extractNarrative("ECG sem supra de ST.", schema).ecg.value, /sem supra de ST/i);
+  assert.equal(extractNarrative("ECG não realizado.", schema).ecg.value, "");
+  assert.equal(extractNarrative("Sem ECG.", schema).ecg.value, "");
+  assert.match(
+    extractNarrative("ECGLA 15. ECG: ritmo sinusal.", schema).ecg.value,
+    /ritmo sinusal/i,
+  );
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
