@@ -68,10 +68,75 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   const fields = extractNarrative(text, schema);
   assert.equal(fields.age.value, 81);
   assert.equal(fields.sex.value.toLowerCase(), "mulher");
+  assert.equal(fields.sbp.value, 80);
+  assert.equal(fields.dbp.value, 45);
   assert.equal(fields.map.value, 58);
   assert.equal(fields.lactate.value, 4.1);
   assert.equal(fields.bilirubin.value, 12.9);
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
+});
+
+test("data do pronto atendimento não vira pressão arterial", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const dated = extractNarrative(
+    "Homem, 62 anos. Entrada no PA 03/10. Dor torácica. PA 92/58 mmHg, FC 104, SpO2 94%.",
+    schema,
+  );
+  assert.equal(dated.sbp.value, 92);
+  assert.equal(dated.dbp.value, 58);
+
+  const withYear = extractNarrative("Admitido no PA 12/10/2026. PA 80/45, FC 110.", schema);
+  assert.equal(withYear.sbp.value, 80);
+  assert.equal(withYear.dbp.value, 45);
+
+  const dateOnly = extractNarrative("Veio ao PA 12/10/2026. Sem registro de pressão arterial.", schema);
+  assert.equal(dateOnly.sbp.value, "");
+  assert.equal(dateOnly.dbp.value, "");
+
+  const wide = extractNarrative("pressão arterial 178/96 mmHg. PA 100 x 70 após analgesia.", schema);
+  assert.equal(wide.sbp.value, 178);
+  assert.equal(wide.dbp.value, 96);
+
+  const shock = extractNarrative("PA 70/40 em choque.", schema);
+  assert.equal(shock.sbp.value, 70);
+  assert.equal(shock.dbp.value, 40);
+});
+
+test("relação PaO2/FiO2 não é gravada como FiO2", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const mixed = extractNarrative(
+    "PaO2/FiO2 180. Gasometria: pH 7,18, PaO2 52 mmHg em FiO2 100%.",
+    schema,
+  );
+  assert.equal(mixed.fio2.value, 100);
+  assert.equal(mixed.pao2.value, 52);
+
+  assert.equal(extractNarrative("Relação PaO2/FiO2: 250.", schema).fio2.value, "");
+  assert.equal(extractNarrative("PO2 / FiO2 150. FiO2 60%.", schema).fio2.value, 60);
+  assert.equal(extractNarrative("FiO2 50%.", schema).fio2.value, 50);
+  assert.equal(extractNarrative("FiO2 100% (PaO2/FiO2 180).", schema).fio2.value, 100);
+});
+
+test("TCE e TCLE não ocultam a tomografia", () => {
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const tce = extractNarrative(
+    "Homem, 34 anos. Colisão há 2 horas.\nTCE grave.\nTC de crânio: hematoma subdural com desvio de linha média.",
+    trauma,
+  );
+  assert.match(tce.imaging.value, /hematoma subdural/i);
+  assert.doesNotMatch(tce.imaging.value, /^TCE\b/);
+
+  const sameLine = extractNarrative("TCE grave após colisão. TC de crânio: hematoma subdural.", trauma);
+  assert.match(sameLine.imaging.value, /^TC de crânio/i);
+
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const tcle = extractNarrative("TCLE assinado pela família.\nTC de crânio sem hemorragia.", stroke);
+  assert.match(tcle.imaging.value, /sem hemorragia/i);
+  assert.doesNotMatch(tcle.imaging.value, /TCLE/);
+
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  assert.match(extractNarrative("TC evidencia dilatação biliar.", sepsis).imaging.value, /dilatação biliar/i);
+  assert.match(extractNarrative("Tomografia de abdome com líquido livre.", sepsis).imaging.value, /líquido livre/i);
 });
 
 test("envelope declara abstention sem fabricar completude", () => {
