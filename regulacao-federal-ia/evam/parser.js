@@ -29,11 +29,22 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
   return null;
 };
 
-// "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
-// "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
-// permanece: é o único número do campo.
-const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
-const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
+// "agora", "atual" e "no momento" nomeiam a leitura vigente — entre o rótulo
+// e o valor, logo antes dele (`Atual: PA`, `Atual FC`) ou num cabeçalho da
+// mesma frase (`Atual: PA 80/50, FC 140`). "na admissão", "basal" e
+// equivalentes nomeiam a anterior. Sem outro candidato, a anterior permanece.
+const CURRENT_WORD = String.raw`agora|no\s+momento|atua(?:l|is)`;
+const VITAL_LABEL = String.raw`press[aã]o\s+arterial(?:\s+m[eé]dia)?|frequ[eê]ncia\s+card[ií]aca|frequ[eê]ncia\s+respirat[oó]ria|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?|temperatura|glasgow|ecgla|plaquetas?|bilirrubina(?:\s+total)?|creatinina|spo2|pao2|fio2|nihss|pam|pas|pad|tax|gcs|lactato|plaq|inr|ph|bt|pa|fc|fr|lac|cr`;
+const CURRENT_MARKER = new RegExp(String.raw`\b(?:${CURRENT_WORD})\b`, "iu");
+// Cabeçalho colado ao rótulo: "Sinais vitais atuais: PA", "No momento - FC".
+const CURRENT_HEADER = new RegExp(String.raw`\b(?:${CURRENT_WORD})\s*[:\u2013\u2014-]\s*$`, "iu");
+// A frase começa no marcador: "Atual PA", "Atual, FC", "Agora: PAM".
+const CURRENT_LEAD = new RegExp(String.raw`^\s*(?:${CURRENT_WORD})\s*[:,\u2013\u2014-]?\s*$`, "iu");
+// O mesmo cabeçalho cobre os rótulos seguintes da frase: "Atual: PA 80/50, FC 140".
+const CURRENT_LIST = new RegExp(
+  String.raw`\b(?:${CURRENT_WORD})\s*[:\u2013\u2014-]\s*(?:${VITAL_LABEL})\b`,
+  "iu",
+);
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
@@ -42,8 +53,10 @@ const publishReading = (hit) => ({
 });
 
 const isCurrentReading = (text, match) => {
-  const before = text.slice(Math.max(0, match.index - 24), match.index);
-  return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
+  if (CURRENT_MARKER.test(match[0])) return true;
+  const before = text.slice(Math.max(0, match.index - 180), match.index);
+  const sentence = before.split(/\n|\.(?=\s)/).pop() ?? "";
+  return CURRENT_HEADER.test(sentence) || CURRENT_LEAD.test(sentence) || CURRENT_LIST.test(sentence);
 };
 
 function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {

@@ -228,6 +228,44 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("marcador vigente antes do rótulo não cede o campo à leitura anterior", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+
+  const header = extractNarrative("PA 180/110. Atual: PA 80/50.", coronary);
+  assert.equal(header.sbp.value, 80);
+  assert.equal(header.dbp.value, 50);
+
+  assert.equal(extractNarrative("FC 100. Atual FC 140.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("FC 100. Atual, FC 140.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("FC 100. Atual - FC 140.", coronary).heartRate.value, 140);
+
+  const block = extractNarrative("Admissão: PA 180/110, FC 100. Atual: PA 80/50, FC 140.", coronary);
+  assert.equal(block.sbp.value, 80);
+  assert.equal(block.dbp.value, 50);
+  assert.equal(block.heartRate.value, 140);
+
+  const titled = extractNarrative("FC 110. Sinais vitais atuais: PA 80/50, FC 140.", coronary);
+  assert.equal(titled.sbp.value, 80);
+  assert.equal(titled.heartRate.value, 140);
+
+  assert.equal(
+    extractNarrative("Conduta atual, PA 180/110 na admissão. PA 80/50.", coronary).sbp.value,
+    80,
+  );
+
+  assert.equal(extractNarrative("PA 180/110 na admissão. No momento: PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Lactato 1,2. Atual: lactato 6,4.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("SpO2 97%. Atual: SpO2 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("Situação atual estável. PA 92/58.", coronary).sbp.value, 92);
+  assert.equal(
+    extractNarrative("Situação atual estável, PA 180/110 na admissão. PA 80/50.", coronary).sbp.value,
+    80,
+  );
+  assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
