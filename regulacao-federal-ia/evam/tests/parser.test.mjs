@@ -60,6 +60,25 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /420/);
   assert.match(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /normal/i);
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
+
+  // Qualificador do ensaio ou vírgula antes do valor não pode apagar o resultado
+  // nem herdar o ng/L de outro analito na mesma oração.
+  assert.match(extractNarrative("Troponina I: 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Troponina T 0,08 ng/mL.", schema).troponin.value, /0,08/);
+  assert.match(extractNarrative("Troponina (I): 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Trop I 350 ng/L.", schema).troponin.value, /350/);
+  assert.match(extractNarrative("Troponina ultrassensível: 18 ng/L.", schema).troponin.value, /18/);
+  assert.match(extractNarrative("Troponina de alta sensibilidade: 22 ng/L.", schema).troponin.value, /22/);
+  assert.match(extractNarrative("Troponina, 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Troponina I negativa.", schema).troponin.value, /negativa/i);
+
+  const assayWithBnp = extractNarrative("Troponina I: 2450 ng/L, BNP 800 ng/L.", schema);
+  assert.match(assayWithBnp.troponin.value, /2450/);
+  assert.doesNotMatch(assayWithBnp.troponin.value, /800/);
+
+  const serialAssay = extractNarrative("1ª troponina I: 18 ng/L. 2ª troponina I: 350 ng/L.", schema);
+  assert.match(serialAssay.troponin.value, /350/);
+  assert.doesNotMatch(serialAssay.troponin.value, /\b18\b/);
 });
 
 test("extrai variáveis básicas do caso-âncora sintético", () => {
