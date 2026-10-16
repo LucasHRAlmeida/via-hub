@@ -23,6 +23,8 @@ jobs:
         run: node tests/revista-x-links.test.cjs
       - name: Rotas estáticas e sitemap
         run: node tests/static-routes.test.cjs
+      - name: Matching do Regulation Lab
+        run: node tests/lab-matching.test.cjs
       - name: Conversor EVAM
         working-directory: regulacao-federal-ia/evam
         run: npm test
