@@ -209,6 +209,38 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("marcador de presente depois do valor ou antes do rótulo não cede o campo", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  const shock = extractNarrative("PA 180/110. PA 80/50 agora.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+
+  const withUnit = extractNarrative("PA 180/110 mmHg. PA 80/50 mmHg no momento.", coronary);
+  assert.equal(withUnit.sbp.value, 80);
+  assert.equal(withUnit.dbp.value, 50);
+
+  const labeled = extractNarrative("PA 140/90. Sinais vitais atuais: PA 80/50.", coronary);
+  assert.equal(labeled.sbp.value, 80);
+  assert.equal(labeled.dbp.value, 50);
+
+  assert.equal(extractNarrative("PA 180/110. Agora: PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("SV atuais: PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110. Agora iniciou noradrenalina.", coronary).sbp.value, 180);
+
+  assert.equal(extractNarrative("FC 88. FC 140 agora.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("PAM 90. PAM 48 mmHg no momento.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("Glasgow 15. Glasgow 8 agora.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Lactato 1,8 mmol/L. Lactato 6,4 agora.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 1,2. Lactato 6,4 mmol/L agora.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("SpO2 97%. SpO2 82% agora.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("Cr 1,2 mg/dL. Cr 4,8 agora.", sepsis).creatinine.value, 4.8);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
