@@ -209,6 +209,36 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("marcador atual na leitura de admissão não oculta o valor seguinte", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+
+  const shock = extractNarrative("Agora PA 180/110 na admissão. PA 80/50.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+
+  const triage = extractNarrative("No momento PA 100/60 na triagem. PA 78/42.", coronary);
+  assert.equal(triage.sbp.value, 78);
+  assert.equal(triage.dbp.value, 42);
+
+  const arrival = extractNarrative("PA atual 130/80 na chegada. PA 80/40.", coronary);
+  assert.equal(arrival.sbp.value, 80);
+  assert.equal(arrival.dbp.value, 40);
+
+  const only = extractNarrative("Agora PA 80/50 na admissão.", coronary);
+  assert.equal(only.sbp.value, 80);
+  assert.equal(only.dbp.value, 50);
+
+  const map = extractNarrative("Agora PAM 90 na admissão. PAM 48. Lactato 4,1.", sepsis);
+  assert.equal(map.map.value, 48);
+
+  const lactate = extractNarrative("Agora lactato 1,2 na admissão. Lactato 6,4 mmol/L. PAM 58.", sepsis);
+  assert.equal(lactate.lactate.value, 6.4);
+
+  const rate = extractNarrative("No momento FC 140 na entrada. FC 88 bpm.", coronary);
+  assert.equal(rate.heartRate.value, 88);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

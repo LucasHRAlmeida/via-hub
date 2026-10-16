@@ -30,8 +30,9 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 };
 
 // "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
-// "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
-// permanece: é o único número do campo.
+// "basal" e equivalentes nomeiam a anterior. Os dois podem cair no mesmo
+// número ("Agora PA 180/110 na admissão"): a cauda histórica prevalece
+// enquanto houver outro candidato. Sem outro candidato, a anterior permanece.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
@@ -66,13 +67,18 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
   });
 
   for (const found of grouped) {
-    const current = found.filter((hit) => hit.current);
+    const current = found.filter((hit) => hit.current && !hit.historical);
     if (current.length) return publishReading(current[current.length - 1]);
   }
 
   for (const found of grouped) {
     const unmarked = found.find((hit) => !hit.historical);
     if (unmarked) return publishReading(unmarked);
+  }
+
+  for (const found of grouped) {
+    const current = found.filter((hit) => hit.current);
+    if (current.length) return publishReading(current[current.length - 1]);
   }
 
   for (const found of grouped) {
