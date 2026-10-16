@@ -166,6 +166,49 @@ test("cada template produz JSON Schema versionado e fechado", () => {
   }
 });
 
+test("leitura marcada como atual não cede o campo ao valor anterior", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  const shock = extractNarrative("PA 180/110 na admissão. PA atual 80/50.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+
+  const now = extractNarrative("PA 180/110 na admissão. Agora PA 80/50.", coronary);
+  assert.equal(now.sbp.value, 80);
+  assert.equal(now.dbp.value, 50);
+
+  assert.equal(extractNarrative("PA atual: 80/50 mmHg.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", coronary).sbp.value, 92);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", coronary).dbp.value, 58);
+  assert.equal(extractNarrative("PA 80/50 na admissão.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
+
+  assert.equal(extractNarrative("FC 140 na entrada. FC atual 88 bpm.", coronary).heartRate.value, 88);
+  assert.equal(extractNarrative("FC 118 bpm.", coronary).heartRate.value, 118);
+  assert.equal(extractNarrative("PAM 90 na entrada. PAM atual 48.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("PAM 58 mmHg.", sepsis).map.value, 58);
+  assert.equal(extractNarrative("FR 16 basal. FR atual 36 irpm.", respiratory).respiratoryRate.value, 36);
+  assert.equal(extractNarrative("Tax 36,2 na triagem. Tax atual 39,8.", sepsis).temperature.value, 39.8);
+  assert.equal(extractNarrative("Glasgow 14 na entrada. Agora Glasgow 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 14.", trauma).gcs.value, 14);
+  assert.equal(extractNarrative("SpO2 97% na triagem. SpO2 atual 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("SpO2 93% em cateter nasal 3 L/min.", respiratory).spo2.value, 93);
+  assert.equal(extractNarrative("FiO2 40% na chegada. FiO2 atual 100%. PaO2 55.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FiO2 40% na chegada. FiO2 atual 100%. PaO2 55.", respiratory).pao2.value, 55);
+  assert.equal(extractNarrative("Lactato 1,2 na admissão. Lactato atual 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L. Lac 1,2 na admissão.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("INR 1,1 basal. INR atual 3,8.", trauma).inr.value, 3.8);
+  assert.equal(extractNarrative("INR 1,4.", trauma).inr.value, 1.4);
+  assert.equal(extractNarrative("NIHSS 4 na admissão. NIHSS atual 18.", stroke).nihss.value, 18);
+  assert.equal(extractNarrative("NIHSS 16.", stroke).nihss.value, 16);
+  assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
