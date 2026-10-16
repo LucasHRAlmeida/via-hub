@@ -29,12 +29,12 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
   return null;
 };
 
-// "agora", "atual" e "no momento" nomeiam a leitura vigente, também com
-// vírgula ou dois-pontos ("PA atual, 80/50", "Atual, PA 80/50").
+// "agora", "atual" e "no momento" nomeiam a leitura vigente. A vírgula
+// entre o marcador e o número ("PA atual, 80/50") não encerra a leitura.
 // "na admissão", "basal" e equivalentes nomeiam a anterior. Sem outro
 // candidato, a anterior permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
-const CURRENT_BEFORE = /(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s*$/iu;
+const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
@@ -284,32 +284,32 @@ const EXTRACTORS = Object.freeze({
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
   sbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\b/iu,
   ]),
   dbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\b/iu,
   ]),
   map: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\b/iu,
   ]),
   heartRate: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
   ]),
   respiratoryRate: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
   ]),
   spo2: (text) => matchCurrentReading(text, [
     // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
     // de "10 L/min" para SpO₂=1.
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
   ]),
   temperature: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
   ]),
   gcs: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
   ]),
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
@@ -318,32 +318,32 @@ const EXTRACTORS = Object.freeze({
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
   lactate: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
   ]),
   creatinine: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:creatinina|cr)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:creatinina|cr)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ]),
   bilirubin: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:bilirrubina\s+total|bt)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:bilirrubina\s+total|bt)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
   ]),
   platelets: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\b(?:plaquetas?|plaq)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:plaquetas?|plaq)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
   ]),
   inr: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ]),
   troponin: extractTroponin,
   ph: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ]),
   pao2: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bpao2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpao2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ]),
   fio2: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
   ]),
   nihss: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*[,:]?\s*)?[:=]?\s*(\d{1,2})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=]?\s*(\d{1,2})\b/iu,
   ]),
   pupilExam: (text) => matchOne(text, [
     /\b(pupilas?[^\n.;]{0,90})/iu,
