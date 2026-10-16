@@ -33,7 +33,10 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 // "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
 // permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
-const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
+// Imediatamente antes do rótulo: "SV atuais: PA", "Agora: PA", "no momento, PAM".
+const CURRENT_BEFORE = /(?:agora|no\s+momento|atua(?:l|is))\s*[:,-]?\s*$/iu;
+// Imediatamente depois do valor, com unidade opcional: "PA 80/50 agora", "PAM 48 mmHg no momento".
+const CURRENT_AFTER = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*,?\s*(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
@@ -41,9 +44,9 @@ const publishReading = (hit) => ({
   confidence: hit.confidence,
 });
 
-const isCurrentReading = (text, match) => {
+const isCurrentReading = (text, match, after) => {
   const before = text.slice(Math.max(0, match.index - 24), match.index);
-  return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
+  return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before) || CURRENT_AFTER.test(after);
 };
 
 function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
@@ -58,7 +61,7 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
         value,
         excerpt: excerptAround(text, match.index, match[0].length),
         confidence: "heurística",
-        current: isCurrentReading(text, match),
+        current: isCurrentReading(text, match, after),
         historical: HISTORICAL_READING.test(after),
       });
     }
