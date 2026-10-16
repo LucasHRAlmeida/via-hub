@@ -31,25 +31,20 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 
 // "agora", "atual" e "no momento" nomeiam a leitura vigente, também com
 // vírgula ou dois-pontos ("PA atual, 80/50", "Atual, PA 80/50").
-// "na admissão", "basal" e equivalentes nomeiam a anterior e prevalecem
-// sobre um "agora" da chegada no mesmo trecho. Sem outro candidato, a
-// anterior permanece: é o único número do campo.
+// "na admissão", "basal" e equivalentes nomeiam a anterior. Sem outro
+// candidato, a anterior permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento|atua(?:l|is))\s*[,:]?\s*$/iu;
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
-const HISTORICAL_BEFORE = /(?:(?:na|de|da)\s+)?(?:admiss[aã]o|entrada|triagem|chegada|cena|basal|pr[eé]vi[oa]|inicial|habitual)\s*[,:]?\s*$/iu;
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,
   confidence: hit.confidence,
 });
 
-const classifyReading = (text, match) => {
-  const before = text.slice(Math.max(0, match.index - 32), match.index);
-  const after = text.slice(match.index + match[0].length);
-  const historical = HISTORICAL_READING.test(after) || HISTORICAL_BEFORE.test(before);
-  const current = !historical && (CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before));
-  return { historical, current };
+const isCurrentReading = (text, match) => {
+  const before = text.slice(Math.max(0, match.index - 24), match.index);
+  return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
 };
 
 function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
@@ -59,13 +54,13 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
     for (const match of text.matchAll(new RegExp(expression.source, flags))) {
       const value = transform(match[valueGroup], match);
       if (value === null || value === "") continue;
-      const kind = classifyReading(text, match);
+      const after = text.slice(match.index + match[0].length);
       found.push({
         value,
         excerpt: excerptAround(text, match.index, match[0].length),
         confidence: "heurística",
-        current: kind.current,
-        historical: kind.historical,
+        current: isCurrentReading(text, match),
+        historical: HISTORICAL_READING.test(after),
       });
     }
     return found;

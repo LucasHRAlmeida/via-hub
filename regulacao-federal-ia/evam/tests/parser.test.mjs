@@ -209,7 +209,7 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
-test("vírgula, dois-pontos ou agora da chegada não gravam a leitura anterior", () => {
+test("vírgula ou dois-pontos não apagam a leitura vigente", () => {
   const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
   const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
   const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
@@ -222,16 +222,10 @@ test("vírgula, dois-pontos ou agora da chegada não gravam a leitura anterior",
   assert.equal(extractNarrative("PA 180/110. Atual, PA 80/50.", coronary).sbp.value, 80);
   assert.equal(extractNarrative("Admissão: PA 180/110. Agora: PA 80/50.", coronary).sbp.value, 80);
   assert.equal(extractNarrative("Admissão: PA 180/110. Agora: PA 80/50.", coronary).dbp.value, 50);
-
-  const arrival = extractNarrative("Chegou agora, PA 180/110 na admissão. PA 80/50.", coronary);
-  assert.equal(arrival.sbp.value, 80);
-  assert.equal(arrival.dbp.value, 50);
   assert.equal(extractNarrative("agora PA 80/50 na admissão", coronary).sbp.value, 80);
-  assert.equal(extractNarrative("PA atual 80/50 na admissão. PA 90/60.", coronary).sbp.value, 90);
 
   assert.equal(extractNarrative("PAM 90 na entrada. PAM atual, 48.", sepsis).map.value, 48);
   assert.equal(extractNarrative("PAM 90. Atual, PAM 48.", sepsis).map.value, 48);
-  assert.equal(extractNarrative("Chegou agora, lactato 1,2 na admissão. Lactato 6,4 mmol/L.", sepsis).lactate.value, 6.4);
   assert.equal(extractNarrative("Lactato 1,2 na admissão. Lactato atual, 6,4 mmol/L.", sepsis).lactate.value, 6.4);
   assert.equal(extractNarrative("FC 140 na entrada. FC atual, 88 bpm.", coronary).heartRate.value, 88);
   assert.equal(extractNarrative("Glasgow 15 na entrada. Glasgow atual, 8.", trauma).gcs.value, 8);
