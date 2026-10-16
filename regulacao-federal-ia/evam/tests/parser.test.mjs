@@ -74,6 +74,42 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
 });
 
+test("RNM não cede o campo de imagem à tomografia posterior", () => {
+  const neuro = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const herniation = extractNarrative(
+    "RNM de crânio: herniação uncal e desvio de linha média.\nTC de crânio da admissão sem sangramento.",
+    neuro,
+  );
+  assert.match(herniation.imaging.value, /herniação uncal/i);
+  assert.doesNotMatch(herniation.imaging.value, /sem sangramento/i);
+
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const infarct = extractNarrative(
+    "RNM evidencia infarto estabelecido em ACM.\nTC de crânio sem hemorragia.",
+    stroke,
+  );
+  assert.match(infarct.imaging.value, /infarto estabelecido/i);
+  assert.doesNotMatch(infarct.imaging.value, /sem hemorragia/i);
+  const envelope = buildEnvelope({
+    sourceText: "RNM evidencia infarto estabelecido em ACM.\nTC de crânio sem hemorragia.",
+    schema: stroke,
+    fields: infarct,
+  });
+  assert.equal(envelope.missingCritical.includes("imaging"), false);
+  assert.match(String(envelope.data.imaging), /infarto estabelecido/i);
+
+  assert.match(
+    extractNarrative("Solicitada RNM.\nTC de crânio: hematoma subdural agudo.", neuro).imaging.value,
+    /hematoma subdural/i,
+  );
+  assert.match(
+    extractNarrative("Sem RNM.\nTC de crânio: hematoma extradural.", neuro).imaging.value,
+    /hematoma extradural/i,
+  );
+  assert.match(extractNarrative("RM de crânio: lesão expansiva.", neuro).imaging.value, /lesão expansiva/i);
+  assert.match(extractNarrative("TC de crânio: hematoma extradural.", neuro).imaging.value, /hematoma extradural/i);
+});
+
 test("envelope declara abstention sem fabricar completude", () => {
   const schema = getSchema("acute-ischemic-stroke.neurology.v1");
   const fields = extractNarrative("Paciente 70 anos, NIHSS 16.", schema);
