@@ -265,7 +265,9 @@ const EXTRACTORS = Object.freeze({
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: (text) => matchOne(text, [
-    /\b((?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
+    // RNM é ressonância. Sem a sigla, a TC da linha seguinte ocupa o campo.
+    // Menção nua no fim da linha ("RNM.", "Solicitada RNM.") não esconde essa TC.
+    /\b((?:tc|tomografia|rnm(?![.:]?\s*(?:\n|$))|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)[^\n]{0,220})/iu,
   ]),
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
