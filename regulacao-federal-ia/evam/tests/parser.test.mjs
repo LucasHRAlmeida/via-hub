@@ -187,6 +187,32 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("PA 80/50 na admissão.", coronary).sbp.value, 80);
   assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
 
+  const admissionLabeledCurrent = extractNarrative(
+    "PA atual 180/110 na admissão. Evoluiu com choque. PA 70/40.",
+    coronary,
+  );
+  assert.equal(admissionLabeledCurrent.sbp.value, 70);
+  assert.equal(admissionLabeledCurrent.dbp.value, 40);
+  assert.equal(
+    extractNarrative("PA atual 70/40. PA atual 180/110 na admissão.", coronary).sbp.value,
+    70,
+  );
+  assert.equal(extractNarrative("Agora PA 180/110 na admissão. PA 70/40.", coronary).sbp.value, 70);
+  assert.equal(extractNarrative("PA atual 180/110 mmHg na admissão. PA 70/40.", coronary).sbp.value, 70);
+  assert.equal(extractNarrative("PA atual 80/50. Na admissão estava hipertenso.", coronary).sbp.value, 80);
+  assert.equal(
+    extractNarrative("Lactato atual 1,8 mmol/L na admissão. Lactato 6,4 mmol/L.", sepsis).lactate.value,
+    6.4,
+  );
+  assert.equal(extractNarrative("Lactato 6,4. Lactato atual 1,8 na admissão.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("PAM atual 90 na admissão. PAM 48.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("FiO2 atual 40% na chegada. FiO2 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FC atual 140 bpm na entrada. FC 88 bpm.", coronary).heartRate.value, 88);
+  assert.equal(extractNarrative("Glasgow atual 14 na entrada. Glasgow 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("SpO2 atual 97% na triagem. SpO2 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("INR atual 1,1 basal. INR 3,8.", trauma).inr.value, 3.8);
+  assert.equal(extractNarrative("Tax atual 36,2 na triagem. Tax 39,8.", sepsis).temperature.value, 39.8);
+
   assert.equal(extractNarrative("FC 140 na entrada. FC atual 88 bpm.", coronary).heartRate.value, 88);
   assert.equal(extractNarrative("FC 118 bpm.", coronary).heartRate.value, 118);
   assert.equal(extractNarrative("PAM 90 na entrada. PAM atual 48.", sepsis).map.value, 48);
