@@ -177,11 +177,14 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
  * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
  * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
  * resultado elevado. Só lê o valor sintaticamente ligado à menção (não varre
- * outros analitos na mesma oração). Ponto/vírgula entre dígitos não fecha o trecho.
+ * outros analitos na mesma oração). O ponto entre dígitos não fecha o trecho.
+ * A vírgula pode separar o nome do resultado e permanece na cauda; o valor lido
+ * é o do início, não um ng/L posterior (BNP, CK-MB).
  */
 function extractTroponin(text) {
-  // Cauda: permite [.,] só entre dígitos; vírgula/ponto de oração encerram.
-  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:[^\n.,;]|[.,](?=\d)){0,40})/giu;
+  // Cauda: ponto de oração encerra; vírgula e ponto entre dígitos permanecem.
+  // A próxima menção de troponina fica de fora, para a dosagem seriada competir.
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:(?!\b(?:\d+\s*[ªa]\s+)?(?:troponina|trop)\b)[^\n.;]|[.](?=\d)){0,80})/giu;
   let best = null;
 
   for (const match of text.matchAll(expression)) {
@@ -201,12 +204,17 @@ function extractTroponin(text) {
 }
 
 function parseTroponinMention(negation, keyword, tail) {
+  // "Troponina I", "Troponina (T)" e "ultrassensível" qualificam o ensaio.
   // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
-  const rest = String(tail).replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
+  let rest = String(tail).replace(
+    /^(?:[\s-]+\(?(?:ultrassens[ií]vel|de\s+alta\s+sensibilidade|us|hs|tni|tnt|i|t)\b\)?)+/iu,
+    "",
+  );
+  rest = rest.replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
-  const quantified = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
-  const qualitative = rest.match(/^\s*[:=]?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
-  const bareNumber = rest.match(/^\s*[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu);
+  const quantified = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  const qualitative = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
+  const bareNumber = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\b/iu);
 
   if (negation) {
     if (quantified) {
@@ -241,7 +249,8 @@ function parseTroponinMention(negation, keyword, tail) {
  * a tomografia, a ressonância ou o ultrassom que vêm depois.
  */
 function extractImaging(text) {
-  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?:tc)?)/giu;
+  // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
+  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
   const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
   const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
 
@@ -270,7 +279,8 @@ function extractImaging(text) {
 
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
-    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b)/iu,
+    // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
+    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b(?!\s*\d))/iu,
     /\b(\d{1,3})\s*anos?\b/iu,
   ], 1, number),
   sex: (text) => matchOne(text, [
@@ -354,7 +364,8 @@ const EXTRACTORS = Object.freeze({
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
   ecg: (text) => matchOne(text, [
-    /\b(ecg[^\n]{0,180})/iu,
+    // ECGL/ECGLA é Glasgow, não o traçado. O eletrocardiograma posterior continua válido.
+    /\b(ecg(?!l(?:a)?\b)[^\n]{0,180})/iu,
     /\b(eletrocardiograma[^\n]{0,180})/iu,
   ]),
   imaging: extractImaging,
@@ -362,19 +373,27 @@ const EXTRACTORS = Object.freeze({
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
   hemorrhage: yesNoText([
-    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b/iu,
-    /\bchoque\s+hemorr[aá]gico\b/iu,
+    // "negado/negada" depois do achado, ou "nega/negou" imediatamente antes, não é hemorragia presente.
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)/iu,
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)/iu,
   ], [
     /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o)\b/iu,
+    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\s*,?\s*negad[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+choque\s+hemorr[aá]gico\b/iu,
+    /\bchoque\s+hemorr[aá]gico\s*,?\s*negad[oa]\b/iu,
   ]),
 });
 
 export function redactDirectIdentifiers(text) {
+  // NNNN-NNNN sem país, DDD entre parênteses ou nono dígito é faixa
+  // (1000-2000 mL, 0800-1600, 2019-2024), não telefone.
+  const phone = /(?<![\d])(?:\+55[\s-]*)?(?:\(?\d{2}\)?[\s-]*)?9\s*\d{4}[-\s]?\d{4}\b|\+\s?55[\s-]*\(?\d{2}\)?[\s-]*\d{4}[-\s]?\d{4}\b|\(\d{2}\)[\s-]*\d{4}[-\s]?\d{4}\b/g;
   return String(text ?? "")
     .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g, "[CPF REDIGIDO]")
     .replace(/\b\d{15}\b/g, "[CNS REDIGIDO]")
     .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/giu, "[E-MAIL REDIGIDO]")
-    .replace(/(?:\+?55\s*)?(?:\(?\d{2}\)?\s*)?(?:9\s*)?\d{4}[-\s]?\d{4}\b/g, "[TELEFONE REDIGIDO]");
+    .replace(phone, "[TELEFONE REDIGIDO]");
 }
 
 export function extractNarrative(text, schema) {

@@ -15,6 +15,33 @@ test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
   assert.match(output, /CPF REDIGIDO/);
   assert.match(output, /TELEFONE REDIGIDO/);
   assert.match(output, /lactato 4,1/);
+  assert.doesNotMatch(output, /99876/);
+});
+
+test("faixa de volume ou horário não é redigida como telefone", () => {
+  const preserved = [
+    "Expansão com 1000-2000 mL de cristaloide. Lactato 4,1 mmol/L.",
+    "Diurese 1000-1500 mL/24h. Creatinina 2,1 mg/dL.",
+    "Plantão 0800-1600. FC 110 bpm.",
+    "Coorte 2019-2024. NIHSS 16.",
+    "Plaquetas 150000. INR 1,4.",
+  ];
+  for (const input of preserved) {
+    assert.equal(redactDirectIdentifiers(input), input);
+  }
+
+  const phones = [
+    "contato +55 35 98441-0983",
+    "celular 11 99876-5432",
+    "fone 99876-5432",
+    "ligar (11) 3333-4444",
+    "+55 11 3333-4444",
+  ];
+  for (const input of phones) {
+    const output = redactDirectIdentifiers(input);
+    assert.match(output, /TELEFONE REDIGIDO/, input);
+    assert.doesNotMatch(output, /\d/, input);
+  }
 });
 
 test("SpO2 não grava fluxo de oxigênio como saturação", () => {
@@ -60,6 +87,78 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina negativa, BNP 420 ng/L.", schema).troponin.value, /420/);
   assert.match(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /normal/i);
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
+
+  // Qualificador do ensaio ou vírgula antes do valor não pode apagar o resultado
+  // nem herdar o ng/L de outro analito na mesma oração.
+  assert.match(extractNarrative("Troponina I: 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Troponina T 0,08 ng/mL.", schema).troponin.value, /0,08/);
+  assert.match(extractNarrative("Troponina (I): 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Trop I 350 ng/L.", schema).troponin.value, /350/);
+  assert.match(extractNarrative("Troponina ultrassensível: 18 ng/L.", schema).troponin.value, /18/);
+  assert.match(extractNarrative("Troponina de alta sensibilidade: 22 ng/L.", schema).troponin.value, /22/);
+  assert.match(extractNarrative("Troponina, 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Troponina I negativa.", schema).troponin.value, /negativa/i);
+
+  const assayWithBnp = extractNarrative("Troponina I: 2450 ng/L, BNP 800 ng/L.", schema);
+  assert.match(assayWithBnp.troponin.value, /2450/);
+  assert.doesNotMatch(assayWithBnp.troponin.value, /800/);
+
+  const serialAssay = extractNarrative("1ª troponina I: 18 ng/L. 2ª troponina I: 350 ng/L.", schema);
+  assert.match(serialAssay.troponin.value, /350/);
+  assert.doesNotMatch(serialAssay.troponin.value, /\b18\b/);
+});
+
+test("hemorragia negada depois do achado não entra como presente", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const absent = [
+    "Sangramento ativo negado.",
+    "Sangramento ativo, negado pelo paciente.",
+    "Nega sangramento ativo.",
+    "Negou sangramento importante.",
+    "Nega-se choque hemorrágico.",
+    "Choque hemorrágico negado.",
+  ];
+  for (const text of absent) {
+    assert.match(extractNarrative(text, schema).hemorrhage.value, /^Não — /i, text);
+  }
+
+  assert.match(
+    extractNarrative("Sangramento ativo em pelve.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Choque hemorrágico.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Nega sangramento ativo na cena. Sangramento ativo em pelve na admissão.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Sangramento não controlado.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+});
+
+test("intervalo de evolução não entra como idade", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const ranged = extractNarrative(
+    "Paciente com 2 a 3 dias de dor em hipocôndrio direito. Mulher, 81 anos. PA 80/45.",
+    schema,
+  );
+  assert.equal(ranged.age.value, 81);
+  assert.equal(ranged.sex.value.toLowerCase(), "mulher");
+
+  assert.equal(
+    extractNarrative("Paciente, 3 a 4 horas de sintomas. Homem, 54 anos.", schema).age.value,
+    54,
+  );
+  assert.equal(extractNarrative("Paciente com 2 a 3 dias de evolução.", schema).age.value, "");
+
+  assert.equal(extractNarrative("Paciente 81 a.", schema).age.value, 81);
+  assert.equal(extractNarrative("Paciente com 81 a, PA 80/45.", schema).age.value, 81);
+  assert.equal(extractNarrative("Idade: 81 a.", schema).age.value, 81);
+  assert.equal(extractNarrative("Homem, 62 a. PA 90/60.", schema).age.value, 62);
 });
 
 test("extrai variáveis básicas do caso-âncora sintético", () => {
@@ -239,6 +338,62 @@ test("marcador de presente depois do valor ou antes do rótulo não cede o campo
   assert.equal(extractNarrative("Lactato 1,2. Lactato 6,4 mmol/L agora.", sepsis).lactate.value, 6.4);
   assert.equal(extractNarrative("SpO2 97%. SpO2 82% agora.", respiratory).spo2.value, 82);
   assert.equal(extractNarrative("Cr 1,2 mg/dL. Cr 4,8 agora.", sepsis).creatinine.value, 4.8);
+});
+
+test("angiotensina não oculta a tomografia nem a angioTC", () => {
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const separated = extractNarrative(
+    "Mulher, 67 anos. Hipertensa em uso de bloqueador do receptor da angiotensina.\nTC de crânio sem hemorragia; angioTC sugere oclusão de grande vaso.",
+    stroke,
+  );
+  assert.match(separated.imaging.value, /oclusão de grande vaso/i);
+  assert.doesNotMatch(separated.imaging.value, /angiotensina/i);
+
+  const sameLine = extractNarrative(
+    "Sistema renina-angiotensina bloqueado. TC de crânio sem hemorragia.",
+    stroke,
+  );
+  assert.match(sameLine.imaging.value, /sem hemorragia/i);
+  assert.doesNotMatch(sameLine.imaging.value, /angiotensina/i);
+
+  const angioOnly = extractNarrative("AngioTC sugere oclusão de M1.", stroke);
+  assert.match(angioOnly.imaging.value, /oclusão de M1/i);
+
+  const angiografia = extractNarrative("Angiografia coronariana com oclusão de DA.", getSchema("acute-coronary-syndrome.cardiology.v1"));
+  assert.match(angiografia.imaging.value, /oclusão de DA/i);
+
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  assert.match(extractNarrative("TC evidencia dilatação biliar.", sepsis).imaging.value, /dilatação biliar/i);
+  assert.match(extractNarrative("ColangioRM com cálculo em colédoco.", sepsis).imaging.value, /cálculo em colédoco/i);
+});
+
+test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const separated = extractNarrative(
+    "Homem, 62 anos. ECGLA 14.\nECG: supradesnivelamento de ST em parede anterior. Troponina 450 ng/L.",
+    schema,
+  );
+  assert.equal(separated.gcs.value, 14);
+  assert.match(separated.ecg.value, /supradesnivelamento de ST/i);
+  assert.doesNotMatch(separated.ecg.value, /ECGLA/i);
+  assert.match(separated.troponin.value, /450/);
+
+  const ecgl = extractNarrative(
+    "ECGL 15.\nEletrocardiograma: ritmo sinusal, sem supradesnivelamento.",
+    schema,
+  );
+  assert.match(ecgl.ecg.value, /ritmo sinusal/i);
+  assert.doesNotMatch(ecgl.ecg.value, /ECGL\b/);
+
+  const sameLine = extractNarrative("ECGLA 14. ECG: supradesnivelamento de ST em V2-V4.", schema);
+  assert.equal(sameLine.gcs.value, 14);
+  assert.match(sameLine.ecg.value, /supradesnivelamento de ST/i);
+
+  const plain = extractNarrative("ECG: supradesnivelamento de ST em parede anterior.", schema);
+  assert.match(plain.ecg.value, /supradesnivelamento de ST/i);
+
+  const plural = extractNarrative("ECGs seriados com supradesnivelamento anterior.", schema);
+  assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
 });
 
 test("resumo formatado explicita campos críticos e governança", () => {
