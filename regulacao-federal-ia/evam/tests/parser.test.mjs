@@ -209,6 +209,34 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("leitura à admissão não oculta o valor seguinte", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  const shock = extractNarrative("PA 180/110 à admissão. PA 80/50.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110 a admissao. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50 à admissão.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50 à admissão.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 120/80 a pedido. PA 90/60.", coronary).sbp.value, 120);
+
+  assert.equal(extractNarrative("Glasgow 15 à entrada. Glasgow 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15 a entrada. Glasgow 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 14.", trauma).gcs.value, 14);
+
+  assert.equal(extractNarrative("FC 90 à chegada. FC 140.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("FC 118 bpm.", coronary).heartRate.value, 118);
+  assert.equal(extractNarrative("FC 140 a 150. FC 90.", coronary).heartRate.value, 140);
+
+  assert.equal(extractNarrative("PAM 90 à admissão. PAM 48.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("Lactato 1,2 à admissão. Lactato 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("SpO2 97% à triagem. SpO2 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("SpO2 93%.", respiratory).spo2.value, 93);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
