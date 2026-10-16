@@ -15,6 +15,33 @@ test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
   assert.match(output, /CPF REDIGIDO/);
   assert.match(output, /TELEFONE REDIGIDO/);
   assert.match(output, /lactato 4,1/);
+  assert.doesNotMatch(output, /99876/);
+});
+
+test("faixa de volume ou horário não é redigida como telefone", () => {
+  const preserved = [
+    "Expansão com 1000-2000 mL de cristaloide. Lactato 4,1 mmol/L.",
+    "Diurese 1000-1500 mL/24h. Creatinina 2,1 mg/dL.",
+    "Plantão 0800-1600. FC 110 bpm.",
+    "Coorte 2019-2024. NIHSS 16.",
+    "Plaquetas 150000. INR 1,4.",
+  ];
+  for (const input of preserved) {
+    assert.equal(redactDirectIdentifiers(input), input);
+  }
+
+  const phones = [
+    "contato +55 35 98441-0983",
+    "celular 11 99876-5432",
+    "fone 99876-5432",
+    "ligar (11) 3333-4444",
+    "+55 11 3333-4444",
+  ];
+  for (const input of phones) {
+    const output = redactDirectIdentifiers(input);
+    assert.match(output, /TELEFONE REDIGIDO/, input);
+    assert.doesNotMatch(output, /\d/, input);
+  }
 });
 
 test("SpO2 não grava fluxo de oxigênio como saturação", () => {
