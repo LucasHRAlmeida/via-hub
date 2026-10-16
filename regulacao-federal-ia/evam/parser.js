@@ -250,9 +250,32 @@ const EXTRACTORS = Object.freeze({
   temperature: (text) => matchOne(text, [
     /\b(?:temp(?:eratura)?|tax)\s*[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
   ], 1, number),
-  gcs: (text) => matchOne(text, [
-    /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ], 1, number),
+  gcs: (text) => {
+    // "4/5/6" é ocular/verbal/motora, não um total de 4. "8/15" e "4/15" seguem o total.
+    // A tríade só vale se for a primeira menção; um total anterior não cede a componentes posteriores.
+    const components = /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})\s*\/\s*(\d{1,2})\s*t?\s*\/\s*(\d{1,2})\b/iu.exec(text);
+    const total = /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu.exec(text);
+    if (components && (!total || components.index <= total.index)) {
+      const eye = number(components[1]);
+      const verbal = number(components[2]);
+      const motor = number(components[3]);
+      if (
+        eye !== null && verbal !== null && motor !== null
+        && eye >= 1 && eye <= 4
+        && verbal >= 1 && verbal <= 5
+        && motor >= 1 && motor <= 6
+      ) {
+        return {
+          value: eye + verbal + motor,
+          excerpt: excerptAround(text, components.index, components[0].length),
+          confidence: "heurística",
+        };
+      }
+    }
+    return matchOne(text, [
+      /\b(?:glasgow|ecgla|gcs)\s*[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
+    ], 1, number);
+  },
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
