@@ -62,6 +62,39 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(extractNarrative("Troponina normal, CK-MB 35 ng/L.", schema).troponin.value, /35/);
 });
 
+test("fratura numerada não grava frequência respiratória", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+
+  const third = extractNarrative(
+    "Homem, 34 anos. Colisão. Fr 1/3 médio da tíbia. FR 28 irpm, PA 78/44, SpO2 91%.",
+    schema,
+  );
+  assert.equal(third.respiratoryRate.value, 28);
+
+  const proximal = extractNarrative(
+    "Fr 2/3 proximais do rádio. Frequência respiratória 22 irpm.",
+    schema,
+  );
+  assert.equal(proximal.respiratoryRate.value, 22);
+
+  const ribs = extractNarrative("Fr 2 arcos costais. FR 24 irpm.", schema);
+  assert.equal(ribs.respiratoryRate.value, 24);
+
+  const bones = extractNarrative("Fr 2 ossos do antebraço. FR 18 rpm.", schema);
+  assert.equal(bones.respiratoryRate.value, 18);
+
+  const finger = extractNarrative("Fr 1 dedo. FR 16 irpm.", schema);
+  assert.equal(finger.respiratoryRate.value, 16);
+
+  const fractureOnly = extractNarrative("Fr 1/3 distal do rádio, sem outro registro.", schema);
+  assert.equal(fractureOnly.respiratoryRate.value, "");
+
+  assert.equal(extractNarrative("FR 30 irpm.", schema).respiratoryRate.value, 30);
+  assert.equal(extractNarrative("FR: 22.", schema).respiratoryRate.value, 22);
+  assert.equal(extractNarrative("FR 18/min.", schema).respiratoryRate.value, 18);
+  assert.equal(extractNarrative("FR 6 irpm.", schema).respiratoryRate.value, 6);
+});
+
 test("extrai variáveis básicas do caso-âncora sintético", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const text = "Mulher, 81 anos. PA 80/45, PAM 58, FC 118, SpO2 93%. Lactato 4,1 mmol/L; bilirrubina total 12,9 mg/dL. Noradrenalina 0,12 mcg/kg/min.";
