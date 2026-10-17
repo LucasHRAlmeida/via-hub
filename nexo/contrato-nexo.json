@@ -22,6 +22,12 @@
       "rotulo": "Proposta de modelo de cuidado",
       "fontes": ["nivel-0-corpus-git", "nivel-2-literatura-e-agencias"],
       "limites": ["apresentada como proposta versionada", "com premissas, limites e criterios de revisao"]
+    },
+    {
+      "id": "educacao-saude-leigo",
+      "rotulo": "Educação em saúde para leigos",
+      "fontes": ["fontes-educacao-saude-leigo"],
+      "limites": ["nao substitui diretriz clinica", "prioriza fontes em portugues e contexto do SUS", "declara idioma e contexto regulatorio de fontes internacionais", "divergencia relevante declara incerteza"]
     }
   ],
   "hierarquiaFontes": [
