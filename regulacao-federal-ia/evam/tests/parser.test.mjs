@@ -234,6 +234,26 @@ test("menção negativa de exame não oculta a imagem feita", () => {
   assert.equal(extractNarrative("Sem TC prévia.", stroke).imaging.value, "");
   assert.equal(extractNarrative("TC não realizada.", biliary).imaging.value, "");
 
+  const anatomicNegation = extractNarrative(
+    "TC de crânio não realizada.\nRM de encéfalo com oclusão de M1.",
+    stroke,
+  );
+  assert.match(anatomicNegation.imaging.value, /oclusão de M1/i);
+  assert.doesNotMatch(anatomicNegation.imaging.value, /não realizada/i);
+
+  const angioUnavailable = extractNarrative(
+    "AngioTC de tórax não disponível.\nTC de crânio sem hemorragia.",
+    stroke,
+  );
+  assert.match(angioUnavailable.imaging.value, /sem hemorragia/i);
+  assert.doesNotMatch(angioUnavailable.imaging.value, /não disponível/i);
+
+  const keptDespiteLaterNegation = extractNarrative(
+    "TC mostra lesão. RM não realizada.",
+    stroke,
+  );
+  assert.match(keptDespiteLaterNegation.imaging.value, /mostra lesão/i);
+
   assert.match(extractNarrative("TC de crânio sem hemorragia.", stroke).imaging.value, /sem hemorragia/i);
   assert.match(extractNarrative("TC sem contraste, sem hemorragia.", stroke).imaging.value, /sem contraste/i);
   assert.match(extractNarrative("sem contraste. TC de crânio sem hemorragia.", stroke).imaging.value, /sem hemorragia/i);

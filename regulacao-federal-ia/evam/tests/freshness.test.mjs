@@ -70,6 +70,32 @@ test("reconhecimento explícito prevalece sobre «há» incidental no TTL", () =
   assert.equal(nounForm.lactate.freshness, "expired");
 });
 
+test("reconhecimento em dias ou minutos não usa o «há» incidental em horas", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const sameSentence = extractNarrative(
+    "Reconhecida há 3 dias, última dose de antibiótico há 2 horas. Mulher, 70 anos. PAM 58. Lactato 5,0 mmol/L.",
+    schema,
+  );
+  assert.equal(sameSentence.hoursSinceRecognition.value, 72);
+  assert.equal(sameSentence.lactate.freshness, "expired");
+  assert.equal(sameSentence.map.freshness, "expired");
+
+  const laterSentence = extractNarrative(
+    "Antibiótico iniciado há 2 horas. Sepse reconhecida há 2 dias. Mulher, 70 anos. PAM 58. Lactato 5,0 mmol/L.",
+    schema,
+  );
+  assert.equal(laterSentence.hoursSinceRecognition.value, 48);
+  assert.equal(laterSentence.lactate.freshness, "expired");
+
+  const minutes = extractNarrative(
+    "Reconhecido há 30 minutos. Dor há 8 horas. PAM 58. Lactato 5,0 mmol/L.",
+    schema,
+  );
+  assert.equal(minutes.hoursSinceRecognition.value, 0.5);
+  assert.equal(minutes.lactate.freshness, "fresh");
+  assert.equal(minutes.map.freshness, "fresh");
+});
+
 test("«há» genérico permanece quando não há reconhecimento explícito", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const text = "Homem, 62 anos. Dor torácica iniciada há 3 horas. PA 92/58 mmHg.";
