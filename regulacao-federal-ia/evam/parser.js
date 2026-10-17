@@ -242,14 +242,18 @@ function parseTroponinMention(negation, keyword, tail) {
 
 /**
  * A primeira menção só entra se o exame foi feito.
- * "Sem TC", "Não há TC", "Não realizou TC" e "TC não realizada" não ocultam
- * a tomografia, a ressonância ou o ultrassom que vêm depois.
+ * "Sem TC", "Não há TC", "Não realizou TC", "TC não realizada" e
+ * "TC de crânio não realizada" não ocultam o exame seguinte.
+ * A negação fica na mesma menção: não atravessa ponto, quebra de linha
+ * nem outra modalidade.
  */
 function extractImaging(text) {
   // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
   const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
   const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
-  const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
+  // Complemento curto na mesma menção ("de crânio"). Ponto, quebra de linha
+  // ou outra modalidade separam o exame seguinte.
+  const negatedAfter = /^(?:[ \t:;, \u2013\u2014-]+(?!n[aã]o\b)(?!(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio|angio)\b)[^\s.;]+){0,6}[ \t:;, \u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
 
   for (const match of text.matchAll(keyword)) {
     const start = match.index;
@@ -274,6 +278,43 @@ function extractImaging(text) {
   return null;
 }
 
+// "há N dias" = N×24 h; "há N minutos" = N/60 h. Sem unidade, o número já está em horas.
+function hoursFromRecognitionUnit(raw, unit) {
+  const value = number(raw);
+  if (value === null || value < 0) return null;
+  const normalized = String(unit || "h").toLowerCase();
+  if (normalized.startsWith("d")) return value * 24;
+  if (normalized.startsWith("m")) return Math.round((value / 60) * 100) / 100;
+  return value;
+}
+
+/**
+ * O intervalo colado ao reconhecimento prevalece sobre um "há N horas" incidental
+ * (antibiótico, dor). Vale o primeiro "há N" da mesma frase, inclusive dias e
+ * minutos. Saltar "há 3 dias" até "há 2 horas" carimbava o lactato como fresh.
+ */
+function extractHoursSinceRecognition(text) {
+  const recognition = /\breconheci(?:mento|d(?:os|as|o|a))\b([^\n.]{0,80})/giu;
+  const interval = /\bh[aá]\s*(\d+(?:[.,]\d+)?)(?:\s*(horas?|dias?|minutos?|min|h|d))?\b/iu;
+
+  for (const match of text.matchAll(recognition)) {
+    const found = interval.exec(match[1]);
+    if (!found) continue;
+    const value = hoursFromRecognitionUnit(found[1], found[2]);
+    if (value === null) continue;
+    return {
+      value,
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+    };
+  }
+
+  return matchOne(text, [
+    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
+  ], 1, number);
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -284,14 +325,7 @@ const EXTRACTORS = Object.freeze({
     /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
     /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/iu,
   ]),
-  // Explicit recognition must win over an earlier incidental "há N horas"
-  // (antibiotic duration, pain onset). Otherwise derived TTL observedAt follows
-  // the wrong interval and an expired lactate can be stamped fresh.
-  hoursSinceRecognition: (text) => matchOne(text, [
-    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
-  ], 1, number),
+  hoursSinceRecognition: extractHoursSinceRecognition,
   sbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
