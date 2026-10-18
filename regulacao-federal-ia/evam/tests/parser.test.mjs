@@ -308,6 +308,51 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("glasgow em componentes EVM grava a soma e cede a leitura da entrada", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  assert.equal(extractNarrative("Glasgow E2 V2 M4.", schema).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow: E2 V3 M4 = 9.", schema).gcs.value, 9);
+  assert.equal(extractNarrative("Glasgow (E4 V5 M6).", schema).gcs.value, 15);
+  assert.equal(extractNarrative("GCS E1 V1 M2.", schema).gcs.value, 4);
+  assert.equal(extractNarrative("ECGLA E3 V4 M6.", schema).gcs.value, 13);
+  assert.equal(extractNarrative("Glasgow E4V5M6.", schema).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow E2, V2, M4.", schema).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow AO 4 RV 5 RM 6.", schema).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow E1 VT M2.", schema).gcs.value, 4);
+  assert.equal(extractNarrative("Glasgow E1 V1T M3.", schema).gcs.value, 5);
+  assert.equal(extractNarrative("ECGLA 14.", schema).gcs.value, 14);
+  assert.equal(extractNarrative("Glasgow 8/15.", schema).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15 (E4 V5 M6).", schema).gcs.value, 15);
+
+  const deteriorated = extractNarrative(
+    "GCS 15 na entrada. Reavaliação: Glasgow E1 V1 M2.",
+    schema,
+  );
+  assert.equal(deteriorated.gcs.value, 4);
+  const envelope = buildEnvelope({
+    sourceText: "GCS 15 na entrada. Reavaliação: Glasgow E1 V1 M2.",
+    schema,
+    fields: deteriorated,
+  });
+  assert.equal(envelope.data.gcs, 4);
+  assert.equal(envelope.missingCritical.includes("gcs"), false);
+
+  assert.equal(
+    extractNarrative("Glasgow 14 na admissão. Glasgow E2 V2 M4.", schema).gcs.value,
+    8,
+  );
+  assert.equal(
+    extractNarrative("Glasgow E4 V5 M6 = 15 na admissão. Glasgow 8.", schema).gcs.value,
+    8,
+  );
+  assert.equal(
+    extractNarrative("Glasgow E4 V5 M6 na admissão. Agora Glasgow E1 V1 M2.", schema).gcs.value,
+    4,
+  );
+  assert.equal(extractNarrative("Glasgow 14. Glasgow E2 V2 M4.", schema).gcs.value, 14);
+  assert.equal(extractNarrative("Glasgow 14 na entrada. Agora Glasgow 8.", schema).gcs.value, 8);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(

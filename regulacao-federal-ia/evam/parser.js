@@ -274,6 +274,56 @@ function extractImaging(text) {
   return null;
 }
 
+function gcsComponentTotal(eye, verbal, motor) {
+  const parts = [eye, verbal, motor].map(number);
+  if (!parts.every((part) => Number.isInteger(part))) return null;
+  const [ocular, voice, movement] = parts;
+  if (ocular < 1 || ocular > 4 || voice < 1 || voice > 5 || movement < 1 || movement > 6) return null;
+  return ocular + voice + movement;
+}
+
+function collectGcsHits(text, expression, valueOf) {
+  const hits = [];
+  for (const match of text.matchAll(expression)) {
+    const value = valueOf(match);
+    if (value === null || value === "") continue;
+    const after = text.slice(match.index + match[0].length);
+    hits.push({
+      value,
+      index: match.index,
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+      current: isCurrentReading(text, match),
+      historical: HISTORICAL_READING.test(after),
+    });
+  }
+  return hits;
+}
+
+function selectReading(hits) {
+  const ordered = [...hits].sort((a, b) => a.index - b.index);
+  const current = ordered.filter((hit) => hit.current);
+  if (current.length) return publishReading(current[current.length - 1]);
+  const unmarked = ordered.find((hit) => !hit.historical);
+  if (unmarked) return publishReading(unmarked);
+  if (ordered.length) return publishReading(ordered[0]);
+  return null;
+}
+
+/**
+ * "E2 V2 M4", "AO 2 RV 3 RM 4" e "E1 VT M2" são ocular, verbal e motora.
+ * VT (tubo) conta verbal 1. A soma entra na mesma regra vigente/histórica do total nu.
+ */
+function extractGcs(text) {
+  const bare = /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/giu;
+  const components = /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*,?\s*)?[:=,]?\s*\(?\s*(?:a?o|e)\s*([1-4])\s*[,/+]?\s*r?v\s*(?:t|([1-5])\s*t?)\s*[,/+]?\s*r?m\s*([1-6])(?:\s*=\s*\d{1,2})?(?:\s*\/\s*15)?\s*\)?/giu;
+  const hits = [
+    ...collectGcsHits(text, bare, (match) => number(match[1])),
+    ...collectGcsHits(text, components, (match) => gcsComponentTotal(match[1], match[2] ?? 1, match[3])),
+  ];
+  return selectReading(hits);
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -317,9 +367,7 @@ const EXTRACTORS = Object.freeze({
   temperature: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
   ]),
-  gcs: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ]),
+  gcs: extractGcs,
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
