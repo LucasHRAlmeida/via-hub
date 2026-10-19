@@ -350,8 +350,15 @@ test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
     "ECGL 15.\nEletrocardiograma: ritmo sinusal, sem supradesnivelamento.",
     schema,
   );
+  assert.equal(ecgl.gcs.value, 15);
   assert.match(ecgl.ecg.value, /ritmo sinusal/i);
   assert.doesNotMatch(ecgl.ecg.value, /ECGL\b/);
+
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  assert.equal(extractNarrative("ECGL 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("ECGL: 7/15.", trauma).gcs.value, 7);
+  assert.equal(extractNarrative("Glasgow 15 na admissão. ECGL 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("ECGLA 14.", trauma).gcs.value, 14);
 
   const sameLine = extractNarrative("ECGLA 14. ECG: supradesnivelamento de ST em V2-V4.", schema);
   assert.equal(sameLine.gcs.value, 14);
@@ -359,9 +366,11 @@ test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
 
   const plain = extractNarrative("ECG: supradesnivelamento de ST em parede anterior.", schema);
   assert.match(plain.ecg.value, /supradesnivelamento de ST/i);
+  assert.equal(plain.gcs.value, "");
 
   const plural = extractNarrative("ECGs seriados com supradesnivelamento anterior.", schema);
   assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
+  assert.equal(plural.gcs.value, "");
 });
 
 test("resumo formatado explicita campos críticos e governança", () => {
