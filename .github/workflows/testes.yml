@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Retorno ao Hub em todas as superfícies
+        run: node tests/hub-return.test.cjs
       - name: Contrato da Escala Movel
         run: node tests/escala-movel.test.cjs
       - name: Tema claro/escuro
