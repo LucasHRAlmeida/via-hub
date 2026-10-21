@@ -30,11 +30,23 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 };
 
 // "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
-// "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
-// permanece: é o único número do campo.
+// "basal" e equivalentes nomeiam a anterior — depois do número ou no
+// cabeçalho da mesma frase ("Na admissão, PA 180/110. PA 80/50"). Sem outro
+// candidato, a anterior permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
-const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+const HISTORICAL_PHRASE = String.raw`(?:(?:(?:na|de|da)\s+)?(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)`;
+// Depois do número a preposição continua obrigatória ("na admissão", não "admissão" solta).
+const HISTORICAL_READING = new RegExp(
+  String.raw`^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b`,
+  "iu",
+);
+// Cabeçalho da frase, não um qualificador colado ao número anterior
+// ("FR 16 basal, FR 36" continua com o 36).
+const HISTORICAL_HEADER = new RegExp(
+  String.raw`^\s*(?:(?:sinais(?:\s+vitais)?|sv|svv)\s*[:,;\u2013\u2014-]?\s*)?${HISTORICAL_PHRASE}\b`,
+  "iu",
+);
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,
@@ -46,6 +58,14 @@ const isCurrentReading = (text, match) => {
   return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
 };
 
+const isHistoricalReading = (text, match) => {
+  const after = text.slice(match.index + match[0].length);
+  if (HISTORICAL_READING.test(after)) return true;
+  const before = text.slice(0, match.index);
+  const sentence = before.split(/\n|\.(?=\s)/).pop() ?? "";
+  return HISTORICAL_HEADER.test(sentence);
+};
+
 function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
   const grouped = expressions.map((expression) => {
     const flags = expression.flags.includes("g") ? expression.flags : `${expression.flags}g`;
@@ -53,13 +73,12 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
     for (const match of text.matchAll(new RegExp(expression.source, flags))) {
       const value = transform(match[valueGroup], match);
       if (value === null || value === "") continue;
-      const after = text.slice(match.index + match[0].length);
       found.push({
         value,
         excerpt: excerptAround(text, match.index, match[0].length),
         confidence: "heurística",
         current: isCurrentReading(text, match),
-        historical: HISTORICAL_READING.test(after),
+        historical: isHistoricalReading(text, match),
       });
     }
     return found;
@@ -311,8 +330,8 @@ const EXTRACTORS = Object.freeze({
   ]),
   spo2: (text) => matchCurrentReading(text, [
     // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
-    // de "10 L/min" para SpO₂=1.
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
+    // de "10 L/min" para SpO₂=1. SatO2 e SpO₂ são a mesma grandeza.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:spo[2\u2082]|sat(?:ura[cç][aã]o)?(?:\s*(?:de\s+)?o\s*[2\u2082])?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
   ]),
   temperature: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
