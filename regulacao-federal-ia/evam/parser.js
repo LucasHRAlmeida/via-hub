@@ -277,8 +277,10 @@ function extractImaging(text) {
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
-    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b(?!\s*\d))/iu,
-    /\b(\d{1,3})\s*anos?\b/iu,
+    // "15 anos de diabetes/evolução" é duração da doença e não pode ocupar o
+    // campo: a idade demográfica vem depois. "anos de idade/vida" permanece.
+    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?\b(?!\s+de\s+(?!(?:idade|vida)\b))|a\b(?!\s*\d))/iu,
+    /\b(\d{1,3})\s*anos?\b(?!\s+de\s+(?!(?:idade|vida)\b))/iu,
   ], 1, number),
   sex: (text) => matchOne(text, [
     /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,

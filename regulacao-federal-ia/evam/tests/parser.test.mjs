@@ -140,6 +140,28 @@ test("hemorragia negada depois do achado não entra como presente", () => {
   );
 });
 
+test("duração da doença em anos não entra como idade", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const cases = [
+    ["Paciente com 15 anos de diabetes. Mulher, 72 anos. PA 88/50.", 72],
+    ["Paciente com 15 anos de evolução. Mulher, 70 anos.", 70],
+    ["Paciente com 1 ano de evolução. Mulher, 70 anos.", 70],
+    ["Paciente com 20 anos de hipertensão. Homem de 64 anos.", 64],
+    ["Criança com 8 anos de epilepsia. Paciente de 3 anos.", 3],
+    ["Mulher, 72 anos, com 15 anos de diabetes.", 72],
+    ["Homem de 64 anos com 20 anos de hipertensão.", 64],
+    ["Paciente com 81 anos de idade.", 81],
+    ["Lactente com 2 anos de vida.", 2],
+    ["Idade: 67 anos. Paciente com 40 anos de hipertensão.", 67],
+  ];
+  for (const [text, expected] of cases) {
+    assert.equal(extractNarrative(text, schema).age.value, expected, text);
+  }
+  assert.equal(extractNarrative("Paciente com 15 anos de diabetes.", schema).age.value, "");
+  assert.equal(extractNarrative("Paciente com 15 anos de evolução.", schema).age.value, "");
+  assert.equal(extractNarrative("Paciente com 8 anos.", schema).age.value, 8);
+});
+
 test("intervalo de evolução não entra como idade", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const ranged = extractNarrative(
