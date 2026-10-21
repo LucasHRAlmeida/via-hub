@@ -1,0 +1,39 @@
+/* VIA Hub: retorno institucional comum, estático e acessível. */
+.via-hub-return-nav {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 41;
+  width: 100%;
+  margin: 0;
+  padding: 7px clamp(12px, 3vw, 24px);
+  background: #0b2e4a;
+  border-bottom: 1px solid #2a516c;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.via-hub-return-nav a {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid #5a97ac;
+  border-radius: 4px;
+  background: #103c5b;
+  color: #f4f8fa;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.via-hub-return-nav a:hover {
+  background: #194e6d;
+  border-color: #8dd9e9;
+  color: #fff;
+}
+.via-hub-return-nav a:focus-visible {
+  outline: 3px solid #19a6c9;
+  outline-offset: 3px;
+}
