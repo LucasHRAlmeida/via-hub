@@ -346,7 +346,10 @@ const EXTRACTORS = Object.freeze({
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
   ]),
   pao2: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpao2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
+    // Gasometria usa pO2, PO2 e PaO₂ para a mesma grandeza. Sem o sinônimo,
+    // a PaO2 da admissão ocupa o campo e a hipoxemia atual desaparece.
+    // pCO2/PaCO2 não casam: o "c" interrompe p(?:a)?o.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bp(?:a)?o[2₂]\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ]),
   fio2: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
