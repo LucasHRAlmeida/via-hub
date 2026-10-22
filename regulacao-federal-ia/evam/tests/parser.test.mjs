@@ -55,6 +55,29 @@ test("SpO2 não grava fluxo de oxigênio como saturação", () => {
   assert.equal(extractNarrative("Sat 97%.", schema).spo2.value, 97);
 });
 
+test("pO2 e PaO₂ não gravam a PaO2 da admissão", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const marked = extractNarrative(
+    "PaO2 90 mmHg na admissão. Agora pO2 52 mmHg em FiO2 100%.",
+    schema,
+  );
+  assert.equal(marked.pao2.value, 52);
+  assert.equal(marked.fio2.value, 100);
+
+  const unmarked = extractNarrative("PaO2 90 mmHg na admissão. pO2 52 mmHg.", schema);
+  assert.equal(unmarked.pao2.value, 52);
+
+  assert.equal(extractNarrative("PO2 48 mmHg.", schema).pao2.value, 48);
+  assert.equal(extractNarrative("PaO₂ 61 mmHg.", schema).pao2.value, 61);
+  assert.equal(extractNarrative("pO₂ 55 mmHg.", schema).pao2.value, 55);
+  assert.equal(extractNarrative("PaO2 52 mmHg.", schema).pao2.value, 52);
+  assert.equal(
+    extractNarrative("PaCO2 55 mmHg. pCO2 50 mmHg. PaO2 60 mmHg.", schema).pao2.value,
+    60,
+  );
+  assert.equal(extractNarrative("SpO2 93%. PaCO2 45 mmHg.", schema).pao2.value, "");
+});
+
 test("troponina seriada e negada não grava a primeira leitura invertida", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const serial = extractNarrative(
