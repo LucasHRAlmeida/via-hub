@@ -339,7 +339,7 @@ ${groups}
       <p><strong>Dr Lucas HR Almeida</strong> — Médico Generalista (FMRP-USP) · CRM-SP 226836 | CRM-MG 109752</p>
       <p>Ciência e Tecnologia a serviço do Cuidado.</p>
       <p><a href="../">Iniciativa VIA</a> · <a href="../sobre/">Sobre o fundador</a> · <a href="../llms.txt">Mapa de conteúdo</a> · <a href="../ai.txt">Política para agentes de IA</a></p>
-      <p class="base">Conteúdo educativo — não substitui avaliação, diagnóstico ou tratamento profissional.</p>
+      <p class="base">Acesso aos conteúdos e ferramentas não constitui consulta médica; recursos usados em decisões clínicas exigem avaliação do caso e responsabilidade profissional.</p>
     </div>
   </footer>
 
