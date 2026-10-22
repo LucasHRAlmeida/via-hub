@@ -87,7 +87,7 @@
       "id": "conteudo-substitui-consulta",
       "category": "cuidado",
       "question": "O conteúdo da VIA substitui uma consulta médica?",
-      "answer": "O acesso aos conteúdos e às ferramentas da VIA, por si só, não constitui consulta médica. Alguns recursos são educativos; outros podem apoiar o raciocínio e a decisão clínica, conforme a finalidade, o estágio e os limites declarados em cada um. Quando um recurso participa de uma decisão clínica, cabe ao profissional examinar as fontes, a incerteza e o caso concreto: uma interface ou seu fornecedor não assume esse juízo por delegação tácita. O atendimento médico oferecido por Dr Lucas HR Almeida é um serviço clínico distinto do acesso a esses materiais, agendado pelo canal indicado no site.",
+      "answer": "Não. O acesso aos conteúdos e às ferramentas da VIA não substitui a avaliação clínica individual, o diagnóstico ou o tratamento quando necessários, nem constitui, por si só, uma consulta médica. Alguns recursos são educativos; outros podem apoiar o raciocínio e a decisão clínica, conforme a finalidade, o estágio e os limites declarados em cada um. Quando um recurso participa de uma decisão clínica, cabe ao profissional examinar as fontes, a incerteza e o caso concreto: uma interface ou seu fornecedor não assume esse juízo por delegação tácita. O atendimento médico oferecido por Dr Lucas HR Almeida é um serviço clínico distinto do acesso a esses materiais, agendado pelo canal indicado no site.",
       "sources": ["/sobre/", "docs/decisoes/0001-tese-fundadora.md", "FAQ: como-entrar-em-contato"]
     },
     {
