@@ -53,6 +53,12 @@ test("SpO2 não grava fluxo de oxigênio como saturação", () => {
   assert.equal(extractNarrative("Saturação de O2 15 L/min.", schema).spo2.value, "");
   assert.equal(extractNarrative("Saturação de O2: 2 litros/min. SpO2 96%.", schema).spo2.value, 96);
   assert.equal(extractNarrative("Sat 97%.", schema).spo2.value, 97);
+  assert.equal(extractNarrative("SatO2 88% em máscara.", schema).spo2.value, 88);
+  assert.equal(extractNarrative("Sat O2 82%.", schema).spo2.value, 82);
+  assert.equal(extractNarrative("SpO\u2082 91%.", schema).spo2.value, 91);
+  assert.equal(extractNarrative("SatO2 10 L/min.", schema).spo2.value, "");
+  assert.equal(extractNarrative("SpO2 99% na admissão. SatO2 88%.", schema).spo2.value, 88);
+  assert.equal(extractNarrative("Sat O2 88%. SpO2 99% basal.", schema).spo2.value, 88);
 });
 
 test("troponina seriada e negada não grava a primeira leitura invertida", () => {
@@ -306,6 +312,44 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("NIHSS 4 na admissão. NIHSS atual 18.", stroke).nihss.value, 18);
   assert.equal(extractNarrative("NIHSS 16.", stroke).nihss.value, 16);
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
+});
+
+test("cabeçalho de admissão antes do valor não oculta o sinal seguinte", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+
+  const shock = extractNarrative("Na admissão PA 180/110. PA 80/50.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+  assert.equal(extractNarrative("Na admissão, PA 180/110. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Na admissão PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Na admissão PA 80/50.", coronary).dbp.value, 50);
+
+  const block = extractNarrative("Na admissão: PA 180/110, FC 90. PA 80/50, FC 140.", coronary);
+  assert.equal(block.sbp.value, 80);
+  assert.equal(block.dbp.value, 50);
+  assert.equal(block.heartRate.value, 140);
+
+  assert.equal(extractNarrative("SV na admissão: PA 180/110. PA 70/40.", coronary).sbp.value, 70);
+  assert.equal(extractNarrative("Admissão: PA 180/110. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Da triagem PA 150/90. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Na cena PA 90/60. PA 80/40.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Basal FC 88. FC 130.", coronary).heartRate.value, 130);
+  assert.equal(extractNarrative("Na entrada, lactato 1,2. Lactato 6,4.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Na admissão, lactato 1,2.", sepsis).lactate.value, 1.2);
+
+  assert.equal(extractNarrative("PA 180/110 na admissão. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L. Lac 1,2 na admissão.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("FR 16 basal, FR 36.", respiratory).respiratoryRate.value, 36);
+  assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 120/80 a pedido. PA 90/60.", coronary).sbp.value, 120);
+  assert.equal(extractNarrative("FC 140 a 150. FC 90.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("Na admissão o paciente estava estável. PA 90/60.", coronary).sbp.value, 90);
+  assert.equal(
+    extractNarrative("Negou dor na admissão e a PA 180/110. PA 80/50.", coronary).sbp.value,
+    180,
+  );
 });
 
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
