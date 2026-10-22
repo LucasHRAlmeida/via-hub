@@ -34,7 +34,9 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 // permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
-const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+// "mm Hg" é a mesma unidade que "mmHg". Sem o espaço, a admissão não é
+// histórica e a pressão (ou a PaO2) seguinte fica oculta.
+const HISTORICAL_READING = /^\s*(?:mm\s*hg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,
