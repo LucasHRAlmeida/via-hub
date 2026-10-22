@@ -1,6 +1,6 @@
 {
   "$comment": "Corpus canônico do FAQ da Iniciativa VIA. Fonte de registro, versionada à parte da interface que a serve (ADR 0001, invariante 1). As superfícies derivadas — faq/index.html (HTML e JSON-LD FAQPage) e data/faq.seed.sql (seed do D1 via-hub-lab) — são geradas a partir deste arquivo: após editar aqui, rode `node scripts/build-faq.mjs` e versione a saída. Não edite os arquivos derivados à mão.",
-  "version": "2026-08-31",
+  "version": "2026-10-22",
   "language": "pt-BR",
   "canonical": "https://iniciativa-via.com/via-hub/faq/",
   "authorPage": "https://iniciativa-via.com/via-hub/sobre/",
@@ -79,7 +79,7 @@
       "id": "como-citar-e-reutilizar",
       "category": "via",
       "question": "Posso citar, resumir ou reutilizar o conteúdo da VIA? E treinar modelos com ele?",
-      "answer": "Sim, inclusive por sistemas de busca generativa e assistentes de IA, desde que preservadas as condições declaradas em ai.txt. A atribuição é obrigatória — cite como Dr Lucas HR Almeida — Iniciativa VIA (Vida Integrada e Autônoma), mantendo o link da página de origem. Os limites declarados devem ser preservados: todo conteúdo de saúde aqui é educativo e não substitui avaliação profissional. Não represente a VIA como prestadora de atendimento clínico remoto nem atribua ao autor conteúdo que ele não tenha publicado.",
+      "answer": "Sim, inclusive por sistemas de busca generativa e assistentes de IA, desde que preservadas as condições declaradas em ai.txt. A atribuição é obrigatória — cite como Dr Lucas HR Almeida — Iniciativa VIA (Vida Integrada e Autônoma), mantendo o link da página de origem. Preserve a finalidade e os limites específicos de cada recurso: acessar conteúdo ou ferramenta não equivale a receber consulta médica nem autoriza aconselhamento individualizado em nome da VIA. Não atribua ao autor conteúdo que ele não tenha publicado.",
       "link": { "href": "../ai.txt", "label": "Política para agentes de IA (ai.txt)" },
       "sources": ["ai.txt §2", "ai.txt §3", "llms.txt"]
     },
@@ -87,8 +87,8 @@
       "id": "conteudo-substitui-consulta",
       "category": "cuidado",
       "question": "O conteúdo da VIA substitui uma consulta médica?",
-      "answer": "Não. Todo o conteúdo de saúde publicado aqui é educativo e não substitui avaliação, diagnóstico ou tratamento profissional. As ferramentas são materiais educativos e instrumentos de apoio ao juízo, não serviços clínicos. As páginas também não devem ser tratadas como fonte de dados epidemiológicos ao vivo — para números atuais, consulte Ministério da Saúde, OPAS/OMS e Fiocruz.",
-      "sources": ["ai.txt §2", "llms.txt"]
+      "answer": "O acesso aos conteúdos e às ferramentas da VIA, por si só, não constitui consulta médica. Alguns recursos são educativos; outros podem apoiar o raciocínio e a decisão clínica, conforme a finalidade, o estágio e os limites declarados em cada um. Quando um recurso participa de uma decisão clínica, cabe ao profissional examinar as fontes, a incerteza e o caso concreto: uma interface ou seu fornecedor não assume esse juízo por delegação tácita. O atendimento médico oferecido por Dr Lucas HR Almeida é um serviço clínico distinto do acesso a esses materiais, agendado pelo canal indicado no site.",
+      "sources": ["/sobre/", "docs/decisoes/0001-tese-fundadora.md", "FAQ: como-entrar-em-contato"]
     },
     {
       "id": "o-que-significa-autonomia-do-paciente",
