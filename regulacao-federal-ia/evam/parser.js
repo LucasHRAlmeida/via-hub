@@ -200,14 +200,37 @@ function extractTroponin(text) {
   };
 }
 
+// Carimbo de registro colado ao rótulo (03/10, 03/10/2026, 08h, 14:30).
+// O resultado vem depois. Mês só até 12, para não consumir uma curva (12/450).
+const RECORDED_DATE = String.raw`\d{1,2}\s*/\s*(?:0?[1-9]|1[0-2])(?!\d)(?:\s*/\s*\d{2,4})?`;
+const RECORDED_CLOCK = String.raw`\d{1,2}\s*h(?:oras?)?(?:\s*\d{1,2})?|\d{1,2}:\d{2}`;
+const RECORDED_AT = String.raw`${RECORDED_DATE}(?:\s+(?:${RECORDED_CLOCK}))?\s*[:=]?\s*|(?:${RECORDED_CLOCK})\s*[:=.-]?\s*(?=\d)`;
+
+function stripRecordedAt(value) {
+  const match = String(value).match(new RegExp(String.raw`^\s*[:=]?\s*(?:${RECORDED_AT})`, "iu"));
+  return match ? String(value).slice(match[0].length) : String(value);
+}
+
+function currentLabeledReading(label, value, suffix = "") {
+  // O valor não pode ser o próprio dia: sem o resultado depois da data, o
+  // motor não volta atrás e grava 03 de "03/10".
+  const notDate = String.raw`(?!\s*/\s*(?:0?[1-9]|1[0-2])(?!\d))`;
+  return new RegExp(
+    String.raw`(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:${label})\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(?:${RECORDED_AT})?(${value})${notDate}${suffix}`,
+    "iu",
+  );
+}
+
 function parseTroponinMention(negation, keyword, tail) {
   // "Troponina I", "Troponina (T)" e "ultrassensível" qualificam o ensaio.
   // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
+  // "Troponina 03/10: 450 ng/L" — a data não é a dosagem.
   let rest = String(tail).replace(
     /^(?:[\s-]+\(?(?:ultrassens[ií]vel|de\s+alta\s+sensibilidade|us|hs|tni|tnt|i|t)\b\)?)+/iu,
     "",
   );
   rest = rest.replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
+  rest = stripRecordedAt(rest);
   const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
   const quantified = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
   const qualitative = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
@@ -327,29 +350,29 @@ const EXTRACTORS = Object.freeze({
     /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
   ]),
   lactate: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+    currentLabeledReading("lactato|lac", String.raw`\d+(?:[.,]\d+)?`, String.raw`\s*(?:mmol\/?l)?\b`),
   ]),
   creatinine: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:creatinina|cr)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+    currentLabeledReading("creatinina|cr", String.raw`\d+(?:[.,]\d+)?`, String.raw`\s*(?:mg\/?dl)?\b`),
   ]),
   bilirubin: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:bilirrubina\s+total|bt)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+    currentLabeledReading(String.raw`bilirrubina\s+total|bt`, String.raw`\d+(?:[.,]\d+)?`, String.raw`\s*(?:mg\/?dl)?\b`),
   ]),
   platelets: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:plaquetas?|plaq)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
+    currentLabeledReading("plaquetas?|plaq", String.raw`\d+(?:[.,]\d+)?`, String.raw`\s*(?:mil|k|\/mm3|\/mm³)?\b`),
   ]),
   inr: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
+    currentLabeledReading("inr", String.raw`\d+(?:[.,]\d+)?`, String.raw`\b`),
   ]),
   troponin: extractTroponin,
   ph: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
+    currentLabeledReading("ph", String.raw`\d[.,]\d{1,3}`, String.raw`\b`),
   ]),
   pao2: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpao2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
   ]),
   fio2: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
+    currentLabeledReading("fio2", String.raw`\d{1,3}`, String.raw`\s*%?`),
   ]),
   nihss: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\b/iu,
