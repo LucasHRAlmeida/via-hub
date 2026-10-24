@@ -108,6 +108,79 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(serialAssay.troponin.value, /\b18\b/);
 });
 
+test("carimbo de data do exame não entra como resultado", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const acs = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  const dated = extractNarrative(
+    "Mulher, 81 anos. Lactato 1,8 na admissão. Lactato 03/10: 6,4 mmol/L. Bilirrubina total 03/10: 12,9 mg/dL. Creatinina 22/10 14:30: 2,8 mg/dL. INR 03/10: 1,6. Plaquetas 03/10: 150000.",
+    sepsis,
+  );
+  assert.equal(dated.lactate.value, 6.4);
+  assert.equal(dated.bilirubin.value, 12.9);
+  assert.equal(dated.creatinine.value, 2.8);
+  assert.equal(dated.inr.value, 1.6);
+  assert.equal(dated.platelets.value, 150000);
+  const envelope = buildEnvelope({
+    sourceText: "Lactato 03/10: 6,4 mmol/L. Bilirrubina total 03/10: 12,9 mg/dL.",
+    schema: sepsis,
+    fields: dated,
+  });
+  assert.equal(envelope.data.lactate, 6.4);
+  assert.equal(envelope.data.bilirubin, 12.9);
+  assert.equal(envelope.missingCritical.includes("lactate"), false);
+  assert.equal(envelope.missingCritical.includes("bilirubin"), false);
+
+  assert.equal(extractNarrative("Lactato 03/10 08h: 6,1 mmol/L.", sepsis).lactate.value, 6.1);
+  assert.equal(extractNarrative("Lactato 03/10 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10.", sepsis).lactate.value, "");
+  assert.equal(extractNarrative("Lactato 03/10. Lactato 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 4,1 mmol/L.", sepsis).lactate.value, 4.1);
+  assert.equal(extractNarrative("BT 2,4 mg/dL.", sepsis).bilirubin.value, 2.4);
+  assert.equal(extractNarrative("INR 1,4.", sepsis).inr.value, 1.4);
+  assert.equal(extractNarrative("Plaquetas 180000.", sepsis).platelets.value, 180000);
+
+  assert.equal(extractNarrative("FiO2 03/10: 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FiO2 50%.", respiratory).fio2.value, 50);
+  assert.equal(extractNarrative("FiO2 03/10.", respiratory).fio2.value, "");
+  assert.equal(extractNarrative("FiO2 50% na admissão. FiO2 03/10. FiO2 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FiO2 50% na admissão. FiO2 03/10 às 08h: 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("pH 7,40 na admissão. pH 03/10: 7,21.", trauma).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 7,40 na admissão. pH 03/10 às 14h: 7,21.", trauma).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 03/10 - 7,21.", trauma).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 7,18.", respiratory).ph.value, 7.18);
+
+  assert.equal(extractNarrative("Lactato 1,8 na admissão. Lactato 03/10 às 14h: 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 as 14h: 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 - 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 14h - 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 — 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(
+    extractNarrative("Creatinina 1,1 na admissão. Creatinina 22/10 14:30 - 2,8 mg/dL.", sepsis).creatinine.value,
+    2.8,
+  );
+  assert.equal(
+    extractNarrative("BT 2,0 na admissão. BT 03/10 às 10h - 12,9 mg/dL.", sepsis).bilirubin.value,
+    12.9,
+  );
+
+  const troponin = extractNarrative(
+    "Homem, 62 anos. Troponina 12 ng/L na admissão. Troponina 03/10: 450 ng/L.",
+    acs,
+  );
+  assert.match(troponin.troponin.value, /450/);
+  assert.doesNotMatch(troponin.troponin.value, /\b03\b/);
+  assert.match(extractNarrative("Troponina 03/10/2026 21h: 450 ng/L.", acs).troponin.value, /450/);
+  assert.match(extractNarrative("Troponina 12 ng/L na admissão. Troponina 03/10 às 21h: 450 ng/L.", acs).troponin.value, /450/);
+  assert.doesNotMatch(extractNarrative("Troponina 12 ng/L na admissão. Troponina 03/10 às 21h: 450 ng/L.", acs).troponin.value, /\b12\b/);
+  assert.equal(extractNarrative("Troponina 03/10.", acs).troponin.value, "");
+  assert.match(extractNarrative("Troponina 12 ng/L. Troponina 03/10.", acs).troponin.value, /12 ng\/L/);
+  assert.match(extractNarrative("Troponina de 3 horas: 420 ng/L.", acs).troponin.value, /420/);
+  assert.match(extractNarrative("Troponina 450 ng/L.", acs).troponin.value, /450 ng\/L/);
+});
+
 test("hemorragia negada depois do achado não entra como presente", () => {
   const schema = getSchema("polytrauma.trauma-surgery.v1");
   const absent = [
