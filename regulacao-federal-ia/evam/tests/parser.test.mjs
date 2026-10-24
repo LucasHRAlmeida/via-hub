@@ -144,8 +144,27 @@ test("carimbo de data do exame não entra como resultado", () => {
 
   assert.equal(extractNarrative("FiO2 03/10: 100%.", respiratory).fio2.value, 100);
   assert.equal(extractNarrative("FiO2 50%.", respiratory).fio2.value, 50);
+  assert.equal(extractNarrative("FiO2 03/10.", respiratory).fio2.value, "");
+  assert.equal(extractNarrative("FiO2 50% na admissão. FiO2 03/10. FiO2 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FiO2 50% na admissão. FiO2 03/10 às 08h: 100%.", respiratory).fio2.value, 100);
   assert.equal(extractNarrative("pH 7,40 na admissão. pH 03/10: 7,21.", trauma).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 7,40 na admissão. pH 03/10 às 14h: 7,21.", trauma).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 03/10 - 7,21.", trauma).ph.value, 7.21);
   assert.equal(extractNarrative("pH 7,18.", respiratory).ph.value, 7.18);
+
+  assert.equal(extractNarrative("Lactato 1,8 na admissão. Lactato 03/10 às 14h: 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 as 14h: 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 - 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 14h - 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 03/10 — 6,4 mmol/L.", sepsis).lactate.value, 6.4);
+  assert.equal(
+    extractNarrative("Creatinina 1,1 na admissão. Creatinina 22/10 14:30 - 2,8 mg/dL.", sepsis).creatinine.value,
+    2.8,
+  );
+  assert.equal(
+    extractNarrative("BT 2,0 na admissão. BT 03/10 às 10h - 12,9 mg/dL.", sepsis).bilirubin.value,
+    12.9,
+  );
 
   const troponin = extractNarrative(
     "Homem, 62 anos. Troponina 12 ng/L na admissão. Troponina 03/10: 450 ng/L.",
@@ -154,6 +173,8 @@ test("carimbo de data do exame não entra como resultado", () => {
   assert.match(troponin.troponin.value, /450/);
   assert.doesNotMatch(troponin.troponin.value, /\b03\b/);
   assert.match(extractNarrative("Troponina 03/10/2026 21h: 450 ng/L.", acs).troponin.value, /450/);
+  assert.match(extractNarrative("Troponina 12 ng/L na admissão. Troponina 03/10 às 21h: 450 ng/L.", acs).troponin.value, /450/);
+  assert.doesNotMatch(extractNarrative("Troponina 12 ng/L na admissão. Troponina 03/10 às 21h: 450 ng/L.", acs).troponin.value, /\b12\b/);
   assert.equal(extractNarrative("Troponina 03/10.", acs).troponin.value, "");
   assert.match(extractNarrative("Troponina 12 ng/L. Troponina 03/10.", acs).troponin.value, /12 ng\/L/);
   assert.match(extractNarrative("Troponina de 3 horas: 420 ng/L.", acs).troponin.value, /420/);

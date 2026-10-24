@@ -200,11 +200,13 @@ function extractTroponin(text) {
   };
 }
 
-// Carimbo de registro colado ao rótulo (03/10, 03/10/2026, 08h, 14:30).
-// O resultado vem depois. Mês só até 12, para não consumir uma curva (12/450).
+// Carimbo de registro colado ao rótulo (03/10, 03/10/2026, 08h, 14:30,
+// 03/10 às 14h, 22/10 14:30 - valor). O resultado vem depois. Mês só até
+// 12, para não consumir uma curva (12/450).
 const RECORDED_DATE = String.raw`\d{1,2}\s*/\s*(?:0?[1-9]|1[0-2])(?!\d)(?:\s*/\s*\d{2,4})?`;
 const RECORDED_CLOCK = String.raw`\d{1,2}\s*h(?:oras?)?(?:\s*\d{1,2})?|\d{1,2}:\d{2}`;
-const RECORDED_AT = String.raw`${RECORDED_DATE}(?:\s+(?:${RECORDED_CLOCK}))?\s*[:=]?\s*|(?:${RECORDED_CLOCK})\s*[:=.-]?\s*(?=\d)`;
+const RECORDED_SEP = String.raw`(?:\s+(?:às|as))?\s*[:=.` + "\u2013\u2014" + String.raw`-]?\s*`;
+const RECORDED_AT = String.raw`${RECORDED_DATE}(?:(?:\s+(?:às|as))?\s+(?:${RECORDED_CLOCK}))?${RECORDED_SEP}|(?:${RECORDED_CLOCK})${RECORDED_SEP}(?=\d)`;
 
 function stripRecordedAt(value) {
   const match = String(value).match(new RegExp(String.raw`^\s*[:=]?\s*(?:${RECORDED_AT})`, "iu"));
@@ -212,9 +214,10 @@ function stripRecordedAt(value) {
 }
 
 function currentLabeledReading(label, value, suffix = "") {
-  // O valor não pode ser o próprio dia: sem o resultado depois da data, o
-  // motor não volta atrás e grava 03 de "03/10".
-  const notDate = String.raw`(?!\s*/\s*(?:0?[1-9]|1[0-2])(?!\d))`;
+  // (?!\d) impede encolher "03" até "0" para fugir do lookahead: FiO₂ 03/10
+  // gravaria 0 e ocultaria a fração seguinte. Sem resultado depois da data,
+  // a menção inteira falha e não ocupa o campo.
+  const notDate = String.raw`(?!\d)(?!\s*/\s*(?:0?[1-9]|1[0-2])(?!\d))`;
   return new RegExp(
     String.raw`(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:${label})\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(?:${RECORDED_AT})?(${value})${notDate}${suffix}`,
     "iu",
