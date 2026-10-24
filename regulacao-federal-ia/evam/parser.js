@@ -177,11 +177,19 @@ export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
  * outros analitos na mesma oração). O ponto entre dígitos não fecha o trecho.
  * A vírgula pode separar o nome do resultado e permanece na cauda; o valor lido
  * é o do início, não um ng/L posterior (BNP, CK-MB).
+ * TnI, cTnI, hs-cTnI, TnT e Tropo são o mesmo analito: a dosagem compete com a
+ * menção anterior, e o valor quantificado prevalece sobre "normal".
  */
+const TROPONIN_KEYWORD = /troponina|tropo|trop|(?:hs[-\s]*)?c?tn[it]/iu;
+
 function extractTroponin(text) {
   // Cauda: ponto de oração encerra; vírgula e ponto entre dígitos permanecem.
-  // A próxima menção de troponina fica de fora, para a dosagem seriada competir.
-  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:(?!\b(?:\d+\s*[ªa]\s+)?(?:troponina|trop)\b)[^\n.;]|[.](?=\d)){0,80})/giu;
+  // A próxima menção — inclusive TnI/hs-cTn — fica de fora, para a dosagem competir.
+  const keyword = TROPONIN_KEYWORD.source;
+  const expression = new RegExp(
+    String.raw`\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(${keyword})\b((?:(?!\b(?:\d+\s*[ªa]\s+)?(?:${keyword})\b)[^\n.;]|[.](?=\d)){0,80})`,
+    "giu",
+  );
   let best = null;
 
   for (const match of text.matchAll(expression)) {
@@ -339,7 +347,8 @@ const EXTRACTORS = Object.freeze({
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:plaquetas?|plaq)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
   ]),
   inr: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
+    // RNI é o nome do INR no laudo brasileiro. Sem o sinônimo, o valor da admissão permanece.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:inr|rni)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ]),
   troponin: extractTroponin,
   ph: (text) => matchCurrentReading(text, [

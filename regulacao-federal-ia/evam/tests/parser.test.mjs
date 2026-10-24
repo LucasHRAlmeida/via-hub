@@ -108,6 +108,41 @@ test("troponina seriada e negada não grava a primeira leitura invertida", () =>
   assert.doesNotMatch(serialAssay.troponin.value, /\b18\b/);
 });
 
+test("TnI e hs-cTn não cedem o campo à troponina qualitativa", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const hidden = extractNarrative("Troponina normal. TnI 1850 ng/L. ECG: supra de ST.", schema);
+  assert.match(hidden.troponin.value, /1850/);
+  assert.doesNotMatch(hidden.troponin.value, /normal/i);
+
+  const comma = extractNarrative("Troponina normal, TnI 1850 ng/L.", schema);
+  assert.match(comma.troponin.value, /1850/);
+  assert.doesNotMatch(comma.troponin.value, /normal/i);
+
+  assert.match(extractNarrative("hs-cTnI 1850 ng/L.", schema).troponin.value, /1850/);
+  assert.match(extractNarrative("hs-cTnT 450 ng/L.", schema).troponin.value, /450/);
+  assert.match(extractNarrative("cTnI: 2450 ng/L.", schema).troponin.value, /2450/);
+  assert.match(extractNarrative("Tropo US: 890 ng/L.", schema).troponin.value, /890/);
+
+  const serial = extractNarrative("1ª TnI 12 ng/L. 2ª TnI 450 ng/L.", schema);
+  assert.match(serial.troponin.value, /450/);
+  assert.doesNotMatch(serial.troponin.value, /\b12\b/);
+
+  const bnp = extractNarrative("Troponina normal, NT-proBNP 1800 ng/L.", schema);
+  assert.match(bnp.troponin.value, /normal/i);
+  assert.doesNotMatch(bnp.troponin.value, /1800/);
+
+  const negated = extractNarrative("Sem TnI 1850 ng/L.", schema);
+  assert.match(negated.troponin.value, /\bsem\b/i);
+  assert.doesNotMatch(negated.troponin.value, /^TnI 1850/i);
+});
+
+test("RNI não grava o INR da admissão", () => {
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  assert.equal(extractNarrative("INR 1,2 na admissão. RNI atual 4,8.", trauma).inr.value, 4.8);
+  assert.equal(extractNarrative("RNI 2,4.", trauma).inr.value, 2.4);
+  assert.equal(extractNarrative("INR 1,4.", trauma).inr.value, 1.4);
+});
+
 test("hemorragia negada depois do achado não entra como presente", () => {
   const schema = getSchema("polytrauma.trauma-surgery.v1");
   const absent = [
