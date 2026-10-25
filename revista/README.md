@@ -69,7 +69,16 @@ renderizador acima continua disponível, mas não reproduz a diagramação Adobe
 deste arquivo. A versão anterior está preservada sem regeneração em
 `arquivo/2026-10-25-pre-revisao-editorial.pdf` e no histórico Git.
 
-PDF revisado no Adobe: <https://to.adobe.com/y6TQNQpfvD6xYjgsWVQ22wccHHJM>.
+A segunda revisão acrescenta as pontes entre pautas, o endereço da VIA no
+cabeçalho e os caminhos de leitura, acompanhamento e contato no expediente.
+Cada matéria conserva suas fontes diretas e recebe um link para sua seção no
+site. O método editorial é um expediente discreto, fora do índice das pautas;
+as credenciais permanecem no rodapé. As referências mais curtas preservam os
+endereços originais. A primeira revisão está preservada em
+`arquivo/2026-10-25-revisao-editorial-1.pdf` (SHA-256
+`88e17356fa1db099ec91df02df06f361a6b8a54e3eb9b4acf128f1c0fd9b0c03`).
+
+PDF revisado no Adobe: <https://to.adobe.com/3O70LbruFCeLi92suz1vfdTKXJvr>.
 
 ## Escopo e limitações
 

@@ -122,7 +122,7 @@ const splitHeading = (clean) => {
   return { theme: clean.slice(0, i).trim(), title: clean.slice(i + 3).trim() };
 };
 
-const toc = sections.map((s, i) => {
+const toc = sections.filter((s) => !/^método editorial$/i.test(cleanHeading(s.heading))).map((s, i) => {
   const clean = cleanHeading(s.heading);
   const { theme, title } = splitHeading(clean);
   const id = slugify(clean);
@@ -143,6 +143,12 @@ const aboutJson = topicNames.map((name) => `          {\n            "@type": "M
 
 const sectionHtml = sections.map((s, i) => {
   const clean = cleanHeading(s.heading);
+  if (/^método editorial$/i.test(clean)) {
+    return `  <aside class="editorial-note article-prose" id="metodo-editorial" aria-labelledby="metodo-editorial-titulo">
+    <h2 id="metodo-editorial-titulo">${escapeHtml(clean)}</h2>
+${renderBody(s.body.split(/\n---+\s*\n/)[0])}
+  </aside>`;
+  }
   const { theme } = splitHeading(clean);
   const id = slugify(clean);
   const num = String(i + 1).padStart(2, '0');
@@ -182,7 +188,7 @@ const main = `<main id="conteudo">
     </div>
     <div class="issue-bar mono">
       <span>Edição ${editionId} · Ano I</span>
-      <span>Fonte editorial versionada em Markdown</span>
+      <span><a href="https://iniciativa-via.com/">iniciativa-via.com</a></span>
     </div>
 ${summaryHtml}    <nav class="index toc" aria-label="Nesta edição">
 ${toc}
@@ -216,6 +222,9 @@ const automationCss = `    .panorama{padding:26px 0 10px}
     .article-prose blockquote{margin:16px 0;padding:12px 14px;background:var(--wash);border-left:3px solid var(--navy);font-size:15px}
     .article-prose a{color:var(--teal-text);overflow-wrap:anywhere}
     .article-prose .source-line{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink2)}
+    .editorial-note{border-top:1px solid var(--rule);padding:18px 0;color:var(--ink2)}
+    .editorial-note h2{font-size:13px;color:var(--navy);margin:0 0 10px}
+    .editorial-note p{font-size:12px;line-height:1.5}
     @media (max-width:860px){.panorama-head{align-items:flex-start}}
     @media print{.panorama{padding:14px 0 6px}.article-prose p,.article-prose li{font-size:10.5pt}.article-prose h3{break-after:avoid}.article-prose .source-line{font-size:9pt}.panorama-disclaimer{font-size:8.5pt}}
 `;
@@ -271,6 +280,7 @@ if (!/<main id="conteudo">[\s\S]*?<\/main>/.test(html)) throw new Error('Não fo
 html = html.replace(/<main id="conteudo">[\s\S]*?<\/main>/, main.trimStart());
 const conciseDescription = criterion || 'Síntese semanal de saúde pública, cuidado, ciência e tecnologia, com fontes primárias e limites de evidência.';
 html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>Saúde na Última Semana — ${editionId} · Revista Eletrônica VIA</title>`);
+html = html.replace(/<p class="kicker mono">[\s\S]*?<\/p>/, '<p class="kicker mono">Revista Eletrônica VIA · <a href="https://iniciativa-via.com/">iniciativa-via.com</a></p>');
 html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${escapeHtml(conciseDescription)}">`);
 html = html.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="Saúde na Última Semana — ${editionId} · VIA">`);
 html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${escapeHtml(conciseDescription)}">`);
