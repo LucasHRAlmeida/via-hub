@@ -364,6 +364,63 @@ test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
   assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
 });
 
+test("rótulo de exame no fim da linha não descarta o laudo seguinte", () => {
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const neuro = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  const ecg = extractNarrative(
+    "Homem, 62 anos. ECG:\nsupradesnivelamento de ST em V2-V4.\nTroponina 450 ng/L.",
+    coronary,
+  );
+  assert.match(ecg.ecg.value, /supradesnivelamento de ST em V2-V4/i);
+  assert.doesNotMatch(ecg.ecg.value, /Troponina/);
+  const ecgEnvelope = buildEnvelope({ sourceText: "", schema: coronary, fields: ecg });
+  assert.equal(ecgEnvelope.missingCritical.includes("ecg"), false);
+  assert.match(formatRegulatoryText(ecgEnvelope), /supradesnivelamento de ST em V2-V4/i);
+
+  const blankLine = extractNarrative(
+    "Eletrocardiograma:\n\nritmo sinusal, sem supradesnivelamento.",
+    coronary,
+  );
+  assert.match(blankLine.ecg.value, /ritmo sinusal/i);
+
+  assert.match(
+    extractNarrative("ECG: supradesnivelamento de ST em parede anterior.", coronary).ecg.value,
+    /supradesnivelamento de ST em parede anterior/i,
+  );
+
+  const imaging = extractNarrative(
+    "Homem, 58 anos. TC de crânio:\nhematoma subdural agudo com desvio de linha média de 8 mm.\nConduta: transferência.",
+    neuro,
+  );
+  assert.match(imaging.imaging.value, /hematoma subdural agudo/i);
+  assert.match(imaging.imaging.value, /desvio de linha média/i);
+  assert.doesNotMatch(imaging.imaging.value, /Conduta/);
+  const imagingEnvelope = buildEnvelope({ sourceText: "", schema: neuro, fields: imaging });
+  assert.equal(imagingEnvelope.missingCritical.includes("imaging"), false);
+
+  assert.match(
+    extractNarrative("TC de crânio sem hemorragia.", stroke).imaging.value,
+    /sem hemorragia/i,
+  );
+
+  const pupils = extractNarrative(
+    "Pupilas:\nanisocóricas, esquerda arreativa.\nGlasgow 8.",
+    neuro,
+  );
+  assert.match(pupils.pupilExam.value, /anisocóricas/i);
+  assert.match(pupils.pupilExam.value, /arreativa/i);
+  assert.doesNotMatch(pupils.pupilExam.value, /Glasgow/);
+  const pupilEnvelope = buildEnvelope({ sourceText: "", schema: neuro, fields: pupils });
+  assert.equal(pupilEnvelope.missingCritical.includes("pupilExam"), false);
+
+  assert.match(
+    extractNarrative("Pupilas isocóricas e fotorreagentes.", neuro).pupilExam.value,
+    /isocóricas e fotorreagentes/i,
+  );
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

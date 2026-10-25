@@ -13,6 +13,26 @@ const excerptAround = (text, index, length) => {
   return clean(`${start > 0 ? "…" : ""}${text.slice(start, end)}${end < text.length ? "…" : ""}`);
 };
 
+// "ECG:", "TC de crânio:" e "Pupilas:" encerram a linha sem o laudo. O campo
+// ficava preenchido e o achado da linha seguinte saía do resumo.
+function endOfLabeledExcerpt(text, start, maxLen) {
+  const hard = Math.min(text.length, start + maxLen);
+  const lineBreak = text.indexOf("\n", start);
+  const lineEnd = lineBreak === -1 ? hard : Math.min(lineBreak, hard);
+  if (lineBreak === -1 || lineBreak >= hard) return lineEnd;
+  if (!/:\s*$/.test(text.slice(start, lineEnd))) return lineEnd;
+
+  let next = lineBreak + 1;
+  for (let blanks = 0; blanks < 2 && next < text.length; blanks += 1) {
+    const breakAt = text.indexOf("\n", next);
+    const lineStop = breakAt === -1 ? text.length : breakAt;
+    if (text.slice(next, lineStop).trim()) return Math.min(lineStop, hard);
+    if (breakAt === -1) return lineEnd;
+    next = breakAt + 1;
+  }
+  return lineEnd;
+}
+
 const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
   for (const expression of expressions) {
     expression.lastIndex = 0;
@@ -258,9 +278,7 @@ function extractImaging(text) {
     const after = text.slice(start + match[0].length, start + match[0].length + 48);
     if (negatedAfter.test(after)) continue;
 
-    const lineEnd = text.indexOf("\n", start);
-    const limit = start + match[0].length + 220;
-    const end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    const end = endOfLabeledExcerpt(text, start, match[0].length + 220);
     const value = clean(text.slice(start, end));
     if (!value) continue;
 
@@ -354,17 +372,43 @@ const EXTRACTORS = Object.freeze({
   nihss: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\b/iu,
   ]),
-  pupilExam: (text) => matchOne(text, [
-    /\b(pupilas?[^\n.;]{0,90})/iu,
-  ]),
+  pupilExam: (text) => {
+    const expression = /\bpupilas?[^\n.;]{0,90}/giu;
+    for (const match of text.matchAll(expression)) {
+      let end = match.index + match[0].length;
+      if (/:\s*$/.test(match[0])) {
+        end = endOfLabeledExcerpt(text, match.index, match[0].length + 90);
+        const period = text.slice(match.index, end).indexOf(".");
+        if (period !== -1) end = match.index + period;
+      }
+      const value = clean(text.slice(match.index, end));
+      if (!value) continue;
+      return {
+        value,
+        excerpt: excerptAround(text, match.index, end - match.index),
+        confidence: "heurística",
+      };
+    }
+    return null;
+  },
   focalDeficit: (text) => matchOne(text, [
     /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
   ]),
-  ecg: (text) => matchOne(text, [
+  ecg: (text) => {
     // ECGL/ECGLA é Glasgow, não o traçado. O eletrocardiograma posterior continua válido.
-    /\b(ecg(?!l(?:a)?\b)[^\n]{0,180})/iu,
-    /\b(eletrocardiograma[^\n]{0,180})/iu,
-  ]),
+    const expression = /\b(?:ecg(?!l(?:a)?\b)|eletrocardiograma)/giu;
+    for (const match of text.matchAll(expression)) {
+      const end = endOfLabeledExcerpt(text, match.index, match[0].length + 180);
+      const value = clean(text.slice(match.index, end));
+      if (!value) continue;
+      return {
+        value,
+        excerpt: excerptAround(text, match.index, end - match.index),
+        confidence: "heurística",
+      };
+    }
+    return null;
+  },
   imaging: extractImaging,
   injuryMechanism: (text) => matchOne(text, [
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
