@@ -53,6 +53,33 @@ A edição candidata também acompanha o branch como `revista/edicao-AAAA-MM-DD.
 python scripts/revista/render_pdf.py revista/edicao-AAAA-MM-DD.md revista/edicao-AAAA-MM-DD.pdf
 ```
 
+## Revisão editorial da edição de 25/10/2026
+
+A revisão distribui as quatro pautas por função: reportagem principal de clima,
+análise de acesso a medicamentos, alerta sanitário curto e análise de experiência
+com IA. As chamadas substituem a sinopse extensa; orientações práticas passam às
+matérias e o fechamento é único. A pauta de antimicrobianos foi retirada desta
+edição. A fonte segue em `edicao-2026-10-25.md`, com HTML regenerado pelo promotor.
+
+O PDF desta revisão foi convertido pelo Adobe PDF Services a partir do documento
+editável `edicao-2026-10-25.rtf`: três páginas A4, texto pesquisável, links e
+paginação inspecionados. O RTF é uma saída diagramada da mesma fonte Markdown;
+ao editar o conteúdo, atualizar também RTF, PDF e HTML. O comando genérico do
+renderizador acima continua disponível, mas não reproduz a diagramação Adobe
+deste arquivo. A versão anterior está preservada sem regeneração em
+`arquivo/2026-10-25-pre-revisao-editorial.pdf` e no histórico Git.
+
+A segunda revisão acrescenta as pontes entre pautas, o endereço da VIA no
+cabeçalho e os caminhos de leitura, acompanhamento e contato no expediente.
+Cada matéria conserva suas fontes diretas e recebe um link para sua seção no
+site. O método editorial é um expediente discreto, fora do índice das pautas;
+as credenciais permanecem no rodapé. As referências mais curtas preservam os
+endereços originais. A primeira revisão está preservada em
+`arquivo/2026-10-25-revisao-editorial-1.pdf` (SHA-256
+`88e17356fa1db099ec91df02df06f361a6b8a54e3eb9b4acf128f1c0fd9b0c03`).
+
+PDF revisado no Adobe: <https://to.adobe.com/3O70LbruFCeLi92suz1vfdTKXJvr>.
+
 ## Escopo e limitações
 
 - Curadoria **educativa e editorial**, voltada à compreensão de fatos e decisões informadas.
