@@ -308,6 +308,56 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("leitura de ontem, de base ou da origem não oculta o valor vigente", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  assert.equal(extractNarrative("Lactato 1,8 ontem. Lactato 7,2.", sepsis).lactate.value, 7.2);
+  assert.equal(extractNarrative("Lactato 1,8 mmol/L ontem. Lactato 7,2 mmol/L.", sepsis).lactate.value, 7.2);
+  assert.equal(extractNarrative("Lactato 1,8 de ontem. Lactato 6,1.", sepsis).lactate.value, 6.1);
+  assert.equal(extractNarrative("Lactato 7,2 ontem.", sepsis).lactate.value, 7.2);
+
+  const yesterday = extractNarrative("PA 180/110 ontem. PA 80/50.", coronary);
+  assert.equal(yesterday.sbp.value, 80);
+  assert.equal(yesterday.dbp.value, 50);
+  const headed = extractNarrative("Ontem PA 180/110. PA 80/50.", coronary);
+  assert.equal(headed.sbp.value, 80);
+  assert.equal(headed.dbp.value, 50);
+  const block = extractNarrative("Ontem à noite: PA 180/110, FC 90. PA 80/50, FC 140.", coronary);
+  assert.equal(block.sbp.value, 80);
+  assert.equal(block.dbp.value, 50);
+  assert.equal(block.heartRate.value, 140);
+  const sameSentence = extractNarrative("Ontem PA 180/110 e hoje PA 80/50.", coronary);
+  assert.equal(sameSentence.sbp.value, 80);
+  assert.equal(sameSentence.dbp.value, 50);
+  assert.equal(extractNarrative("PA 80/50. Ontem estava estável.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("Negou dor ontem e a PA 180/110. PA 80/50.", coronary).sbp.value, 180);
+  assert.equal(extractNarrative("Glasgow 15 anteontem. Glasgow 7.", trauma).gcs.value, 7);
+  assert.equal(extractNarrative("NIHSS 4 ontem. NIHSS 18.", stroke).nihss.value, 18);
+
+  assert.equal(extractNarrative("Creatinina 0,9 de base. Creatinina 5,4.", sepsis).creatinine.value, 5.4);
+  assert.equal(extractNarrative("De base: creatinina 0,9. Creatinina 5,4.", sepsis).creatinine.value, 5.4);
+  assert.equal(extractNarrative("INR 1,1 de base. INR 4,8.", trauma).inr.value, 4.8);
+  assert.equal(extractNarrative("pH 7,35 de base. pH 7,18.", respiratory).ph.value, 7.18);
+  assert.equal(extractNarrative("Plaquetas 180000 de base. Plaquetas 42000.", sepsis).platelets.value, 42000);
+
+  assert.equal(extractNarrative("PAM 92 na origem. PAM 48.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("PAM 48 na origem.", sepsis).map.value, 48);
+  const origin = extractNarrative("Na origem, PA 150/90, FC 88. PA 75/40, FC 130.", coronary);
+  assert.equal(origin.sbp.value, 75);
+  assert.equal(origin.dbp.value, 40);
+  assert.equal(origin.heartRate.value, 130);
+  const hospital = extractNarrative("PA 160/90 no hospital de origem. PA 85/50.", coronary);
+  assert.equal(hospital.sbp.value, 85);
+  assert.equal(hospital.dbp.value, 50);
+  assert.equal(extractNarrative("SpO2 99% ontem. SpO2 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("FiO2 40% na origem. FiO2 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("PA 180/110 ontem. PA atual 80/50.", coronary).sbp.value, 80);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(

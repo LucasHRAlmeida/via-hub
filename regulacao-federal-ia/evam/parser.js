@@ -30,11 +30,21 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 };
 
 // "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
-// "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
-// permanece: é o único número do campo.
+// "basal", "ontem", "de base" e "na origem" nomeiam a anterior. Sem outro
+// candidato, a anterior permanece: é o único número do campo.
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
-const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+const HISTORICAL_UNIT = String.raw`mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l`;
+const HISTORICAL_PLACE = String.raw`(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)`;
+const HISTORICAL_PRIOR = String.raw`basal|pr[eé]vi[oa]|inicial|habitual|de\s+base|(?:de\s+)?(?:ontem|anteontem)|(?:na|no|da|de)\s+(?:(?:hospital|unidade|ps|upa)\s+de\s+)?origem`;
+const HISTORICAL_READING = new RegExp(
+  String.raw`^\s*(?:${HISTORICAL_UNIT})?\s*(?:${HISTORICAL_PLACE}|${HISTORICAL_PRIOR})\b`,
+  "iu",
+);
+// Cabeçalho da frase ("Ontem: PA 180/110, FC 90"). "hoje" ou "agora" no meio
+// devolve a leitura ao valor vigente ("Ontem PA 180 e hoje PA 80").
+const HISTORICAL_SENTENCE = /^\s*(?:ontem|anteontem|de\s+base|(?:na|no|da|de)\s+(?:(?:hospital|unidade|ps|upa)\s+de\s+)?origem)\b/iu;
+const CURRENT_IN_SENTENCE = /\b(?:hoje|agora|no\s+momento|atua(?:l|is))\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,
@@ -46,6 +56,15 @@ const isCurrentReading = (text, match) => {
   return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
 };
 
+const isHistoricalReading = (text, match) => {
+  const after = text.slice(match.index + match[0].length);
+  if (HISTORICAL_READING.test(after)) return true;
+  const before = text.slice(0, match.index);
+  const sentence = before.split(/\n|\.(?=\s)/).pop() ?? "";
+  if (!HISTORICAL_SENTENCE.test(sentence)) return false;
+  return !CURRENT_IN_SENTENCE.test(sentence);
+};
+
 function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
   const grouped = expressions.map((expression) => {
     const flags = expression.flags.includes("g") ? expression.flags : `${expression.flags}g`;
@@ -53,13 +72,12 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
     for (const match of text.matchAll(new RegExp(expression.source, flags))) {
       const value = transform(match[valueGroup], match);
       if (value === null || value === "") continue;
-      const after = text.slice(match.index + match[0].length);
       found.push({
         value,
         excerpt: excerptAround(text, match.index, match[0].length),
         confidence: "heurística",
         current: isCurrentReading(text, match),
-        historical: HISTORICAL_READING.test(after),
+        historical: isHistoricalReading(text, match),
       });
     }
     return found;
