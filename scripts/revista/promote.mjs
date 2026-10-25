@@ -2,6 +2,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Suspensão expressa pelo mantenedor em 25/10/2026.
+// Falha antes de ler fontes ou escrever: novas edições não reativam a publicação.
+const pausedIndex = path.join(process.cwd(), 'revista', 'index.html');
+if (fs.existsSync(pausedIndex) && fs.readFileSync(pausedIndex, 'utf8').includes('<!-- REVISTA_PUBLICATION_PAUSED -->')) {
+  if (!process.argv.includes('--check')) throw new Error('Publicação da Revista suspensa pelo mantenedor. Restauração requer autorização expressa.');
+  const page = fs.readFileSync(pausedIndex, 'utf8');
+  if (!page.includes('Uma pausa na publicação.') || /<article\b|Edição em revisão|MedicalWebPage/.test(page)) {
+    throw new Error('Página de suspensão inválida ou com conteúdo editorial remanescente.');
+  }
+  console.log('REVISTA_PUBLICATION_PAUSED_OK');
+  process.exit(0);
+}
+
 const args = process.argv.slice(2);
 const getArg = (name) => {
   const i = args.indexOf(name);
