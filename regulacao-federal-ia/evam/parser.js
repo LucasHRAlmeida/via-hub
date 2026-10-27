@@ -353,6 +353,11 @@ const EXTRACTORS = Object.freeze({
   ]),
   fio2: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
+    // Gasometria escreve FiO₂ com 2 subscrito. Sem o sinônimo, a fração da
+    // admissão permanece e a FiO₂ vigente (80%, 100%) sai do envelope.
+    // O denominador de PaO₂/FiO₂ não é a fração inspirada. Fração decimal
+    // ("0,8") continua de fora: o inteiro à esquerda não vira 0%.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?(?<!p(?:a)?o[2₂]\s*\/\s*)\bfio₂\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})(?![.,]\d)\s*%?/iu,
   ]),
   nihss: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\b/iu,
