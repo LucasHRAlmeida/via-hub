@@ -26,6 +26,6 @@ fontes:
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
-  sintese: "Para adultos de 25 a 59 anos, o calendário prevê hepatite B e dT conforme o histórico vacinal, febre amarela conforme a recomendação para área ou deslocamento e tríplice viral conforme idade e situação vacinal. Varicela e pneumocócica 20-valente têm indicações específicas e não são rotina universal nessa faixa etária. A unidade de saúde orienta a atualização com base no cartão de vacinas."
+  sintese: "Para adultos de 25 a 59 anos, o calendário prevê hepatite B e dT conforme o histórico vacinal, febre amarela conforme a recomendação para área ou deslocamento e tríplice viral conforme idade e situação vacinal. Varicela e pneumocócica 20-valente não são rotina universal nessa faixa: a varicela é indicada apenas para profissionais de saúde e povos indígenas, conforme o histórico vacinal e sem história da doença ou diante de dúvida; a pneumocócica 20-valente, somente para povos indígenas sem histórico vacinal com pneumocócica conjugada. A unidade de saúde orienta a atualização com base no cartão de vacinas."
   encerramento: "em_sinais_de_urgencia_buscar_servico_de_emergencia"
 ```

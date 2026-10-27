@@ -12,7 +12,7 @@ fontes:
     sigla: "SBD"
     papel_epistemico: "diretriz_clinica"
     titulo: "Rastreamento e diagnóstico da hiperglicemia na gestação (Diretriz SBD, Ed. 2026)"
-    url: "https://diretriz.diabetes.org.br/rastreamento-e-diagnostico-da-hiperglicemia-na-gestacao/"
+    referenciaPublica: "https://diretriz.diabetes.org.br/rastreamento-e-diagnostico-da-hiperglicemia-na-gestacao/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "Diretriz SBD Edição 2026; a página declara última revisão em 28/01/2022"

@@ -12,7 +12,7 @@ fontes:
     sigla: "MS/BVS"
     papel_epistemico: "orientacao_publica"
     titulo: "Pré-eclâmpsia/Eclampsia (Dicas em Saúde)"
-    url: "https://bvsms.saude.gov.br/pre-eclampsia-eclampsia/"
+    referenciaPublica: "https://bvsms.saude.gov.br/pre-eclampsia-eclampsia/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "Dica elaborada em fevereiro de 2024"

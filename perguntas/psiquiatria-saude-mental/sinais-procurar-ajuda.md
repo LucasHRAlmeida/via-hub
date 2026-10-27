@@ -12,7 +12,7 @@ fontes:
     sigla: "MS"
     papel_epistemico: "orientacao_publica"
     titulo: "Suicídio (Prevenção)"
-    url: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao"
+    referenciaPublica: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "publicacao_web"

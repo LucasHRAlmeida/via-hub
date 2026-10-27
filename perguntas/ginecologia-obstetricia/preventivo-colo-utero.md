@@ -12,7 +12,7 @@ fontes:
     sigla: "INCA"
     papel_epistemico: "orientacao_publica"
     titulo: "Detecção precoce (controle do câncer do colo do útero)"
-    url: "https://www.gov.br/inca/pt-br/assuntos/gestor-e-profissional-de-saude/controle-do-cancer-do-colo-do-utero/acoes/deteccao-precoce"
+    referenciaPublica: "https://www.gov.br/inca/pt-br/assuntos/gestor-e-profissional-de-saude/controle-do-cancer-do-colo-do-utero/acoes/deteccao-precoce"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "pagina atualizada em 2025-09-30; cita a Portaria Conjunta SAES/SECTICS nº 13/2025 (2025-07-29)"

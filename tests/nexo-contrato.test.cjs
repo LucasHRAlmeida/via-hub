@@ -73,7 +73,7 @@ for (const ficha of fichas) {
   const conteudo = fs.readFileSync(ficha, "utf8");
   const blocoYaml = conteudo.match(/```yaml\s*([\s\S]*?)```/);
   assert.ok(blocoYaml, `${caminhoRelativo} sem bloco YAML`);
-  const yaml = blocoYaml[1];
+  const yaml = blocoYaml[1].replace(/\r\n/g, "\n");
   const id = yaml.match(/^\s+id:\s*"([^"]+)"/m)?.[1];
   const status = yaml.match(/^\s+status:\s*"([^"]+)"/m)?.[1];
   assert.ok(id, `${caminhoRelativo} sem id`);

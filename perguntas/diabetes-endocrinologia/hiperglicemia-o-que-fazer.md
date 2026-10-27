@@ -12,7 +12,7 @@ fontes:
     sigla: "SBD"
     papel_epistemico: "diretriz_clinica"
     titulo: "Diretriz da SBD 2026 — Manejo do Diabetes Mellitus Tipo 2"
-    url: "https://diretriz.diabetes.org.br/manejo-do-diabetes-mellitus-tipo-2/"
+    referenciaPublica: "https://diretriz.diabetes.org.br/manejo-do-diabetes-mellitus-tipo-2/"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2026"

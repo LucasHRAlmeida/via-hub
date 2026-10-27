@@ -12,7 +12,7 @@ fontes:
     sigla: "SBPT"
     papel_epistemico: "diretriz_clinica"
     titulo: "Doença Pulmonar Obstrutiva Crônica — Diagnóstico e Tratamento (Manual SBPT, 2024)"
-    url: "https://d1xe7tfg0uwul9.cloudfront.net/sbpt-portal/wp-content/uploads/2024/10/29004701/SBPT_MANUAL_DPOC_FINAL_25_OUT_2024.pdf"
+    referenciaPublica: "https://d1xe7tfg0uwul9.cloudfront.net/sbpt-portal/wp-content/uploads/2024/10/29004701/SBPT_MANUAL_DPOC_FINAL_25_OUT_2024.pdf"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2024"
