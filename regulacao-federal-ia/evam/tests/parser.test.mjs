@@ -331,6 +331,66 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("advérbio ou verbo entre o rótulo e o número não oculta a leitura vigente", () => {
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  const currently = extractNarrative("PA 180/110 na admissão. PA atualmente 80/50.", coronary);
+  assert.equal(currently.sbp.value, 80);
+  assert.equal(currently.dbp.value, 50);
+  assert.equal(extractNarrative("PA atualmente 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA atualmente 80/50.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110. PA atualmente 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110. Atualmente, PA 80/50.", coronary).sbp.value, 80);
+
+  const neste = extractNarrative("PA 180/110 na admissão. PA neste momento 80/50.", coronary);
+  assert.equal(neste.sbp.value, 80);
+  assert.equal(neste.dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110. Neste momento, PA 80/50.", coronary).sbp.value, 80);
+
+  assert.equal(extractNarrative("PA 180/110 na admissão. PA atual é 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 na admissão. PA está em 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110. PA está em 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA estável, FC 140 bpm.", coronary).sbp.value, "");
+  assert.equal(extractNarrative("PA estável, FC 140 bpm.", coronary).heartRate.value, 140);
+
+  assert.equal(extractNarrative("PAM 90 na admissão. PAM atualmente 52.", sepsis).map.value, 52);
+  assert.equal(extractNarrative("FC 90. FC atualmente 140.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("FR 16 na admissão. FR atualmente 34.", respiratory).respiratoryRate.value, 34);
+  assert.equal(extractNarrative("Tax 36,5 na admissão. Tax atualmente 39,2.", sepsis).temperature.value, 39.2);
+  assert.equal(extractNarrative("Glasgow 15 na admissão. Glasgow atualmente 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15. Glasgow neste momento 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("SpO2 98% na admissão. SpO2 atualmente 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("SpO2 atualmente 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("Saturação de O2 3 L/min.", respiratory).spo2.value, "");
+  assert.equal(extractNarrative("Saturação de O2 10 L/min. SpO2 96%.", respiratory).spo2.value, 96);
+  assert.equal(extractNarrative("FiO2 21% na admissão. FiO2 atualmente 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("PaO2 90 na admissão. PaO2 atualmente 52 mmHg.", respiratory).pao2.value, 52);
+  assert.equal(extractNarrative("pH 7,40 na admissão. pH atualmente 7,18.", respiratory).ph.value, 7.18);
+  assert.equal(extractNarrative("Lactato 1,8 na admissão. Lactato atualmente 6,4.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Lactato 1,8. Lactato está em 6,4.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("Creatinina 1,0 na admissão. Creatinina atualmente 3,2.", sepsis).creatinine.value, 3.2);
+  assert.equal(extractNarrative("Bilirrubina total 2,0 na admissão. Bilirrubina total atualmente 12,9.", sepsis).bilirubin.value, 12.9);
+  assert.equal(extractNarrative("INR 1,1 na admissão. INR atualmente 3,4.", trauma).inr.value, 3.4);
+  assert.equal(extractNarrative("NIHSS 2 na admissão. NIHSS atualmente 18.", stroke).nihss.value, 18);
+  assert.equal(extractNarrative("Plaquetas 180 na admissão. Plaquetas atualmente 42.", sepsis).platelets.value, 42);
+
+  const troponin = extractNarrative("Troponina normal na admissão. Troponina atualmente 450 ng/L.", coronary);
+  assert.match(troponin.troponin.value, /450/);
+  assert.doesNotMatch(troponin.troponin.value, /normal/i);
+  assert.match(
+    extractNarrative("Troponina normal na admissão. Troponina neste momento 450 ng/L.", coronary).troponin.value,
+    /450/,
+  );
+  assert.match(
+    extractNarrative("Troponina normal na admissão. Troponina atual é 450 ng/L.", coronary).troponin.value,
+    /450/,
+  );
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(
