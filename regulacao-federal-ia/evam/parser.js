@@ -292,16 +292,18 @@ const EXTRACTORS = Object.freeze({
     /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
+  // "80/50mmHg" cola a unidade no número. \b não casa entre o dígito e o "m",
+  // então a hipotensão vigente não entra e a pressão da admissão permanece.
   sbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}(?!\d)/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})(?!\d)/iu,
   ]),
   dbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})(?!\d)/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})(?!\d)/iu,
   ]),
   map: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})(?!\d)/iu,
   ]),
   heartRate: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,

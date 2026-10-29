@@ -331,6 +331,29 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("mmHg colado ao número não deixa a admissão no lugar da hipotensão", () => {
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  const shock = extractNarrative("PA 180/110 mmHg na admissão. PA 80/50mmHg.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+
+  assert.equal(extractNarrative("Agora PA 90/50mmHg. Na admissão PA 180/110 mmHg.", coronary).sbp.value, 90);
+  assert.equal(extractNarrative("Agora PA 90/50mmHg. Na admissão PA 180/110 mmHg.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 80/50mmHg.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50mmHg.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 80x50mmHg.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PAM 90 mmHg na entrada. PAM 48mmHg.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("PAS 80mmHg. PAD 50mmHg.", trauma).sbp.value, 80);
+  assert.equal(extractNarrative("PAS 80mmHg. PAD 50mmHg.", trauma).dbp.value, 50);
+
+  assert.equal(extractNarrative("PA 180/110 mmHg na admissão. PA 80/50 mmHg.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PAM 58 mmHg.", sepsis).map.value, 58);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(
