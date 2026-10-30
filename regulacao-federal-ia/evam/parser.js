@@ -275,14 +275,15 @@ function extractImaging(text) {
   return null;
 }
 
-// pO2/PO2 sem o "a" também nomeia a gasometria venosa e o dia de pós-operatório.
-// "Gasometria venosa: pO2 35. PaO2 90" não pode gravar 35. PaO2 explícito permanece.
-function isVenousPo2(text, match) {
-  if (/pao[2₂]/iu.test(match[0])) return false;
-  const local = /po[2₂]/iu.exec(match[0]);
-  if (!local) return false;
-  const at = match.index + local.index;
-  const sentence = text.slice(Math.max(0, at - 80), at).split(/[.!\n]/u).pop() ?? "";
+// Ponto entre dígitos (pH 7.35, HCO3 22.4, pO2 40.5) não encerra a frase.
+// O ponto de oração e o ponto de "Sr." continuam a encerrar.
+const SENTENCE_SPLIT = /(?<!\d)\.(?!\d)|[!\n]/u;
+const CLAUSE_SPLIT = /(?<!\d)\.(?!\d)|[;\n]/u;
+
+// Amostra venosa nomeada não é gasometria arterial. PaO2 explícito permanece
+// arterial mesmo que a frase também diga "venosa".
+function isNamedVenousSample(text, at, keywordLength) {
+  const sentence = text.slice(Math.max(0, at - 80), at).split(SENTENCE_SPLIT).pop() ?? "";
   const lastOf = (source) => {
     let last = -1;
     for (const hit of sentence.matchAll(new RegExp(source, "giu"))) last = hit.index;
@@ -292,10 +293,25 @@ function isVenousPo2(text, match) {
   const arterial = lastOf("(?:(?:gasometria|amostra|sangue)\\s+arterial\\b|\\bgsa\\s*:|(?:^|[;:\\-])\\s*arterial\\b)");
   if (venous >= 0 && venous >= arterial) return true;
 
-  const after = text.slice(at + local[0].length, at + local[0].length + 56).split(/[.;\n]/u)[0];
+  const after = text.slice(at + keywordLength, at + keywordLength + 56).split(CLAUSE_SPLIT)[0];
   if (/(?:gasometria|amostra|sangue)\s+venos[oa]s?\b|\(\s*venos[oa]s?\b/iu.test(after)) return true;
   const tight = after.slice(0, 20);
   return /\bvenos[oa]s?\b/iu.test(tight) && !/\b(?:acesso|via|retorno|rede)\s+venos/iu.test(tight);
+}
+
+// pO2/PO2 sem o "a" também nomeia a gasometria venosa e o dia de pós-operatório.
+// "Gasometria venosa: pH 7.35, pO2 40. PaO2 90" não pode gravar 40.
+function isVenousPo2(text, match) {
+  if (/pao[2₂]/iu.test(match[0])) return false;
+  const local = /po[2₂]/iu.exec(match[0]);
+  if (!local) return false;
+  return isNamedVenousSample(text, match.index + local.index, local[0].length);
+}
+
+function isVenousPh(text, match) {
+  const local = /\bph\b/iu.exec(match[0]);
+  if (!local) return false;
+  return isNamedVenousSample(text, match.index + local.index, local[0].length);
 }
 
 const EXTRACTORS = Object.freeze({
@@ -366,9 +382,10 @@ const EXTRACTORS = Object.freeze({
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
   ]),
   troponin: extractTroponin,
+  // pH venoso não ocupa o campo arterial. Sem outro pH, o campo fica vazio.
   ph: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
-  ]),
+  ], 1, number, (match) => !isVenousPh(text, match)),
   pao2: (text) => matchCurrentReading(text, [
     // Gasometria usa pO2, PO2 e PaO₂ para a mesma grandeza. Sem o sinônimo,
     // a PaO2 da admissão ocupa o campo e a hipoxemia atual desaparece.
