@@ -78,6 +78,34 @@ test("pO2 e PaO₂ não gravam a PaO2 da admissão", () => {
   assert.equal(extractNarrative("SpO2 93%. PaCO2 45 mmHg.", schema).pao2.value, "");
 });
 
+test("pO2 venoso e hora de pós-operatório não gravam a PaO2", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const arterial = [
+    ["Gasometria venosa: pO2 35 mmHg. Gasometria arterial: PaO2 90 mmHg.", 90],
+    ["Gasometria venosa: pO2 35 mmHg. Gasometria arterial: pO2 90 mmHg.", 90],
+    ["pO2 40 mmHg na gasometria venosa. PaO2 88 mmHg.", 88],
+    ["Sangue venoso: pO2 38. PaO2 95 mmHg.", 95],
+    ["pO2 35 (venoso). PaO2 90 mmHg.", 90],
+    ["Gasometria venosa central: pO2 42 mmHg. PaO2 80 mmHg.", 80],
+    ["Venosa: pO2 35. Arterial: PaO2 90.", 90],
+    ["GSV: pO2 36 mmHg. GSA: PaO2 92 mmHg.", 92],
+    ["GSA: pO2 92 mmHg.", 92],
+    ["PO2: 48 horas. PaO2 90 mmHg.", 90],
+    ["PO2 48 h. PaO2 90 mmHg.", 90],
+    ["PO2 48 horas de evolução. PaO2 90 mmHg.", 90],
+    ["Acesso venoso periférico. pO2 52 mmHg.", 52],
+    ["Paciente com acesso venoso, pO2 52 mmHg em FiO2 100%.", 52],
+    ["PO2 48 mmHg.", 48],
+    ["PaO2 90 mmHg na admissão. Agora pO2 52 mmHg em FiO2 100%.", 52],
+    ["Gasometria arterial: pO2 78 mmHg.", 78],
+  ];
+  for (const [input, expected] of arterial) {
+    assert.equal(extractNarrative(input, schema).pao2.value, expected, input);
+  }
+  assert.equal(extractNarrative("Gasometria venosa: pO2 35 mmHg.", schema).pao2.value, "");
+  assert.equal(extractNarrative("PO2: 48 horas de evolução.", schema).pao2.value, "");
+});
+
 test("troponina seriada e negada não grava a primeira leitura invertida", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const serial = extractNarrative(

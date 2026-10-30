@@ -46,11 +46,12 @@ const isCurrentReading = (text, match) => {
   return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
 };
 
-function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
+function matchCurrentReading(text, expressions, valueGroup = 1, transform = number, accept = null) {
   const grouped = expressions.map((expression) => {
     const flags = expression.flags.includes("g") ? expression.flags : `${expression.flags}g`;
     const found = [];
     for (const match of text.matchAll(new RegExp(expression.source, flags))) {
+      if (accept && !accept(match)) continue;
       const value = transform(match[valueGroup], match);
       if (value === null || value === "") continue;
       const after = text.slice(match.index + match[0].length);
@@ -274,6 +275,29 @@ function extractImaging(text) {
   return null;
 }
 
+// pO2/PO2 sem o "a" também nomeia a gasometria venosa e o dia de pós-operatório.
+// "Gasometria venosa: pO2 35. PaO2 90" não pode gravar 35. PaO2 explícito permanece.
+function isVenousPo2(text, match) {
+  if (/pao[2₂]/iu.test(match[0])) return false;
+  const local = /po[2₂]/iu.exec(match[0]);
+  if (!local) return false;
+  const at = match.index + local.index;
+  const sentence = text.slice(Math.max(0, at - 80), at).split(/[.!\n]/u).pop() ?? "";
+  const lastOf = (source) => {
+    let last = -1;
+    for (const hit of sentence.matchAll(new RegExp(source, "giu"))) last = hit.index;
+    return last;
+  };
+  const venous = lastOf("(?:(?:gasometria|amostra|sangue)\\s+venos[oa]s?\\b|\\bgsv\\s*:|(?:^|[;:\\-])\\s*venos[oa]s?\\b)");
+  const arterial = lastOf("(?:(?:gasometria|amostra|sangue)\\s+arterial\\b|\\bgsa\\s*:|(?:^|[;:\\-])\\s*arterial\\b)");
+  if (venous >= 0 && venous >= arterial) return true;
+
+  const after = text.slice(at + local[0].length, at + local[0].length + 56).split(/[.;\n]/u)[0];
+  if (/(?:gasometria|amostra|sangue)\s+venos[oa]s?\b|\(\s*venos[oa]s?\b/iu.test(after)) return true;
+  const tight = after.slice(0, 20);
+  return /\bvenos[oa]s?\b/iu.test(tight) && !/\b(?:acesso|via|retorno|rede)\s+venos/iu.test(tight);
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -349,8 +373,9 @@ const EXTRACTORS = Object.freeze({
     // Gasometria usa pO2, PO2 e PaO₂ para a mesma grandeza. Sem o sinônimo,
     // a PaO2 da admissão ocupa o campo e a hipoxemia atual desaparece.
     // pCO2/PaCO2 não casam: o "c" interrompe p(?:a)?o.
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bp(?:a)?o[2₂]\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
-  ]),
+    // "PO2: 48 horas" é dia de pós-operatório, não pressão: a hora não entra.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bp(?:a)?o[2₂]\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})(?!\s*(?:horas?|min(?:utos)?|dias?|h(?![a-zà-ÿ]))\b)\s*(?:mmhg)?\b/iu,
+  ], 1, number, (match) => !isVenousPo2(text, match)),
   fio2: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
   ]),
