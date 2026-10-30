@@ -387,6 +387,25 @@ test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
   assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
 });
 
+test("cada template lista cada campo uma única vez", () => {
+  const withPressure = [
+    "acute-ischemic-stroke.neurology.v1",
+    "polytrauma.trauma-surgery.v1",
+    "acute-respiratory-failure.critical-care.v1",
+    "neurosurgical-emergency.neurosurgery.v1",
+  ];
+  for (const schema of SCHEMA_TEMPLATES) {
+    const counts = new Map();
+    for (const key of schema.fields) counts.set(key, (counts.get(key) ?? 0) + 1);
+    const duplicated = [...counts.entries()].filter(([, count]) => count > 1).map(([key]) => key);
+    assert.deepEqual(duplicated, [], `${schema.id} repete ${duplicated.join(", ")}`);
+    if (withPressure.includes(schema.id)) {
+      assert.equal(counts.get("sbp"), 1, schema.id);
+      assert.equal(counts.get("dbp"), 1, schema.id);
+    }
+  }
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);

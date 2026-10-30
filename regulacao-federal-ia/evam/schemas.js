@@ -77,7 +77,7 @@ export const SCHEMA_TEMPLATES = Object.freeze([
     purpose: "Estruturar tempo, déficit, imagem e capacidade de reperfusão para regulação neurovascular.",
     defaultIntervention: "Avaliação imediata de elegibilidade para reperfusão e/ou trombectomia mecânica.",
     defaultCapability: "Neurologia vascular + neuroimagem + trombólise e/ou neurorradiologia intervencionista operacional.",
-    fields: [...common, "symptomOnset", "lastKnownWell", "sbp", "dbp", "temperature", "nihss", "pupilExam", "focalDeficit", "creatinine", "inr", "platelets", "imaging"],
+    fields: [...common, "symptomOnset", "lastKnownWell", "temperature", "nihss", "pupilExam", "focalDeficit", "creatinine", "inr", "platelets", "imaging"],
     required: ["age", "lastKnownWell", "sbp", "gcs", "nihss", "imaging", "interventionNeeded", "capabilityNeeded"],
   },
   {
@@ -89,7 +89,7 @@ export const SCHEMA_TEMPLATES = Object.freeze([
     purpose: "Organizar mecanismo, fisiologia, hemorragia, imagem e capacidades cirúrgicas necessárias.",
     defaultIntervention: "Controle de hemorragia e tratamento definitivo das lesões tempo-dependentes.",
     defaultCapability: "Centro de trauma com cirurgia, banco de sangue, imagem e UTI; especialidades adicionais conforme lesões.",
-    fields: [...common, "symptomOnset", "sbp", "dbp", "temperature", "injuryMechanism", "hemorrhage", "lactate", "ph", "platelets", "inr", "imaging"],
+    fields: [...common, "symptomOnset", "temperature", "injuryMechanism", "hemorrhage", "lactate", "ph", "platelets", "inr", "imaging"],
     required: ["age", "symptomOnset", "injuryMechanism", "sbp", "gcs", "hemorrhage", "interventionNeeded", "capabilityNeeded"],
   },
   {
@@ -101,7 +101,7 @@ export const SCHEMA_TEMPLATES = Object.freeze([
     purpose: "Estruturar gravidade respiratória e necessidade de ventilação avançada/ECMO.",
     defaultIntervention: "Otimização ventilatória e avaliação de suporte extracorpóreo quando clinicamente indicado.",
     defaultCapability: "UTI com ventilação avançada; centro ECMO quando a questão regulatória exigir.",
-    fields: [...common, "symptomOnset", "sbp", "dbp", "temperature", "ph", "pao2", "fio2", "lactate", "creatinine", "imaging"],
+    fields: [...common, "symptomOnset", "temperature", "ph", "pao2", "fio2", "lactate", "creatinine", "imaging"],
     required: ["age", "recognitionTime", "spo2", "oxygenSupport", "ph", "pao2", "fio2", "interventionNeeded", "capabilityNeeded"],
   },
   {
@@ -113,7 +113,7 @@ export const SCHEMA_TEMPLATES = Object.freeze([
     purpose: "Estruturar nível de consciência, focalidade, pupilas, imagem e capacidade neurocirúrgica requerida.",
     defaultIntervention: "Avaliação neurocirúrgica e intervenção/descompressão conforme lesão e evolução.",
     defaultCapability: "Neurocirurgia de urgência + neuroimagem + centro cirúrgico e UTI disponíveis.",
-    fields: [...common, "symptomOnset", "sbp", "dbp", "temperature", "pupilExam", "focalDeficit", "platelets", "inr", "imaging"],
+    fields: [...common, "symptomOnset", "temperature", "pupilExam", "focalDeficit", "platelets", "inr", "imaging"],
     required: ["age", "symptomOnset", "gcs", "pupilExam", "focalDeficit", "imaging", "interventionNeeded", "capabilityNeeded"],
   },
 ]);
