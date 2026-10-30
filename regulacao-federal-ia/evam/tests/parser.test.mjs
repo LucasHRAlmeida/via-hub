@@ -98,12 +98,44 @@ test("pO2 venoso e hora de pós-operatório não gravam a PaO2", () => {
     ["PO2 48 mmHg.", 48],
     ["PaO2 90 mmHg na admissão. Agora pO2 52 mmHg em FiO2 100%.", 52],
     ["Gasometria arterial: pO2 78 mmHg.", 78],
+    ["Gasometria venosa: pH 7.35, pCO2 48, pO2 40 mmHg. Gasometria arterial: PaO2 58 mmHg.", 58],
+    ["Gasometria venosa: pH 7.35 pO2 36 mmHg. PaO2 92 mmHg.", 92],
+    ["Gasometria venosa: HCO3 22.4 pO2 38. PaO2 85 mmHg.", 85],
+    ["Gasometria venosa central: pH 7.31, pO2 42 mmHg. PaO2 80 mmHg.", 80],
+    ["pO2 40.5 mmHg na gasometria venosa. PaO2 88 mmHg.", 88],
+    ["Gasometria venosa: pH 7.35, pO₂ 36. PaO₂ 92.", 92],
   ];
   for (const [input, expected] of arterial) {
     assert.equal(extractNarrative(input, schema).pao2.value, expected, input);
   }
   assert.equal(extractNarrative("Gasometria venosa: pO2 35 mmHg.", schema).pao2.value, "");
   assert.equal(extractNarrative("PO2: 48 horas de evolução.", schema).pao2.value, "");
+  assert.equal(
+    extractNarrative("Gasometria venosa: pH 7.35, pCO2 48, pO2 40 mmHg.", schema).pao2.value,
+    "",
+  );
+});
+
+test("pH venoso não grava o pH arterial", () => {
+  const schema = getSchema("acute-respiratory-failure.critical-care.v1");
+  const both = extractNarrative(
+    "Gasometria venosa: pH 7.35, pCO2 48, pO2 40 mmHg. Gasometria arterial: pH 7.22, PaO2 58 mmHg.",
+    schema,
+  );
+  assert.equal(both.ph.value, 7.22);
+  assert.equal(both.pao2.value, 58);
+
+  assert.equal(
+    extractNarrative("Gasometria venosa: pH 7,35. Gasometria arterial: pH 7,18.", schema).ph.value,
+    7.18,
+  );
+  assert.equal(extractNarrative("pH 7.32 (venoso). pH 7.10.", schema).ph.value, 7.1);
+  assert.equal(extractNarrative("Gasometria venosa: pH 7.35.", schema).ph.value, "");
+  assert.equal(extractNarrative("Acesso venoso. pH 7.22.", schema).ph.value, 7.22);
+  assert.equal(extractNarrative("pH 7.28 com acesso venoso.", schema).ph.value, 7.28);
+  assert.equal(extractNarrative("Gasometria arterial: pH 7.21, pO2 60 mmHg.", schema).ph.value, 7.21);
+  assert.equal(extractNarrative("pH 7.15.", schema).ph.value, 7.15);
+  assert.equal(extractNarrative("pH 7,25 na admissão. pH 7,12.", schema).ph.value, 7.12);
 });
 
 test("troponina seriada e negada não grava a primeira leitura invertida", () => {
