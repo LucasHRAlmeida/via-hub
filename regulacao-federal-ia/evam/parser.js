@@ -274,6 +274,60 @@ function extractImaging(text) {
   return null;
 }
 
+// Curva na mesma menção ("SpO2 97% → 82%", "PA 180/110 → 80/50", "Glasgow 14 → 8"):
+// o número colado ao rótulo é o basal e o último é o vigente. Prazo ("para 2 horas"),
+// volume ("para 500 mL") e fluxo ("para 2 L/min") não entram. Outra frase, sem seta, fica.
+const TREND_MARK = String.raw`(?:→|->|=>|\bpara\b)`;
+const TREND_REJECT =
+  String.raw`(?!\s*(?:h|horas?|min(?:utos)?|dias?|mls?|m\s*l|l(?:pm|itros?)?|mcg|mg|ui)\b)`;
+const SCALAR_TREND = new RegExp(
+  String.raw`\s*(?:mm\s*hg|bpm|irpm|rpm|%|°\s*c)?\s*${TREND_MARK}\s*(\d+(?:[.,]\d+)?)(?!\d)${TREND_REJECT}`,
+  "yiu",
+);
+const PAIR_TREND = new RegExp(
+  String.raw`\s*(?:mm\s*hg)?\s*${TREND_MARK}\s*(\d{2,3})(?!\d)\s*[x/]\s*(\d{2,3})(?!\d)(?!\s*(?:h|horas?|min(?:utos)?|dias?)\b)`,
+  "yiu",
+);
+
+function isPressurePair(match) {
+  return /\d\s*[x/]\s*\d/i.test(match?.[0] ?? "");
+}
+
+function latestTrend(match, expression) {
+  const source = match?.input ?? "";
+  let end = (match?.index ?? 0) + (match?.[0]?.length ?? 0);
+  let found = null;
+  while (end <= source.length) {
+    expression.lastIndex = end;
+    const next = expression.exec(source);
+    if (!next) break;
+    const nextEnd = next.index + next[0].length;
+    if (nextEnd <= end) break;
+    found = next;
+    end = nextEnd;
+  }
+  return found;
+}
+
+function preferLatestScalar(raw, match) {
+  if (isPressurePair(match)) return number(raw);
+  const found = latestTrend(match, SCALAR_TREND);
+  return number(found ? found[1] : raw);
+}
+
+function preferLatestSystolic(raw, match) {
+  const found = latestTrend(match, PAIR_TREND);
+  if (found) return number(found[1]);
+  return preferLatestScalar(raw, match);
+}
+
+function preferLatestDiastolic(raw, match) {
+  const found = latestTrend(match, PAIR_TREND);
+  if (found) return number(found[2]);
+  if (isPressurePair(match)) return number(raw);
+  return preferLatestScalar(raw, match);
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -295,31 +349,31 @@ const EXTRACTORS = Object.freeze({
   sbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
-  ]),
+  ], 1, preferLatestSystolic),
   dbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
-  ]),
+  ], 1, preferLatestDiastolic),
   map: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   heartRate: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   respiratoryRate: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   spo2: (text) => matchCurrentReading(text, [
     // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
     // de "10 L/min" para SpO₂=1.
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
-  ]),
+  ], 1, preferLatestScalar),
   temperature: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   gcs: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
   ]),
@@ -344,19 +398,19 @@ const EXTRACTORS = Object.freeze({
   troponin: extractTroponin,
   ph: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   pao2: (text) => matchCurrentReading(text, [
     // Gasometria usa pO2, PO2 e PaO₂ para a mesma grandeza. Sem o sinônimo,
     // a PaO2 da admissão ocupa o campo e a hipoxemia atual desaparece.
     // pCO2/PaCO2 não casam: o "c" interrompe p(?:a)?o.
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bp(?:a)?o[2₂]\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   fio2: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
-  ]),
+  ], 1, preferLatestScalar),
   nihss: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\b/iu,
-  ]),
+  ], 1, preferLatestScalar),
   pupilExam: (text) => matchOne(text, [
     /\b(pupilas?[^\n.;]{0,90})/iu,
   ]),

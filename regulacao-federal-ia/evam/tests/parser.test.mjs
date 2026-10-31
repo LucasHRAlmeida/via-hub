@@ -387,6 +387,48 @@ test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
   assert.match(plural.ecg.value, /supradesnivelamento anterior/i);
 });
 
+test("curva de vital grava o valor vigente, não o basal", () => {
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+
+  assert.equal(extractNarrative("SpO2 97% → 82% em máscara.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("SpO2 97% -> 88% -> 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("Saturação 98% para 85%.", respiratory).spo2.value, 85);
+  assert.equal(extractNarrative("SpO2 97%.", respiratory).spo2.value, 97);
+  assert.equal(extractNarrative("SpO2 97%. SpO2 82%.", respiratory).spo2.value, 97);
+  assert.equal(extractNarrative("SpO2 97% para 2 L/min.", respiratory).spo2.value, 97);
+
+  assert.equal(extractNarrative("PA 180/110 → 80/50 mmHg.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 → 80/50 mmHg.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110 mmHg → 90/60 → 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 mmHg → 90/60 → 80/50.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PAS 160 → 90 mmHg.", coronary).sbp.value, 90);
+  assert.equal(extractNarrative("PAD 100 → 50 mmHg.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 80/50. PA 120/70 após volume.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", coronary).sbp.value, 92);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", coronary).dbp.value, 58);
+
+  assert.equal(extractNarrative("FC 80 → 110 → 140 bpm.", coronary).heartRate.value, 140);
+  assert.equal(extractNarrative("FC 80 para 2 horas.", coronary).heartRate.value, 80);
+  assert.equal(extractNarrative("FC 118 bpm.", coronary).heartRate.value, 118);
+  assert.equal(extractNarrative("FR 18 → 36 irpm.", respiratory).respiratoryRate.value, 36);
+  assert.equal(extractNarrative("PAM 70 → 48 mmHg.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("PAM 58 para 500 mL.", sepsis).map.value, 58);
+  assert.equal(extractNarrative("PAM 58 mmHg.", sepsis).map.value, 58);
+  assert.equal(extractNarrative("Tax 36,5 → 39,2.", sepsis).temperature.value, 39.2);
+  assert.equal(extractNarrative("Glasgow 14 → 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 14.", trauma).gcs.value, 14);
+  assert.equal(extractNarrative("pH 7,40 → 7,18.", trauma).ph.value, 7.18);
+  assert.equal(extractNarrative("PaO2 90 → 52 mmHg.", respiratory).pao2.value, 52);
+  assert.equal(extractNarrative("FiO2 50% → 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("FiO2 40% na chegada. FiO2 atual 100%.", respiratory).fio2.value, 100);
+  assert.equal(extractNarrative("NIHSS 4 → 18.", stroke).nihss.value, 18);
+  assert.equal(extractNarrative("NIHSS 16.", stroke).nihss.value, 16);
+});
+
 test("resumo formatado explicita campos críticos e governança", () => {
   const schema = SCHEMA_TEMPLATES[0];
   const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
