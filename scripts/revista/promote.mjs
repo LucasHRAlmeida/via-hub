@@ -267,6 +267,7 @@ function assertStyledMarkup(doc) {
 
 function assertCurrent(doc) {
   const checks = [
+    [`datePublished ${edition}`, new RegExp(`"datePublished"\\s*:\\s*"${edition}"`).test(doc)],
     [`dateModified ${edition}`, new RegExp(`"dateModified"\\s*:\\s*"${edition}"`).test(doc)],
     [`lastReviewed ${edition}`, new RegExp(`"lastReviewed"\\s*:\\s*"${edition}"`).test(doc)],
     [`hero ${editionHuman}`, doc.includes(editionHuman)],
@@ -304,6 +305,7 @@ html = html.replace(/<h2>[^<]*<\/h2>\s*<p>[^<]*<\/p>\s*<\/div>\s*<div class="met
   `<h2>${escapeHtml(cleanHeading(sections[0]?.heading || 'Edição semanal'))}</h2>\n      <p>${inline(criterion)}</p>\n    </div>\n    <div class="meta mono">\n      <span><b>${escapeHtml(editionHuman)}</b></span>\n      <span><b>Semana</b> ${escapeHtml(weekHuman.replace(/^Semana de\s*/i, ''))}</span>`);
 html = html.replace(/Revista Eletrônica VIA · Saúde na Última Semana · edição de \d{2}\.\d{2}\.\d{4}\./,
   `Revista Eletrônica VIA · Saúde na Última Semana · edição de ${editionId}.`);
+html = html.replace(/"datePublished"\s*:\s*"[0-9]{4}-[0-9]{2}-[0-9]{2}"/g, `"datePublished": "${edition}"`);
 html = html.replace(/"dateModified"\s*:\s*"\d{4}-\d{2}-\d{2}"/g, `"dateModified": "${edition}"`);
 html = html.replace(/"lastReviewed"\s*:\s*"\d{4}-\d{2}-\d{2}"/g, `"lastReviewed": "${edition}"`);
 html = html.replace(/"about"\s*:\s*\[[\s\S]*?\],\s*"specialty"/, `"about": [\n${aboutJson}\n        ],\n        "specialty"`);
