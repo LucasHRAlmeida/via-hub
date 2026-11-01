@@ -358,6 +358,67 @@ test("angiotensina não oculta a tomografia nem a angioTC", () => {
   assert.match(extractNarrative("ColangioRM com cálculo em colédoco.", sepsis).imaging.value, /cálculo em colédoco/i);
 });
 
+test("ultrassonografia e falso angio ou colangio não ocultam o exame", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
+  const acs = getSchema("acute-coronary-syndrome.cardiology.v1");
+
+  const ultrasound = extractNarrative(
+    "Ultrassonografia de abdome: vesícula com parede espessada e dilatação de via biliar.\nTC de crânio sem alterações agudas.",
+    sepsis,
+  );
+  assert.match(ultrasound.imaging.value, /^Ultrassonografia de abdome: vesícula com parede espessada/i);
+  assert.doesNotMatch(ultrasound.imaging.value, /TC de crânio/);
+
+  const adjective = extractNarrative(
+    "Avaliação ultrassonográfica de abdome com dilatação biliar.\nTC de crânio normal.",
+    sepsis,
+  );
+  assert.match(adjective.imaging.value, /ultrassonográfica de abdome com dilatação biliar/i);
+  assert.doesNotMatch(adjective.imaging.value, /TC de crânio/);
+
+  const notDone = extractNarrative(
+    "Ultrassonografia não realizada.\nTC de abdome com coleção.",
+    sepsis,
+  );
+  assert.match(notDone.imaging.value, /TC de abdome com coleção/i);
+  assert.doesNotMatch(notDone.imaging.value, /não realizada/i);
+
+  const angioedema = extractNarrative(
+    "Angioedema de face após IECA.\nTC de pescoço com via aérea pérvia.",
+    stroke,
+  );
+  assert.match(angioedema.imaging.value, /^TC de pescoço com via aérea pérvia/i);
+  assert.doesNotMatch(angioedema.imaging.value, /Angioedema/);
+
+  const angiodisplasia = extractNarrative(
+    "Angiodisplasia de cólon.\nTC de abdome com pneumoperitônio.",
+    sepsis,
+  );
+  assert.match(angiodisplasia.imaging.value, /pneumoperitônio/i);
+  assert.doesNotMatch(angiodisplasia.imaging.value, /Angiodisplasia/);
+
+  const angioma = extractNarrative(
+    "Angioma hepático estável.\nTC de abdome com dilatação de vias biliares.",
+    sepsis,
+  );
+  assert.match(angioma.imaging.value, /dilatação de vias biliares/i);
+  assert.doesNotMatch(angioma.imaging.value, /Angioma/);
+
+  const carcinoma = extractNarrative(
+    "Colangiocarcinoma irressecável.\nTC de abdome com dilatação de vias biliares.",
+    sepsis,
+  );
+  assert.match(carcinoma.imaging.value, /^TC de abdome com dilatação/i);
+  assert.doesNotMatch(carcinoma.imaging.value, /Colangiocarcinoma/);
+
+  assert.match(extractNarrative("Angio de coronárias: oclusão de DA.", acs).imaging.value, /oclusão de DA/i);
+  assert.match(extractNarrative("Angiotomografia de coronárias sem obstrução.", acs).imaging.value, /sem obstrução/i);
+  assert.match(extractNarrative("AngioRM de crânio: aneurisma.", acs).imaging.value, /aneurisma/i);
+  assert.match(extractNarrative("Colangiografia com falha de enchimento.", sepsis).imaging.value, /falha de enchimento/i);
+  assert.match(extractNarrative("Colangiopancreatografia com cálculo em colédoco.", sepsis).imaging.value, /cálculo em colédoco/i);
+});
+
 test("ECGL e ECGLA não ocultam o eletrocardiograma", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const separated = extractNarrative(
