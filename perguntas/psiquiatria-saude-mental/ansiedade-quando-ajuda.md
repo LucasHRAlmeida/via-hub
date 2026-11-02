@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "As pessoas em situações de crise podem ser atendidas em qualquer dispositivo da Rede de Atenção Psicossocial (RAPS)."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
