@@ -116,7 +116,8 @@ for (const ficha of fichas) {
     if (dataPublicacao === "null") {
       assert.ok(campoYaml(fonte, "motivoAusenciaDataPublicacao"), `${caminhoRelativo} sem motivo para data de publicação ausente`);
     }
-    const classificacao = campoYaml(fonte, "classificacaoEvidencia");
+    const classificacaoRaw = campoYaml(fonte, "classificacaoEvidencia");
+    const classificacao = classificacaoRaw?.replace(/^"(.*)"$/, "$1");
     assert.ok(estadosEvidencia.has(classificacao), `${caminhoRelativo} com classificacaoEvidencia inválida: ${classificacao}`);
     const trecho = campoYaml(fonte, "trechoCitado");
     const parafrase = campoYaml(fonte, "parafraseIndicada");
