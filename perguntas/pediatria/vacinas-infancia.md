@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "O Calendário Nacional de Vacinação define as vacinas recomendadas para cada idade na infância."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

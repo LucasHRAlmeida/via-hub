@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "PNEUMOCÓCICA 20-VALENTE (VPC20) — Povos indígenas, a partir de 5 anos de idade, sem histórico vacinal com vacina pneumocócica conjugada."
     parafraseIndicada: false
+    classificacaoEvidencia: "literal_truncada"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

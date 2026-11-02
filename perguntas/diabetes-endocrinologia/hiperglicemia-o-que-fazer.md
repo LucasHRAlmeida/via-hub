@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "High blood glucose (hyperglycemia) means that the level of glucose (sugar) in your blood is above your target range."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
   - entidade: "Sociedade Brasileira de Diabetes"
     sigla: "SBD"
     papel_epistemico: "diretriz_clinica"
@@ -37,6 +38,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "O tratamento do diabetes tipo 2 evoluiu de uma visão focada apenas no controle glicêmico para uma abordagem mais ampla."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

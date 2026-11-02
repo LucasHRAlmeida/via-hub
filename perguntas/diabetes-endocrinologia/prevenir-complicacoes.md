@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "Pacientes com diabetes tipo 2 têm a incidência de doença cardiovascular e de acidente vascular isquêmico aumentada em duas a quatro vezes."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

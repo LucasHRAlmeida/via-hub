@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-11-01"
     trechoCitado: "A hipertensão arterial é condição de alto impacto e deve ser avaliada e acompanhada por profissional de saúde."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
