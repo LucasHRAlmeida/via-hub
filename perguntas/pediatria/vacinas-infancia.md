@@ -18,10 +18,10 @@ fontes:
     acesso: "publico_gratuito"
     edicaoOuVersao: "2026"
     dataPublicacao: "2026-07-27"
-    dataConsulta: "2026-10-10"
-    dataUltimaRevalidacao: "2026-10-10"
-    proximoVencimento: "2027-10-10"
-    trechoCitado: "Vacinar nos primeiros 1.000 dias de vida é um cuidado essencial para a proteção contra intercorrências que possam comprometer o pleno desenvolvimento infantil."
+    dataConsulta: "2026-11-01"
+    dataUltimaRevalidacao: "2026-11-01"
+    proximoVencimento: "2027-11-01"
+    trechoCitado: "O Calendário Nacional de Vacinação define as vacinas recomendadas para cada idade na infância."
     parafraseIndicada: true
 resposta:
   tipo: "educacao_leiga"
