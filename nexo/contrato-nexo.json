@@ -1,6 +1,6 @@
 {
   "nome": "Nexo",
-  "versao": "0.1.0",
+  "versao": "0.2.0",
   "estagio": "fundacao-estatica",
   "canalFuturo": "WhatsApp Business",
   "telos": "ikigai do fundador: ciencia e tecnologia a servico do cuidado, com responsabilidade humana no centro",
@@ -36,7 +36,14 @@
     "nivel-2-literatura-e-agencias",
     "nivel-3-divulgacao-contexto"
   ],
-  "registroMinimoFonte": ["entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta", "referenciaPublica", "trechoCitado", "parafraseIndicada"],
+  "registroMinimoFonte": ["entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta", "referenciaPublica", "trechoCitado", "parafraseIndicada", "classificacaoEvidencia"],
+  "estadosEvidencia": {
+    "literal_confirmada": {"exigeTrechoCitado": true, "exigeReferenciaPublica": true, "permiteParafrase": false},
+    "literal_truncada": {"exigeTrechoCitado": true, "exigeReferenciaPublica": true, "permiteParafrase": false},
+    "parafraase": {"exigeTrechoCitado": false, "exigeReferenciaPublica": true, "permiteParafrase": true},
+    "parcial": {"exigeTrechoCitado": false, "exigeReferenciaPublica": true, "permiteParafrase": true, "exigePendencia": true},
+    "inconclusiva": {"exigeTrechoCitado": false, "exigeReferenciaPublica": false, "permiteParafrase": true, "exigeJustificativa": true}
+  },
   "privacidade": {
     "escopo": "fundacao-estatica",
     "capturaDadosPessoais": false,
