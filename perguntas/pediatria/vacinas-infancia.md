@@ -11,12 +11,12 @@ fontes:
   - entidade: "Ministério da Saúde"
     sigla: "MS"
     papel_epistemico: "orientacao_publica"
-    titulo: "Calendário Nacional de Vacinação — Criança"
+    titulo: "Calendário Nacional de Vacinação — Criança (vigente)"
     referenciaPublica: "https://www.gov.br/saude/pt-br/vacinacao/arquivos/calendario-nacional-de-vacinacao-crianca/view"
     url_geral: "https://www.gov.br/saude/pt-br/vacinacao/calendario"
     idioma: "pt-BR"
     acesso: "publico_gratuito"
-    edicaoOuVersao: "2026"
+    edicaoOuVersao: "vigente em 2026-11-01"
     dataPublicacao: "2026-07-27"
     dataConsulta: "2026-11-01"
     dataUltimaRevalidacao: "2026-11-01"
@@ -24,9 +24,10 @@ fontes:
     trechoCitado: "O Calendário Nacional de Vacinação define as vacinas recomendadas para cada idade na infância."
     parafraseIndicada: true
     classificacaoEvidencia: "parafrase"
+    observacao: "Calendário vacinal é dinâmico. Citação refere-se à versão vigente no momento do acesso (2026-11-01)."
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
-  sintese: "O Calendário Nacional de Vacinação define as vacinas recomendadas para cada idade na infância, incluindo doses nos primeiros meses de vida, reforços e vacinas como BCG, hepatite B, pentavalente, poliomielite, rotavírus, tríplice viral, varicela, hepatite A, HPV e COVID-19, conforme a faixa etária. A atualização deve ser feita em unidade de saúde com o cartão de vacinas."
+  sintese: "Conforme o Calendário Nacional de Vacinação vigente em 01/11/2026, ele define as vacinas recomendadas para cada idade na infância, incluindo doses nos primeiros meses de vida, reforços e vacinas como BCG, hepatite B, pentavalente, poliomielite, rotavírus, tríplice viral, varicela, hepatite A, HPV e COVID-19, conforme a faixa etária. A atualização deve ser feita em unidade de saúde com o cartão de vacinas."
   encerramento: "em_sinais_de_urgencia_buscar_servico_de_emergencia"
 ```
