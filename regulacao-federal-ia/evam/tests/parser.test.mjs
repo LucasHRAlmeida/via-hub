@@ -331,6 +331,20 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("horário da coleta não entra como lactato", () => {
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const value = (text) => extractNarrative(text, sepsis).lactate.value;
+  assert.equal(value("Lactato 3 horas: 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato 3h: 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato 3ª hora: 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato: 3 horas após reconhecimento, 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato: 3 horas. Lactato 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato admissão 2,1 mmol/L. Lactato 3 h 5,4 mmol/L."), 5.4);
+  assert.equal(value("Lactato: 3 horas."), "");
+  assert.equal(value("Lactato 4,1 há 3 horas."), 4.1);
+  assert.equal(value("Lactato 4,1 mmol/L."), 4.1);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(
