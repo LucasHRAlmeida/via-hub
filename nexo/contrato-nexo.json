@@ -40,7 +40,7 @@
   "estadosEvidencia": {
     "literal_confirmada": {"exigeTrechoCitado": true, "exigeReferenciaPublica": true, "permiteParafrase": false},
     "literal_truncada": {"exigeTrechoCitado": true, "exigeReferenciaPublica": true, "permiteParafrase": false},
-    "parafraase": {"exigeTrechoCitado": false, "exigeReferenciaPublica": true, "permiteParafrase": true},
+    "parafrase": {"exigeTrechoCitado": false, "exigeReferenciaPublica": true, "permiteParafrase": true},
     "parcial": {"exigeTrechoCitado": false, "exigeReferenciaPublica": true, "permiteParafrase": true, "exigePendencia": true},
     "inconclusiva": {"exigeTrechoCitado": false, "exigeReferenciaPublica": false, "permiteParafrase": true, "exigeJustificativa": true}
   },

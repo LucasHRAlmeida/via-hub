@@ -49,7 +49,7 @@ for (const campo of [
 const estadosEvidencia = new Set(Object.keys(contrato.estadosEvidencia));
 assert.ok(estadosEvidencia.has("literal_confirmada"), "estado literal_confirmada ausente");
 assert.ok(estadosEvidencia.has("literal_truncada"), "estado literal_truncada ausente");
-assert.ok(estadosEvidencia.has("parafraase"), "estado parafraase ausente");
+assert.ok(estadosEvidencia.has("parafrase"), "estado parafrase ausente");
 assert.ok(estadosEvidencia.has("parcial"), "estado parcial ausente");
 assert.ok(estadosEvidencia.has("inconclusiva"), "estado inconclusiva ausente");
 
@@ -124,7 +124,7 @@ for (const ficha of fichas) {
       assert.equal(parafrase, "false", `${caminhoRelativo} citação literal não pode ser marcada como paráfrase`);
       assert.ok(trecho && trecho !== "null" && trecho !== '""', `${caminhoRelativo} citação literal sem trecho`);
     }
-    if (classificacao === "parafraase") {
+    if (classificacao === "parafrase") {
       assert.equal(parafrase, "true", `${caminhoRelativo} paráfrase deve ser marcada como paráfrase`);
       assert.ok(referenciaPublica, `${caminhoRelativo} paráfrase sem referência pública`);
     }
