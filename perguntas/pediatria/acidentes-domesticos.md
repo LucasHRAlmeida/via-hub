@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-13"
     trechoCitado: "Os locais de maior risco são: cozinha, banheiro, escada, quintal, sala e quarto."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Sinais de alerta: temperatura acima de 38°C; diminuição do volume de urina; falta de ar; aumento da frequência cardíaca; sonolência, confusão mental e/ou agitação; fraqueza extrema; vômito."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Contacte seu médico se você repentinamente apresentar falta de ar persistente, dor ou pressão no peito, ou não sentir alívio após o uso da medicação inalatória."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

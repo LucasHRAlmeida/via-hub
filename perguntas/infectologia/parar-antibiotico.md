@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Nunca pare o tratamento antes do prazo indicado, mesmo que os sintomas tenham melhorado."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
