@@ -41,10 +41,17 @@ assert.match(curadoria, /FONTES_EDUCACAO_SAUDE\.md/, "CURADORIA.md nao referenci
 
 for (const campo of [
   "entidade", "titulo", "edicaoOuVersao", "dataPublicacao", "dataConsulta",
-  "referenciaPublica", "trechoCitado", "parafraseIndicada"
+  "referenciaPublica", "trechoCitado", "parafraseIndicada", "classificacaoEvidencia"
 ]) {
   assert.ok(contrato.registroMinimoFonte.includes(campo), `registro minimo sem o campo: ${campo}`);
 }
+
+const estadosEvidencia = new Set(Object.keys(contrato.estadosEvidencia));
+assert.ok(estadosEvidencia.has("literal_confirmada"), "estado literal_confirmada ausente");
+assert.ok(estadosEvidencia.has("literal_truncada"), "estado literal_truncada ausente");
+assert.ok(estadosEvidencia.has("parafraase"), "estado parafraase ausente");
+assert.ok(estadosEvidencia.has("parcial"), "estado parcial ausente");
+assert.ok(estadosEvidencia.has("inconclusiva"), "estado inconclusiva ausente");
 
 const perguntasDir = path.join(root, "perguntas");
 const fichas = [];
@@ -99,7 +106,7 @@ for (const ficha of fichas) {
     for (const campo of contrato.registroMinimoFonte) {
       assert.ok(campoYaml(fonte, campo), `${caminhoRelativo} com fonte sem ${campo}`);
     }
-    for (const campo of ["entidade", "titulo", "edicaoOuVersao", "dataConsulta", "trechoCitado"]) {
+    for (const campo of ["entidade", "titulo", "edicaoOuVersao", "dataConsulta", "trechoCitado", "classificacaoEvidencia"]) {
       const valor = campoYaml(fonte, campo);
       assert.ok(valor && valor !== "null" && valor !== '""', `${caminhoRelativo} com fonte sem valor para ${campo}`);
     }
@@ -109,7 +116,24 @@ for (const ficha of fichas) {
     if (dataPublicacao === "null") {
       assert.ok(campoYaml(fonte, "motivoAusenciaDataPublicacao"), `${caminhoRelativo} sem motivo para data de publicação ausente`);
     }
-    assert.equal(campoYaml(fonte, "parafraseIndicada"), "true", `${caminhoRelativo} não indica paráfrase`);
+    const classificacao = campoYaml(fonte, "classificacaoEvidencia");
+    assert.ok(estadosEvidencia.has(classificacao), `${caminhoRelativo} com classificacaoEvidencia inválida: ${classificacao}`);
+    const trecho = campoYaml(fonte, "trechoCitado");
+    const parafrase = campoYaml(fonte, "parafraseIndicada");
+    if (classificacao === "literal_confirmada" || classificacao === "literal_truncada") {
+      assert.equal(parafrase, "false", `${caminhoRelativo} citação literal não pode ser marcada como paráfrase`);
+      assert.ok(trecho && trecho !== "null" && trecho !== '""', `${caminhoRelativo} citação literal sem trecho`);
+    }
+    if (classificacao === "parafraase") {
+      assert.equal(parafrase, "true", `${caminhoRelativo} paráfrase deve ser marcada como paráfrase`);
+      assert.ok(referenciaPublica, `${caminhoRelativo} paráfrase sem referência pública`);
+    }
+    if (classificacao === "parcial") {
+      assert.ok(campoYaml(respostaYaml, "pendencia", 2), `${caminhoRelativo} parcial sem pendência declarada`);
+    }
+    if (classificacao === "inconclusiva") {
+      assert.ok(campoYaml(fonte, "justificativa"), `${caminhoRelativo} inconclusiva sem justificativa`);
+    }
     for (const campo of ["dataConsulta", "dataUltimaRevalidacao", "proximoVencimento"]) {
       const data = campoYaml(fonte, campo)?.replace(/^"(.*)"$/, "$1");
       assert.match(data, /^\d{4}-\d{2}-\d{2}$/, `${caminhoRelativo} com ${campo} inválida`);
