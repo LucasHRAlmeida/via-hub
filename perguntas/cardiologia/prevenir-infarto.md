@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "A doença cardiovascular é a principal causa de morte no Brasil e no mundo."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

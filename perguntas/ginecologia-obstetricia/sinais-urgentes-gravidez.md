@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-13"
     trechoCitado: "A pré-eclâmpsia pode ocorrer sem sintomas, porém, os sinais a seguir são os mais comuns"
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
