@@ -70,6 +70,24 @@ test("reconhecimento explícito prevalece sobre «há» incidental no TTL", () =
   assert.equal(nounForm.lactate.freshness, "expired");
 });
 
+test("reconhecimento rotulado em horas prevalece sobre «há» incidental", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const labeled = [
+    "Reconhecimento: 18h. Dor há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Reconhecimento: 18 horas. Antibiótico há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Tempo desde reconhecimento: 18h. Há 2 horas de antibiótico. PAM 58. Lactato 4,1 mmol/L.",
+    "Antibiótico há 2 horas. Tempo: 18h. PAM 58. Lactato 4,1 mmol/L.",
+    "Sepse reconhecida há 18h. Dor há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+  ];
+  for (const text of labeled) {
+    const fields = extractNarrative(text, schema);
+    assert.equal(fields.hoursSinceRecognition.value, 18, text);
+    assert.equal(fields.lactate.value, 4.1, text);
+    assert.equal(fields.lactate.freshness, "expired", text);
+    assert.equal(fields.map.freshness, "expired", text);
+  }
+});
+
 test("«há» genérico permanece quando não há reconhecimento explícito", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const text = "Homem, 62 anos. Dor torácica iniciada há 3 horas. PA 92/58 mmHg.";

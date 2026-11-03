@@ -284,14 +284,25 @@ const EXTRACTORS = Object.freeze({
     /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
     /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/iu,
   ]),
-  // Explicit recognition must win over an earlier incidental "há N horas"
-  // (antibiotic duration, pain onset). Otherwise derived TTL observedAt follows
-  // the wrong interval and an expired lactate can be stamped fresh.
-  hoursSinceRecognition: (text) => matchOne(text, [
-    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
-  ], 1, number),
+  // Explicit recognition must win over an incidental "há N horas"
+  // (antibiotic duration, pain onset), whether it comes before or after.
+  // A duration glued to the label ("Reconhecimento: 18h", "Tempo: 18h",
+  // "Tempo desde reconhecimento: 18h") does not contain "há", so the loose
+  // search must not run first: it would stamp the other interval and mark
+  // an expired lactate fresh. "às 18 horas" is a clock time and is not read.
+  hoursSinceRecognition: (text) => {
+    const labeled = matchOne(text, [
+      /\breconheci(?:mento|d(?:os|as|o|a))\b\s*[:=]?\s*(?:h[aá]\s*)?(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+      /\btempo\s+desde\s+reconhecimento\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+      /\btempo\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    ], 1, number);
+    if (labeled) return labeled;
+    return matchOne(text, [
+      /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+      /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+      /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
+    ], 1, number);
+  },
   sbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
