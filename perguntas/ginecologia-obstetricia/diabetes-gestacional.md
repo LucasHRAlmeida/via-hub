@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-12"
     trechoCitado: "O DMG é definido como uma intolerância aos carboidratos de gravidade variável, que se inicia durante a gestação porém não preenche critérios diagnósticos de DM fora da gestação."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

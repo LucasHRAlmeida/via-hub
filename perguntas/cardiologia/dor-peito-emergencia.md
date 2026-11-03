@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Qualquer pessoa com dor torácica aguda (ou sintoma equivalente) deve procurar atendimento médico imediatamente."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

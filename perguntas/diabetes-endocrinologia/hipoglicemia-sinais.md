@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Os sintomas podem incluir tremores, irritabilidade, confusão, taquicardia, sudorese e fome."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

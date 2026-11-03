@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-13"
     trechoCitado: "Os sintomas graves ou persistentes devem ser avaliados por um médico."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
   - entidade: "Ministério da Saúde — Biblioteca Virtual em Saúde"
     sigla: "MS/BVS"
     papel_epistemico: "orientacao_publica"
@@ -36,6 +37,7 @@ fontes:
     proximoVencimento: "2027-10-13"
     trechoCitado: "não se automedique nem recorra ao consumo de álcool ou de outras drogas para aliviar os sintomas do pânico"
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

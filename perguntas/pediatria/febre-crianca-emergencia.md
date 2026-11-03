@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "A febre representa uma das queixas mais frequentes entre todos os atendimentos pediátricos."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
   - entidade: "Fundação Oswaldo Cruz — Instituto Fernandes Figueira"
     sigla: "Fiocruz/IFF"
     papel_epistemico: "contexto_sus"
@@ -36,6 +37,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Sinais e sintomas que sugerem gravidade incluem letargia, má perfusão, cianose e hipo ou hiperventilação."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

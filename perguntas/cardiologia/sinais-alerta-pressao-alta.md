@@ -17,15 +17,16 @@ fontes:
     idioma: "pt-BR"
     acesso: "publico_gratuito"
     edicaoOuVersao: "2025"
-    dataPublicacao: "2025-10-10"
-    dataConsulta: "2026-10-10"
-    dataUltimaRevalidacao: "2026-10-10"
-    proximoVencimento: "2027-10-10"
+    dataPublicacao: "2025-09-18"
+    dataConsulta: "2026-11-01"
+    dataUltimaRevalidacao: "2026-11-01"
+    proximoVencimento: "2027-11-01"
     trechoCitado: "A hipertensão arterial é condição de alto impacto e deve ser avaliada e acompanhada por profissional de saúde."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
-  sintese: "A pressão alta frequentemente não causa sintomas, por isso deve ser acompanhada com medições regulares. Procurar atendimento imediato se houver pressão muito elevada associada a dor no peito, falta de ar, dor de cabeça intensa, alteração visual, confusão, fraqueza em um lado do corpo ou convulsão."
+  sintese: "A pressão alta frequentemente não causa sintomas, por isso deve ser acompanhada com medições regulares. Procurar atendimento imediato se houver pressão muito elevada associada a sinais possíveis de lesão aguda de órgão-alvo, como dor no peito, falta de ar, dor de cabeça intensa, alteração visual, confusão, fraqueza em um lado do corpo ou convulsão."
   encerramento: "em_sinais_de_urgencia_buscar_servico_de_emergencia"
 ```

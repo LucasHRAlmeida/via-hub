@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "Agitar vigorosamente, manter-se em pé ou sentado, soltar o ar, inspirar lenta e profundamente enquanto dispara, prender a respiração por 10 segundos e enxaguar a boca após o uso."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

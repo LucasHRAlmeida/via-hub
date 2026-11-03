@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-12"
     trechoCitado: "O rastreamento deve ser ofertado às mulheres ou qualquer pessoa com colo do útero, na faixa etária de 25 a 64 anos e que já tiveram atividade sexual."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

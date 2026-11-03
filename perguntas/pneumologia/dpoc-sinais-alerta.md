@@ -22,6 +22,7 @@ fontes:
     proximoVencimento: "2027-10-10"
     trechoCitado: "As exacerbações se caracterizam por aparecimento de novos sintomas ou piora de sintomas habituais (tosse com expectoração, dispneia e chiado) nos últimos 14 dias."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"

@@ -23,6 +23,7 @@ fontes:
     proximoVencimento: "2027-10-13"
     trechoCitado: "Saber reconhecer os sinais de alerta em si mesmo ou em alguém próximo a você pode ser o primeiro e mais importante passo."
     parafraseIndicada: true
+    classificacaoEvidencia: "parafrase"
 resposta:
   tipo: "educacao_leiga"
   limite: "nao_triagem_clinica"
