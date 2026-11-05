@@ -164,6 +164,61 @@ test("hemorragia negada depois do achado não entra como presente", () => {
   );
 });
 
+test("sinais, evidência ou ausência não gravam hemorragia presente", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const absent = [
+    "Sem sinais de sangramento ativo.",
+    "Sem sinais clínicos de sangramento ativo.",
+    "Sem quadro clínico de choque hemorrágico.",
+    "Sem evidência de choque hemorrágico.",
+    "Sem evidências de sangramento ativo.",
+    "Sem quadro de choque hemorrágico.",
+    "Sem indícios de sangramento ativo.",
+    "Nega sinais de sangramento ativo.",
+    "Negou sinais de hemorragia importante.",
+    "Negou que havia sinais de sangramento ativo.",
+    "Ausência de sangramento ativo.",
+    "Ausencia de choque hemorrágico.",
+    "Ausência de sinais de sangramento ativo.",
+  ];
+  for (const text of absent) {
+    assert.equal(extractNarrative(text, schema).hemorrhage.value, "", text);
+  }
+
+  assert.match(
+    extractNarrative("Sem sinais de sangramento ativo. Choque hemorrágico na admissão.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Ausência de sangramento ativo na cena. Sangramento ativo em pelve.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Com sinais de sangramento ativo.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Apresenta sinais de choque hemorrágico.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Sem antibiótico. Sinais de sangramento ativo.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Sem melhora clínica e sinais de sangramento ativo.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Paciente sem comorbidades. Sangramento ativo em pelve.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.equal(
+    extractNarrative("Ausência de sangramento ativo. Hemorragia ativa em pelve.", schema).hemorrhage.value,
+    "",
+  );
+});
+
 test("intervalo de evolução não entra como idade", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const ranged = extractNarrative(
