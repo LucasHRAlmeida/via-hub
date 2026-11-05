@@ -279,6 +279,14 @@ function extractImaging(text) {
   return null;
 }
 
+// "sem/nega/ausência" + "sinais/evidência/quadro/indícios" (com "clínico" ou
+// "que havia" no meio) ainda é negação. "ausência de sangramento ativo"
+// também. O "sem" colado ao termo fica no padrão já existente. Uma palavra
+// de conteúdo ou pontuação interrompe o escopo: "sem melhora e sinais de
+// sangramento" continua presente.
+const HEMORRHAGE_INDIRECT =
+  String.raw`(?:(?:sem|nega(?:-se)?|negou|aus[eê]ncia\s+de)\s+(?:(?:que|havia|h[aá])\s+){0,3}?(?:sinais|evid[eê]ncias?|quadro|ind[ií]cios?)(?:\s+cl[ií]nic[oa]s?)?\s+de\s+|aus[eê]ncia\s+de\s+)`;
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -378,9 +386,11 @@ const EXTRACTORS = Object.freeze({
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
   hemorrhage: yesNoText([
-    // "negado/negada" depois do achado, ou "nega/negou" imediatamente antes, não é hemorragia presente.
-    /(?<!\b(?:nega(?:-se)?|negou)\s+)\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)/iu,
-    /(?<!\b(?:nega(?:-se)?|negou)\s+)\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)/iu,
+    // "negado/negada" depois do achado, "nega/negou" imediato, ou
+    // sem/nega/ausência com sinais, evidência, quadro ou indícios no meio,
+    // não é hemorragia presente.
+    new RegExp(String.raw`(?<!\b(?:nega(?:-se)?|negou)\s+)(?<!\b${HEMORRHAGE_INDIRECT})\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)`, "iu"),
+    new RegExp(String.raw`(?<!\b(?:nega(?:-se)?|negou)\s+)(?<!\b${HEMORRHAGE_INDIRECT})\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)`, "iu"),
   ], [
     /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
     /\b(?:nega(?:-se)?|negou)\s+(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o)\b/iu,
