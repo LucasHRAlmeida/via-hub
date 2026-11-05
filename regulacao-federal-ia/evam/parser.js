@@ -1,4 +1,9 @@
-import { EVAM_VERSION, getFieldDefinition, getFieldMaxAgeHours } from "./schemas.js";
+import { EVAM_VERSION, PROVENANCE_ENTRY_SCHEMA, getFieldDefinition, getFieldMaxAgeHours } from "./schemas.js";
+
+export function stampRecorded(now = new Date()) {
+  const instant = now instanceof Date ? now : new Date(now);
+  return Number.isNaN(instant.getTime()) ? new Date().toISOString() : instant.toISOString();
+}
 
 const number = (value) => {
   const parsed = Number(String(value).replace(",", "."));
@@ -402,9 +407,10 @@ export function extractNarrative(text, schema) {
 
   for (const key of schema.fields) {
     const extracted = EXTRACTORS[key]?.(source) ?? null;
+    const recorded = stampRecorded();
     fields[key] = extracted
-      ? { ...extracted, origin: "extração automática" }
-      : { value: "", excerpt: "", confidence: "não localizado", origin: "revisão humana" };
+      ? { ...extracted, origin: "extração automática", recorded }
+      : { value: "", excerpt: "", confidence: "não localizado", origin: "revisão humana", recorded };
   }
 
   if (!fields.interventionNeeded.value) {
@@ -413,6 +419,7 @@ export function extractNarrative(text, schema) {
       excerpt: "",
       confidence: "template",
       origin: "template selecionado",
+      recorded: stampRecorded(),
     };
   }
 
@@ -422,6 +429,7 @@ export function extractNarrative(text, schema) {
       excerpt: "",
       confidence: "template",
       origin: "template selecionado",
+      recorded: stampRecorded(),
     };
   }
 
@@ -440,6 +448,7 @@ export function buildEnvelope({ sourceText, schema, fields, includeSource = fals
   const missing = missingRequiredFields(fields, schema);
   const data = {};
   const provenance = {};
+  const generatedAt = stampRecorded();
 
   // Ensure TTL/freshness is computed even when fields were edited in the UI.
   enrichFieldFreshness(fields);
@@ -451,6 +460,7 @@ export function buildEnvelope({ sourceText, schema, fields, includeSource = fals
       origin: item.origin ?? "revisão humana",
       confidence: item.confidence ?? "não informado",
       excerpt: item.excerpt || null,
+      recorded: item.recorded || generatedAt,
     };
     // Pilot A TTL: critical clinical fields may carry observedAt / validUntil / freshness.
     if (item.observedAt) entry.observedAt = item.observedAt;
@@ -469,7 +479,7 @@ export function buildEnvelope({ sourceText, schema, fields, includeSource = fals
       syndrome: schema.syndrome,
       specialty: schema.specialty,
     },
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     status: missing.length ? "INCOMPLETE_REQUIRES_HUMAN_REVIEW" : "STRUCTURED_REQUIRES_HUMAN_VALIDATION",
     data,
     missingCritical: missing,
@@ -496,6 +506,11 @@ export function buildJsonSchema(schema) {
     properties[key] = property;
   }
 
+  const provenanceProperties = {};
+  for (const key of schema.fields) {
+    provenanceProperties[key] = PROVENANCE_ENTRY_SCHEMA;
+  }
+
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",
     $id: `https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/schemas/${schema.id}.schema.json`,
@@ -511,6 +526,12 @@ export function buildJsonSchema(schema) {
       syndrome: schema.syndrome,
       specialty: schema.specialty,
       humanValidationRequired: true,
+    },
+    "x-provenance": {
+      description: "Contrato de proveniência por campo do envelope EVAMRegulationEnvelope.provenance.",
+      type: "object",
+      additionalProperties: false,
+      properties: provenanceProperties,
     },
   };
 }

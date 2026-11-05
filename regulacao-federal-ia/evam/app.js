@@ -6,6 +6,7 @@ import {
   buildEnvelope,
   buildJsonSchema,
   formatRegulatoryText,
+  stampRecorded,
 } from "./parser.js";
 
 const $ = (selector) => document.querySelector(selector);
@@ -109,6 +110,7 @@ function fieldInput(key, item, schema) {
       value,
       origin: "revisão humana",
       confidence: "validado/editado manualmente",
+      recorded: stampRecorded(),
     };
     wrapper.classList.toggle("missing-field", input.value === "");
     refreshOutputs();
@@ -119,6 +121,7 @@ function fieldInput(key, item, schema) {
   const origin = document.createElement("strong");
   origin.textContent = `${item.origin}: `;
   provenance.append(origin, document.createTextNode(item.excerpt || item.confidence || "não localizado"));
+  if (item.recorded) provenance.title = `recorded: ${item.recorded}`;
 
   // Pilot A: show freshness when TTL provenance is present (does not break existing flow).
   if (item.freshness) {
