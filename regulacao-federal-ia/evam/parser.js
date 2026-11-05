@@ -323,7 +323,9 @@ const EXTRACTORS = Object.freeze({
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
   ]),
   gcs: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
+    // "3T"/"7t" é o total com tubo orotraqueal. Sem o sufixo, o limite de palavra
+    // falha entre o dígito e o T, e o Glasgow da admissão permanece.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*t)?(?:\s*\/\s*15)?\b/iu,
   ]),
   oxygenSupport: (text) => matchOne(text, [
     /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
