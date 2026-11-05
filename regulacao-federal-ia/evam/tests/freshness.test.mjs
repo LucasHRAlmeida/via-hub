@@ -71,11 +71,45 @@ test("reconhecimento explícito prevalece sobre «há» incidental no TTL", () =
   assert.equal(nounForm.lactate.freshness, "expired");
 });
 
+test("qualificador entre «há» e o número não cede o TTL ao intervalo seguinte", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const texts = [
+    "Sepse reconhecida há cerca de 18 horas. Antibiótico há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Sepse reconhecida há cerca de 18 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Sepse reconhecida há mais de 18 horas. Noradrenalina há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Sepse reconhecida há aproximadamente 18 horas. Antibiótico há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Sepse reconhecida há umas 18 horas. Antibiótico há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Antibiótico há 2 horas. Sepse reconhecida há cerca de 20 horas. PAM 58. Lactato 5,0 mmol/L.",
+    "Sepse reconhecida há mais ou menos 18 horas. Dor há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+    "Reconhecimento há pelo menos 18 h. Antibiótico há 2 horas. PAM 58. Lactato 4,1 mmol/L.",
+  ];
+  for (const text of texts) {
+    const fields = extractNarrative(text, schema);
+    const expectedHours = text.includes("20 horas") ? 20 : 18;
+    assert.equal(fields.hoursSinceRecognition.value, expectedHours, text);
+    assert.equal(fields.lactate.freshness, "expired", text);
+    assert.equal(fields.map.freshness, "expired", text);
+  }
+});
+
 test("«há» genérico permanece quando não há reconhecimento explícito", () => {
   const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
   const text = "Homem, 62 anos. Dor torácica iniciada há 3 horas. PA 92/58 mmHg.";
   const fields = extractNarrative(text, schema);
   assert.equal(fields.hoursSinceRecognition.value, 3);
+
+  const qualified = extractNarrative(
+    "Homem, 62 anos. Dor torácica iniciada há cerca de 18 horas. PA 92/58 mmHg.",
+    schema,
+  );
+  assert.equal(qualified.hoursSinceRecognition.value, 18);
+  assert.equal(qualified.sbp.freshness, "expired");
+
+  const firstInterval = extractNarrative(
+    "Antibiótico há cerca de 2 horas. Dor há 18 horas. PA 92/58 mmHg.",
+    schema,
+  );
+  assert.equal(firstInterval.hoursSinceRecognition.value, 2);
 });
 
 test("explicit expired observedAt forces expired freshness", () => {

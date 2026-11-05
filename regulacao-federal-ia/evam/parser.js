@@ -292,9 +292,13 @@ const EXTRACTORS = Object.freeze({
   // Explicit recognition must win over an earlier incidental "há N horas"
   // (antibiotic duration, pain onset). Otherwise derived TTL observedAt follows
   // the wrong interval and an expired lactate can be stamped fresh.
+  // A qualifier between "há" and the number ("cerca de", "mais de",
+  // "aproximadamente", "umas") is still that recognition interval. Without it
+  // the next "há N horas" is stored, or the field stays blank and the lactate
+  // is stamped fresh.
   hoursSinceRecognition: (text) => matchOne(text, [
-    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
-    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(?:cerca\s+de\s+|mais\s+ou\s+menos\s+|mais\s+de\s+|pelo\s+menos\s+|aproximadamente\s+|aprox\.?\s+|umas\s+)?(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\b(?:há|ha|desde)\s*(?:cerca\s+de\s+|mais\s+ou\s+menos\s+|mais\s+de\s+|pelo\s+menos\s+|aproximadamente\s+|aprox\.?\s+|umas\s+)?(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
   sbp: (text) => matchCurrentReading(text, [
