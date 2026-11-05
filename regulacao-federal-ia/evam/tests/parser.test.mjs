@@ -158,6 +158,14 @@ test("hemorragia negada depois do achado não entra como presente", () => {
     /^Sim — /i,
   );
   assert.match(
+    extractNarrative("Sangramento ativo na admissão. Agora sem hemorragia ativa.", schema).hemorrhage.value,
+    /^Não — /i,
+  );
+  assert.match(
+    extractNarrative("Choque hemorrágico na cena. Agora sem hemorragia ativa.", schema).hemorrhage.value,
+    /^Não — /i,
+  );
+  assert.match(
     extractNarrative("Sangramento não controlado.", schema).hemorrhage.value,
     /^Sim — /i,
   );
