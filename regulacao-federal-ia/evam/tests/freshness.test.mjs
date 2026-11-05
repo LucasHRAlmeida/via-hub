@@ -10,8 +10,8 @@ import {
   buildEnvelope,
 } from "../parser.js";
 
-test("EVAM_VERSION patch bump for Pilot A TTL", () => {
-  assert.equal(EVAM_VERSION, "1.1.0");
+test("EVAM_VERSION patch bump for recorded provenance", () => {
+  assert.equal(EVAM_VERSION, "1.1.1");
 });
 
 test("maxAgeHours defaults exist for critical lab/vital fields", () => {
@@ -47,10 +47,11 @@ test("envelope provenance carries freshness when hoursSinceRecognition known", (
   assert.ok(fields.lactate.validUntil);
 
   const envelope = buildEnvelope({ sourceText: text, schema, fields });
-  assert.equal(envelope.evamVersion, "1.1.0");
+  assert.equal(envelope.evamVersion, "1.1.1");
   assert.ok(envelope.provenance.lactate.freshness);
   assert.ok(envelope.provenance.lactate.observedAt);
   assert.ok(envelope.provenance.map.freshness);
+  assert.match(envelope.provenance.lactate.recorded, /^\d{4}-\d{2}-\d{2}T/);
 });
 
 test("reconhecimento explícito prevalece sobre «há» incidental no TTL", () => {

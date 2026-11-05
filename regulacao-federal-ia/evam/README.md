@@ -3,10 +3,21 @@
 Conversor clínico estruturante do **VIA Federal Regulation Lab**. A V1.0 recebe narrativa clínica livre, sugere campos estruturados por heurísticas transparentes e produz:
 
 - resumo regulatório em texto;
-- envelope JSON com proveniência por campo;
+- envelope JSON com proveniência por campo, incluindo o instante `recorded`;
 - JSON Schema Draft 2020-12 específico do template selecionado;
 - lista explícita de campos críticos ausentes.
 
+
+## Proveniência por campo
+
+Cada chave de `EVAMRegulationEnvelope.provenance` declara:
+
+- `origin` — `extração automática` | `revisão humana` | `template selecionado`
+- `confidence` — grau declarado da asserção (`heurística`, `não localizado`, `template`, `validado/editado manualmente`)
+- `excerpt` — trecho da narrativa, ou `null`
+- `recorded` — instante ISO-8601 em que o valor foi extraído ou por último revisado (equivalente a FHIR R4 `Provenance.recorded`). Este campo era o slot obrigatório ausente: o envelope tinha `generatedAt` global, mas a proveniência por campo não carimbava quando a asserção foi feita.
+
+O JSON Schema exportado descreve esse contrato em `x-provenance`. A revisão humana atualiza `recorded` no mesmo instante em que troca `origin` e `confidence`.
 
 ## Pilot A · TTL / freshness (V1.1)
 

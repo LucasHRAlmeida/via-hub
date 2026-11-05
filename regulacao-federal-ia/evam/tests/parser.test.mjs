@@ -1,12 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { SCHEMA_TEMPLATES, getSchema } from "../schemas.js";
+import { SCHEMA_TEMPLATES, getSchema, PROVENANCE_ENTRY_SCHEMA } from "../schemas.js";
 import {
   redactDirectIdentifiers,
   extractNarrative,
   buildEnvelope,
   buildJsonSchema,
   formatRegulatoryText,
+  stampRecorded,
 } from "../parser.js";
 
 test("redige padrões diretos sem alterar conteúdo clínico adjacente", () => {
@@ -277,6 +278,41 @@ test("envelope declara abstention sem fabricar completude", () => {
   assert.equal(envelope.governance.decisionSupportProvided, false);
 });
 
+test("proveniência por campo inclui recorded ISO-8601", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const fields = extractNarrative("Mulher, 81 anos. PAM 58. Lactato 4,1.", schema);
+  assert.match(fields.age.recorded, /^\d{4}-\d{2}-\d{2}T/);
+  assert.equal(fields.age.recorded, stampRecorded(new Date(fields.age.recorded)));
+
+  const envelope = buildEnvelope({ sourceText: "", schema, fields });
+  for (const key of schema.fields) {
+    const entry = envelope.provenance[key];
+    assert.equal(typeof entry.recorded, "string", `${key} deve ter recorded`);
+    assert.match(entry.recorded, /^\d{4}-\d{2}-\d{2}T/, `${key} recorded deve ser ISO-8601`);
+    assert.ok(entry.origin);
+    assert.ok(entry.confidence);
+  }
+  assert.equal(envelope.provenance.age.origin, "extração automática");
+  assert.ok(Date.parse(envelope.provenance.age.recorded));
+});
+
+test("revisão humana atualiza recorded na proveniência", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const fields = extractNarrative("Mulher, 81 anos. PAM 58.", schema);
+  const extractedAt = fields.map.recorded;
+  fields.map = {
+    ...fields.map,
+    value: 62,
+    origin: "revisão humana",
+    confidence: "validado/editado manualmente",
+    recorded: "2026-11-05T04:00:00.000Z",
+  };
+  const envelope = buildEnvelope({ sourceText: "", schema, fields });
+  assert.equal(envelope.provenance.map.recorded, "2026-11-05T04:00:00.000Z");
+  assert.notEqual(envelope.provenance.map.recorded, extractedAt);
+  assert.equal(envelope.provenance.map.origin, "revisão humana");
+});
+
 test("cada template produz JSON Schema versionado e fechado", () => {
   for (const schema of SCHEMA_TEMPLATES) {
     const jsonSchema = buildJsonSchema(schema);
@@ -284,7 +320,10 @@ test("cada template produz JSON Schema versionado e fechado", () => {
     assert.equal(jsonSchema.additionalProperties, false);
     assert.equal(jsonSchema["x-evam"].templateId, schema.id);
     assert.deepEqual(jsonSchema.required, schema.required);
+    assert.deepEqual(jsonSchema["x-provenance"].properties[schema.fields[0]], PROVENANCE_ENTRY_SCHEMA);
+    assert.deepEqual(jsonSchema["x-provenance"].properties[schema.required[0]].required, ["origin", "confidence", "recorded"]);
     for (const key of schema.required) assert.ok(jsonSchema.properties[key], `${schema.id}: campo requerido ${key} deve existir`);
+    for (const key of schema.fields) assert.ok(jsonSchema["x-provenance"].properties[key], `${schema.id}: x-provenance.${key} deve existir`);
   }
 });
 

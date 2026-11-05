@@ -1,4 +1,30 @@
-export const EVAM_VERSION = "1.1.0";
+export const EVAM_VERSION = "1.1.1";
+
+/**
+ * Per-field provenance carried on EVAMRegulationEnvelope.provenance[key].
+ * `recorded` is the FHIR R4 Provenance.recorded instant: when this assertion
+ * was extracted or last human-revised. Origin/confidence/excerpt were already
+ * present; recorded was the missing required slot.
+ */
+export const PROVENANCE_ENTRY_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["origin", "confidence", "recorded"],
+  properties: {
+    origin: { type: "string" },
+    confidence: { type: "string" },
+    excerpt: { type: ["string", "null"] },
+    recorded: {
+      type: "string",
+      format: "date-time",
+      description: "Instant ISO-8601 em que o valor foi extraído ou por último revisado (FHIR Provenance.recorded).",
+    },
+    observedAt: { type: "string" },
+    validUntil: { type: "string" },
+    freshness: { type: "string", enum: ["fresh", "stale", "expired"] },
+    maxAgeHours: { type: "number" },
+  },
+});
 
 export const FIELD_CATALOG = Object.freeze({
   age: { label: "Idade", type: "number", unit: "anos", group: "Identificação mínima" },
