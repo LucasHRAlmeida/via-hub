@@ -279,6 +279,11 @@ function extractImaging(text) {
   return null;
 }
 
+// "não apresenta/está apresentando/há/tem/houve" nega o achado. "sinais",
+// "evidência" ou "quadro de" podem ficar entre o verbo e o termo.
+// "não controlado" vem depois do termo e continua sendo hemorragia presente.
+const HEMORRHAGE_NAO = String.raw`n[aã]o\s+(?:est[aá]\s+)?(?:apresenta(?:ndo|ou)?|h[aá]|tem|tinha|possui|houve)(?:\s+(?:sinais|evid[eê]ncias?|quadro|ind[ií]cios?)\s+de)?\s+`;
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -378,15 +383,18 @@ const EXTRACTORS = Object.freeze({
     /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
   ]),
   hemorrhage: yesNoText([
-    // "negado/negada" depois do achado, ou "nega/negou" imediatamente antes, não é hemorragia presente.
-    /(?<!\b(?:nega(?:-se)?|negou)\s+)\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)/iu,
-    /(?<!\b(?:nega(?:-se)?|negou)\s+)\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)/iu,
+    // "negado/negada" depois do achado, "nega/negou" ou "não apresenta/há/tem"
+    // imediatamente antes não é hemorragia presente.
+    new RegExp(String.raw`(?<!\b(?:nega(?:-se)?|negou)\s+)(?<!\b${HEMORRHAGE_NAO})\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)`, "iu"),
+    new RegExp(String.raw`(?<!\b(?:nega(?:-se)?|negou)\s+)(?<!\b${HEMORRHAGE_NAO})\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)`, "iu"),
   ], [
     /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
     /\b(?:nega(?:-se)?|negou)\s+(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o)\b/iu,
     /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\s*,?\s*negad[oa]\b/iu,
     /\b(?:nega(?:-se)?|negou)\s+choque\s+hemorr[aá]gico\b/iu,
     /\bchoque\s+hemorr[aá]gico\s*,?\s*negad[oa]\b/iu,
+    new RegExp(String.raw`\b${HEMORRHAGE_NAO}(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b`, "iu"),
+    new RegExp(String.raw`\b${HEMORRHAGE_NAO}choque\s+hemorr[aá]gico\b`, "iu"),
   ]),
 });
 

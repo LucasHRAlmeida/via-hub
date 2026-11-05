@@ -164,6 +164,36 @@ test("hemorragia negada depois do achado não entra como presente", () => {
   );
 });
 
+test("não apresenta ou não há não grava hemorragia presente", () => {
+  const schema = getSchema("polytrauma.trauma-surgery.v1");
+  const absent = [
+    "Não apresenta sangramento ativo.",
+    "Não está apresentando sangramento ativo.",
+    "Não há sangramento importante.",
+    "Não tem choque hemorrágico.",
+    "Não houve sangramento não controlado.",
+    "Não apresenta sinais de sangramento ativo.",
+    "Não há evidência de choque hemorrágico.",
+    "Não possui quadro de sangramento ativo.",
+  ];
+  for (const text of absent) {
+    assert.match(extractNarrative(text, schema).hemorrhage.value, /^Não — /i, text);
+  }
+
+  assert.match(
+    extractNarrative("Não apresenta sangramento ativo em pele. Choque hemorrágico na admissão.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Apresenta sangramento ativo em pelve.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+  assert.match(
+    extractNarrative("Sangramento não controlado.", schema).hemorrhage.value,
+    /^Sim — /i,
+  );
+});
+
 test("intervalo de evolução não entra como idade", () => {
   const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
   const ranged = extractNarrative(
