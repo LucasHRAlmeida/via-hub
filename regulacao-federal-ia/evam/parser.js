@@ -87,14 +87,39 @@ function matchCurrentReading(text, expressions, valueGroup = 1, transform = numb
   return null;
 }
 
-const yesNoText = (positive, negative = null) => (text) => {
-  const positiveResult = matchOne(text, positive, 0, clean);
-  if (positiveResult) return { ...positiveResult, value: "Sim — " + positiveResult.value };
-  if (negative) {
-    const negativeResult = matchOne(text, negative, 0, clean);
-    if (negativeResult) return { ...negativeResult, value: "Não — " + negativeResult.value };
+// A menção mais tardia prevalece. O primeiro positivo não pode ocultar uma
+// negação posterior ("sangramento ativo na admissão" seguido de "sem hemorragia ativa").
+const matchLast = (text, expressions, valueGroup = 1, transform = clean) => {
+  let best = null;
+  for (const expression of expressions) {
+    const flags = expression.flags.includes("g") ? expression.flags : `${expression.flags}g`;
+    for (const match of text.matchAll(new RegExp(expression.source, flags))) {
+      const value = transform(match[valueGroup], match);
+      if (value === null || value === "") continue;
+      if (!best || match.index >= best.index) {
+        best = {
+          index: match.index,
+          value,
+          excerpt: excerptAround(text, match.index, match[0].length),
+          confidence: "heurística",
+        };
+      }
+    }
   }
-  return null;
+  return best;
+};
+
+const yesNoText = (positive, negative = null) => (text) => {
+  const positiveResult = matchLast(text, positive, 0, clean);
+  const negativeResult = negative ? matchLast(text, negative, 0, clean) : null;
+  const present = Boolean(positiveResult && (!negativeResult || positiveResult.index >= negativeResult.index));
+  const chosen = present ? positiveResult : negativeResult;
+  if (!chosen) return null;
+  return {
+    value: `${present ? "Sim" : "Não"} — ${chosen.value}`,
+    excerpt: chosen.excerpt,
+    confidence: chosen.confidence,
+  };
 };
 
 
