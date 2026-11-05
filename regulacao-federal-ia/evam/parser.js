@@ -279,6 +279,17 @@ function extractImaging(text) {
   return null;
 }
 
+// PAS/PAD: "03/10", "12/10/2026" e o relógio "14:30"/"22h" são carimbo.
+// O número seguinte é a pressão. Só o carimbo deixa o campo vazio.
+const PRESSURE_STAMP = String.raw`(?:(?:3[01]|[12]\d|0[1-9]|[1-9])\s*/\s*(?:1[0-2]|0[1-9]|[1-9])(?:\s*/\s*\d{2,4})?(?:\s+(?:\d{1,2}:\d{2}|\d{1,2}\s*h))?\b|\d{1,2}:\d{2}\b|\d{1,2}\s*h\b)`;
+
+function isolatedPressure(label) {
+  return new RegExp(
+    String.raw`(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:${label})\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(?:(?:${PRESSURE_STAMP})\s*[:=]?\s*|(?!${PRESSURE_STAMP}))(\d{2,3})\b`,
+    "iu",
+  );
+}
+
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
     // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
@@ -299,11 +310,11 @@ const EXTRACTORS = Object.freeze({
   ], 1, number),
   sbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    isolatedPressure("pas"),
   ]),
   dbp: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+    isolatedPressure("pad"),
   ]),
   map: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,

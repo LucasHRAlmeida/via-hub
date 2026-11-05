@@ -197,6 +197,38 @@ test("extrai variáveis básicas do caso-âncora sintético", () => {
   assert.match(fields.vasopressor.value.toLowerCase(), /noradrenalina/);
 });
 
+test("carimbo depois de PAS ou PAD não entra como pressão", () => {
+  const schema = getSchema("acute-coronary-syndrome.cardiology.v1");
+
+  const dated = extractNarrative("Homem, 62 anos. PAS 03/10: 92 mmHg. PAD 03/10: 58.", schema);
+  assert.equal(dated.sbp.value, 92);
+  assert.equal(dated.dbp.value, 58);
+
+  const withClock = extractNarrative("Homem, 62 anos. PAS 03/10 22h: 92. PAD 14:30: 60.", schema);
+  assert.equal(withClock.sbp.value, 92);
+  assert.equal(withClock.dbp.value, 60);
+
+  const withYear = extractNarrative("Homem, 62 anos. PAS 12/10/2026: 100. PAD 64.", schema);
+  assert.equal(withYear.sbp.value, 100);
+  assert.equal(withYear.dbp.value, 64);
+
+  const stampOnly = extractNarrative("Homem, 62 anos. PAS 03/10. PAD 03/10. Sem nova medida.", schema);
+  assert.equal(stampOnly.sbp.value, "");
+  assert.equal(stampOnly.dbp.value, "");
+
+  const plain = extractNarrative("Homem, 62 anos. PAS 88 mmHg. PAD 52. PA 120/80 na admissão.", schema);
+  assert.equal(plain.sbp.value, 88);
+  assert.equal(plain.dbp.value, 52);
+  assert.equal(extractNarrative("Homem, 62 anos. PAS 80/50.", schema).sbp.value, 80);
+
+  const pair = extractNarrative("Homem, 62 anos. PA 92/58 mmHg. PAS 80/50.", schema);
+  assert.equal(pair.sbp.value, 92);
+  assert.equal(pair.dbp.value, 58);
+
+  const current = extractNarrative("Homem, 62 anos. PA 180/110 na admissão. PAS atual 03/10: 70.", schema);
+  assert.equal(current.sbp.value, 70);
+});
+
 test("menção negativa de exame não oculta a imagem feita", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const biliary = getSchema("sepsis-biliary.emergency-gastro.v1");
