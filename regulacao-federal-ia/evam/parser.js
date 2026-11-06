@@ -251,8 +251,10 @@ function parseTroponinMention(negation, keyword, tail) {
  * a tomografia, a ressonância ou o ultrassom que vêm depois.
  */
 function extractImaging(text) {
-  // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
-  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
+  // "ultrassom" não casa ultrassonografia (m/n) nem o adjetivo ultrassonográfico.
+  // "angio" e "colangio" só entram como exame: edema, displasia, angioma,
+  // angiotensina e colangiocarcinoma não ocupam o campo no lugar da imagem.
+  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassonografias?|ultrassonogr[aá]fic[oa]s?|ultrassom|usg|colangio(?:rnm|rm|grafia|pancreatografia|r?resson[aâ]ncia)?(?!\p{L})|angio(?:tc|tomografia|grafia|rnm|rm|r?resson[aâ]ncia)?(?!\p{L}))/giu;
   const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
   const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
 
