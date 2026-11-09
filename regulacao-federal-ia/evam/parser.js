@@ -97,6 +97,22 @@ const yesNoText = (positive, negative = null) => (text) => {
   return null;
 };
 
+// Notação de enfermagem em dezenas, com "x": "PA 18x10" é 180/100 mmHg e
+// "PA 8x5" é 80/50. "100 x 70" e a barra ("80/45", "03/10") não são essa escala.
+// Fora de 40–240 / 30–140 mmHg o par não é pressão (ex.: "2x2").
+const bloodPressureTens = (raw, match) => {
+  const value = number(raw);
+  if (value === null) return null;
+  const pair = String(match[0]).match(/(\d{1,3})\s*[x×]\s*(\d{1,3})/iu);
+  if (!pair) return value;
+  const systolic = number(pair[1]);
+  const diastolic = number(pair[2]);
+  if (systolic === null || diastolic === null) return value;
+  if (systolic >= 30 || diastolic >= 30) return value;
+  if (systolic < 4 || systolic > 24 || diastolic < 3 || diastolic > 14) return null;
+  return value * 10;
+};
+
 
 /**
  * Parse observedAt from ISO-8601 or epoch milliseconds/seconds string.
@@ -298,13 +314,15 @@ const EXTRACTORS = Object.freeze({
     /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
   ], 1, number),
   sbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x×/]\s*\d{2,3}\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\s*[x×]\s*\d{1,2}\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
-  ]),
+  ], 1, bloodPressureTens),
   dbp: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x×/]\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{1,2}\s*[x×]\s*(\d{1,2})\b/iu,
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
-  ]),
+  ], 1, bloodPressureTens),
   map: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
   ]),
