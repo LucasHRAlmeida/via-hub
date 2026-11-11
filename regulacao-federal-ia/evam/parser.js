@@ -37,9 +37,12 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 // "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
 // "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
 // permanece: é o único número do campo.
+// Vírgula, ponto e vírgula, dois-pontos, parêntese ou travessão podem separar
+// a unidade do qualificador ("mmHg, na admissão"). O ponto fica de fora: ele
+// abre a frase seguinte ("PA 180. Na admissão, PA 80").
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
-const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*[,;:()–—-]*\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,

@@ -370,6 +370,31 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("pontuação entre a unidade e a admissão não grava a leitura antiga", () => {
+  const coronary = getSchema("acute-coronary-syndrome.cardiology.v1");
+  const sepsis = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+  const respiratory = getSchema("acute-respiratory-failure.critical-care.v1");
+
+  const shock = extractNarrative("PA 180/110 mmHg, na admissão. PA 80/50.", coronary);
+  assert.equal(shock.sbp.value, 80);
+  assert.equal(shock.dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110, na admissão. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 mmHg; na admissão. PA 80/50.", coronary).dbp.value, 50);
+  assert.equal(extractNarrative("PA 180/110 mmHg (na admissão). PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 mmHg — na admissão. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 mmHg na admissão. PA 80/50.", coronary).sbp.value, 80);
+  assert.equal(extractNarrative("PA 180/110 mmHg, na admissão.", coronary).sbp.value, 180);
+
+  assert.equal(extractNarrative("Lactato 1,2 mmol/L, na admissão. Lactato 6,4.", sepsis).lactate.value, 6.4);
+  assert.equal(extractNarrative("FC 140 bpm, na entrada. FC 88.", coronary).heartRate.value, 88);
+  assert.equal(extractNarrative("PAM 90 mmHg, na admissão. PAM 48.", sepsis).map.value, 48);
+  assert.equal(extractNarrative("SpO2 99%, na triagem. SpO2 82%.", respiratory).spo2.value, 82);
+  assert.equal(extractNarrative("Glasgow 15, na admissão. Glasgow 8.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("INR 1,1, basal. INR 3,8.", trauma).inr.value, 3.8);
+  assert.equal(extractNarrative("Tax 36,2°C, na triagem. Tax 39,1.", sepsis).temperature.value, 39.1);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(
