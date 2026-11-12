@@ -1,0 +1,579 @@
+import { EVAM_VERSION, PROVENANCE_ENTRY_SCHEMA, getFieldDefinition, getFieldMaxAgeHours } from "./schemas.js";
+
+export function stampRecorded(now = new Date()) {
+  const instant = now instanceof Date ? now : new Date(now);
+  return Number.isNaN(instant.getTime()) ? new Date().toISOString() : instant.toISOString();
+}
+
+const number = (value) => {
+  const parsed = Number(String(value).replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+
+const excerptAround = (text, index, length) => {
+  const start = Math.max(0, index - 38);
+  const end = Math.min(text.length, index + length + 58);
+  return clean(`${start > 0 ? "…" : ""}${text.slice(start, end)}${end < text.length ? "…" : ""}`);
+};
+
+const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
+  for (const expression of expressions) {
+    expression.lastIndex = 0;
+    const match = expression.exec(text);
+    if (!match) continue;
+    const value = transform(match[valueGroup], match);
+    if (value === null || value === "") continue;
+    return {
+      value,
+      excerpt: excerptAround(text, match.index, match[0].length),
+      confidence: "heurística",
+    };
+  }
+  return null;
+};
+
+// "agora", "atual" e "no momento" nomeiam a leitura vigente. "na admissão",
+// "basal" e equivalentes nomeiam a anterior. Sem outro candidato, a anterior
+// permanece: é o único número do campo.
+const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
+const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
+const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+const publishReading = (hit) => ({
+  value: hit.value,
+  excerpt: hit.excerpt,
+  confidence: hit.confidence,
+});
+
+const isCurrentReading = (text, match) => {
+  const before = text.slice(Math.max(0, match.index - 24), match.index);
+  return CURRENT_MARKER.test(match[0]) || CURRENT_BEFORE.test(before);
+};
+
+function matchCurrentReading(text, expressions, valueGroup = 1, transform = number) {
+  const grouped = expressions.map((expression) => {
+    const flags = expression.flags.includes("g") ? expression.flags : `${expression.flags}g`;
+    const found = [];
+    for (const match of text.matchAll(new RegExp(expression.source, flags))) {
+      const value = transform(match[valueGroup], match);
+      if (value === null || value === "") continue;
+      const after = text.slice(match.index + match[0].length);
+      found.push({
+        value,
+        excerpt: excerptAround(text, match.index, match[0].length),
+        confidence: "heurística",
+        current: isCurrentReading(text, match),
+        historical: HISTORICAL_READING.test(after),
+      });
+    }
+    return found;
+  });
+
+  for (const found of grouped) {
+    const current = found.filter((hit) => hit.current);
+    if (current.length) return publishReading(current[current.length - 1]);
+  }
+
+  for (const found of grouped) {
+    const unmarked = found.find((hit) => !hit.historical);
+    if (unmarked) return publishReading(unmarked);
+  }
+
+  for (const found of grouped) {
+    if (found.length) return publishReading(found[0]);
+  }
+
+  return null;
+}
+
+const yesNoText = (positive, negative = null) => (text) => {
+  const positiveResult = matchOne(text, positive, 0, clean);
+  if (positiveResult) return { ...positiveResult, value: "Sim — " + positiveResult.value };
+  if (negative) {
+    const negativeResult = matchOne(text, negative, 0, clean);
+    if (negativeResult) return { ...negativeResult, value: "Não — " + negativeResult.value };
+  }
+  return null;
+};
+
+
+/**
+ * Parse observedAt from ISO-8601 or epoch milliseconds/seconds string.
+ * Returns Date or null. Transparent heuristic — does not invent timestamps.
+ */
+export function parseObservedAt(value) {
+  if (value === null || typeof value === "undefined" || value === "") return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+  const raw = String(value).trim();
+  if (/^\d{10,13}$/.test(raw)) {
+    const n = Number(raw);
+    const ms = raw.length === 10 ? n * 1000 : n;
+    const date = new Date(ms);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/**
+ * Freshness bands (Pilot A):
+ * - fresh: age < 50% of maxAgeHours
+ * - stale: age >= 50% and < maxAgeHours
+ * - expired: age >= maxAgeHours
+ * Returns null when observedAt or maxAgeHours is unavailable.
+ */
+export function computeFreshness(observedAt, maxAgeHours, now = new Date()) {
+  const observed = parseObservedAt(observedAt);
+  const maxAge = Number(maxAgeHours);
+  if (!observed || !Number.isFinite(maxAge) || maxAge <= 0) return null;
+  const ageMs = now.getTime() - observed.getTime();
+  if (!Number.isFinite(ageMs) || ageMs < 0) return null;
+  const ageHours = ageMs / 3_600_000;
+  if (ageHours >= maxAge) return "expired";
+  if (ageHours >= maxAge * 0.5) return "stale";
+  return "fresh";
+}
+
+export function deriveValidUntil(observedAt, maxAgeHours) {
+  const observed = parseObservedAt(observedAt);
+  const maxAge = Number(maxAgeHours);
+  if (!observed || !Number.isFinite(maxAge) || maxAge <= 0) return null;
+  return new Date(observed.getTime() + maxAge * 3_600_000).toISOString();
+}
+
+/**
+ * Attach TTL provenance when the field has maxAgeHours and an observedAt
+ * (explicit on the field, or derived from hoursSinceRecognition for lab/vital fields).
+ * Heuristic: if hoursSinceRecognition is known and the field has a value, treat
+ * "estado atual / laboratório" as observed roughly that many hours ago.
+ */
+export function enrichFieldFreshness(fields, { now = new Date() } = {}) {
+  const hours = Number(fields.hoursSinceRecognition?.value);
+  const derivedObserved = Number.isFinite(hours) && hours >= 0
+    ? new Date(now.getTime() - hours * 3_600_000).toISOString()
+    : null;
+
+  for (const [key, item] of Object.entries(fields)) {
+    if (!item || item.value === "" || item.value === null || typeof item.value === "undefined") continue;
+    const maxAge = getFieldMaxAgeHours(key);
+    if (maxAge === null) continue;
+
+    const observedAt = item.observedAt || derivedObserved;
+    if (!observedAt) continue;
+
+    const validUntil = item.validUntil || deriveValidUntil(observedAt, maxAge);
+    const freshness = computeFreshness(observedAt, maxAge, now);
+    fields[key] = {
+      ...item,
+      observedAt: parseObservedAt(observedAt)?.toISOString?.() ?? String(observedAt),
+      validUntil,
+      freshness,
+      maxAgeHours: maxAge,
+    };
+  }
+  return fields;
+}
+
+/**
+ * Troponina seriada: a última dosagem (ou a menção positiva) prevalece sobre
+ * uma negativa anterior. "sem/não/negou" imediatamente antes do termo não vira
+ * resultado elevado. Só lê o valor sintaticamente ligado à menção (não varre
+ * outros analitos na mesma oração). O ponto entre dígitos não fecha o trecho.
+ * A vírgula pode separar o nome do resultado e permanece na cauda; o valor lido
+ * é o do início, não um ng/L posterior (BNP, CK-MB).
+ */
+function extractTroponin(text) {
+  // Cauda: ponto de oração encerra; vírgula e ponto entre dígitos permanecem.
+  // A próxima menção de troponina fica de fora, para a dosagem seriada competir.
+  const expression = /\b(?:(sem|n[aã]o|negou(?:\s+que)?)\s+)?(?:\d+\s*[ªa]\s+)?(troponina|trop)\b((?:(?!\b(?:\d+\s*[ªa]\s+)?(?:troponina|trop)\b)[^\n.;]|[.](?=\d)){0,80})/giu;
+  let best = null;
+
+  for (const match of text.matchAll(expression)) {
+    const parsed = parseTroponinMention(match[1] || "", match[2], match[3] || "");
+    if (!parsed) continue;
+    if (!best || parsed.rank > best.rank || (parsed.rank === best.rank && match.index > best.index)) {
+      best = { ...parsed, index: match.index, length: match[0].length };
+    }
+  }
+
+  if (!best) return null;
+  return {
+    value: best.value,
+    excerpt: excerptAround(text, best.index, best.length),
+    confidence: "heurística",
+  };
+}
+
+function parseTroponinMention(negation, keyword, tail) {
+  // "Troponina I", "Troponina (T)" e "ultrassensível" qualificam o ensaio.
+  // "troponina de 3 horas: 420 ng/L" — o valor vem após o marcador temporal.
+  let rest = String(tail).replace(
+    /^(?:[\s-]+\(?(?:ultrassens[ií]vel|de\s+alta\s+sensibilidade|us|hs|tni|tnt|i|t)\b\)?)+/iu,
+    "",
+  );
+  rest = rest.replace(/^(?:\s+de\s+\d+(?:[.,]\d+)?\s*horas?)?/iu, "");
+  const unitOf = (raw) => (/m/i.test(raw) ? "ng/mL" : "ng/L");
+  const quantified = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\s*(ng\s*\/?\s*m?l)\b/iu);
+  const qualitative = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(positiva|negativa|normal|elevada|n[aã]o\s+elevada)\b/iu);
+  const bareNumber = rest.match(/^\s*(?:[,:=]|[-–—])?\s*(\d+(?:[.,]\d+)?)\b/iu);
+
+  if (negation) {
+    if (quantified) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
+    }
+    if (qualitative) {
+      return { rank: 0, value: clean(`${negation} ${keyword} ${qualitative[1]}`) };
+    }
+    return { rank: 0, value: clean(`${negation} ${keyword}`) };
+  }
+
+  if (quantified) {
+    return { rank: 3, value: clean(`${keyword} ${quantified[1]} ${unitOf(quantified[2])}`) };
+  }
+
+  if (qualitative) {
+    const token = qualitative[1];
+    const rank = /^(positiva|elevada)/iu.test(token) ? 2 : 1;
+    return { rank, value: clean(`${keyword} ${token}`) };
+  }
+
+  if (bareNumber) {
+    return { rank: 3, value: clean(`${keyword} ${bareNumber[1]}`) };
+  }
+
+  return null;
+}
+
+/**
+ * A primeira menção só entra se o exame foi feito.
+ * "Sem TC", "Não há TC", "Não realizou TC" e "TC não realizada" não ocultam
+ * a tomografia, a ressonância ou o ultrassom que vêm depois.
+ */
+function extractImaging(text) {
+  // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
+  const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
+  const negatedBefore = /\b(?:sem|n[aã]o(?:\s+h[aá]|\s+(?:realizou|realizaram|fez|foi(?:\s+feit[oa])?))?)\s+$/iu;
+  const negatedAfter = /^[\s:;,.\u2013\u2014-]+n[aã]o\s+(?:realizad|feit|dispon)/iu;
+
+  for (const match of text.matchAll(keyword)) {
+    const start = match.index;
+    const before = text.slice(Math.max(0, start - 48), start);
+    if (negatedBefore.test(before)) continue;
+    const after = text.slice(start + match[0].length, start + match[0].length + 48);
+    if (negatedAfter.test(after)) continue;
+
+    const lineEnd = text.indexOf("\n", start);
+    const limit = start + match[0].length + 220;
+    const end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    const value = clean(text.slice(start, end));
+    if (!value) continue;
+
+    return {
+      value,
+      excerpt: excerptAround(text, start, end - start),
+      confidence: "heurística",
+    };
+  }
+
+  return null;
+}
+
+const EXTRACTORS = Object.freeze({
+  age: (text) => matchOne(text, [
+    // "81 a" abrevia anos. "2 a 3" é intervalo (dias, horas), não idade.
+    /\b(?:idade|paciente(?:\s+com)?|mulher|homem)\s*[:=,-]?\s*(\d{1,3})\s*(?:anos?|a\b(?!\s*\d))/iu,
+    /\b(\d{1,3})\s*anos?\b/iu,
+  ], 1, number),
+  sex: (text) => matchOne(text, [
+    /\bsexo\s*[:=]\s*(feminino|masculino|fem\.?|masc\.?|f|m)\b/iu,
+    /\b(mulher|homem)\s*[,;:-]?\s*(?:de\s+)?\d{1,3}\s*anos?\b/iu,
+  ]),
+  // Explicit recognition must win over an earlier incidental "há N horas"
+  // (antibiotic duration, pain onset). Otherwise derived TTL observedAt follows
+  // the wrong interval and an expired lactate can be stamped fresh.
+  hoursSinceRecognition: (text) => matchOne(text, [
+    /\breconheci(?:mento|d(?:os|as|o|a))\b[^\n.]{0,80}?\bh[aá]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\b(?:há|ha|desde)\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)\b/iu,
+    /\btempo\s*(?:desde\s+reconhecimento)?\s*[:=]\s*(\d+(?:[.,]\d+)?)\s*(?:h|horas?)?\b/iu,
+  ], 1, number),
+  sbp: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*[x/]\s*\d{2,3}\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpas\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+  ]),
+  dbp: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pa|press[aã]o\s+arterial)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*\d{2,3}\s*[x/]\s*(\d{2,3})\b/iu,
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bpad\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+  ]),
+  map: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:pam|press[aã]o\s+arterial\s+m[eé]dia)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\b/iu,
+  ]),
+  heartRate: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fc|frequ[eê]ncia\s+card[ií]aca)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:bpm)?\b/iu,
+  ]),
+  respiratoryRate: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:fr|frequ[eê]ncia\s+respirat[oó]ria)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\s*(?:irpm|rpm)?\b/iu,
+  ]),
+  spo2: (text) => matchCurrentReading(text, [
+    // Fluxo (L, L/min, litros, lpm) não é saturação. (?!\d) evita backtrack
+    // de "10 L/min" para SpO₂=1.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:spo2|sat(?:ura[cç][aã]o)?(?:\s+de\s+o2)?)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})(?!\d)(?!\s*l(?:pm|itros?)?\b)\s*%?/iu,
+  ]),
+  temperature: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:temp(?:eratura)?|tax)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2}(?:[.,]\d)?)\s*(?:°?c)?\b/iu,
+  ]),
+  gcs: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
+  ]),
+  oxygenSupport: (text) => matchOne(text, [
+    /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
+  ]),
+  vasopressor: (text) => matchOne(text, [
+    /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
+  ]),
+  lactate: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+  ]),
+  creatinine: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:creatinina|cr)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+  ]),
+  bilirubin: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:bilirrubina\s+total|bt)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
+  ]),
+  platelets: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:plaquetas?|plaq)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mil|k|\/mm3|\/mm³)?\b/iu,
+  ]),
+  inr: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\binr\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\b/iu,
+  ]),
+  troponin: extractTroponin,
+  ph: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bph\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d[.,]\d{1,3})\b/iu,
+  ]),
+  pao2: (text) => matchCurrentReading(text, [
+    // Gasometria usa pO2, PO2 e PaO₂ para a mesma grandeza. Sem o sinônimo,
+    // a PaO2 da admissão ocupa o campo e a hipoxemia atual desaparece.
+    // pCO2/PaCO2 não casam: o "c" interrompe p(?:a)?o.
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bp(?:a)?o[2₂]\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{2,3})\s*(?:mmhg)?\b/iu,
+  ]),
+  fio2: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bfio2\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,3})\s*%?/iu,
+  ]),
+  nihss: (text) => matchCurrentReading(text, [
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\bnihss\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})\b/iu,
+  ]),
+  pupilExam: (text) => matchOne(text, [
+    /\b(pupilas?[^\n.;]{0,90})/iu,
+  ]),
+  focalDeficit: (text) => matchOne(text, [
+    /\b((?:hemiparesia|hemiplegia|afasia|disartria|desvio\s+do\s+olhar|d[eé]ficit\s+focal)[^\n.;]{0,90})/iu,
+  ]),
+  ecg: (text) => matchOne(text, [
+    // ECGL/ECGLA é Glasgow, não o traçado. O eletrocardiograma posterior continua válido.
+    /\b(ecg(?!l(?:a)?\b)[^\n]{0,180})/iu,
+    /\b(eletrocardiograma[^\n]{0,180})/iu,
+  ]),
+  imaging: extractImaging,
+  injuryMechanism: (text) => matchOne(text, [
+    /\b((?:colis[aã]o|capotamento|atropelamento|queda|ferimento\s+por|trauma\s+(?:contuso|penetrante))[^\n.;]{0,120})/iu,
+  ]),
+  hemorrhage: yesNoText([
+    // "negado/negada" depois do achado, ou "nega/negou" imediatamente antes, não é hemorragia presente.
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\b(?!\s*,?\s*negad[oa]\b)/iu,
+    /(?<!\b(?:nega(?:-se)?|negou)\s+)\bchoque\s+hemorr[aá]gico\b(?!\s*,?\s*negad[oa]\b)/iu,
+  ], [
+    /\bsem\s+(?:hemorragia|sangramento)\s+ativ[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o)\b/iu,
+    /\b(?:hemorragia|sangramento)\s+(?:ativo|importante|maci[cç]o|n[aã]o\s+controlado)\s*,?\s*negad[oa]\b/iu,
+    /\b(?:nega(?:-se)?|negou)\s+choque\s+hemorr[aá]gico\b/iu,
+    /\bchoque\s+hemorr[aá]gico\s*,?\s*negad[oa]\b/iu,
+  ]),
+});
+
+export function redactDirectIdentifiers(text) {
+  // NNNN-NNNN sem país, DDD entre parênteses ou nono dígito é faixa
+  // (1000-2000 mL, 0800-1600, 2019-2024), não telefone.
+  const phone = /(?<![\d])(?:\+55[\s-]*)?(?:\(?\d{2}\)?[\s-]*)?9\s*\d{4}[-\s]?\d{4}\b|\+\s?55[\s-]*\(?\d{2}\)?[\s-]*\d{4}[-\s]?\d{4}\b|\(\d{2}\)[\s-]*\d{4}[-\s]?\d{4}\b/g;
+  return String(text ?? "")
+    .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g, "[CPF REDIGIDO]")
+    .replace(/\b\d{15}\b/g, "[CNS REDIGIDO]")
+    .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/giu, "[E-MAIL REDIGIDO]")
+    .replace(phone, "[TELEFONE REDIGIDO]");
+}
+
+export function extractNarrative(text, schema) {
+  const source = String(text ?? "");
+  const fields = {};
+
+  for (const key of schema.fields) {
+    const extracted = EXTRACTORS[key]?.(source) ?? null;
+    const recorded = stampRecorded();
+    fields[key] = extracted
+      ? { ...extracted, origin: "extração automática", recorded }
+      : { value: "", excerpt: "", confidence: "não localizado", origin: "revisão humana", recorded };
+  }
+
+  if (!fields.interventionNeeded.value) {
+    fields.interventionNeeded = {
+      value: schema.defaultIntervention,
+      excerpt: "",
+      confidence: "template",
+      origin: "template selecionado",
+      recorded: stampRecorded(),
+    };
+  }
+
+  if (!fields.capabilityNeeded.value) {
+    fields.capabilityNeeded = {
+      value: schema.defaultCapability,
+      excerpt: "",
+      confidence: "template",
+      origin: "template selecionado",
+      recorded: stampRecorded(),
+    };
+  }
+
+  enrichFieldFreshness(fields);
+  return fields;
+}
+
+export function missingRequiredFields(fields, schema) {
+  return schema.required.filter((key) => {
+    const value = fields[key]?.value;
+    return value === "" || value === null || typeof value === "undefined";
+  });
+}
+
+export function buildEnvelope({ sourceText, schema, fields, includeSource = false }) {
+  const missing = missingRequiredFields(fields, schema);
+  const data = {};
+  const provenance = {};
+  const generatedAt = stampRecorded();
+
+  // Ensure TTL/freshness is computed even when fields were edited in the UI.
+  enrichFieldFreshness(fields);
+
+  for (const key of schema.fields) {
+    const item = fields[key] ?? { value: "" };
+    data[key] = item.value === "" ? null : item.value;
+    const entry = {
+      origin: item.origin ?? "revisão humana",
+      confidence: item.confidence ?? "não informado",
+      excerpt: item.excerpt || null,
+      recorded: item.recorded || generatedAt,
+    };
+    // Pilot A TTL: critical clinical fields may carry observedAt / validUntil / freshness.
+    if (item.observedAt) entry.observedAt = item.observedAt;
+    if (item.validUntil) entry.validUntil = item.validUntil;
+    if (item.freshness) entry.freshness = item.freshness;
+    if (item.maxAgeHours != null) entry.maxAgeHours = item.maxAgeHours;
+    provenance[key] = entry;
+  }
+
+  return {
+    resourceType: "EVAMRegulationEnvelope",
+    evamVersion: EVAM_VERSION,
+    schema: {
+      id: schema.id,
+      version: schema.version,
+      syndrome: schema.syndrome,
+      specialty: schema.specialty,
+    },
+    generatedAt,
+    status: missing.length ? "INCOMPLETE_REQUIRES_HUMAN_REVIEW" : "STRUCTURED_REQUIRES_HUMAN_VALIDATION",
+    data,
+    missingCritical: missing,
+    provenance,
+    sourceNarrative: includeSource ? sourceText : undefined,
+    governance: {
+      syntheticOrDeidentifiedOnly: true,
+      automatedExtractionIsDiagnostic: false,
+      humanValidationRequired: true,
+      decisionSupportProvided: false,
+    },
+  };
+}
+
+export function buildJsonSchema(schema) {
+  const properties = {};
+  for (const key of schema.fields) {
+    const field = getFieldDefinition(key);
+    const property = {
+      title: field.label,
+      type: field.type === "number" ? ["number", "null"] : ["string", "null"],
+    };
+    if (field.unit) property["x-unit"] = field.unit;
+    properties[key] = property;
+  }
+
+  const provenanceProperties = {};
+  for (const key of schema.fields) {
+    provenanceProperties[key] = PROVENANCE_ENTRY_SCHEMA;
+  }
+
+  return {
+    $schema: "https://json-schema.org/draft/2020-12/schema",
+    $id: `https://iniciativa-via.com/via-hub/regulacao-federal-ia/evam/schemas/${schema.id}.schema.json`,
+    title: schema.title,
+    description: schema.purpose,
+    type: "object",
+    additionalProperties: false,
+    properties,
+    required: schema.required,
+    "x-evam": {
+      templateId: schema.id,
+      version: schema.version,
+      syndrome: schema.syndrome,
+      specialty: schema.specialty,
+      humanValidationRequired: true,
+    },
+    "x-provenance": {
+      description: "Contrato de proveniência por campo do envelope EVAMRegulationEnvelope.provenance.",
+      type: "object",
+      additionalProperties: false,
+      properties: provenanceProperties,
+    },
+  };
+}
+
+export function formatRegulatoryText(envelope) {
+  const lines = [
+    "EVAM — RESUMO REGULATÓRIO ESTRUTURADO",
+    `Template: ${envelope.schema.syndrome} | ${envelope.schema.specialty}`,
+    `Versão: ${envelope.schema.id}@${envelope.schema.version}`,
+    `Status: ${envelope.status}`,
+    "",
+  ];
+
+  let activeGroup = "";
+  for (const [key, value] of Object.entries(envelope.data)) {
+    if (value === null || value === "") continue;
+    const field = getFieldDefinition(key);
+    if (field.group !== activeGroup) {
+      activeGroup = field.group;
+      lines.push(activeGroup.toUpperCase());
+    }
+    const fresh = envelope.provenance?.[key]?.freshness;
+    const freshNote = fresh ? ` [${fresh}]` : "";
+    lines.push(`- ${field.label}: ${value}${field.unit ? ` ${field.unit}` : ""}${freshNote}`);
+  }
+
+  lines.push("", "CAMPOS CRÍTICOS AUSENTES");
+  if (envelope.missingCritical.length) {
+    for (const key of envelope.missingCritical) {
+      lines.push(`- ${getFieldDefinition(key).label}`);
+    }
+  } else {
+    lines.push("- Nenhum campo obrigatório do template está vazio.");
+  }
+
+  lines.push(
+    "",
+    "GOVERNANÇA",
+    "- Extração heurística; validação humana obrigatória.",
+    "- O conversor não diagnostica, prioriza, recomenda destino ou substitui regulação clínica.",
+    "- Usar somente casos sintéticos ou adequadamente desidentificados nesta versão pública.",
+  );
+
+  return lines.join("\n");
+}
