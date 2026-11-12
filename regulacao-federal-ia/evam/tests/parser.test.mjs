@@ -436,3 +436,18 @@ test("resumo formatado explicita campos críticos e governança", () => {
   assert.match(text, /Lactato: 4.1 mmol\/L/);
 });
 
+
+test("campos textuais encerram antes do próximo rótulo clínico", () => {
+  const biliary = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const text = "Mulher, 81 anos. PA 80/45 mmHg, SpO2 93% em cateter nasal 3 L/min, Glasgow 14. Noradrenalina 0,12 mcg/kg/min, PA 95/50 após ajuste. TC evidencia dilatação biliar e provável coledocolitíase. Unidade sem CPRE. Solicita-se transferência.";
+  const fields = extractNarrative(text, biliary);
+  assert.equal(fields.oxygenSupport.value, "cateter nasal 3 L/min");
+  assert.equal(fields.vasopressor.value, "Noradrenalina 0,12 mcg/kg/min");
+  assert.equal(fields.imaging.value, "TC evidencia dilatação biliar e provável coledocolitíase.");
+
+  const twoDrugs = extractNarrative("Noradrenalina 0,2 mcg/kg/min, vasopressina 0,03 U/min.", biliary);
+  assert.match(twoDrugs.vasopressor.value, /vasopressina 0,03/);
+
+  const report = extractNarrative("TC de abdome: dilatação biliar. Coledocolitíase provável.", biliary);
+  assert.match(report.imaging.value, /Coledocolitíase provável/);
+});

@@ -1,4 +1,4 @@
-import { DOMAINS, INTENTIONS, LINKS, STATES, normalize, perceptionEnvelope } from "./model.js";
+import { DOMAINS, INTENTIONS, LINKS, STATES, SUPPORT, normalize, perceptionEnvelope } from "./model.js";
 import { SCHEMA_TEMPLATES, getSchema, getFieldDefinition, EVAM_VERSION } from "./vendor/evam/schemas.js";
 import { extractNarrative, redactDirectIdentifiers, buildEnvelope, formatRegulatoryText, missingRequiredFields, stampRecorded } from "./vendor/evam/parser.js";
 
@@ -58,6 +58,10 @@ $("#listen").addEventListener("click", () => {
   $("#player").hidden = false; $("#listen").setAttribute("aria-expanded", "true"); $("#listen").textContent = "Fechar player";
 });
 
+function supportNote() {
+  const note = el("p", SUPPORT.text + " ", "notice support-note");
+  note.append(sourceLink(`${SUPPORT.label} ↗`, SUPPORT.url)); return note;
+}
 function setAnswer(value) { state.answers[DOMAINS[state.step].key] = { value, recorded: stampRecorded() }; }
 function renderQuestion() {
   const area = $("#question-area"), d = DOMAINS[state.step];
@@ -73,6 +77,7 @@ function renderQuestion() {
     label.append(input, el("span", text)); options.append(label);
   });
   fieldset.append(options);
+  if (d.key === "emocional") fieldset.append(supportNote());
   const actions = el("div", undefined, "question-actions");
   const back = button("Voltar", () => { state.step = Math.max(0, state.step - 1); renderQuestion(); });
   back.disabled = state.step === 0;
@@ -89,7 +94,9 @@ function renderReport() {
   area.append(el("p", `${r.id} · Demonstração fictícia`, "report-id"), el("h2", "Percepções, com as suas palavras."));
   const dl = el("dl", undefined, "report-grid");
   DOMAINS.forEach(d => { const row = el("div", undefined, "report-row"); row.append(el("dt", d.title), el("dd", r.fields[d.key].value ?? "Não informado")); dl.append(row); });
-  area.append(dl, el("p", "Ponto de partida, não conclusão. Estas respostas não receberam interpretação clínica, escore ou recomendação de conduta.", "notice"));
+  area.append(dl);
+  if (r.fields.emocional?.value === "Os dias têm sido difíceis") area.append(supportNote());
+  area.append(el("p", "Ponto de partida, não conclusão. Estas respostas não receberam interpretação clínica, escore ou recomendação de conduta.", "notice"));
   const actions = el("div", undefined, "actions");
   actions.append(button("Baixar minhas percepções", () => { download(JSON.stringify(r, null, 2), `${r.id}.json`); $("#session-status").textContent = "Exportação demonstrativa solicitada. O arquivo contém percepções, origem e data, não uma avaliação clínica."; }, "primary"));
   actions.append(button("Recomeçar", () => { state.answers = {}; state.step = 0; state.report = null; renderQuestion(); }));

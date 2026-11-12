@@ -29,3 +29,10 @@ test("Cross-links e fronteiras de privacidade permanecem explícitos", () => {
   assert.match(js, /request !== state\.request/);
   assert.match(js, /30 \* 60 \* 1000/);
 });
+test("Domínio emocional exibe rede de apoio sem interpretar a resposta", async () => {
+  const { SUPPORT } = await import(pathToFileURL(path.join(app, "model.js")));
+  assert.match(SUPPORT.text, /\b188\b/); assert.match(SUPPORT.text, /\b192\b/);
+  assert.match(SUPPORT.url, /^https:\/\/cvv\.org\.br\//);
+  const js = fs.readFileSync(path.join(app, "app.js"), "utf8");
+  assert.match(js, /d\.key === "emocional"\) fieldset\.append\(supportNote\(\)\)/);
+});

@@ -10,6 +10,7 @@ Não substitui a Sala em https://iniciativa-via.com/ nem o EVAM canônico.
 - EVAM local com seis templates, proveniência, excertos, revisão por campo e exportação.
 - Consulta meteorológica real, voluntária, sem GPS, após selecionar UF e confirmar localidade. Fonte e tempo explícitos; valores são ocultados após expiração.
 - Nenhuma chave no cliente, analytics, conta, armazenamento persistente ou transmissão de narrativas e respostas.
+- Rede de apoio no domínio emocional: CVV (188, gratuito, 24 horas) e SAMU (192), como informação de acesso, sem interpretação das respostas.
 - Dados de saúde apenas sintéticos. Não constitui serviço assistencial nem dispositivo clínico validado.
 
 ## Fontes e continuidade
@@ -38,9 +39,8 @@ Antes de uso comercial ou público em escala, contratar o plano aplicável ou su
 ## Operação e custo
 
 Hospedagem: GitHub Pages já existente, sob domínio próprio, sem novos recursos pagos.
-Sem chamadas ao Perplexity, Cloudflare ou Firebase nesta versão.
-As conexões presentes no Computer não se tornam credenciais públicas do aplicativo.
-O crédito de API informado pelo usuário não foi consultado nem consumido.
+Sem chamadas a modelos de IA, backend próprio ou serviços pagos nesta versão.
+Nenhuma credencial é embarcada no cliente.
 
 Para dados reais, autenticação profissional ou conexão a sistemas assistenciais, exige-se
 projeto separado de segurança, privacidade, base legal, segregação, retenção, auditoria,
