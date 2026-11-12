@@ -10,8 +10,8 @@ import {
   buildEnvelope,
 } from "../parser.js";
 
-test("EVAM_VERSION patch bump for recorded provenance", () => {
-  assert.equal(EVAM_VERSION, "1.1.1");
+test("EVAM_VERSION patch bump for field boundaries and current readings", () => {
+  assert.equal(EVAM_VERSION, "1.1.2");
 });
 
 test("maxAgeHours defaults exist for critical lab/vital fields", () => {
@@ -47,7 +47,7 @@ test("envelope provenance carries freshness when hoursSinceRecognition known", (
   assert.ok(fields.lactate.validUntil);
 
   const envelope = buildEnvelope({ sourceText: text, schema, fields });
-  assert.equal(envelope.evamVersion, "1.1.1");
+  assert.equal(envelope.evamVersion, "1.1.2");
   assert.ok(envelope.provenance.lactate.freshness);
   assert.ok(envelope.provenance.lactate.observedAt);
   assert.ok(envelope.provenance.map.freshness);
@@ -92,4 +92,16 @@ test("explicit expired observedAt forces expired freshness", () => {
   };
   enrichFieldFreshness(fields, { now });
   assert.equal(fields.lactate.freshness, "expired");
+});
+
+test("leitura marcada como atual não herda o tempo de reconhecimento", () => {
+  const schema = getSchema("sepsis-biliary.emergency-gastro.v1");
+  const text = "Sepse reconhecida há 20 horas. Mulher, 70 anos. PAM agora 58. Lactato no momento 5,0 mmol/L. Creatinina 2,1.";
+  const fields = extractNarrative(text, schema);
+  assert.equal(fields.map.value, 58);
+  assert.equal(fields.map.freshness, "fresh");
+  assert.equal(fields.lactate.value, 5);
+  assert.equal(fields.lactate.freshness, "fresh");
+  // Sem marcador de leitura atual, a heurística conservadora permanece.
+  assert.equal(fields.creatinine.freshness, "stale");
 });

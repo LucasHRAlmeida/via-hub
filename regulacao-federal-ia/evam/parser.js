@@ -40,10 +40,14 @@ const matchOne = (text, expressions, valueGroup = 1, transform = clean) => {
 const CURRENT_MARKER = /\b(?:agora|no\s+momento|atua(?:l|is))\b/iu;
 const CURRENT_BEFORE = /(?:agora|no\s+momento)\s*,?\s*$/iu;
 const HISTORICAL_READING = /^\s*(?:mmhg|bpm|irpm|rpm|%|°\s*c|mmol\s*\/?\s*l|mg\s*\/?\s*dl|\/\s*mm[³3]|mil|k|ng\s*\/?\s*m?l)?\s*(?:(?:na|de|da)\s+(?:admiss[aã]o|entrada|triagem|chegada|cena)|basal|pr[eé]vi[oa]|inicial|habitual)\b/iu;
+// Leitura marcada como atual ("agora", "no momento", "atual") foi observada no
+// instante da extração. Sem esse marcador, o TTL segue a heurística de
+// reconhecimento em enrichFieldFreshness.
 const publishReading = (hit) => ({
   value: hit.value,
   excerpt: hit.excerpt,
   confidence: hit.confidence,
+  ...(hit.current ? { observedAt: stampRecorded() } : {}),
 });
 
 const isCurrentReading = (text, match) => {
@@ -250,6 +254,8 @@ function parseTroponinMention(negation, keyword, tail) {
  * "Sem TC", "Não há TC", "Não realizou TC" e "TC não realizada" não ocultam
  * a tomografia, a ressonância ou o ultrassom que vêm depois.
  */
+const IMAGING_STOP = /\.\s+(?=(?:unidade|servi[cç]o|hospital|solicit|encaminh|aguard|paciente|plano|conduta|pa|pam|fc|fr|spo2|glasgow|lactato|creatinina|bilirrubina|troponina|ecg|noradrenalina)\b)/iu;
+
 function extractImaging(text) {
   // "angiotensina" não é exame. AngioTC / angiografia continuam válidas.
   const keyword = /\b(?:tc|tomografia|rm|resson[aâ]ncia|ultrassom|usg|colangio(?:rm)?|angio(?!tensin)(?:tc)?)/giu;
@@ -265,7 +271,11 @@ function extractImaging(text) {
 
     const lineEnd = text.indexOf("\n", start);
     const limit = start + match[0].length + 220;
-    const end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    let end = lineEnd === -1 ? Math.min(text.length, limit) : Math.min(lineEnd, limit);
+    // Frase seguinte que trata de outro assunto (unidade, solicitação,
+    // sinais vitais, laboratório) não pertence ao laudo de imagem.
+    const nextTopic = IMAGING_STOP.exec(text.slice(start, end));
+    if (nextTopic) end = start + nextTopic.index + 1;
     const value = clean(text.slice(start, end));
     if (!value) continue;
 
@@ -278,6 +288,13 @@ function extractImaging(text) {
 
   return null;
 }
+
+// Cauda de campos textuais: a vírgula ou o ponto e vírgula seguidos de outro
+// rótulo clínico encerram o campo ("cateter nasal 3 L/min, Glasgow 14" não
+// leva o Glasgow para o suporte de oxigênio).
+const CLINICAL_LABELS = "glasgow|gcs|ecgla|pam|pas|pad|pa|fc|fr|spo2|sat|temp|tax|lactato|creatinina|bilirrubina|plaquetas|inr|ph|troponina|ecg|nihss|pupilas?";
+const VASOPRESSOR_NAMES = "noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina";
+const tailUntilLabel = (labels) => `(?:(?![,;]\\s*(?:${labels})\\b)[^\\n.;]|[.,](?=\\d)){0,80}`;
 
 const EXTRACTORS = Object.freeze({
   age: (text) => matchOne(text, [
@@ -326,10 +343,10 @@ const EXTRACTORS = Object.freeze({
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:glasgow|ecgla|gcs)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d{1,2})(?:\s*\/\s*15)?\b/iu,
   ]),
   oxygenSupport: (text) => matchOne(text, [
-    /\b((?:cateter\s+nasal|m[aá]scara\s+(?:com\s+)?reservat[oó]rio|venturi|alto\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\s+mec[aâ]nica|i\.?o\.?t\.?)[^\n.;]{0,80})/iu,
+    new RegExp(`\\b((?:cateter\\s+nasal|m[aá]scara\\s+(?:com\\s+)?reservat[oó]rio|venturi|alto\\s+fluxo|cnaf|vni|cpap|bipap|ventila[cç][aã]o\\s+mec[aâ]nica|i\\.?o\\.?t\\.?)${tailUntilLabel(`${CLINICAL_LABELS}|${VASOPRESSOR_NAMES}`)})`, "iu"),
   ]),
   vasopressor: (text) => matchOne(text, [
-    /\b((?:noradrenalina|norepinefrina|vasopressina|adrenalina|epinefrina|dopamina)[^\n.;]{0,80})/iu,
+    new RegExp(`\\b((?:${VASOPRESSOR_NAMES})${tailUntilLabel(CLINICAL_LABELS)})`, "iu"),
   ]),
   lactate: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,

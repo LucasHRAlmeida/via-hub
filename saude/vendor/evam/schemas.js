@@ -1,4 +1,4 @@
-export const EVAM_VERSION = "1.1.1";
+export const EVAM_VERSION = "1.1.2";
 
 /**
  * Per-field provenance carried on EVAMRegulationEnvelope.provenance[key].

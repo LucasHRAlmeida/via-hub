@@ -6,6 +6,8 @@ export const DOMAINS = [
   { key: "emocional", title: "Bem-estar emocional", question: "Como tem sido estar com você?", note: "Você decide o que deseja compartilhar, inclusive quando prefere não dizer.", options: ["Tenho me sentido bem", "Tenho vivido dias variados", "Os dias têm sido difíceis", "Prefiro não responder"] },
   { key: "contexto", title: "Contexto de vida", question: "Há algo do seu contexto que gostaria de levar à conversa?", note: "Trabalho, vínculos e território também fazem parte da vida. Nenhum detalhe pessoal é solicitado.", options: ["Sim, gostaria de conversar", "Talvez, mais adiante", "Não neste momento", "Prefiro não responder"] },
 ];
+// Rede de apoio exibida no domínio emocional. Informação de acesso, não interpretação clínica.
+export const SUPPORT = { text: "Se os dias estiverem pesados, o CVV oferece apoio emocional gratuito e sigiloso pelo 188, 24 horas, todos os dias. Em emergência, ligue 192 (SAMU).", label: "Conversar pelo chat do CVV", url: "https://cvv.org.br/chat/" };
 export const INTENTIONS = {
   pausa: { label: "Fazer uma pausa", title: "Não é preciso começar por uma tarefa.", description: "Uma escuta, uma leitura ou apenas um intervalo. Você escolhe o ritmo.", playlist: "3bH51KAKMfv9hibkmvYIoP", playlistName: "Relaxamento", links: ["parar", "musica", "revista"] },
   clareza: { label: "Organizar uma ideia", title: "Dar forma também é uma maneira de cuidar.", description: "Uma percepção pode virar conversa. Uma narrativa pode ganhar estrutura, sem perder a origem.", playlist: "6v8PijpdMXcUwQ0aTalRF7", playlistName: "Foco suave", links: ["evidencia", "evam", "hub"] },
