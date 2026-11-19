@@ -370,6 +370,39 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Plaquetas 180000 na admissão. Plaquetas atuais 42000.", sepsis).platelets.value, 42000);
 });
 
+test("PA em dezenas com x não grava a pressão dez vezes menor", () => {
+  const neuro = getSchema("neurosurgical-emergency.neurosurgery.v1");
+  const trauma = getSchema("polytrauma.trauma-surgery.v1");
+
+  const cushing = extractNarrative("Homem, 58 anos. PA 18x10, FC 54, Glasgow 9.", neuro);
+  assert.equal(cushing.sbp.value, 180);
+  assert.equal(cushing.dbp.value, 100);
+
+  assert.equal(extractNarrative("PA 16x10.", neuro).sbp.value, 160);
+  assert.equal(extractNarrative("PA 16x10.", neuro).dbp.value, 100);
+  assert.equal(extractNarrative("pressão arterial 12 x 8.", neuro).sbp.value, 120);
+  assert.equal(extractNarrative("pressão arterial 12 x 8.", neuro).dbp.value, 80);
+  assert.equal(extractNarrative("PA 8x5 em choque.", trauma).sbp.value, 80);
+  assert.equal(extractNarrative("PA 8x5 em choque.", trauma).dbp.value, 50);
+
+  const now = extractNarrative("PA 14x9 na admissão. PA 8x5.", trauma);
+  assert.equal(now.sbp.value, 80);
+  assert.equal(now.dbp.value, 50);
+
+  assert.equal(extractNarrative("PA 100 x 70 após analgesia.", neuro).sbp.value, 100);
+  assert.equal(extractNarrative("PA 100 x 70 após analgesia.", neuro).dbp.value, 70);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", neuro).sbp.value, 92);
+  assert.equal(extractNarrative("PA 92/58 mmHg.", neuro).dbp.value, 58);
+  assert.equal(extractNarrative("PA 70/40 em choque.", trauma).sbp.value, 70);
+  assert.equal(extractNarrative("PA 70/40 em choque.", trauma).dbp.value, 40);
+  assert.equal(extractNarrative("PAS 88. PAD 50.", trauma).sbp.value, 88);
+  assert.equal(extractNarrative("PAS 88. PAD 50.", trauma).dbp.value, 50);
+  assert.equal(extractNarrative("PA 2x2.", trauma).sbp.value, "");
+  assert.equal(extractNarrative("PA 2x2.", trauma).dbp.value, "");
+  assert.equal(extractNarrative("PA 120x80.", neuro).sbp.value, 120);
+  assert.equal(extractNarrative("PA 120x80.", neuro).dbp.value, 80);
+});
+
 test("angiotensina não oculta a tomografia nem a angioTC", () => {
   const stroke = getSchema("acute-ischemic-stroke.neurology.v1");
   const separated = extractNarrative(
