@@ -349,7 +349,9 @@ const EXTRACTORS = Object.freeze({
     new RegExp(`\\b((?:${VASOPRESSOR_NAMES})${tailUntilLabel(CLINICAL_LABELS)})`, "iu"),
   ]),
   lactate: (text) => matchCurrentReading(text, [
-    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mmol\/?l)?\b/iu,
+    // "3 horas", "3h" e "3ª hora" são o momento da coleta. O lactato é o
+    // número seguinte; o horário sozinho não ocupa o campo. "há" não é "h".
+    /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:lactato|lac)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(?:\d+(?:[.,]\d+)?[ªa]?\s*(?:horas?|h)(?!\p{L})\s*[:,.]?\s*(?:ap[oó]s\s+[^,.;\d]{0,48}?\s*[:,.]?\s*)?)?(\d+(?:[.,]\d+)?)(?!\s*[ªa]?\s*(?:horas?|h)(?!\p{L}))\s*(?:mmol\/?l)?\b/iu,
   ]),
   creatinine: (text) => matchCurrentReading(text, [
     /(?:(?:agora|no\s+momento)\s*,?\s+)?\b(?:creatinina|cr)\s*(?:(?:atua(?:l|is)|agora|no\s+momento)\s*)?[:=]?\s*(\d+(?:[.,]\d+)?)\s*(?:mg\/?dl)?\b/iu,
