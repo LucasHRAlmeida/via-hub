@@ -356,6 +356,13 @@ test("leitura marcada como atual não cede o campo ao valor anterior", () => {
   assert.equal(extractNarrative("Tax 36,2 na triagem. Tax atual 39,8.", sepsis).temperature.value, 39.8);
   assert.equal(extractNarrative("Glasgow 14 na entrada. Agora Glasgow 8.", trauma).gcs.value, 8);
   assert.equal(extractNarrative("Glasgow 14.", trauma).gcs.value, 14);
+  assert.equal(extractNarrative("Glasgow 3T.", trauma).gcs.value, 3);
+  assert.equal(extractNarrative("GCS 7t.", trauma).gcs.value, 7);
+  assert.equal(extractNarrative("Glasgow 8T/15.", trauma).gcs.value, 8);
+  assert.equal(extractNarrative("Glasgow 15 na admissão. IOT. Glasgow 3T agora.", trauma).gcs.value, 3);
+  assert.equal(extractNarrative("Glasgow 3T na admissão. Glasgow 10.", trauma).gcs.value, 10);
+  assert.equal(extractNarrative("Glasgow 15. Tax 38,5.", trauma).gcs.value, 15);
+  assert.equal(extractNarrative("Glasgow 8/15.", trauma).gcs.value, 8);
   assert.equal(extractNarrative("SpO2 97% na triagem. SpO2 atual 82%.", respiratory).spo2.value, 82);
   assert.equal(extractNarrative("SpO2 93% em cateter nasal 3 L/min.", respiratory).spo2.value, 93);
   assert.equal(extractNarrative("FiO2 40% na chegada. FiO2 atual 100%. PaO2 55.", respiratory).fio2.value, 100);
